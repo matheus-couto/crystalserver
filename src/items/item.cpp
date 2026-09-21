@@ -3404,6 +3404,11 @@ uint32_t Item::getWorth() const {
 		case ITEM_CRYSTAL_COIN:
 			return count * 10000;
 
+		case ITEM_BAR_OF_GOLD:
+			// Works whether or not the client flags the bar as cumulative:
+			// a non-stackable item carries count 0/charges, so clamp it to one bar.
+			return std::max<uint32_t>(1, count) * 1000000;
+
 		default:
 			return 0;
 	}

@@ -2175,7 +2175,7 @@ ReturnValue Game::checkMoveItemToCylinder(const std::shared_ptr<Player> &player,
 
 			bool allowAnything = g_configManager().getBoolean(TOGGLE_GOLD_POUCH_ALLOW_ANYTHING);
 
-			if (!allowAnything && item->getID() != ITEM_GOLD_COIN && item->getID() != ITEM_PLATINUM_COIN && item->getID() != ITEM_CRYSTAL_COIN) {
+			if (!allowAnything && item->getID() != ITEM_GOLD_COIN && item->getID() != ITEM_PLATINUM_COIN && item->getID() != ITEM_CRYSTAL_COIN && item->getID() != ITEM_BAR_OF_GOLD) {
 				return RETURNVALUE_ITEMCANNOTBEMOVEDPOUCH;
 			}
 
@@ -2963,7 +2963,9 @@ bool Game::removeMoney(const std::shared_ptr<Cylinder> &cylinder, uint64_t money
 				return true;
 			}
 		} else if (worthTotal > money) {
-			const uint32_t unitWorth = worthTotal / item->getItemCount();
+			// Non-stackable currency reports a count of 0, so never divide by it.
+			const uint32_t itemCount = std::max<uint32_t>(1, item->getItemCount());
+			const uint32_t unitWorth = worthTotal / itemCount;
 			const uint32_t removeCount = std::ceil(money / static_cast<double>(unitWorth));
 			addMoney(cylinder, (unitWorth * removeCount) - money, flags);
 			internalRemoveItem(item, removeCount);
@@ -2996,8 +2998,10 @@ void Game::addMoney(const std::shared_ptr<Cylinder> &cylinder, uint64_t money, u
 		if (count == 0) {
 			return;
 		}
+		const ItemType &coinType = Item::items[itemId];
+		const uint32_t stackSize = coinType.stackable ? std::max<uint8_t>(1, coinType.stackSize) : 1;
 		while (count > 0) {
-			const uint16_t createCount = std::min<uint32_t>(100, count);
+			const uint16_t createCount = std::min<uint32_t>(stackSize, count);
 			const std::shared_ptr<Item> &remaindItem = Item::CreateItem(itemId, createCount);
 
 			ReturnValue ret = RETURNVALUE_NOTPOSSIBLE;
@@ -3021,6 +3025,12 @@ void Game::addMoney(const std::shared_ptr<Cylinder> &cylinder, uint64_t money, u
 			count -= createCount;
 		}
 	};
+
+	uint32_t goldBars = static_cast<uint32_t>(money / 1000000);
+	if (goldBars) {
+		money -= static_cast<uint64_t>(goldBars) * 1000000ULL;
+		addCoins(ITEM_BAR_OF_GOLD, goldBars);
+	}
 
 	uint32_t crystalCoins = static_cast<uint32_t>(money / 10000);
 	if (crystalCoins) {
@@ -3471,15 +3481,8 @@ ReturnValue Game::internalCollectManagedItems(const std::shared_ptr<Player> &pla
 
 	// Send money to the bank
 	if (g_configManager().getBoolean(AUTOBANK)) {
-		if (item->getID() == ITEM_GOLD_COIN || item->getID() == ITEM_PLATINUM_COIN || item->getID() == ITEM_CRYSTAL_COIN) {
-			uint64_t money = 0;
-			if (item->getID() == ITEM_PLATINUM_COIN) {
-				money = item->getItemCount() * 100;
-			} else if (item->getID() == ITEM_CRYSTAL_COIN) {
-				money = item->getItemCount() * 10000;
-			} else {
-				money = item->getItemCount();
-			}
+		if (item->getID() == ITEM_GOLD_COIN || item->getID() == ITEM_PLATINUM_COIN || item->getID() == ITEM_CRYSTAL_COIN || item->getID() == ITEM_BAR_OF_GOLD) {
+			uint64_t money = item->getWorth();
 			auto parent = item->getParent();
 			if (parent) {
 				parent->removeThing(item, item->getItemCount());
@@ -3651,6 +3654,10 @@ uint64_t Game::getItemMarketPrice(const std::map<uint16_t, uint64_t> &itemMap, b
 
 			case ITEM_CRYSTAL_COIN:
 				total += 10000 * itemCount;
+				break;
+
+			case ITEM_BAR_OF_GOLD:
+				total += 1000000 * itemCount;
 				break;
 
 			default: {

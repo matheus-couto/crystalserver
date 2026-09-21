@@ -1702,11 +1702,13 @@ void Player::updatePartyTrackerAnalyzer() const {
 
 void Player::sendLootStats(const std::shared_ptr<Item> &item, uint8_t count) {
 	uint64_t value = 0;
-	if (item->getID() == ITEM_GOLD_COIN || item->getID() == ITEM_PLATINUM_COIN || item->getID() == ITEM_CRYSTAL_COIN) {
+	if (item->getID() == ITEM_GOLD_COIN || item->getID() == ITEM_PLATINUM_COIN || item->getID() == ITEM_CRYSTAL_COIN || item->getID() == ITEM_BAR_OF_GOLD) {
 		if (item->getID() == ITEM_PLATINUM_COIN) {
 			value = count * 100;
 		} else if (item->getID() == ITEM_CRYSTAL_COIN) {
 			value = count * 10000;
+		} else if (item->getID() == ITEM_BAR_OF_GOLD) {
+			value = static_cast<uint64_t>(count) * 1000000;
 		} else {
 			value = count;
 		}

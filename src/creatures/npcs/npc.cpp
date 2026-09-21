@@ -637,13 +637,16 @@ void Npc::onPlayerSellItem(const std::shared_ptr<Player> &player, uint16_t itemI
 	// Capacity and backpack space check for gold payouts (when not using autobank)
 	if (getCurrency() == ITEM_GOLD_COIN && !g_configManager().getBoolean(AUTOBANK)) {
 		const uint64_t prospectiveTotal = static_cast<uint64_t>(sellPrice) * static_cast<uint64_t>(willRemove);
-		uint32_t crystalCoins = static_cast<uint32_t>(prospectiveTotal / 10000);
+		uint32_t goldBars = static_cast<uint32_t>(prospectiveTotal / 1000000);
+		uint32_t crystalCoins = static_cast<uint32_t>((prospectiveTotal % 1000000) / 10000);
 		uint32_t remainder = static_cast<uint32_t>(prospectiveTotal % 10000);
 		uint32_t platinumCoins = remainder / 100;
 		uint32_t goldCoins = remainder % 100;
 
-		// Number of stacks that will be created (each stack up to 100)
-		auto stacksNeeded = static_cast<uint16_t>((crystalCoins + 99) / 100 + (platinumCoins + 99) / 100 + (goldCoins + 99) / 100);
+		// Number of stacks that will be created (each stack up to its own stack size)
+		const auto &barType = Item::items[ITEM_BAR_OF_GOLD];
+		const uint32_t barStack = barType.stackable ? std::max<uint8_t>(1, barType.stackSize) : 1;
+		auto stacksNeeded = static_cast<uint16_t>((goldBars + barStack - 1) / barStack + (crystalCoins + 99) / 100 + (platinumCoins + 99) / 100 + (goldCoins + 99) / 100);
 		const uint16_t freeSlots = player->getFreeBackpackSlots();
 		if (stacksNeeded > 0 && freeSlots < stacksNeeded) {
 			player->sendCancelMessage(RETURNVALUE_NOTENOUGHROOM);
@@ -654,7 +657,8 @@ void Npc::onPlayerSellItem(const std::shared_ptr<Player> &player, uint16_t itemI
 		const uint32_t goldWeight = Item::items[ITEM_GOLD_COIN].weight;
 		const uint32_t platWeight = Item::items[ITEM_PLATINUM_COIN].weight;
 		const uint32_t crysWeight = Item::items[ITEM_CRYSTAL_COIN].weight;
-		const uint64_t totalWeight = static_cast<uint64_t>(goldCoins) * goldWeight + static_cast<uint64_t>(platinumCoins) * platWeight + static_cast<uint64_t>(crystalCoins) * crysWeight;
+		const uint32_t barWeight = Item::items[ITEM_BAR_OF_GOLD].weight;
+		const uint64_t totalWeight = static_cast<uint64_t>(goldCoins) * goldWeight + static_cast<uint64_t>(platinumCoins) * platWeight + static_cast<uint64_t>(crystalCoins) * crysWeight + static_cast<uint64_t>(goldBars) * barWeight;
 		if (player->getFreeCapacity() < totalWeight) {
 			player->sendCancelMessage(RETURNVALUE_NOTENOUGHCAPACITY);
 			return;

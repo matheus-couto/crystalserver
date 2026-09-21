@@ -964,6 +964,7 @@ void LuaEnums::initItemIdEnums(lua_State* L) {
 	registerEnum(L, ITEM_GOLD_COIN);
 	registerEnum(L, ITEM_PLATINUM_COIN);
 	registerEnum(L, ITEM_CRYSTAL_COIN);
+	registerEnum(L, ITEM_BAR_OF_GOLD);
 	registerEnum(L, ITEM_STORE_COIN);
 	registerEnum(L, ITEM_REWARD_CHEST);
 	registerEnum(L, ITEM_REWARD_CONTAINER);

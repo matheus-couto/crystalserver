@@ -6013,7 +6013,11 @@ void ProtocolGame::sendSaleItemList(const std::vector<ShopBlock> &shopVector, co
 	if (currency == ITEM_GOLD_COIN) {
 		// Since we already have full inventory map we shouldn't call getMoney here - it is simply wasting cpu power
 		uint64_t playerMoney = 0;
-		auto it = inventoryMap.find(ITEM_CRYSTAL_COIN);
+		auto it = inventoryMap.find(ITEM_BAR_OF_GOLD);
+		if (it != inventoryMap.end()) {
+			playerMoney += static_cast<uint64_t>(it->second) * 1000000;
+		}
+		it = inventoryMap.find(ITEM_CRYSTAL_COIN);
 		if (it != inventoryMap.end()) {
 			playerMoney += static_cast<uint64_t>(it->second) * 10000;
 		}
