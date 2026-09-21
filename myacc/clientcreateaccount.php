@@ -112,9 +112,6 @@ switch ($action) {
           ]),
           // "Password" => $result->Password
         ]);
-      } else {
-        throw new Exception('Email validation failed');
-      }
     } catch (Exception $e) {
       $errorMessage = $e->getMessage();
       $trace = $e->getTraceAsString();
