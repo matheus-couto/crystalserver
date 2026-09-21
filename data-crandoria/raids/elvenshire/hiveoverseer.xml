@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<announce delay="10000" type="event" message="O grande mestre dos insetos esta saindo de seu casulo. Atencao para o poder do grande Hive Overseer!" />
+	<areaspawn delay="60000" fromx="4641" fromy="4900" fromz="7" tox="4786" toy="4961" toz="7">
+		<monster name="hive overseer" amount="2" />
+		<monster name="waspoid" amount="12" />
+		<monster name="spitter" amount="8" />
+	</areaspawn>
+</raid>

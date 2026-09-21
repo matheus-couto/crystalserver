@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<announce delay="10000" type="event" message="O temível Zarabustor esta vagando pelas torres dos Necromancers de Viridia" />
+	<singlespawn delay="60000" name="Zarabustor" x="4428" y="5348" z="3" />
+</raid>
+

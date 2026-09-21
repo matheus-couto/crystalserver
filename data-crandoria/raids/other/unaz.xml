@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<announce delay="10000" type="event" message="Sombras ocultas em Umbra revelam a presenca de Unaz The Mean" />
+	<singlespawn delay="10000" name="Unaz The Mean" x="6048" y="5291" z="3" />
+</raid>
+

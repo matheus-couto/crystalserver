@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<areaspawn delay="1000" fromx="4777" fromy="4513" fromz="11" tox="4792" toy="4520" toz="11">
+		<monster name="Feroxa" amount="1"/>
+	</areaspawn>
+</raid>

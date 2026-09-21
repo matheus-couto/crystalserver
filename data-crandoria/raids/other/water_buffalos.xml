@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<areaspawn delay="2000" fromx="5114" fromy="4844" fromz="7" tox="5122" toy="4859" toz="7">
+		<monster name="Water Buffalo" amount="3" />
+	</areaspawn>
+</raid>

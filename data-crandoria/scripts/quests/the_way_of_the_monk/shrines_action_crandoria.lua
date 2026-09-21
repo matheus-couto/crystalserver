@@ -1,0 +1,216 @@
+-- local shrinesQuest = Action()
+
+-- function shrinesQuest.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+
+--     local storageQuest = player:getStorageValue(Storage.Quest.U15_00.TheWayOfTheMonk.Questline)
+--     local storageCount = player:getStorageValue(Storage.Quest.U15_00.TheWayOfTheMonk.ShrineCounter)
+
+--     local monk = player:getVocation():getBaseId() == VOCATION.BASE_ID.MONK
+
+--     if storageQuest ~= 1 then
+--         return false
+--     end
+
+--     if item.itemid == 50244 then
+--         player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Aguarde por alguns segundos.")
+--         return true
+--     end
+
+--     if item:getPosition() == Position(4976, 4854, 7) then
+--         if level < 6 then
+--             player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce precisa ter nivel 6 ou maior para ativar este altar.")
+--             return true
+--         end
+--         if storageCount < 1 then
+--             player:setStorageValue(Storage.Quest.U15_00.TheWayOfTheMonk.ShrineCounter, 1)
+--             player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce ativou o altar. O proximo altar esta na regiao de Chaos.")
+--             item:transform(50244)
+--             if monk then
+--                 player:addItem(50267, 1)
+--             end
+--             player:addExperience(600, true)
+--             addEvent(function()
+--                 item:transform(50242)
+--             end, 5000)
+--             return true
+--         else
+--             player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce ja ativou esse altar.")
+--             return true
+--         end
+--     elseif item:getPosition() == Position(4968, 4452, 7) then
+--         if level < 20 then
+--             player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce precisa ter nivel 20 ou maior para ativar este altar.")
+--             return true
+--         else
+--             if storageCount == 1 then
+--                 player:setStorageValue(Storage.Quest.U15_00.TheWayOfTheMonk.ShrineCounter, 2)
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce ativou o altar. O proximo altar esta na regiao de Icehold.")
+--                 item:transform(50244)
+--                 player:addExperience(5000, true)
+--                 addEvent(function()
+--                     item:transform(50242)
+--                 end, 5000)
+--                 return true
+--             else
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Este altar nao deve ser ativado agora. Ative-os na ordem correta.")
+--                 return true
+--             end
+--         end
+--     elseif item:getPosition() == Position(4840, 5438, 7) then
+--         if level < 30 then
+--             player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce precisa ter nivel 30 ou maior para ativar este altar.")
+--             return true
+--         else
+--             if storageCount == 2 then
+--                 player:setStorageValue(Storage.Quest.U15_00.TheWayOfTheMonk.ShrineCounter, 3)
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce ativou o altar. O proximo altar esta na regiao de Elvenshire.")
+--                 item:transform(50244)
+--                 player:addExperience(10000, true)
+--                 addEvent(function()
+--                     item:transform(50242)
+--                 end, 5000)
+--                 return true
+--             else
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Este altar nao deve ser ativado agora. Ative-os na ordem correta.")
+--                 return true
+--             end
+--         end
+--     elseif item:getPosition() == Position(4819, 4801, 12) then
+--         if level < 40 then
+--             player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce precisa ter nivel 40 ou maior para ativar este altar.")
+--             return true
+--         else
+--             if storageCount == 3 then
+--                 player:setStorageValue(Storage.Quest.U15_00.TheWayOfTheMonk.ShrineCounter, 4)
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce ativou o altar. O proximo altar esta na regiao de Magincia.")
+--                 item:transform(50244)
+--                 player:addExperience(20000, true)
+--                 addEvent(function()
+--                     item:transform(50242)
+--                 end, 5000)
+--                 return true
+--             else
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Este altar nao deve ser ativado agora. Ative-os na ordem correta.")
+--                 return true
+--             end
+--         end
+--     elseif item:getPosition() == Position(4844, 5264, 8) then
+--         if level < 50 then
+--             player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce precisa ter nivel 50 ou maior para ativar este altar.")
+--             return true
+--         else
+--             if storageCount == 4 then
+--                 player:setStorageValue(Storage.Quest.U15_00.TheWayOfTheMonk.ShrineCounter, 5)
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce ativou o altar. O proximo altar esta na regiao de Hakata.")
+--                 item:transform(50244)
+--                 player:addExperience(30000, true)
+--                 addEvent(function()
+--                     item:transform(50242)
+--                 end, 5000)
+--                 return true
+--             else
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Este altar nao deve ser ativado agora. Ative-os na ordem correta.")
+--                 return true
+--             end
+--         end
+--     elseif item:getPosition() == Position(5517, 4902, 7) then
+--         if level < 70 then
+--             player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce precisa ter nivel 70 ou maior para ativar este altar.")
+--             return true
+--         else
+--             if storageCount == 5 then
+--                 player:setStorageValue(Storage.Quest.U15_00.TheWayOfTheMonk.ShrineCounter, 6)
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce ativou o altar. O proximo altar esta na regiao de Astralis.")
+--                 item:transform(50244)
+--                 player:addExperience(60000, true)
+--                 addEvent(function()
+--                     item:transform(50242)
+--                 end, 5000)
+--                 return true
+--             else
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Este altar nao deve ser ativado agora. Ative-os na ordem correta.")
+--                 return true
+--             end
+--         end
+--     elseif item:getPosition() == Position(4661, 4475, 3) then
+--         if level < 100 then
+--             player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce precisa ter nivel 100 ou maior para ativar este altar.")
+--             return true
+--         else
+--             if storageCount == 6 then
+--                 player:setStorageValue(Storage.Quest.U15_00.TheWayOfTheMonk.ShrineCounter, 7)
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce ativou o altar. O proximo altar esta na regiao de Anvillux.")
+--                 item:transform(50244)
+--                 player:addExperience(120000, true)
+--                 addEvent(function()
+--                     item:transform(50242)
+--                 end, 5000)
+--                 return true
+--             else
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Este altar nao deve ser ativado agora. Ative-os na ordem correta.")
+--                 return true
+--             end  
+--         end
+--     elseif item:getPosition() == Position(5372, 4618, 9) then
+--         if level < 110 then
+--             player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce precisa ter nivel 110 ou maior para ativar este altar.")
+--             return true
+--         else
+--             if storageCount == 7 then
+--                 player:setStorageValue(Storage.Quest.U15_00.TheWayOfTheMonk.ShrineCounter, 8)
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce ativou o altar. O proximo altar esta na regiao de Valkesh.")
+--                 item:transform(50244)
+--                 player:addExperience(150000, true)
+--                 addEvent(function()
+--                     item:transform(50242)
+--                 end, 5000)
+--                 return true
+--             else
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Este altar nao deve ser ativado agora. Ative-os na ordem correta.")
+--                 return true
+--             end  
+--         end
+--     elseif item:getPosition() == Position(5508, 4870, 11) then
+--         if level < 150 then
+--             player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce precisa ter nivel 150 ou maior para ativar este altar.")
+--             return true
+--         else
+--             if storageCount == 8 then
+--                 player:setStorageValue(Storage.Quest.U15_00.TheWayOfTheMonk.ShrineCounter, 9)
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce ativou o altar. O proximo altar esta na regiao de Umbra.")
+--                 item:transform(50244)
+--                 player:addExperience(300000, true)
+--                 addEvent(function()
+--                     item:transform(50242)
+--                 end, 5000)
+--                 return true
+--             else
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Este altar nao deve ser ativado agora. Ative-os na ordem correta.")
+--                 return true
+--             end  
+--         end
+--     elseif item:getPosition() == Position(6054, 5269, 2) then
+--         if level < 275 then
+--             player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce precisa ter nivel 275 ou maior para ativar este altar.")
+--             return true
+--         else
+--             if storageCount == 9 then
+--                 player:setStorageValue(Storage.Quest.U15_00.TheWayOfTheMonk.ShrineCounter, 10)
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce ativou o ultimo altar. Fale com Enpa-Deia Pema.")
+--                 item:transform(50244)
+--                 player:addExperience(1000000, true)
+--                 addEvent(function()
+--                     item:transform(50242)
+--                 end, 5000)
+--                 return true
+--             else
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Este altar nao deve ser ativado agora. Ative-os na ordem correta.")
+--                 return true
+--             end  
+--         end
+--     end
+
+-- end
+
+-- shrinesQuest:aid(13211)
+-- shrinesQuest:register()

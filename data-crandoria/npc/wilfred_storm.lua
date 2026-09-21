@@ -1,0 +1,767 @@
+-- ATUALIZAR --
+
+-- local internalNpcName = "Wilfred Storm"
+-- local npcType = Game.createNpcType(internalNpcName)
+-- local npcConfig = {}
+
+-- npcConfig.name = internalNpcName
+-- npcConfig.description = internalNpcName
+
+-- npcConfig.health = 100
+-- npcConfig.maxHealth = npcConfig.health
+-- npcConfig.walkInterval = 2000
+-- npcConfig.walkRadius = 2
+
+-- npcConfig.outfit = {
+-- 	lookType = 695,
+-- 	lookHead = 79,
+-- 	lookBody = 77,
+-- 	lookLegs = 79,
+-- 	lookFeet = 94,
+--     lookAddons = 3,
+-- }
+
+-- local keywordHandler = KeywordHandler:new()
+-- local npcHandler = NpcHandler:new(keywordHandler)
+
+-- npcType.onThink = function(npc, interval)
+--     npcHandler:onThink(npc, interval)
+-- end
+
+-- npcType.onAppear = function(npc, creature)
+--     npcHandler:onAppear(npc, creature)
+-- end
+
+-- npcType.onDisappear = function(npc, creature)
+--     npcHandler:onDisappear(npc, creature)
+-- end
+
+-- npcType.onMove = function(npc, creature, fromPosition, toPosition)
+--     npcHandler:onMove(npc, creature, fromPosition, toPosition)
+-- end
+
+-- npcType.onSay = function(npc, creature, type, message)
+--     npcHandler:onSay(npc, creature, type, message)
+-- end
+
+-- npcType.onCloseChannel = function(npc, creature)
+--     npcHandler:onCloseChannel(npc, creature)
+-- end
+
+-- local dailyQuestIPs = {}
+
+-- local function creatureSayCallback(npc, creature, type, message)
+--     local player = Player(creature)
+--     local playerId = player:getId()
+
+--     if not npcHandler:checkInteraction(npc, creature) then
+--         return false
+--     end
+
+--     local now = os.date("*t")
+--     local day = now.day
+--     local month = now.month
+
+--     -- Checar se está entre 21 de junho (21/6) e 21 de setembro (21/9)
+--     local isInRange1 = (month == 6 and day >= 21) or (month == 7) or (month == 8) or (month == 9 and day < 21)
+
+--     -- Primavera: 21 de setembro até 20 de dezembro
+--     local isInRange2 = (month == 9 and day >= 21) or (month == 10) or (month == 11) or (month == 12 and day < 21)
+
+--     -- Inverno: 21 de dezembro até 20 de março
+--     local isInRange3 = (month == 12 and day >= 21) or (month == 1) or (month == 2) or (month == 3 and day < 21)
+
+--     -- Outono: 21 de março até 20 de junho
+--     local isInRange4 = (month == 3 and day >= 21) or (month == 4) or (month == 5) or (month == 6 and day < 21)
+    
+--     -- local isInRange1 = (month > 6 and month < 9) -- inverno
+--     --     or (month == 6 and day >= 21)
+--     --     or (month == 9 and day <= 21)
+--     -- local isInRange2 = (month > 9 and month < 12) -- primavera
+--     --     or (month == 9 and day >= 21)
+--     --     or (month == 12 and day <= 21)
+--     -- local isInRange3 = (month > 12 and month < 3) -- verao
+--     --     or (month == 12 and day >= 21)
+--     --     or (month == 3 and day <= 21)
+--     -- local isInRange4 = (month > 12 and month < 3) -- outono
+--     --     or (month == 12 and day >= 21)
+--     --     or (month == 3 and day <= 21)
+
+--     local season = player:getStorageValue(Storage.Quest.Crandoria.Estacoes.Estacao) -- 1 = inverno, 2 = primavera, 3 = verao, 4 = outono
+
+--     local diaria = player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraDiaria)
+--     local questEspeical = player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial)
+--     local questItem = player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem)
+--     local questHunt = player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt)
+--     local raceId = player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId)
+--     local countHunt = player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount)
+--     local countItem = player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItemCount)
+--     local timer = player:getStorageValue(Storage.Quest.Crandoria.Estacoes.Timer)
+--     local season = player:getStorageValue(Storage.Quest.Crandoria.Estacoes.Estacao)
+--     local questType = player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestType)
+--     local questActive = player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive)
+
+--     -- TIPOS DE MISSAO
+--     -- item [1]
+--     -- 250 monstros [2]
+--     -- 100 monstros [3]
+--     -- 50 monstros [4]
+--     -- item especial [5]
+--     -- derrotar megalomania [6]
+--     -- derrotar magma bubble [7]
+--     -- derrotar gaia [8]
+--     -- derrotar frozen king [9]
+--     -- derrotar flame guardian [10]
+
+--     local possibleItemsFinal = {
+--         {name = "Diabolic Skull", id = 29946, count = 1},
+--         {name = "Dream Matter", id = 20063, count = 2},
+--         {name = "Demon Helmet", id = 3387, count = 2},
+--         {name = "Demon Legs", id = 3389, count = 1},
+--         {name = "Pomegranate", id = 30169, count = 1},
+--         {name = "Shadow Cowl", id = 31737, count = 1},
+--         {name = "Token of Love", id = 31594, count = 1},
+--         {name = "Cruelty's Claw", id = 33922, count = 1},
+--         {name = "Fiery Horseshoe", id = 36938, count = 1},
+--         {name = "Final Judgement", id = 31738, count = 1},
+--         {name = "Ghost Claw", id = 32631, count = 2},
+--         {name = "Special Casino Ticket", id = 22706, count = 1},
+--         {name = "Goblet of Gloom", id = 34022, count = 3},
+--         {name = "Eldritch Fragment", id = 20063, count = 3},
+--         {name = "Dragon Figurine", id = 30053, count = 3},
+--     }
+
+--     local possibleItems = {
+--         --1
+--         {name = "Arena Token", id = 22720, count = 1},
+--         {name = "Ancient Liche Bone", id = 31588, count = 1},
+--         {name = "Beast's Nightmare-Cushion", id = 29946, count = 1},
+--         {name = "Lion Figurine", id = 33781, count = 1},
+--         {name = "Magic Plate Armor", id = 3366, count = 1},
+--         {name = "Golden Legs", id = 3364, count = 1},
+--         {name = "Raw Watermelon Tourmaline", id = 33778, count = 1},
+--         {name = "Silver Moon Coin", id = 43732, count = 1},
+--         {name = "Golden Sun Coin", id = 43734, count = 1},
+--         {name = "White Gem", id = 32769, count = 1},
+--         {name = "White Silk Flower", id = 34008, count = 1},
+--         {name = "Mastermind Shield", id = 3414, count = 1},
+--         -- 3
+--         {name = "Unrealized Dreams", id = 20264, count = 3},
+--         {name = "Giant Sapphires", id = 30061, count = 3},
+--         {name = "Giant Rubies", id = 30059, count = 3},
+--         {name = "Giant Emeralds", id = 30060, count = 3},
+--         {name = "Hexagonal Rubies", id = 30180, count = 3},
+--         {name = "Gemmed Figurines", id = 24392, count = 3},
+--         {name = "Prismatic Quartz", id = 24962, count = 3},
+--         -- 10
+--         {name = "vampire teeth", id = 9685, count = 10},
+--         {name = "vexclaw talons", id = 22728, count = 10},
+--         {name = "mooh'tah shells", id = 21202, count = 10},
+--         {name = "cultish masks", id = 9638, count = 10},
+--         {name = "blazing bones", id = 16131, count = 10},
+--         {name = "demonic skeletal hands", id = 9647, count = 10},
+--         {name = "swamp grass", id = 9686, count = 10},
+--         {name = "wyvern talismans", id = 9644, count = 10},
+--         {name = "crawler head platings", id = 14079, count = 10},
+--         {name = "frosty hearts", id = 9661, count = 10},
+--         {name = "seacrest hairs", id = 21801, count = 10},
+--         {name = "energy veins", id = 23508, count = 10},
+--         {name = "cultish robes", id = 9639, count = 10},
+--         {name = "strands of medusa hair", id = 10309, count = 10},
+--         {name = "ogre nose rings", id = 22189, count = 10},
+--         {name = "pieces of dead brain", id = 9663, count = 10},
+--         {name = "spider silks", id = 5879, count = 10},
+--         {name = "blue pieces of cloth", id = 5912, count = 10},
+--         {name = "green pieces of cloth", id = 5910, count = 10},
+--         {name = "fish fins", id = 5895, count = 10},
+--         {name = "deepling warts", id = 14012, count = 10},
+--         {name = "chicken feathers", id = 5890, count = 10},
+--         {name = "bear paws", id = 5896, count = 10},
+--         {name = "holy orchids", id = 5922, count = 10},
+--         {name = "elven hoofs", id = 18994, count = 10},
+--         {name = "war crystals", id = 9654, count = 10},
+--         {name = "brimstone fangs", id = 11702, count = 10},
+--         {name = "flasks of embalming fluid", id = 11466, count = 10},
+--         {name = "some grimeleech wings", id = 22730, count = 10},
+--         {name = "rope belt", id = 11492, count = 10},
+--         {name = "goosebump leather", id = 20205, count = 10},
+--         --25
+--         {name = "Cyan Crystal Fragments", id = 16125, count = 25},
+--         {name = "Green Crystal Fragments", id = 16127, count = 25},
+--         {name = "Red Crystal Fragments", id = 16126, count = 25},
+--         {name = "Demonic Essences", id = 6499, count = 25},
+--         {name = "Flasks of Embalming Fluid", id = 11466, count = 25},
+--         {name = "Minotaur Horns", id = 11472, count = 25},
+--         {name = "Lion's Mane", id = 9691, count = 25},
+--     }
+
+--     local selectedItem = possibleItems[math.random(1, #possibleItems)]
+--     local selectedItemFinal = possibleItemsFinal[math.random(1, #possibleItemsFinal)]
+
+--     local monsterA = { 
+--         { name = "Frazzlemaw", id = 1 },
+--         { name = "Fury", id = 2 },
+--         { name = "Flimsy Lost Soul", id = 3 },
+--         { name = "Behemoth", id = 4 },
+--         { name = "Grim Reaper", id = 5 },
+--         { name = "Werelion", id = 6 },
+--         { name = "War Golem", id = 7 },
+--         { name = "Deepling Tyrant", id = 8 },
+--         { name = "Menacing Carnivor", id = 9 },
+--         { name = "Humongous Fungus", id = 10 },
+--         { name = "Pirat Mate", id = 11 },
+--         { name = "Midnight Asura", id = 12 },
+--         { name = "Lizard Chosen", id = 13 },
+--         { name = "Seacrest Serpent", id = 14 },
+--     }
+
+--     local monsterB = { 
+--         { name = "Demon", id = 1 },
+--         { name = "Hellflayer", id = 2 },
+--         { name = "Hellhound", id = 3 },
+--         { name = "Naga Archer", id = 4 },
+--         { name = "Guzzlemaw", id = 5 },
+--         { name = "Vexclaw", id = 6 },
+--         { name = "Demon Outcast", id = 7 },
+--         { name = "Bashmu", id = 8 },
+--         { name = "Crypt Warden", id = 9 },
+--         { name = "Sphinx", id = 10 },
+--         { name = "Undead Dragon", id = 11 },
+--         { name = "Grimeleech", id = 12 },
+--         { name = "Burning Gladiator", id = 13 },
+--         { name = "Plaguesmith", id = 14 },
+--         { name = "Medusa", id = 15 },
+--         { name = "Cave Chimera", id = 16 },
+--         { name = "Young Goanna", id = 17 },
+--         { name = "Hand of Cursed Fate", id = 18 },
+--         { name = "Lava Golem", id = 19 },
+--         { name = "Girtablilu Warrior", id = 20 },
+--     }
+
+--     local monsterC = {
+--         { name = "Hulking Prehemoth", id = 1 },
+--         { name = "Guardian of Tales", id = 2 },
+--         { name = "Headpecker", id = 3 },
+--         { name = "Gorerilla", id = 4 },
+--         { name = "Squid Warden", id = 5 },
+--         { name = "Rage Squid", id = 6 },
+--         { name = "Stalking Stalk", id = 7 },
+--         { name = "Brain Squid", id = 8 },
+--         { name = "Burning Book", id = 9 },
+--         { name = "Juggernaut", id = 10 },
+--         { name = "Mercurial Menace", id = 11 },
+--         { name = "Sulphur Spouter", id = 12 },
+--         { name = "Mantosaurus", id = 13 },
+--         { name = "Nighthunter", id = 14 },
+--         { name = "Undertaker", id = 15 },
+--         { name = "Emerald Tortoise", id = 16 },
+--         { name = "Rotten Golem", id = 17 },
+--     }
+
+--     local function getMonsterNameById250(monsterA, id)
+--         for _, monster in ipairs(monsterA) do
+--             if monster.id == id then
+--                 return monster.name
+--             end
+--         end
+--         return "Unknown"
+--     end
+
+--     local selectedMonsterA = monsterA[math.random(1, #monsterA)]
+
+--     local monsterNameA = selectedMonsterA.name
+--     local mTypeA = MonsterType(monsterNameA)
+--     local raceIdA = mTypeA:raceId()
+--     local monsteridA = selectedMonsterA.id
+--     local bestiaryA = (player:getStorageValue(61305000 + raceIdA)) + 2
+--     local monsterNameAA = getMonsterNameById250(monsterA, player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt))
+
+--     local function getMonsterNameById100(monsterB, id)
+--         for _, monster in ipairs(monsterB) do
+--             if monster.id == id then
+--                 return monster.name
+--             end
+--         end
+--         return "Unknown"
+--     end
+
+--     local selectedmonsterB = monsterB[math.random(1, #monsterB)]
+
+--     local monsterNameB = selectedmonsterB.name
+--     local mTypeB = MonsterType(monsterNameB)
+--     local raceIdB = mTypeB:raceId()
+--     local monsteridB = selectedmonsterB.id
+--     local bestiaryB = (player:getStorageValue(61305000 + raceIdB)) + 2
+--     local monsterNameBB = getMonsterNameById100(monsterB, player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt))
+
+--     local function getMonsterNameById50(monsterC, id)
+--         for _, monster in ipairs(monsterC) do
+--             if monster.id == id then
+--                 return monster.name
+--             end
+--         end
+--         return "Unknown"
+--     end
+
+--     local selectedmonsterC = monsterC[math.random(1, #monsterC)]
+
+--     local monsterNameC = selectedmonsterC.name
+--     local mTypeC = MonsterType(monsterNameC)
+--     local raceIdC = mTypeC:raceId()
+--     local monsteridC = selectedmonsterC.id
+--     local bestiaryC = (player:getStorageValue(61305000 + raceIdC)) + 2
+--     local monsterNameCC = getMonsterNameById50(monsterC, player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt))
+
+--     if MsgContains(message, "missao") or MsgContains(message, "mission") or MsgContains(message, "quest") then
+--         local playerIp = player:getIp()
+
+--         if dailyQuestIPs[playerIp] and dailyQuestIPs[playerIp] >= os.time() then
+--             npcHandler:say("Voce so pode realizar as quests com um personagem por dia.", player)
+--             return true
+--         end
+
+--         if player:getLevel() < 500 then
+--             npcHandler:say("Sinto muito, mas apenas jogadores de nivel 500 ou superior podem realizar minhas tarefas sazonais.", npc, creature)
+--             npcHandler:setTopic(playerId, 0)
+--         else
+--             if (isInRange1 and season == 1) or (isInRange2 and season == 2) or (isInRange3 and season == 3) or (isInRange4 and season == 4) then
+--                 if questActive < 1 then
+--                     if timer < os.time() then
+--                         if player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial) < 75 then
+--                             npcHandler:say("Posso fornecer uma tarefa todos os dias. Caso voce complete 75 tarefas em uma mesma estacao, te darei uma missao especial com recompensa em Tibia Coins! \z
+--                             Esta pronto para o proximo desafio?", npc, creature)
+--                             npcHandler:setTopic(playerId, 1)
+--                         elseif player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial) == 75 then
+--                             npcHandler:say("Ora, ora... Voce realmente demonstrou uma dedicacao impressionante com as tarefas de Crandoria. As historias de Comandante Crassus nao eram exagero. \z
+--                             Bom, enfim... Tenho um teste especial para voce. Se conseguir completa-lo, te darei 100 Tibia Coins como recompensa! Esta preparado?", npc, creature)
+--                             npcHandler:setTopic(playerId, 3)
+--                         elseif player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial) == 76 then
+--                             npcHandler:say("Voce finalizou todas as missoes da estacao. Retorne na proxima estacao para obter novas missoes.", npc, creature)
+--                             npcHandler:setTopic(playerId, 0)
+--                         end
+--                     else
+--                         npcHandler:say("Voce so pode aceitar uma missao a cada 22 horas.", npc, creature)
+--                         npcHandler:setTopic(playerId, 0)
+--                     end
+--                 else
+--                     if questType == 1 then
+--                         npcHandler:say("Voce trouxe os "..countItem.." " ..getItemName(player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem)).." e 1 Silver Token que eu solicitei?", npc, creature)
+--                         npcHandler:setTopic(playerId, 2)
+--                     elseif questType == 2 then
+--                         if player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount) < 250 then
+--                             npcHandler:say("Como eu havia dito, eu preciso que voce derrote 250 " ..monsterNameAA.." . Retorne quando tiver conseguido.", npc, creature)
+--                             npcHandler:setTopic(playerId, 0)
+--                         else
+--                             local experience = player:getLevel() * 500
+--                             player:addItem(39577, 1, true)
+--                             player:addExperience(experience, true)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraDiaria, os.time() + 22 * 60 * 60)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial, player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial) + 1)
+--                             npcHandler:say("Muito bom! Aqui esta sua recompensa, como combinado.", npc, creature)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, 0)
+--                             local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 1)
+--                             player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+--                             dailyQuestIPs[playerIp] = os.time() + 22 * 60 * 60
+--                             npcHandler:setTopic(playerId, 0)
+--                         end
+--                     elseif questType == 3 then
+--                         if player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount) < 100 then
+--                             npcHandler:say("Como eu havia dito, eu preciso que voce derrote 100 " ..monsterNameBB.." . Retorne quando tiver conseguido.", npc, creature)
+--                             npcHandler:setTopic(playerId, 0)
+--                         else
+--                             local experience = player:getLevel() * 500
+--                             player:addItem(39577, 1, true)
+--                             player:addExperience(experience, true)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraDiaria, os.time() + 22 * 60 * 60)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial, player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial) + 1)
+--                             npcHandler:say("Muito obrigado! Se continuarmos assim conseguiremos controlar a multiplicacao dos monstros do Novo Continente! Aqui esta sua recompensa.", npc, creature)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, 0)
+--                             local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 1)
+--                             player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+--                             dailyQuestIPs[playerIp] = os.time() + 22 * 60 * 60
+--                             npcHandler:setTopic(playerId, 0)
+--                         end
+--                     elseif questType == 4 then
+--                         if player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount) < 50 then
+--                             npcHandler:say("Como eu havia dito, eu preciso que voce derrote 50 " ..monsterNameCC.." . Retorne quando tiver conseguido.", npc, creature)
+--                             npcHandler:setTopic(playerId, 0)
+--                         else
+--                             local experience = player:getLevel() * 500
+--                             player:addItem(39577, 1, true)
+--                             player:addExperience(experience, true)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraDiaria, os.time() + 22 * 60 * 60)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial, player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial) + 1)
+--                             npcHandler:say("Muito obrigado! Se continuarmos assim conseguiremos controlar a multiplicacao dos monstros do Novo Continente! Aqui esta sua recompensa.", npc, creature)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, 0)
+--                             local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 1)
+--                             player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+--                             dailyQuestIPs[playerIp] = os.time() + 22 * 60 * 60
+--                             npcHandler:setTopic(playerId, 0)
+--                         end
+--                     elseif questType == 5 then
+--                         npcHandler:say("Voce trouxe os "..countItem.." " ..getItemName(player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem)).." e 25 Gold Tokens que eu solicitei?", npc, creature)
+--                         npcHandler:setTopic(playerId, 4)
+--                     elseif questType == 6 then
+--                         if player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount) < 2500 then
+--                             npcHandler:say("Como eu havia dito, eu preciso que voce derrote 2500 " ..monsterNameAA.." . Retorne quando tiver conseguido.", npc, creature)
+--                             npcHandler:setTopic(playerId, 0)
+--                         else
+--                             local experience = player:getLevel() * 15000
+--                             player:addTransferableCoins(100)
+--                             player:addItem(39577, 1, true)
+--                             player:addExperience(experience, true)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraDiaria, os.time() + 22 * 60 * 60)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial, 76)
+--                             npcHandler:say("Voce conseguiu a tempo? Otimo! Aqui esta, como combinado, sua recompensa.", npc, creature)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, 0)
+--                             local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 10)
+--                             player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+--                             dailyQuestIPs[playerIp] = os.time() + 22 * 60 * 60
+--                             npcHandler:setTopic(playerId, 0)
+--                         end
+--                     elseif questType == 7 then
+--                         if player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount) < 1000 then
+--                             npcHandler:say("Como eu havia dito, eu preciso que voce derrote 1000 " ..monsterNameBB.." . Retorne quando tiver conseguido.", npc, creature)
+--                             npcHandler:setTopic(playerId, 0)
+--                         else
+--                             local experience = player:getLevel() * 15000
+--                             player:addTransferableCoins(100)
+--                             player:addItem(39577, 1, true)
+--                             player:addExperience(experience, true)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraDiaria, os.time() + 22 * 60 * 60)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial, 76)
+--                             npcHandler:say("Voce conseguiu a tempo? Otimo! Aqui esta, como combinado, sua recompensa.", npc, creature)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, 0)
+--                             local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 10)
+--                             player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+--                             dailyQuestIPs[playerIp] = os.time() + 22 * 60 * 60
+--                             npcHandler:setTopic(playerId, 0)
+--                         end
+--                     elseif questType == 8 then
+--                         if player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount) < 500 then
+--                             npcHandler:say("Como eu havia dito, eu preciso que voce derrote 500 " ..monsterNameCC.." . Retorne quando tiver conseguido.", npc, creature)
+--                             npcHandler:setTopic(playerId, 0)
+--                         else
+--                             local experience = player:getLevel() * 15000
+--                             player:addTransferableCoins(100)
+--                             player:addItem(39577, 1, true)
+--                             player:addExperience(experience, true)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraDiaria, os.time() + 22 * 60 * 60)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial, 76)
+--                             npcHandler:say("Voce conseguiu a tempo? Otimo! Aqui esta, como combinado, sua recompensa. Volte na proxima estacao para obter novas missoes.", npc, creature)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, 0)
+--                             local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 10)
+--                             player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+--                             dailyQuestIPs[playerIp] = os.time() + 22 * 60 * 60
+--                             npcHandler:setTopic(playerId, 0)
+--                         end
+--                     elseif questType == 9 then
+--                         if player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount) < 1 then
+--                             npcHandler:say("Voce deve derrotar Goshnar's Megalomania para conseguir sua recompensa.", npc, creature)
+--                             npcHandler:setTopic(playerId, 0)
+--                         else
+--                             local experience = player:getLevel() * 15000
+--                             player:addTransferableCoins(100)
+--                             player:addItem(39577, 1, true)
+--                             player:addExperience(experience, true)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraDiaria, os.time() + 22 * 60 * 60)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial, 76)
+--                             npcHandler:say("Voce conseguiu a tempo? Otimo! Aqui esta, como combinado, sua recompensa. Volte na proxima estacao para obter novas missoes.", npc, creature)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, 0)
+--                             local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 10)
+--                             player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+--                             dailyQuestIPs[playerIp] = os.time() + 22 * 60 * 60
+--                             npcHandler:setTopic(playerId, 0)
+--                         end
+--                     elseif questType == 10 then
+--                         if player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount) < 3 then
+--                             npcHandler:say("Voce deve derrotar o Flame Guardian tres vezes para conseguir sua recompensa.", npc, creature)
+--                             npcHandler:setTopic(playerId, 0)
+--                         else
+--                             local experience = player:getLevel() * 15000
+--                             player:addTransferableCoins(100)
+--                             player:addItem(39577, 1, true)
+--                             player:addExperience(experience, true)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraDiaria, os.time() + 22 * 60 * 60)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial, 76)
+--                             npcHandler:say("Voce conseguiu a tempo? Otimo! Aqui esta, como combinado, sua recompensa. Volte na proxima estacao para obter novas missoes.", npc, creature)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, 0)
+--                             local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 10)
+--                             player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+--                             dailyQuestIPs[playerIp] = os.time() + 22 * 60 * 60
+--                             npcHandler:setTopic(playerId, 0)
+--                         end
+--                     elseif questType == 11 then
+--                         if player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount) < 3 then
+--                             npcHandler:say("Voce deve derrotar Gaia tres vezes para conseguir sua recompensa.", npc, creature)
+--                             npcHandler:setTopic(playerId, 0)
+--                         else
+--                             local experience = player:getLevel() * 15000
+--                             player:addTransferableCoins(100)
+--                             player:addItem(39577, 1, true)
+--                             player:addExperience(experience, true)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraDiaria, os.time() + 22 * 60 * 60)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial, 76)
+--                             npcHandler:say("Voce conseguiu a tempo? Otimo! Aqui esta, como combinado, sua recompensa. Volte na proxima estacao para obter novas missoes.", npc, creature)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, 0)
+--                             local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 10)
+--                             player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+--                             dailyQuestIPs[playerIp] = os.time() + 22 * 60 * 60
+--                             npcHandler:setTopic(playerId, 0)
+--                         end
+--                     elseif questType == 12 then
+--                         if player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount) < 3 then
+--                             npcHandler:say("Voce deve derrotar o temivel Frozen King tres vezes para conseguir sua recompensa.", npc, creature)
+--                             npcHandler:setTopic(playerId, 0)
+--                         else
+--                             local experience = player:getLevel() * 15000
+--                             player:addTransferableCoins(100)
+--                             player:addItem(39577, 1, true)
+--                             player:addExperience(experience, true)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraDiaria, os.time() + 22 * 60 * 60)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial, 76)
+--                             npcHandler:say("Voce conseguiu a tempo? Otimo! Aqui esta, como combinado, sua recompensa. Volte na proxima estacao para obter novas missoes.", npc, creature)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 0)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, 0)
+--                             local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+--                             player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 10)
+--                             player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+--                             dailyQuestIPs[playerIp] = os.time() + 22 * 60 * 60
+--                             npcHandler:setTopic(playerId, 0)
+--                         end
+--                     end
+--                 end
+--             else
+--                 if isInRange1 then
+--                     player:setStorageValue(Storage.Quest.Crandoria.Estacoes.Estacao, 1)
+--                 elseif isInRange2 then
+--                     player:setStorageValue(Storage.Quest.Crandoria.Estacoes.Estacao, 2)
+--                 elseif isInRange3 then
+--                     player:setStorageValue(Storage.Quest.Crandoria.Estacoes.Estacao, 3)
+--                 else
+--                     player:setStorageValue(Storage.Quest.Crandoria.Estacoes.Estacao, 4)
+--                 end
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraDiaria, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItemCount, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestType, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 0)
+--                 if player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial) < 75 then
+--                     npcHandler:say("Posso fornecer uma tarefa todos os dias. Caso voce complete 75 tarefas em uma mesma estacao, te darei uma missao especial com recompensa em Tibia Coins! \z
+--                     Esta pronto para o proximo desafio?", npc, creature)
+--                     npcHandler:setTopic(playerId, 1)
+--                 else
+--                     npcHandler:say("Posso fornecer uma tarefa todos os dias. Caso voce complete 75 tarefas em uma mesma estacao, te darei uma missao especial com recompensa em Tibia Coins! \z
+--                     Esta pronto para o proximo desafio?", npc, creature)
+--                     npcHandler:setTopic(playerId, 1)
+--                 end
+--             end
+--         end
+--     elseif MsgContains(message, "sim") or MsgContains(message, "yes") then
+--         if npcHandler:getTopic(playerId) == 1 then
+--             local chance = math.random(1, 6)
+--             if chance >= 1 and chance <= 3 then
+--                 npcHandler:say("Obtenha " ..selectedItem.count.." " ..selectedItem.name.." e 1 Silver Token. Traga tudo para mim e te darei uma boa recompensa. Estou esperando!", npc, creature)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, selectedItem.id)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItemCount, selectedItem.count)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestType, 1)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 1)
+--                 npcHandler:setTopic(playerId, 0)
+--             elseif chance == 4 then
+--                 npcHandler:say("A populacao de " ..monsterNameA.. " esta fora de controle. Preciso que voce derrote 250 deles. Te entregarei uma Wilfred's Bag como recompensa. Por favor, nao demore.", npc, creature)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, bestiaryA)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, monsteridA)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, raceIdA)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 1)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestType, 2)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 1)
+--                 npcHandler:setTopic(playerId, 0)
+--             elseif chance == 5 then
+--                 npcHandler:say("Vendo como voce ficou forte, acredito que nao sera desafio derrotar 100 " ..monsterNameB.. ". Estou certo? Entao va! Te entregarei uma Wilfred's Bag como recompensa. Estou esperando.", npc, creature)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, bestiaryB)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, monsteridB)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, raceIdB)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 1)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestType, 3)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 1)
+--                 npcHandler:setTopic(playerId, 0)
+--             elseif chance == 6 then
+--                 npcHandler:say("Prove sua forca derrotando 50 " ..monsterNameC.. ". Te darei uma Wilfred's Bag como recompensa. Leve quanto tempo quiser.", npc, creature)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, bestiaryC)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, monsteridC)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, raceIdC)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 1)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestType, 4)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 1)
+--                 npcHandler:setTopic(playerId, 0)
+--             end
+--         elseif npcHandler:getTopic(playerId) == 2 then
+--             if player:getItemCount(questItem) >= countItem and player:getItemCount(22516) >= 1 then
+--                 player:removeItem(questItem, countItem)
+--                 player:removeItem(22516, 1)
+--                 player:addItem(39577, 1)
+--                 player:addExperience(player:getLevel() * 500)
+--                 npcHandler:say("Excelente! Aqui esta sua recompensa. Volte em 22 horas e te darei uma nova tarefa.", npc, creature)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItemCount, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestType, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraDiaria, os.time() + 22 * 60 * 60)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial, player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial) + 1)
+--                 npcHandler:setTopic(playerId, 0)
+--             else
+--                 npcHandler:say("Voce nao possui todos os itens...", npc, creature)
+--                 npcHandler:setTopic(playerId, 0)
+--             end
+--         elseif npcHandler:getTopic(playerId) == 3 then
+--             local chance = math.random(1, 10)
+--             if chance == 1 or chance == 2 or chance == 3 then
+--                 npcHandler:say("Obtenha " ..selectedItemFinal.count.." " ..selectedItemFinal.name.." e 25 Gold Tokens. Traga tudo para mim e te darei sua recompensa. Voce tem ate o fim da estacao.", npc, creature)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, selectedItemFinal.id)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItemCount, selectedItemFinal.count)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestType, 5)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 1)
+--             elseif chance == 4 then
+--                 npcHandler:say("Agora quero ver seu poder de verdade! Derrote 2.500 " ..monsterNameA.. ". Voce tem ate o dia 20 deste mes para entregar a missao. Boa sorte!", npc, creature)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, bestiaryA)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, monsteridA)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, raceIdA)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 1)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestType, 6)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 1)
+--                 npcHandler:setTopic(playerId, 0)
+--             elseif chance == 5 then
+--                 npcHandler:say("Agora quero ver seu poder de verdade! Derrote 1.000 " ..monsterNameB.. ". Voce tem ate o dia 20 deste mes para entregar a missao. Boa sorte!", npc, creature)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, bestiaryB)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, monsteridB)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, raceIdB)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 1)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestType, 7)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 1)
+--                 npcHandler:setTopic(playerId, 0)
+--             elseif chance == 6 then
+--                 npcHandler:say("Agora quero ver seu poder de verdade! Derrote 500 " ..monsterNameC.. ". Voce tem ate o dia 20 deste mes para entregar a missao. Boa sorte!", npc, creature)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, bestiaryC)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, monsteridC)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, raceIdC)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 1)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestType, 8)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 1)
+--                 npcHandler:setTopic(playerId, 0)
+--             elseif chance == 7 then
+--                 npcHandler:say("Ha um monstro terrivel que assola o Novo Continente. Ele se esconde na pequena ilha de Ravencrest. Estou falando de Goshnar's Megalomania!! \z
+--                 Sua ultima missao sera derrota-lo uma vez. Complete a missao ate o dia 20 deste mes e tera sua recompensa especial. Boa sorte!", npc, creature)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestType, 9)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 1)
+--                 npcHandler:setTopic(playerId, 0)
+--             elseif chance == 8 then
+--                 npcHandler:say("Ja ouviu falar sobre o Flame Guardian? Um ser desprezivel que ameaca destruir toda a natureza com suas chamas. Ele se esconde em Chaos junto aos seus servos. \z
+--                 Derrote-o 3 vezes e eu te darei sua recompensa especial. Vice tem ate o dia 20 deste mes para finalizar a missao. Boa sorte!", npc, creature)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestType, 10)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 1)
+--                 npcHandler:setTopic(playerId, 0)
+--             elseif chance == 9 then
+--                 npcHandler:say("Gaia sempre foi uma ameaca a vida na superficie. Apesar da forca natural que ela traz ao mundo, seus poderes sempre saem do controle. \z
+--                 Preciso que mostre a ela quem manda, derrotando-a ao menos tres vezes! Ela se esconde em um paraiso numa dimensao paralela, acessivel por algum local em Anvillux. \z
+--                 Voce tem ate o dia 20 deste mes para completar sua missao e receber sua recompensa especial. Boa sorte!", npc, creature)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestType, 11)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 1)
+--                 npcHandler:setTopic(playerId, 0)
+--             elseif chance == 10 then
+--                 npcHandler:say("Ha um dito 'rei' que deseja congelar o mundo todo. Seus suditos o chamam de Frozen King. Ele reside nas profundezas das Ice Islands. \z
+--                 Encontre-o e derrote-o ao menos tres vezes e te darei uma recompensa especial. Voce tem ate o dia 20 deste mes para completar sua missao. Boa sorte!", npc, creature)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestType, 12)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 1)
+--                 npcHandler:setTopic(playerId, 0)
+--             end
+--         elseif npcHandler:getTopic(playerId) == 4 then
+--             if player:getItemCount(questItem) >= countItem and player:getItemCount(22721) >= 25 then
+--                 player:removeItem(questItem, countItem)
+--                 player:removeItem(22721, 25)
+--                 player:addItem(39577, 1)
+--                 player:addExperience(player:getLevel() * 15000)
+--                 player:addTransferableCoins(100)
+--                 npcHandler:say("Maravilha! Voce realmente conseguiu tudo a tempo. Muito obrigado pela ajuda. Aqui estao suas coins, sua Bag e um pouco de experiencia. Volte na proxima estacao e terei mais missoes para voce!", npc, creature)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItemCount, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestType, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestActive, 0)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraDiaria, os.time() + 22 * 60 * 60)
+--                 player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraEspecial, 76)
+--                 npcHandler:setTopic(playerId, 0)
+--             else
+--                 npcHandler:say("Voce nao possui todos os itens...", npc, creature)
+--                 npcHandler:setTopic(playerId, 0)
+--             end
+--         end
+--     end
+-- end
+
+
+-- npcHandler:setMessage(MESSAGE_GREET, "Ola. Gostaria de me ajudar em uma {missao} sazonal?")
+-- npcHandler:setMessage(MESSAGE_FAREWELL, "Ate mais.")
+-- npcHandler:setMessage(MESSAGE_WALKAWAY, "Ate mais.")
+
+-- npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+
+-- npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
+
+-- -- npcType registering the npcConfig table
+-- npcType:register(npcConfig)
+

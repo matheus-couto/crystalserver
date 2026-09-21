@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<announce delay="10000" type="event" message="Kroazur esta aterrorizando as terras de Feyrist!" />
+	<singlespawn delay="10000" name="Kroazur" x="5877" y="4825" z="7" />
+</raid>
+

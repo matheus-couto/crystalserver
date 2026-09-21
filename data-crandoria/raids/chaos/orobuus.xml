@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<!--Announcements-->
+	<announce delay="60000" type="Event" message="Orobuus e seu exercito foi avistado no deserto de Chaos!" />
+	<!--Single Spawns-->
+	<singlespawn delay="60000" name="Orobuus" x="5150" y="4646" z="7"/>
+	<!--Area Spawns-->
+	<areaspawn delay="53000" fromx="5138" fromy="4635" fromz="7" tox="5166" toy="4652" toz="7">
+		<monster name="Undead Elite Gladiator" amount="14" />
+		<monster name="Demon" amount="10" />
+	</areaspawn>
+</raid>

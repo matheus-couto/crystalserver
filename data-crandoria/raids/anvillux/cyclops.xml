@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<announce delay="1000" type="event" message="Cyclops are attacking the dwarves at the surface of Anvillux!" />
+	<areaspawn delay="1000" fromx="5377" fromy="4454" fromz="7" tox="5475" toy="4525" toz="7">
+		<monster name="cyclops" amount="30" />
+		<monster name="cyclops drone" amount="15" />
+		<monster name="cyclops smith" amount="8" />
+	</areaspawn>
+</raid>

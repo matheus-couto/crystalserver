@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<announce delay="1000" type="event" message="The dwarven warriors are attacking Anvillux mines. Run and protect the city!" />
+	<areaspawn delay="1000" fromx="5391" fromy="4485" fromz="11" tox="5443" toy="4534" toz="11">
+		<monster name="dwarf guard" amount="25" />
+	</areaspawn>
+	<areaspawn delay="1000" fromx="5447" fromy="4493" fromz="11" tox="5494" toy="4540" toz="11">
+		<monster name="dwarf guard" amount="25" />
+	</areaspawn>
+</raid>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<!--Announcements-->
+	<!-- <announce delay="1000" type="event" message="Uma arvore magica apareceu em Ilshenar." /> -->
+	<!--Single Spawns-->
+	<areaspawn delay="60000" fromx="5379" fromy="5451" fromz="5" tox="5561" toy="5597" toz="5">
+		<monster name="Enchanted Willow" amount="1" />
+	</areaspawn>
+</raid>

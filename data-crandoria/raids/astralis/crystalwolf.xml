@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<announce delay="1000" type="event" message="Crystal Wolves are emerging in the crystal caves of Astralis." />
+	<announce delay="60000" type="event" message="There are Crystal Wolves howling down in the crystal caves of Astralis." />
+	<areaspawn delay="60000" fromx="4700" fromy="4332" fromz="9" tox="4700" toy="4331" toz="9">
+		<monster name="Crystal Wolf" amount="2" />
+	</areaspawn>
+</raid>

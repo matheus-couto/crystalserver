@@ -399,3 +399,8 @@ cmake-build-*
 
 # macOS
 .DS_Store
+
+# Crandoria - arquivos grandes (limite GitHub 100MB)
+data-crandoria/world/*.otbm
+data-crandoria/*.rar
+config.lua copy.dist

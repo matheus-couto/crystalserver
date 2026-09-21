@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<announce delay="1000" type="Event" message="Jaul esta despertando de seu sono e invadindo as profundezas de Viridia!"/>
+	<areaspawn delay="15000" fromx="4478" fromy="5373" fromz="12" tox="4486" toy="5377" toz="12">
+		<monster name="Jaul" amount="1" />
+	</areaspawn>
+</raid>

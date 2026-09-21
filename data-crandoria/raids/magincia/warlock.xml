@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<!--Announcements-->
+	<announce delay="1000" type="event" message="Some monks have gathered near Magincia.
+		They seem to be up to something." />
+	<announce delay="20000" type="event" message="More monks have gathered near Magincia.
+		Something terrible is going to happen!" />
+	<announce delay="120000" type="event" message="Run! Warlocks near Magincia!
+		There seems to be a very unholy gathering!" />
+	<!--Single Spawns-->
+	<areaspawn delay="20000" fromx="4698" fromy="5248" fromz="5" tox="4708" toy="5254" toz="6">
+		<monster name="Monk" amount="12" />
+	</areaspawn>
+	<areaspawn delay="120000" fromx="4701" fromy="5250" fromz="4" tox="4701" toy="5250" toz="4">
+		<monster name="Warlock" amount="3" />
+	</areaspawn>
+</raid>

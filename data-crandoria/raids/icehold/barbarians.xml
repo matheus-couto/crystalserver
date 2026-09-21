@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<announce delay="1000" type="event" message="Scouts report a barbarian army gathering near Icehold" />
+	<announce delay="4000" type="event" message="Some invaders might try to access Icehold from the North." />
+	<announce delay="8000" type="event" message="Raiders are attacking Icehold!" />
+	<areaspawn delay="10000" fromx="4966" fromy="5390" fromz="6" tox="5041" toy="5443" toz="6">
+		<monster name="Barbarian Bloodwalker" amount="25" />
+		<monster name="Barbarian Brutetamer" amount="12" />
+		<monster name="Barbarian Headsplitter" amount="12" />
+		<monster name="Barbarian Skullhunter" amount="18" />
+		<monster name="Ice Witch" amount="5" />
+	</areaspawn>
+</raid>

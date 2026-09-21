@@ -1,0 +1,9 @@
+<raid>
+	<areaspawn delay="10000" fromx="4781" fromy="5219" fromz="10" tox="4847" toy="5295" toz="10">
+		<monster name="Golden Servant" amount="7"/>
+	</areaspawn>
+	<areaspawn delay="10000" fromx="4781" fromy="5219" fromz="10" tox="4847" toy="5295" toz="10">
+		<monster name="Iron Servant" amount="7"/>
+	</areaspawn>
+	<singlespawn delay="20000" name="Mad Mage" x="4838" y="5246" z="10"/>
+</raid>

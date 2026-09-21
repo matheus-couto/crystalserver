@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<announce delay="1000" type="event" message="Drums can be heard near Nivabi." />
+	<announce delay="20000" type="event" message="Ogres seem to be invading south Nivabi." />
+	<announce delay="60000" type="event" message="Beware of the ogres, they are near Nivabi." />
+	<areaspawn delay="60000" fromx="5622" fromy="4561" fromz="7" tox="5684" toy="4594" toz="7">
+		<monster name="Ogre Shaman" amount="12" />
+		<monster name="Ogre Savage" amount="12" />
+		<monster name="Ogre Brute" amount="4" />
+	</areaspawn>
+</raid>

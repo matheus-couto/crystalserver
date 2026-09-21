@@ -1,0 +1,119 @@
+local mType = Game.createMonsterType("Vampire Bat")
+local monster = {}
+
+monster.description = "a vampire bat"
+monster.experience = 1200
+monster.outfit = {
+	lookType = 1868,
+	lookHead = 0,
+	lookBody = 0,
+	lookLegs = 0,
+	lookFeet = 0,
+	lookAddons = 0,
+	lookMount = 0,
+}
+
+monster.health = 1500
+monster.maxHealth = 1500
+monster.race = "venom"
+monster.corpse = 35690 -- IM NOT SURE.
+monster.speed = 100
+monster.manaCost = 250
+
+monster.changeTarget = {
+	interval = 4000,
+	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
+monster.flags = {
+	summonable = false,
+	attackable = true,
+	hostile = true,
+	convinceable = false,
+	pushable = true,
+	rewardBoss = false,
+	illusionable = false,
+	canPushItems = true,
+	canPushCreatures = false,
+	staticAttackChance = 90,
+	targetDistance = 1,
+	runHealth = 10,
+	healthHidden = false,
+	isBlockable = false,
+	canWalkOnEnergy = true,
+	canWalkOnFire = false,
+	canWalkOnPoison = true,
+}
+
+monster.light = {
+	level = 0,
+	color = 0,
+}
+
+monster.voices = {
+	interval = 5000,
+	chance = 0,
+}
+
+-- unknown loot
+monster.loot = {
+	-- { name = "platinum coin", chance = 100000, maxCount = 4 },
+	-- { id = 238, chance = 30000, maxCount = 2 },
+	-- { name = "terra amulet", chance = 6000 },
+	-- { name = "dark mushroom", chance = 15000, maxCount = 6 },
+	-- { name = "green mushroom", chance = 10300, maxCount = 5 },
+	-- { name = "garlic necklace", chance = 5000 },
+	-- { name = "bat wing", chance = 5000, maxCount = 2 },
+}
+
+monster.attacks = {
+	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -100 },
+	{ name = "fear", interval = 2000, chance = 5, target = true },
+	{ name = "drunk", interval = 2000, chance = 15, length = 5, spread = 0, effect = CONST_ME_SOUND_RED, target = false },
+	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = -100, maxDamage = -200, length = 5, spread = 2, effect = CONST_ME_GREEN_RINGS, target = false },
+	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_LIFEDRAIN, minDamage = -100, maxDamage = -200, range = 7, radius = 3, effect = CONST_ME_YELLOW_RINGS, target = true },
+}
+
+monster.defenses = {
+	defense = 40,
+	armor = 40,
+}
+
+monster.reflects = {
+	{ type = COMBAT_PHYSICALDAMAGE, percent = 50 },
+	{ type = COMBAT_ENERGYDAMAGE, percent = 50 },
+	{ type = COMBAT_EARTHDAMAGE, percent = 50 },
+	{ type = COMBAT_FIREDAMAGE, percent = 50 },
+	{ type = COMBAT_LIFEDRAIN, percent = 50 },
+	{ type = COMBAT_MANADRAIN, percent = 50 },
+	{ type = COMBAT_DROWNDAMAGE, percent = 50 },
+	{ type = COMBAT_ICEDAMAGE, percent = 50 },
+	{ type = COMBAT_HOLYDAMAGE, percent = 50 },
+	{ type = COMBAT_DEATHDAMAGE, percent = 50 },
+}
+
+monster.elements = {
+	{ type = COMBAT_PHYSICALDAMAGE, percent = 100 },
+	{ type = COMBAT_ENERGYDAMAGE, percent = 100 },
+	{ type = COMBAT_EARTHDAMAGE, percent = 100 },
+	{ type = COMBAT_FIREDAMAGE, percent = 100 },
+	{ type = COMBAT_LIFEDRAIN, percent = 100 },
+	{ type = COMBAT_MANADRAIN, percent = 100 },
+	{ type = COMBAT_DROWNDAMAGE, percent = 100 },
+	{ type = COMBAT_ICEDAMAGE, percent = 100 },
+	{ type = COMBAT_HOLYDAMAGE, percent = 100 },
+	{ type = COMBAT_DEATHDAMAGE, percent = 100 },
+}
+
+monster.immunities = {
+	{ type = "paralyze", condition = false },
+	{ type = "outfit", condition = false },
+	{ type = "invisible", condition = true },
+	{ type = "bleed", condition = false },
+}
+
+mType:register(monster)

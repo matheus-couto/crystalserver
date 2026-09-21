@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<areaspawn delay="2000" fromx="5594" fromy="4539" fromz="7" tox="5594" toy="4539" toz="7">
+			<monster name="Midnight Panther" amount="1" />
+	</areaspawn>
+</raid>

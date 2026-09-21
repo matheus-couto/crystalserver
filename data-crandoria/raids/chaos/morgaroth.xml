@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<!--Announcements-->
+	<announce delay="1000" type="Event" message="Morgaroth's signals are emerging underneath the mountains west of Chaos." />
+	<announce delay="30000" type="Event" message="There is an evil presence inside the moutains west of Chaos." />
+	<announce delay="60000" type="Event" message="Beware of the powers of Morgaroth, the Lord under the moutains!" />
+	<!--Single Spawns-->
+	<singlespawn delay="60000" name="Morgaroth" x="4832" y="4695" z="11"/>
+</raid>

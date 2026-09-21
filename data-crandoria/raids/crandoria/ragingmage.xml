@@ -1,0 +1,4 @@
+<raid>
+	<announce delay="10000" type="event" message="O temivel Raging Mage esta prestes a surgir entre os Yielothax!" />
+	<singlespawn delay="20000" name="Raging Mage" x="4687" y="4608" z="11"/>
+</raid>

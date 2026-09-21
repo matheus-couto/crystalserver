@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<areaspawn delay="10000" fromx="4581" fromy="5423" fromz="15" tox="4581" toy="5423" toz="15">
+		<monster name="Crustacea Gigantica" amount="1" />
+	</areaspawn>
+</raid>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<!--Announcements-->
+	<!-- <announce delay="1000" type="event" message="Arvores magicas estao surgindo em Gnomprona." /> -->
+	<!--Single Spawns-->
+	<areaspawn delay="60000" fromx="5731" fromy="4770" fromz="14" tox="5794" toy="4792" toz="14">
+		<monster name="Enchanted Willow" amount="1" />
+	</areaspawn>
+	<areaspawn delay="120000" fromx="5710" fromy="4854" fromz="14" tox="5796" toy="4919" toz="14">
+		<monster name="Enchanted Willow" amount="1" />
+	</areaspawn>
+	<areaspawn delay="180000" fromx="5830" fromy="4842" fromz="14" tox="5890" toy="4919" toz="14">
+		<monster name="Enchanted Willow" amount="1" />
+	</areaspawn>
+</raid>

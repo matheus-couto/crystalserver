@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<!--Announcements-->
+	<!-- <announce delay="1000" type="event" message="Arvores magicas apareceram em Roshamuul." /> -->
+	<!--Single Spawns-->
+	<areaspawn delay="60000" fromx="5907" fromy="5178" fromz="6" tox="5959" toy="5187" toz="6">
+		<monster name="Enchanted Willow" amount="1" />
+	</areaspawn>
+	<areaspawn delay="60000" fromx="5927" fromy="4943" fromz="7" tox="5995" toy="5040" toz="7">
+		<monster name="Enchanted Willow" amount="1" />
+	</areaspawn>
+</raid>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<!--Announcements-->
+	<announce delay="1000" type="Event" message="Um ritual esta se iniciando nas profundezas de Icehold..." />
+	<announce delay="20000" type="Event" message="Yakchal e seu exercito gelado se reuniu nas cavernas geladas de Icehold!" />
+	<!--Single Spawns-->
+	<singlespawn delay="20000" name="Yakchal" x="4751" y="5360" z="10" />
+	<areaspawn delay="20000" fromx="4746" fromy="5358" fromz="10" tox="4757" toy="5374" toz="10">
+		<monster name="Ice Witch" amount="4" />
+	</areaspawn>
+	<areaspawn delay="20000" fromx="4746" fromy="5358" fromz="10" tox="4757" toy="5374" toz="10">
+		<monster name="Frost Dragon" amount="3" />
+	</areaspawn>
+	<areaspawn delay="20000" fromx="4746" fromy="5358" fromz="10" tox="4757" toy="5374" toz="10">
+		<monster name="Ice Golem" amount="3" />
+	</areaspawn>
+</raid>

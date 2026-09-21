@@ -1,0 +1,108 @@
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<raids>
+	<!-- Anvillux -->
+	<raid name="Cyclops" file="anvillux/cyclops.xml" interval2="500" margin="120" />
+	<raid name="Dwarves Guard" file="anvillux/dguard.xml" interval2="500" margin="120" />
+	<raid name="Golems" file="anvillux/golems.xml" interval2="500" margin="120" />
+	<!-- Astralis -->
+	<raid name="Crystal Wolf" file="astralis/crystalwolf.xml" interval2="1440" margin="120" />
+	<raid name="Hibernal Moth" file="astralis/moth1.xml" interval2="1440" margin="120" />
+	<raid name="Lacewing Moth" file="astralis/moth2.xml" interval2="1440" margin="120" />
+	<raid name="Crystals" file="astralis/crystals.xml" interval2="500" margin="120" />
+	<!-- Chaos -->
+	<raid name="Elves" file="chaos/elves.xml" interval2="500" margin="120" />
+	<raid name="Feverish" file="chaos/feverish.xml" interval2="1440" margin="120" />
+	<raid name="Lions" file="chaos/lions.xml" interval2="500" margin="120" />
+	<raid name="Undead Chaos" file="chaos/undead_chaos.xml" interval2="1440" margin="120" />
+	<raid name="Morgaroth" file="chaos/morgaroth.xml" interval2="1440" margin="120" />
+	<raid name="Draptor" file="chaos/draptor.xml" interval2="1440" margin="120" />
+	<!-- Crandoria -->
+	<raid name="Horned Fox" file="crandoria/horned.xml" interval2="1440" margin="120" />
+	<raid name="Feroxa" file="crandoria/feroxa.xml" interval2="1440" margin="120" />
+	<raid name="Hunters" file="crandoria/hunter.xml" interval2="500" margin="120" />
+	<raid name="Orc Backpack" file="crandoria/orc_backpack.xml" interval2="1440" margin="120" />
+	<raid name="OrcWoods" file="crandoria/orc.xml" interval2="500" margin="120" />
+	<raid name="Piratas One" file="crandoria/pirates1.xml" interval2="1440" margin="120" />
+	<raid name="Piratas Two" file="crandoria/pirates2.xml" interval2="1440" margin="120" />
+	<raid name="Piratas Three" file="crandoria/pirates3.xml" interval2="1440" margin="120" />
+	<raid name="Piratas Four" file="crandoria/pirates4.xml" interval2="1440" margin="120" />
+	<!-- Elvenshire -->
+	<raid name="Elves" file="elvenshire/elves.xml" interval2="500" margin="120" />
+	<raid name="WaspBear" file="elvenshire/wasp_bear.xml" interval2="500" margin="120" />
+	<raid name="Badger" file="elvenshire/badger.xml" interval2="500" margin="120" />
+	<raid name="Hive Overseer" file="elvenshire/hiveoverseer.xml" interval2="1440" margin="120" />
+	<!-- Hakata -->
+	<raid name="Kongras" file="hakata/kongras.xml" interval2="500" margin="120" />
+	<raid name="Tigers" file="hakata/tigers.xml" interval2="500" margin="120" />
+	<raid name="Midnight Panther One" file="nivabi/midnight_panther_1.xml" interval2="1440" margin="120" />
+	<raid name="Midnight Panther Two" file="nivabi/midnight_panther_2.xml" interval2="1440" margin="120" />
+	<raid name="Midnight Panther Three" file="nivabi/midnight_panther_3.xml" interval2="1440" margin="120" />
+	<!-- Icehold -->
+	<raid name="Barbarian" file="icehold/barbarians.xml" interval2="500" margin="120" />
+	<raid name="Frost Trolls" file="icehold/frosttrolls.xml" interval2="500" margin="120" />
+	<raid name="Ghazbaran" file="icehold/ghazbaran.xml" interval2="1440" margin="120" />
+	<raid name="Ice Golem" file="icehold/ice_golem.xml" interval2="1440" margin="120" />
+	<!-- Magincia -->
+	<raid name="Orcss" file="magincia/orc.xml" interval2="500" margin="120" />
+	<raid name="Orshabaal" file="magincia/orshabaal.xml" interval2="1440" margin="120" />
+	<raid name="Pirates" file="magincia/pirates.xml" interval2="500" margin="120" />
+	<raid name="Priestesses" file="magincia/priestesses.xml" interval2="500" margin="120" />
+	<raid name="Warlock" file="magincia/warlock.xml" interval2="500" margin="120" />
+	<raid name="Ferumbras" file="magincia/ferumbras.xml" interval2="1440" margin="120" />
+	<!-- Nivabi -->
+	<raid name="Ogres" file="nivabi/ogres.xml" interval2="500" margin="120" />
+	<!-- Nautis -->
+	<raid name="Quaras" file="nautis/quaras.xml" interval2="500" margin="120" />
+	<raid name="Deeplings" file="nautis/deeplings.xml" interval2="500" margin="120" />
+	<!-- Roshamuul -->
+	<raid name="Gaz" file="roshamuul/gaz_haragoth.xml" interval2="1440" margin="120" />
+	<raid name="Mawhawk" file="roshamuul/mawhawk.xml" interval2="1440" margin="120" />
+	<raid name="Omrafir" file="roshamuul/omrafir.xml" interval2="1440" margin="120" />
+	<!-- Valkesh -->
+	<raid name="Nomad" file="valkesh/nomad.xml" interval2="500" margin="120" />
+	<raid name="Scarab" file="valkesh/scarab.xml" interval2="500" margin="120" />
+	<raid name="Dragons" file="valkesh/dragons.xml" interval2="500" margin="120" />
+	<raid name="Undead Valkesh" file="valkesh/undead.xml" interval2="1440" margin="120" />
+	<!-- Other -->
+	<raid name="Gryphon" file="other/gryphon.xml" interval2="1440" margin="120" />
+	<raid name="Water Buffalo" file="other/water_buffalos.xml" interval2="1440" margin="120" />
+	<raid name="Wild Horses" file="other/wild_horses.xml" interval2="1440" margin="120" />
+	<raid name="Gnarlhounds" file="other/gnarlhounds.xml" interval2="1440" margin="120" />
+	<raid name="Crustacea Gigantica treasure" file="other/crustacea_gigantica_1.xml" interval2="1440" margin="120" />
+	<raid name="Crustacea Gigantica treasure1" file="other/crustacea_gigantica_2.xml" interval2="1440" margin="120" />
+	<raid name="Crustacea Gigantica treasure2" file="other/crustacea_gigantica_3.xml" interval2="500" margin="120" />
+	<!-- Viridia -->
+	<raid name="Giant Beaver" file="viridia/beaver.xml" interval2="1440" margin="120" />
+	<raid name="Jungle Queen" file="viridia/jungle_queen.xml" interval2="1440" margin="120" />
+	<raid name="Jaul" file="viridia/jaul.xml" interval2="1440" margin="120" />
+	<!-- Pvp -->
+	<raid name="Umbra Tree" file="pvp/umbra.xml" interval2="500" margin="120" />
+	<raid name="Ilshenar Tree" file="pvp/ilshenar.xml" interval2="500" margin="120" />
+	<raid name="Krotkah Tree" file="pvp/krotkah.xml" interval2="500" margin="120" />
+	<raid name="Gnomprona Tree" file="pvp/gnomprona.xml" interval2="500" margin="120" />
+	<raid name="Roshamuul Tree" file="pvp/roshamuul.xml" interval2="500" margin="120" />
+	<raid name="Umbra Crystal" file="pvp/umbra_crystal1.xml" interval2="500" margin="120" />
+	<raid name="Umbra Crystal2" file="pvp/umbra_crystal2.xml" interval2="500" margin="120" />
+	<raid name="Ilshenar Crystal" file="pvp/ilshenar_crystal.xml" interval2="500" margin="120" />
+	<raid name="Krotkah Crystal" file="pvp/krotkah_crystal.xml" interval2="500" margin="120" />
+	<raid name="Gnomprona Crystal" file="pvp/gnomprona_crystal.xml" interval2="500" margin="120" />
+	<raid name="Roshamuul Crystal" file="pvp/roshamuul_crystal.xml" interval2="500" margin="120" />
+</raids>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

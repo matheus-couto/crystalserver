@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<announce delay="1000" type="event" message="Unusual frequent scarab sightings at the gates of Valkesh" />
+	<announce delay="60000" type="event" message="Ancient scarabs are leading an attack on Valkesh." />
+	<areaspawn delay="60000" fromx="5418" fromy="4665" fromz="7" tox="5459" toy="4713" toz="7">
+		<monster name="Larva" amount="25" />
+		<monster name="Scarab" amount="15" />
+		<monster name="Ancient Scarab" amount="8" />
+	</areaspawn>
+	<areaspawn delay="60000" fromx="5323" fromy="4726" fromz="7" tox="5414" toy="4762" toz="7">
+		<monster name="Larva" amount="25" />
+		<monster name="Scarab" amount="15" />
+		<monster name="Ancient Scarab" amount="8" />
+	</areaspawn>
+</raid>

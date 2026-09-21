@@ -1,0 +1,1070 @@
+local pacoteCrandoria = TalkAction("!pacote", "!pacotes")
+
+function pacoteCrandoria.onSay(player, words, param)
+
+    local tibiaCoins = player:getTransferableCoins()
+    local rep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+
+    if rep < 1 then
+        rep = 0
+    end
+
+	-- if param == "" then
+	-- 	player:sendTextMessage(MESSAGE_LOOK, "Ha pacotes disponiveis para obtencao. Para checar os pacotes, digite '!pacote bronze', '!pacote prata', '!pacote ouro', '!pacote safira' ou '!pacote crandoria'.")
+	-- 	return true
+	-- end
+
+    local msgDefault =
+        "Nao ha pacotes disponiveis."
+        -- "Ha pacotes disponiveis!\n\n" ..
+        -- "Para checar os pacotes, digite:\n" ..
+        -- "!pacote worker\n" ..
+        -- "!pacote alavanca\n" ..
+        -- "!pacote alquimia\n" ..
+        -- "!pacote viridia\n" ..
+        -- "!pacote batalha\n" ..
+        -- "!pacote aposta\n" ..
+        -- "!pacote tormenta\n"
+
+	if param == "" then
+		player:popupFYI(msgDefault)
+		return true
+	end
+
+	-- if param == "worker" then
+    --     local msgBronze =
+    --     "Pacote Worker - 250 TC \n\n" ..
+    --     "7 Dias VIP \n" ..
+    --     "1 Worker Boots \n" ..
+    --     "3 Svargrond Salmon Filet \n" ..
+    --     "3 Northern Fishburger \n" ..
+    --     "200 Yummy Gummy Worms \n" ..
+    --     "Bonus: +1 Bronze Medal \n" ..
+    --     "Bonus: +5 Reputacao \n\n" ..
+    --     "Para adquirir: !pacote compraworker \n"
+    --     player:popupFYI(msgBronze)
+	-- elseif param == "alavanca" then
+    --     local msgPrata =
+    --     "Pacote Alavanca - 500 TC \n\n" ..
+    --     "14 Dias VIP \n" ..
+    --     "10 Prey Cards \n" ..
+    --     "20 Gold Tokens \n" ..
+    --     "2 Small Stamina Refill \n" ..
+    --     "3 Exp Boost Potion \n" ..
+    --     "3 Exercise Stash \n" ..
+    --     "Bonus: +1 Silver Medal \n" ..
+    --     "Bonus: +10 Reputacao \n\n" ..
+    --     "Para adquirir: !pacote compraalavanca \n"
+    --     player:popupFYI(msgPrata)
+    -- elseif param == "alquimia" then
+    --     local msgOuro =
+    --     "Pacote Alquimia - 500 TC \n\n" ..
+    --     "14 Dias VIP \n" ..
+    --     "5 Wealth Duplex \n" ..
+    --     "5 Bestiary Betterment \n" ..
+    --     "5 Charm Upgrade \n" ..
+    --     "5 Strike Enhancement \n" ..
+    --     "Bonus: +1 Silver Medal \n" ..
+    --     "Bonus: +10 Reputacao \n\n" ..
+    --     "Para adquirir: !pacote compraalquimia \n"
+    --     player:popupFYI(msgOuro)
+    -- elseif param == "viridia" then
+    --     local msgSafira =
+    --     "Pacote Encantamento - 1000 TC \n\n" ..
+    --     "21 Dias VIP \n" ..
+    --     "1 Blessed Symbol \n" ..
+    --     "3 Chaotic Jar \n" ..
+    --     "2 Full Stamina Refill \n" ..    
+    --     "5 Small Stamina Refill \n" ..
+    --     "3 Exp Boost Potions \n" ..
+    --     "Bonus: +1 Gold Medal \n" ..
+    --     "Bonus: +25 Reputacao \n\n" ..
+    --     "Para adquirir: !pacote compraviridia \n"
+    --     player:popupFYI(msgSafira)
+    -- elseif param == "batalha" then
+    --     local msg =
+    --     "Pacote Batalha - 1000 TC \n\n" ..
+    --     "21 Dias VIP \n" ..
+    --     "1 Blessed Symbol \n" ..
+    --     "10 Prey Cards \n" ..
+    --     "3 Bestiary Betterment \n" ..    
+    --     "5 Exercise Stashes \n" ..
+    --     "2 Mighty Capsules \n" ..
+    --     "Bonus: +1 Gold Medal \n" ..
+    --     "Bonus: +25 Reputacao \n\n" ..
+    --     "Para adquirir: !pacote comprabatalha \n"
+    --     player:popupFYI(msg)
+    -- elseif param == "aposta" then
+    --     local msg =
+    --     "Pacote Aposta - 2000 TC \n\n" ..
+    --     "30 Dias VIP \n" ..
+    --     "5 Casino Tickets \n" ..
+    --     "2 Special Casino Tickets \n" ..
+    --     "5 Unrealized Dreams \n" ..    
+    --     "1 Chaotic Luck \n" ..
+    --     "3 Chaotic Jars \n" ..
+    --     "Bonus: +2 Gold Medals \n" ..
+    --     "Bonus: +55 Reputacao \n\n" ..
+    --     "Para adquirir: !pacote compraaposta \n"
+    --     player:popupFYI(msg)
+    -- elseif param == "tormenta" then
+    --     local msg =
+    --     "Pacote Tormenta - 5000 TC \n\n" ..
+    --     "90 Dias VIP \n" ..
+    --     "8 Exercise Stashes \n" ..
+    --     "1 Passe de Batalha \n" ..
+    --     "1 Crandoria Sunglasses \n" ..    
+    --     "3 Addon Doll \n" ..
+    --     "3 Mount Certificate \n" ..
+    --     "2 Blessed Symbols \n" ..
+    --     "3 Chaotic Luck \n" ..
+    --     "5 Chaotic Jars \n" ..
+    --     "Bonus: +5 Gold Medals \n" ..
+    --     "Bonus: +120 Reputacao \n\n" ..
+    --     "Para adquirir: !pacote compratormenta \n"
+    --     player:popupFYI(msg)
+    -- elseif param == "compraworker" then
+    --     if tibiaCoins >= 250 then
+    --         if player:removeTransferableCoins(250) then
+    --             local inbox = player:getInbox()
+    --                 player:addPremiumDays(7)
+    --                 player:setStoargeValue(Storage.Quest.Crandoria.Reputation.Points, rep + 5)
+    --                 player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+    --                 inbox:addItem(9017, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- glass eye
+    --                 inbox:addItem(29413, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- svargrond salmon filet
+    --                 inbox:addItem(29413, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- svargrond salmon filet
+    --                 inbox:addItem(29413, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- svargrond salmon filet
+    --                 inbox:addItem(9088, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- northern fishburger
+    --                 inbox:addItem(9088, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- northern fishburger
+    --                 inbox:addItem(9088, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- northern fishburger
+    --                 inbox:addItem(8177, 100, INDEX_WHEREEVER, FLAG_NOLIMIT) -- yummy gummy worm
+    --                 inbox:addItem(8177, 100, INDEX_WHEREEVER, FLAG_NOLIMIT) -- yummy gummy worm
+    --                 inbox:addItem(9217, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- bronze medal                
+    --                 player:sendTextMessage(MESSAGE_LOOK, "Voce adquiriu o 'Pacote Worker'. Seus itens estao na sua Mailbox.")
+    --                 local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+    --                 if storageRep < 1 then
+    --                     storageRep = 0
+    --                 end
+    --                 player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 5)
+    --                 player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+    --             return true
+    --         end
+    --     else
+    --         player:sendTextMessage(MESSAGE_LOOK, "Voce nao possui Tibia Coins o suficiente.")
+    --         player:getPosition():sendMagicEffect(CONST_ME_POFF)
+    --         return true
+    --     end
+    -- elseif param == "compraalavanca" then
+    --     if tibiaCoins >= 500 then
+    --         if player:removeTransferableCoins(500) then
+    --             local inbox = player:getInbox()
+    --                 player:addPreyCards(10)
+    --                 player:addPremiumDays(14)
+    --                 inbox:addItem(22721, 20, INDEX_WHEREEVER, FLAG_NOLIMIT) -- gold token
+    --                 inbox:addItem(20138, 2, INDEX_WHEREEVER, FLAG_NOLIMIT) -- small stamina refill
+    --                 inbox:addItem(11372, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- xp boost pot
+    --                 inbox:addItem(11372, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- xp boost pot
+    --                 inbox:addItem(11372, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- xp boost pot
+    --                 inbox:addItem(26186, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- exercise stash
+    --                 inbox:addItem(26186, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- exercise stash
+    --                 inbox:addItem(26186, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- exercise stash
+    --                 inbox:addItem(9216, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- silver medal
+    --                 player:sendTextMessage(MESSAGE_LOOK, "Voce adquiriu o 'Pacote Alavanca'. Seus itens estao na sua Mailbox.")
+    --                 local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+    --                 if storageRep < 1 then
+    --                     storageRep = 0
+    --                 end
+    --                 player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 10)
+    --                 player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+    --             return true
+    --         end
+    --     else
+    --         player:sendTextMessage(MESSAGE_LOOK, "Voce nao possui Tibia Coins o suficiente.")
+    --         player:getPosition():sendMagicEffect(CONST_ME_POFF)
+    --         return true
+    --     end
+    -- elseif param == "compraalquimia" then
+    --     if tibiaCoins >= 500 then
+    --         if player:removeTransferableCoins(500) then
+    --             local inbox = player:getInbox()
+    --                 player:addPremiumDays(14)
+    --                 inbox:addItem(36727, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- wealth duplex
+    --                 inbox:addItem(36727, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- wealth duplex
+    --                 inbox:addItem(36727, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- wealth duplex
+    --                 inbox:addItem(36727, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- wealth duplex
+    --                 inbox:addItem(36727, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- wealth duplex
+    --                 inbox:addItem(36726, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- charm upgrade
+    --                 inbox:addItem(36726, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- charm upgrade
+    --                 inbox:addItem(36726, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- charm upgrade
+    --                 inbox:addItem(36726, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- charm upgrade
+    --                 inbox:addItem(36726, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- charm upgrade
+    --                 inbox:addItem(36728, 5, INDEX_WHEREEVER, FLAG_NOLIMIT) -- bestiary betterment
+    --                 inbox:addItem(36724, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- strike enhancement
+    --                 inbox:addItem(36724, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- strike enhancement
+    --                 inbox:addItem(36724, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- strike enhancement
+    --                 inbox:addItem(36724, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- strike enhancement
+    --                 inbox:addItem(36724, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- strike enhancement
+    --                 inbox:addItem(9216, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- silver medal
+    --                 player:sendTextMessage(MESSAGE_LOOK, "Voce adquiriu o 'Pacote Alquimia'. Seus itens estao na sua Mailbox.")
+    --                 local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+    --                 if storageRep < 1 then
+    --                     storageRep = 0
+    --                 end
+    --                 player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 10)
+    --                 player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+    --             return true
+    --         end
+    --     else
+    --         player:sendTextMessage(MESSAGE_LOOK, "Voce nao possui Tibia Coins o suficiente.")
+    --         player:getPosition():sendMagicEffect(CONST_ME_POFF)
+    --         return true
+    --     end
+    -- elseif param == "compraviridia" then
+    --     if tibiaCoins >= 1000 then
+    --         if player:getStorageValue(Storage.Quest.Crandoria.Viridia.Citizen) == 1 then
+    --             if player:getFreeBackpackSlots() > 1 and player:getFreeCapacity() > 100 then
+    --                 if player:removeTransferableCoins(1000) then
+    --                     player:addPremiumDays(21)
+    --                     local container = player:addItem(2869)
+    --                     if container then
+    --                         container:addItem(11468, 1) -- blessed symbol
+    --                         container:addItem(20139, 2) -- full stamina refill
+    --                         container:addItem(19397, 1) -- mighty capsule
+    --                         container:addItem(19397, 1) -- mighty capsule
+    --                         container:addItem(11372, 1) -- xp boost pot
+    --                         container:addItem(11372, 1) -- xp boost pot
+    --                         container:addItem(11372, 1) -- xp boost pot
+    --                         container:addItem(39707, 1) -- chaotic jar
+    --                         container:addItem(39707, 1) -- chaotic jar
+    --                         container:addItem(39707, 1) -- chaotic jar
+    --                         player:sendTextMessage(MESSAGE_LOOK, "Voce adquiriu o 'Pacote Viridia'. Seus itens foram enviados para seu inventario.")
+    --                         local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+    --                         if storageRep < 1 then
+    --                             storageRep = 0
+    --                         end
+    --                         player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 25)
+    --                         player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+    --                         return true
+    --                     else
+    --                         player:sendTextMessage(MESSAGE_LOOK, "Algo deu errado. Envie esse codigo para um administrador: 25477847.")
+    --                         return true
+    --                     end
+    --                 else
+    --                     player:sendTextMessage(MESSAGE_LOOK, "Voce nao possui Tibia Coins o suficiente.")
+    --                     player:getPosition():sendMagicEffect(CONST_ME_POFF)
+    --                     return true
+    --                 end
+    --             else
+    --                 player:sendTextMessage(MESSAGE_LOOK, "Voce precisa de 2 slots livres e 100 de cap para receber o pacote.")
+    --                 player:getPosition():sendMagicEffect(CONST_ME_POFF)
+    --                 return true
+    --             end
+    --         else
+    --             if player:removeTransferableCoins(1000) then
+    --                 local inbox = player:getInbox()
+    --                     player:addPremiumDays(21)
+    --                     inbox:addItem(11468, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- blessed symbol
+    --                     inbox:addItem(20139, 2, INDEX_WHEREEVER, FLAG_NOLIMIT) -- full stamina refill
+    --                     inbox:addItem(19397, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- mighty capsule
+    --                     inbox:addItem(19397, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- mighty capsule
+    --                     inbox:addItem(11372, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- xp boost pot
+    --                     inbox:addItem(11372, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- xp boost pot
+    --                     inbox:addItem(11372, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- xp boost pot
+    --                     inbox:addItem(39707, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- chaotic jar
+    --                     inbox:addItem(39707, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- chaotic jar
+    --                     inbox:addItem(39707, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- chaotic jar
+    --                 local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+    --                 if storageRep < 1 then
+    --                     storageRep = 0
+    --                 end
+    --                 player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 25)
+    --                 player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+    --                 player:sendTextMessage(MESSAGE_LOOK, "Voce adquiriu o 'Pacote Viridia'. Seus itens estao na sua Mailbox.")
+    --                 return true
+    --             end
+    --         end
+    --     else
+    --         player:sendTextMessage(MESSAGE_LOOK, "Voce nao possui Tibia Coins o suficiente.")
+    --         player:getPosition():sendMagicEffect(CONST_ME_POFF)
+    --         return true
+    --     end
+    -- elseif param == "comprabatalha" then
+    --     if tibiaCoins >= 1000 then
+    --         if player:removeTransferableCoins(1000) then
+    --             local inbox = player:getInbox()
+    --                 player:addPremiumDays(21)
+    --                 player:addPreyCards(10)
+    --                 inbox:addItem(19397, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- mighty capsule
+    --                 inbox:addItem(19397, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- mighty capsule
+    --                 inbox:addItem(36728, 3, INDEX_WHEREEVER, FLAG_NOLIMIT) -- bestiary betterment
+    --                 inbox:addItem(26186, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- exercise stash
+    --                 inbox:addItem(26186, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- exercise stash
+    --                 inbox:addItem(26186, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- exercise stash
+    --                 inbox:addItem(26186, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- exercise stash
+    --                 inbox:addItem(26186, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- exercise stash
+    --                 inbox:addItem(11468, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- blessed symbol
+    --                 inbox:addItem(11468, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- blessed symbol
+    --                 player:sendTextMessage(MESSAGE_LOOK, "Voce adquiriu o 'Pacote Batalha'. Seus itens estao na sua Mailbox.")
+    --                 local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+    --                 if storageRep < 1 then
+    --                     storageRep = 0
+    --                 end
+    --                 player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 25)
+    --                 player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+    --             return true
+    --         end
+    --     else
+    --         player:sendTextMessage(MESSAGE_LOOK, "Voce nao possui Tibia Coins o suficiente.")
+    --         player:getPosition():sendMagicEffect(CONST_ME_POFF)
+    --         return true
+    --     end
+    -- elseif param == "compraaposta" then
+    --     if tibiaCoins >= 2000 then
+    --         if player:removeTransferableCoins(2000) then
+    --             local inbox = player:getInbox()
+    --                 player:addPremiumDays(30)
+    --                 inbox:addItem(637, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- casino ticket
+    --                 inbox:addItem(637, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- casino ticket
+    --                 inbox:addItem(637, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- casino ticket
+    --                 inbox:addItem(637, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- casino ticket
+    --                 inbox:addItem(637, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- casino ticket
+    --                 inbox:addItem(22706, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- special casino ticket
+    --                 inbox:addItem(22706, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- special casino ticket
+    --                 inbox:addItem(20264, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- unrealized dream
+    --                 inbox:addItem(20264, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- unrealized dream
+    --                 inbox:addItem(20264, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- unrealized dream
+    --                 inbox:addItem(20264, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- unrealized dream
+    --                 inbox:addItem(20264, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- unrealized dream
+    --                 inbox:addItem(35909, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- chaotic luck
+    --                 inbox:addItem(39707, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- chaotic jar
+    --                 inbox:addItem(39707, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- chaotic jar
+    --                 inbox:addItem(39707, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- chaotic jar
+    --                 player:sendTextMessage(MESSAGE_LOOK, "Voce adquiriu o 'Pacote Aposta'. Seus itens estao na sua Mailbox.")
+    --                 local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+    --                 if storageRep < 1 then
+    --                     storageRep = 0
+    --                 end
+    --                 player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 55)
+    --                 player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+    --             return true
+    --         end
+    --     else
+    --         player:sendTextMessage(MESSAGE_LOOK, "Voce nao possui Tibia Coins o suficiente.")
+    --         player:getPosition():sendMagicEffect(CONST_ME_POFF)
+    --         return true
+    --     end
+    -- elseif param == "compratormenta" then
+    --     if tibiaCoins >= 5000 then
+    --         if player:removeTransferableCoins(5000) then
+    --             local inbox = player:getInbox()
+    --                 player:addPremiumDays(90)
+    --                 inbox:addItem(26186, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- exercise stash
+    --                 inbox:addItem(26186, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- exercise stash
+    --                 inbox:addItem(26186, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- exercise stash
+    --                 inbox:addItem(26186, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- exercise stash
+    --                 inbox:addItem(26186, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- exercise stash
+    --                 inbox:addItem(26186, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- exercise stash
+    --                 inbox:addItem(26186, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- exercise stash
+    --                 inbox:addItem(26186, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- exercise stash
+    --                 inbox:addItem(9218, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- passe de batalha
+    --                 inbox:addItem(27522, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- crandoria sunglasses
+    --                 inbox:addItem(8778, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- addon doll
+    --                 inbox:addItem(8778, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- addon doll
+    --                 inbox:addItem(8778, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- addon doll
+    --                 inbox:addItem(22771, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- addon doll
+    --                 inbox:addItem(22771, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- addon doll
+    --                 inbox:addItem(22771, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- addon doll
+    --                 inbox:addItem(11468, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- blessed symbol
+    --                 inbox:addItem(11468, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- blessed symbol
+    --                 inbox:addItem(11468, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- blessed symbol
+    --                 inbox:addItem(35909, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- chaotic luck
+    --                 inbox:addItem(35909, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- chaotic luck
+    --                 inbox:addItem(35909, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- chaotic luck
+    --                 inbox:addItem(39707, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- chaotic jar
+    --                 inbox:addItem(39707, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- chaotic jar
+    --                 inbox:addItem(39707, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- chaotic jar
+    --                 inbox:addItem(39707, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- chaotic jar
+    --                 inbox:addItem(39707, 1, INDEX_WHEREEVER, FLAG_NOLIMIT) -- chaotic jar
+    --                 player:sendTextMessage(MESSAGE_LOOK, "Voce adquiriu o 'Pacote Tormenta'. Seus itens estao na sua Mailbox.")
+    --                 local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+    --                 if storageRep < 1 then
+    --                     storageRep = 0
+    --                 end
+    --                 player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 120)
+    --                 player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+    --             return true
+    --         end
+    --     else
+    --         player:sendTextMessage(MESSAGE_LOOK, "Voce nao possui Tibia Coins o suficiente.")
+    --         player:getPosition():sendMagicEffect(CONST_ME_POFF)
+    --         return true
+    --     end
+    -- end
+    return true                 
+
+end
+
+pacoteCrandoria:separator(" ")
+pacoteCrandoria:groupType("normal")
+pacoteCrandoria:register()
+
+
+------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
+
+
+-- local pacoteCrandoria = TalkAction("!pacote", "!pacotes")
+
+-- function pacoteCrandoria.onSay(player, words, param)
+
+--     local tibiaCoins = player:getTransferableCoins()
+
+-- 	-- if param == "" then
+-- 	-- 	player:sendTextMessage(MESSAGE_LOOK, "Ha pacotes disponiveis para obtencao. Para checar os pacotes, digite '!pacote bronze', '!pacote prata', '!pacote ouro', '!pacote safira' ou '!pacote crandoria'.")
+-- 	-- 	return true
+-- 	-- end
+
+--     local msgDefault =
+--         "Ha pacotes disponiveis!\n\n" ..
+--         "Para checar os pacotes, digite:\n" ..
+--         "!pacote selvagem\n" ..
+--         "!pacote noturno\n" ..
+--         "!pacote sombrio\n" ..
+--         "!pacote heroico\n" ..
+--         "!pacote crandoria\n"
+
+-- 	if param == "" then
+-- 		player:popupFYI(msgDefault)
+-- 		return true
+-- 	end
+
+-- 	if param == "selvagem" then
+--         local msgBronze =
+--         "Pacote Selvagem - 250 TC \n\n" ..
+--         "7 Dias VIP \n" ..
+--         "2 Prey Cards \n" ..
+--         "1 Passe dos Teleports \n" ..
+--         "1 Black Candle \n" ..
+--         "1 Exp Boost Potion \n" ..
+--         "2 Exercise Stashes \n" ..
+--         "3 Casino Tickets \n\n" ..
+--         "Bonus: +1 Bronze Medal \n\n" ..
+--         "Para adquirir: !pacote compraselvagem \n"
+--         player:popupFYI(msgBronze)
+-- 		player:sendTextMessage(MESSAGE_LOOK, "Pacote Selvagem - Valor: 250 Tibia Coins. Recursos: 7 Dias VIP + 1 Passe dos Teleports + 2 Prey Cards + 1 Black Candle + 1 Exp Boost Potion + 2 Exercise Stashes + 3 Casino Tickets. Para comprar, digite: '!pacote compraselvagem'.")
+-- 	elseif param == "noturno" then
+--         local msgPrata =
+--         "Pacote Noturno - 500 TC \n\n" ..
+--         "14 Dias VIP \n" ..
+--         "4 Prey Cards \n" ..
+--         "1 Teleport Stone \n" ..
+--         "1 Passe dos Teleports \n" ..
+--         "1 Small Stamina Refill \n" ..
+--         "2 Black Candles \n" ..
+--         "1 Exp Boost Potion \n" ..
+--         "3 Exercise Stashes \n" ..
+--         "5 Casino Tickets \n\n" ..
+--         "Bonus: +1 Silver Medal \n\n" ..
+--         "Para adquirir: !pacote compranoturno \n"
+--         player:popupFYI(msgPrata)
+-- 		player:sendTextMessage(MESSAGE_LOOK, "Pacote Noturno - Valor: 500 Tibia Coins. Recursos: 14 Dias VIP + 1 Small Stamina Refill + 1 Teleport Stone + 1 Passe dos Teleports + 4 Prey Cards + 2 Black Candles + 1 Exp Boost Potion + 3 Exercise Stashes + 5 Casino Tickets. Para comprar, digite: '!pacote compranoturno'.")
+--     elseif param == "sombrio" then
+--         local msgOuro =
+--         "Pacote Sombrio - 1000 TC \n\n" ..
+--         "30 Dias VIP \n" ..
+--         "8 Prey Cards \n" ..
+--         "1 Addon Doll \n" ..
+--         "1 Teleport Stone \n" ..
+--         "1 Passe dos Teleports \n" ..
+--         "2 Small Stamina Refills \n" ..
+--         "3 Black Candles \n" ..
+--         "2 Exp Boost Potions \n" ..
+--         "4 Exercise Stashes \n" ..
+--         "1 Special Casino Ticket \n\n" ..
+--         "Bonus: +1 Gold Medal \n\n" ..
+--         "Para adquirir: !pacote comprasombrio \n"
+--         player:popupFYI(msgOuro)
+--         player:sendTextMessage(MESSAGE_LOOK, "Pacote Sombrio - Valor: 1000 Tibia Coins. Recursos: 30 Dias VIP + 1 Addon Doll + 2 Small Stamina Refills + 1 Teleport Stone + 1 Passe dos Teleports + 8 Prey Cards + 3 Black Candles + 2 Exp Boost Potions + 4 Exercise Stashes + 1 Special Casino Ticket. Para comprar, digite: '!pacote comprasombrio'.")
+--     elseif param == "heroico" then
+--         local msgSafira =
+--         "Pacote Heroico - 2000 TC \n\n" ..
+--         "60 Dias VIP \n" ..
+--         "1 Crandoria Boots \n" ..
+--         "1 Passe dos Novatos \n" ..
+--         "16 Prey Cards \n" ..
+--         "2 Addon Dolls \n" ..
+--         "1 Teleport Stone \n" ..
+--         "1 Passe dos Teleports \n" ..
+--         "3 Small Stamina Refills \n" ..
+--         "4 Black Candles \n" ..
+--         "3 Exp Boost Potions \n" ..
+--         "6 Exercise Stashes \n" ..
+--         "2 Special Casino Tickets \n\n" ..
+--         "Bonus: +3 Gold Medal \n\n" ..
+--         "Para adquirir: !pacote compraheroico \n"
+--         player:popupFYI(msgSafira)
+--         player:sendTextMessage(MESSAGE_LOOK, "Pacote Heroico - Valor: 2000 Tibia Coins. Recursos: 60 Dias VIP + 1 Crandoria Boots + 1 Passe dos Novatos + 2 Addon Dolls + 3 Small Stamina Refills + 1 Teleport Stone + 16 Prey Cards + 1 Passe dos Teleports + 3 Exp Boost Potions + 6 Exercise Stashes + 2 Special Casino Tickets. Para comprar, digite: '!pacote compraheroico'.")
+--     elseif param == "crandoria" then
+--         local msgCrandoria =
+--         "Pacote Crandoria - 5000 TC \n\n" ..
+--         "30 Dias VIP \n" ..
+--         "1 Crandoria Boots \n" ..
+--         "1 Crandoria Backpack \n" ..
+--         "1 Crandoria Sunglasses \n" ..
+--         "1 Crandoria Ring \n" ..
+--         "1 Crandoria Amulet \n\n" ..
+--         "Bonus: +5 Gold Medal \n\n" ..
+--         "Para adquirir: !pacote compracrandoria \n"
+--         player:popupFYI(msgCrandoria)
+--         player:sendTextMessage(MESSAGE_LOOK, "Pacote Crandoria - Valor: 5000 Tibia Coins. Recursos: 30 Dias VIP + 1 Crandoria Boots + 1 Crandoria Backpack + 1 Crandoria Sunglasses + 1 Crandoria Ring + 1 Crandoria Amulet. Para adquirir, digite: '!pacote compracrandoria'.")
+--     elseif param == "streamer" then
+--         if player:getName() == "Sayzer" or player:getName() == "GOD" or player:getName() == "Dwarf Tibiano" or player:getName() == "Pai Do Dwarf" then
+--             if player:getTown():getId() >= TOWNS_LIST.CRANDORIA then
+--                 if player:getStorageValue(Storage.Quest.Crandoria.Store.PacoteStreamer) < 1 then
+--                     player:setStorageValue(Storage.Quest.Crandoria.Store.PacoteStreamer, 1)
+--                     player:addPremiumDays(30)
+--                     -- local container = player:addItemStoreInbox(8860, 1)
+--                     -- if container then
+--                         player:addItemStoreInbox(39036, 1)
+--                         player:addItemStoreInbox(3550, 1)
+--                         player:addItemStoreInbox(19369, 1)
+--                         player:addItemStoreInbox(11372, 1)
+--                         player:addItemStoreInbox(11372, 1)
+--                         player:addItemStoreInbox(11372, 1)
+--                         player:addItemStoreInbox(9099, 1)
+--                         player:addItemStoreInbox(9099, 1)
+--                         player:addItemStoreInbox(36875, 1)
+--                         player:addItemStoreInbox(36875, 1)
+--                         player:addItemStoreInbox(36875, 1)
+--                         player:addItemStoreInbox(9223, 1)
+--                     -- end
+--                     player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu o seu Pacote dos Streamers. O CrandoriaOT agradece pela parceria e torce para que voce tenha uma otima experiencia.")
+--                 end
+--             else
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "O pacote dos streamers podera ser obtido apos os jogadores sairem de Dawnport rumo a Crandoria.")
+--             end
+--         elseif player:getName() == "Naathcarol" or player:getName() == "Bomba Lovee" then
+--             if player:getTown():getId() >= TOWNS_LIST.CRANDORIA then
+--                 if player:getStorageValue(Storage.Quest.Crandoria.Store.PacoteStreamer) < 1 then
+--                     player:setStorageValue(Storage.Quest.Crandoria.Store.PacoteStreamer, 1)
+--                     player:addPremiumDays(7)
+--                     -- local container = player:addItemStoreInbox(8860, 1)
+--                     -- if container then
+--                         player:addItemStoreInbox(39036, 1)
+--                         player:addItemStoreInbox(3550, 1)
+--                         player:addItemStoreInbox(19369, 1)
+--                         player:addItemStoreInbox(11372, 1)
+--                         player:addItemStoreInbox(11372, 1)
+--                         player:addItemStoreInbox(11372, 1)
+--                         player:addItemStoreInbox(9099, 1)
+--                         player:addItemStoreInbox(9099, 1)
+--                         player:addItemStoreInbox(36875, 1)
+--                         player:addItemStoreInbox(36875, 1)
+--                         player:addItemStoreInbox(9223, 1)
+--                     -- end
+--                     player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu o seu Pacote dos Streamers. O CrandoriaOT agradece pela parceria e torce para que voce tenha uma otima experiencia.")
+--                 end
+--             else
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "O pacote dos streamers podera ser obtido apos os jogadores sairem de Dawnport rumo a Crandoria.")
+--             end
+--         else
+--             return false
+--         end
+--     elseif param == "compraselvagem" then
+--         if tibiaCoins >= 250 then
+--             if player:removeTransferableCoins(250) then
+--                 -- local container = player:addItemStoreInbox(8860, 1)
+--                 -- if container then
+--                     player:addPremiumDays(7)
+--                     player:addPreyCards(2)
+--                     player:addItemStoreInbox(8151, 1)
+--                     player:addItemStoreInbox(9099, 1)
+--                     player:addItemStoreInbox(11372, 1)
+--                     player:addItemStoreInbox(26186, 1)
+--                     player:addItemStoreInbox(26186, 1)
+--                     player:addItemStoreInbox(637, 1)
+--                     player:addItemStoreInbox(637, 1)
+--                     player:addItemStoreInbox(637, 1)
+--                     player:addItemStoreInbox(9217, 1)
+--                     player:sendTextMessage(MESSAGE_LOOK, "Parabens! Voce adquiriu o Pacote Selvagem. Saia e entre novamente para ativar o VIP. Seus itens estao na Inbox da Store.")
+--                 -- end
+--                 return true
+--             end
+--         else
+--             player:sendTextMessage(MESSAGE_LOOK, "Voce nao possui Tibia Coins o suficiente.")
+--             player:getPosition():sendMagicEffect(CONST_ME_POFF)
+--             return true
+--         end
+--     elseif param == "compranoturno" then
+--         if tibiaCoins >= 500 then
+--             if player:removeTransferableCoins(500) then
+--                 -- local container = player:addItemStoreInbox(8860, 1)
+--                 -- if container then
+--                     player:addPremiumDays(14)
+--                     player:addPreyCards(4)
+--                     player:addItemStoreInbox(39036, 1)
+--                     player:addItemStoreInbox(20138, 1)
+--                     player:addItemStoreInbox(8151, 1)
+--                     player:addItemStoreInbox(9099, 1)
+--                     player:addItemStoreInbox(9099, 1)
+--                     player:addItemStoreInbox(11372, 1)
+--                     player:addItemStoreInbox(26186, 1)
+--                     player:addItemStoreInbox(26186, 1)
+--                     player:addItemStoreInbox(26186, 1)
+--                     player:addItemStoreInbox(637, 1)
+--                     player:addItemStoreInbox(637, 1)
+--                     player:addItemStoreInbox(637, 1)
+--                     player:addItemStoreInbox(637, 1)
+--                     player:addItemStoreInbox(637, 1)
+--                     player:addItemStoreInbox(9216, 1)
+--                 -- end
+--                 player:sendTextMessage(MESSAGE_LOOK, "Parabens! Voce adquiriu o Pacote Noturno. Saia e entre novamente para ativar o VIP. Seus itens estao na Inbox da Store.")
+--                 return true
+--             end
+--         else
+--             player:sendTextMessage(MESSAGE_LOOK, "Voce nao possui Tibia Coins o suficiente.")
+--             player:getPosition():sendMagicEffect(CONST_ME_POFF)
+--             return true
+--         end
+--     elseif param == "comprasombrio" then
+--         if tibiaCoins >= 1000 then
+--             if player:removeTransferableCoins(1000) then
+--                 -- local container = player:addItemStoreInbox(8860, 1)
+--                 -- if container then
+--                     player:addPremiumDays(30)
+--                     player:addPreyCards(6)
+--                     player:addItemStoreInbox(8778, 1)
+--                     player:addItemStoreInbox(39036, 1)
+--                     player:addItemStoreInbox(20138, 2)
+--                     player:addItemStoreInbox(8151, 1)
+--                     player:addItemStoreInbox(9099, 1)
+--                     player:addItemStoreInbox(9099, 1)
+--                     player:addItemStoreInbox(9099, 1)
+--                     player:addItemStoreInbox(11372, 1)
+--                     player:addItemStoreInbox(11372, 1)
+--                     player:addItemStoreInbox(26186, 1)
+--                     player:addItemStoreInbox(26186, 1)
+--                     player:addItemStoreInbox(26186, 1)
+--                     player:addItemStoreInbox(26186, 1)
+--                     player:addItemStoreInbox(22706, 1)
+--                     player:addItemStoreInbox(9215, 1)
+--                 -- end
+--                 player:sendTextMessage(MESSAGE_LOOK, "Parabens! Voce adquiriu o Pacote Sombrio. Saia e entre novamente para ativar o VIP. Seus itens estao na Inbox da Store.")
+--                 return true
+--             end
+--         else
+--             player:sendTextMessage(MESSAGE_LOOK, "Voce nao possui Tibia Coins o suficiente.")
+--             player:getPosition():sendMagicEffect(CONST_ME_POFF)
+--             return true
+--         end
+--     elseif param == "compraheroico" then
+--         if tibiaCoins >= 2000 then
+--             if player:removeTransferableCoins(2000) then
+--                 -- local container = player:addItemStoreInbox(8860, 1)
+--                 -- local container2 = player:addItemStoreInbox(8860, 1)
+--                 -- if container then
+--                     player:addPremiumDays(60)
+--                     player:addPreyCards(16)
+--                     player:addItemStoreInbox(3550, 1)
+--                     player:addItemStoreInbox(9223, 1)
+--                     player:addItemStoreInbox(8778, 1)
+--                     player:addItemStoreInbox(8778, 1)
+--                     player:addItemStoreInbox(39036, 1)
+--                     player:addItemStoreInbox(20138, 3)
+--                     player:addItemStoreInbox(8151, 1)
+--                     player:addItemStoreInbox(9099, 1)
+--                     player:addItemStoreInbox(9099, 1)
+--                     player:addItemStoreInbox(9099, 1)
+--                     player:addItemStoreInbox(9099, 1)
+--                     player:addItemStoreInbox(11372, 1)
+--                     player:addItemStoreInbox(11372, 1)
+--                     player:addItemStoreInbox(11372, 1)
+--                 -- end
+--                 -- if container2 then
+--                     player:addItemStoreInbox(26186, 1)
+--                     player:addItemStoreInbox(26186, 1)
+--                     player:addItemStoreInbox(26186, 1)
+--                     player:addItemStoreInbox(26186, 1)
+--                     player:addItemStoreInbox(26186, 1)
+--                     player:addItemStoreInbox(26186, 1)
+--                     player:addItemStoreInbox(22706, 1)
+--                     player:addItemStoreInbox(22706, 1)
+--                     player:addItemStoreInbox(9215, 1)
+--                     player:addItemStoreInbox(9215, 1)
+--                     player:addItemStoreInbox(9215, 1)
+--                 -- end
+--                 player:sendTextMessage(MESSAGE_LOOK, "Parabens! Voce adquiriu o Pacote Heroico. Saia e entre novamente para ativar o VIP. Seus itens estao na Inbox da Store.")
+--                 return true
+--             end
+--         else
+--             player:sendTextMessage(MESSAGE_LOOK, "Voce nao possui Tibia Coins o suficiente.")
+--             player:getPosition():sendMagicEffect(CONST_ME_POFF)
+--             return true
+--         end
+--     elseif param == "compracrandoria" then
+--         if tibiaCoins >= 5000 then
+--             if player:removeTransferableCoins(5000) then
+--                 -- local container = player:addItemStoreInbox(8860, 1)
+--                 -- if container then
+--                     player:addPremiumDays(30)
+--                     player:addItemStoreInbox(3550, 1)
+--                     player:addItemStoreInbox(27522, 1)
+--                     player:addItemStoreInbox(18935, 1)
+--                     player:addItemStoreInbox(20342, 1)
+--                     player:addItemStoreInbox(39754, 1)
+--                     player:addItemStoreInbox(9215, 1)
+--                     player:addItemStoreInbox(9215, 1)
+--                     player:addItemStoreInbox(9215, 1)
+--                     player:addItemStoreInbox(9215, 1)
+--                     player:addItemStoreInbox(9215, 1)
+--                 -- end
+--                 player:sendTextMessage(MESSAGE_LOOK, "Parabens! Voce adquiriu o Pacote Crandoria. Saia e entre novamente para ativar o VIP. Seus itens estao na Inbox da Store.")
+--                 return true
+--             end
+--         else
+--             player:sendTextMessage(MESSAGE_LOOK, "Voce nao possui Tibia Coins o suficiente.")
+--             player:getPosition():sendMagicEffect(CONST_ME_POFF)
+--             return true
+--         end
+--         player:popupFYI(msgDefault)
+-- 		return true
+--     end
+--     return true
+
+    
+
+-- end
+
+-- pacoteCrandoria:separator(" ")
+-- pacoteCrandoria:groupType("normal")
+-- pacoteCrandoria:register()
+
+------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
+
+-- local pacoteCrandoria = TalkAction("!pacote", "!pacotes")
+
+-- function pacoteCrandoria.onSay(player, words, param)
+
+--     local tibiaCoins = player:getTransferableCoins()
+
+-- 	-- if param == "" then
+-- 	-- 	player:sendTextMessage(MESSAGE_LOOK, "Ha pacotes disponiveis para obtencao. Para checar os pacotes, digite '!pacote bronze', '!pacote prata', '!pacote ouro', '!pacote safira' ou '!pacote crandoria'.")
+-- 	-- 	return true
+-- 	-- end
+
+--     local msgDefault =
+--         "Ha pacotes disponiveis!\n\n" ..
+--         "Para checar os pacotes, digite:\n" ..
+--         "!pacote selvagem\n" ..
+--         "!pacote noturno\n" ..
+--         "!pacote sombrio\n" ..
+--         "!pacote heroico\n" ..
+--         "!pacote crandoria\n"
+
+-- 	if param == "" then
+-- 		player:popupFYI(msgDefault)
+-- 		return true
+-- 	end
+
+-- 	if param == "selvagem" then
+--         local msgBronze =
+--         "Pacote Selvagem - 250 TC \n\n" ..
+--         "7 Dias VIP \n" ..
+--         "2 Prey Cards \n" ..
+--         "1 Passe dos Teleports \n" ..
+--         "1 Black Candle \n" ..
+--         "1 Exp Boost Potion \n" ..
+--         "2 Exercise Stashes \n" ..
+--         "3 Casino Tickets \n\n" ..
+--         "Bonus: +1 Bronze Medal \n\n" ..
+--         "Para adquirir: !pacote compraselvagem \n"
+--         player:popupFYI(msgBronze)
+-- 		player:sendTextMessage(MESSAGE_LOOK, "Pacote Selvagem - Valor: 250 Tibia Coins. Recursos: 7 Dias VIP + 1 Passe dos Teleports + 2 Prey Cards + 1 Black Candle + 1 Exp Boost Potion + 2 Exercise Stashes + 3 Casino Tickets. Para comprar, digite: '!pacote compraselvagem'.")
+-- 	elseif param == "noturno" then
+--         local msgPrata =
+--         "Pacote Noturno - 500 TC \n\n" ..
+--         "14 Dias VIP \n" ..
+--         "4 Prey Cards \n" ..
+--         "1 Teleport Stone \n" ..
+--         "1 Passe dos Teleports \n" ..
+--         "1 Small Stamina Refill \n" ..
+--         "2 Black Candles \n" ..
+--         "1 Exp Boost Potion \n" ..
+--         "3 Exercise Stashes \n" ..
+--         "5 Casino Tickets \n\n" ..
+--         "Bonus: +1 Silver Medal \n\n" ..
+--         "Para adquirir: !pacote compranoturno \n"
+--         player:popupFYI(msgPrata)
+-- 		player:sendTextMessage(MESSAGE_LOOK, "Pacote Noturno - Valor: 500 Tibia Coins. Recursos: 14 Dias VIP + 1 Small Stamina Refill + 1 Teleport Stone + 1 Passe dos Teleports + 4 Prey Cards + 2 Black Candles + 1 Exp Boost Potion + 3 Exercise Stashes + 5 Casino Tickets. Para comprar, digite: '!pacote compranoturno'.")
+--     elseif param == "sombrio" then
+--         local msgOuro =
+--         "Pacote Sombrio - 1000 TC \n\n" ..
+--         "30 Dias VIP \n" ..
+--         "8 Prey Cards \n" ..
+--         "1 Addon Doll \n" ..
+--         "1 Teleport Stone \n" ..
+--         "1 Passe dos Teleports \n" ..
+--         "2 Small Stamina Refills \n" ..
+--         "3 Black Candles \n" ..
+--         "2 Exp Boost Potions \n" ..
+--         "4 Exercise Stashes \n" ..
+--         "1 Special Casino Ticket \n\n" ..
+--         "Bonus: +1 Gold Medal \n\n" ..
+--         "Para adquirir: !pacote comprasombrio \n"
+--         player:popupFYI(msgOuro)
+--         player:sendTextMessage(MESSAGE_LOOK, "Pacote Sombrio - Valor: 1000 Tibia Coins. Recursos: 30 Dias VIP + 1 Addon Doll + 2 Small Stamina Refills + 1 Teleport Stone + 1 Passe dos Teleports + 8 Prey Cards + 3 Black Candles + 2 Exp Boost Potions + 4 Exercise Stashes + 1 Special Casino Ticket. Para comprar, digite: '!pacote comprasombrio'.")
+--     elseif param == "heroico" then
+--         local msgSafira =
+--         "Pacote Heroico - 2000 TC \n\n" ..
+--         "60 Dias VIP \n" ..
+--         "1 Crandoria Boots \n" ..
+--         "1 Passe dos Novatos \n" ..
+--         "16 Prey Cards \n" ..
+--         "2 Addon Dolls \n" ..
+--         "1 Teleport Stone \n" ..
+--         "1 Passe dos Teleports \n" ..
+--         "3 Small Stamina Refills \n" ..
+--         "4 Black Candles \n" ..
+--         "3 Exp Boost Potions \n" ..
+--         "6 Exercise Stashes \n" ..
+--         "2 Special Casino Tickets \n\n" ..
+--         "Bonus: +3 Gold Medal \n\n" ..
+--         "Para adquirir: !pacote compraheroico \n"
+--         player:popupFYI(msgSafira)
+--         player:sendTextMessage(MESSAGE_LOOK, "Pacote Heroico - Valor: 2000 Tibia Coins. Recursos: 60 Dias VIP + 1 Crandoria Boots + 1 Passe dos Novatos + 2 Addon Dolls + 3 Small Stamina Refills + 1 Teleport Stone + 16 Prey Cards + 1 Passe dos Teleports + 3 Exp Boost Potions + 6 Exercise Stashes + 2 Special Casino Tickets. Para comprar, digite: '!pacote compraheroico'.")
+--     elseif param == "crandoria" then
+--         local msgCrandoria =
+--         "Pacote Crandoria - 6000 TC \n\n" ..
+--         "30 Dias VIP \n" ..
+--         "1 Crandoria Boots \n" ..
+--         "1 Crandoria Backpack \n" ..
+--         "1 Crandoria Sunglasses \n" ..
+--         "1 Crandoria Ring \n" ..
+--         "1 Crandoria Amulet \n\n" ..
+--         "Bonus: +5 Gold Medal \n\n" ..
+--         "Para adquirir: !pacote compracrandoria \n"
+--         player:popupFYI(msgCrandoria)
+--         player:sendTextMessage(MESSAGE_LOOK, "Pacote Crandoria - Valor: 5000 Tibia Coins. Recursos: 30 Dias VIP + 1 Crandoria Boots + 1 Crandoria Backpack + 1 Crandoria Sunglasses + 1 Crandoria Ring + 1 Crandoria Amulet. Para adquirir, digite: '!pacote compracrandoria'.")
+--     elseif param == "streamer" then
+--         if player:getName() == "Sayzer" or player:getName() == "GOD" or player:getName() == "Dwarf Tibiano" or player:getName() == "Pai Do Dwarf" then
+--             if player:getTown():getId() >= TOWNS_LIST.CRANDORIA then
+--                 if player:getStorageValue(Storage.Quest.Crandoria.Store.PacoteStreamer) < 1 then
+--                     player:setStorageValue(Storage.Quest.Crandoria.Store.PacoteStreamer, 1)
+--                     player:addPremiumDays(30)
+--                     local container = player:addItemStoreInbox(8860, 1)
+--                     if container then
+--                         player:addItemStoreInbox(39036, 1)
+--                         player:addItemStoreInbox(3550, 1)
+--                         player:addItemStoreInbox(19369, 1)
+--                         player:addItemStoreInbox(11372, 1)
+--                         player:addItemStoreInbox(11372, 1)
+--                         player:addItemStoreInbox(11372, 1)
+--                         player:addItemStoreInbox(9099, 1)
+--                         player:addItemStoreInbox(9099, 1)
+--                         player:addItemStoreInbox(36875, 1)
+--                         container:addItem(36875, 1)
+--                         container:addItem(36875, 1)
+--                         container:addItem(9223, 1)
+--                     end
+--                     player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu o seu Pacote dos Streamers. O CrandoriaOT agradece pela parceria e torce para que voce tenha uma otima experiencia.")
+--                 end
+--             else
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "O pacote dos streamers podera ser obtido apos os jogadores sairem de Dawnport rumo a Crandoria.")
+--             end
+--         elseif player:getName() == "Naathcarol" or player:getName() == "Bomba Lovee" then
+--             if player:getTown():getId() >= TOWNS_LIST.CRANDORIA then
+--                 if player:getStorageValue(Storage.Quest.Crandoria.Store.PacoteStreamer) < 1 then
+--                     player:setStorageValue(Storage.Quest.Crandoria.Store.PacoteStreamer, 1)
+--                     player:addPremiumDays(7)
+--                     local container = player:addItemStoreInbox(8860, 1)
+--                     if container then
+--                         container:addItem(39036, 1)
+--                         container:addItem(3550, 1)
+--                         container:addItem(19369, 1)
+--                         container:addItem(11372, 1)
+--                         container:addItem(11372, 1)
+--                         container:addItem(11372, 1)
+--                         container:addItem(9099, 1)
+--                         container:addItem(9099, 1)
+--                         container:addItem(36875, 1)
+--                         container:addItem(36875, 1)
+--                         container:addItem(9223, 1)
+--                     end
+--                     player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu o seu Pacote dos Streamers. O CrandoriaOT agradece pela parceria e torce para que voce tenha uma otima experiencia.")
+--                 end
+--             else
+--                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "O pacote dos streamers podera ser obtido apos os jogadores sairem de Dawnport rumo a Crandoria.")
+--             end
+--         else
+--             return false
+--         end
+--     elseif param == "compraselvagem" then
+--         if tibiaCoins >= 250 then
+--             if player:removeTransferableCoins(250) then
+--                 local container = player:addItemStoreInbox(8860, 1)
+--                 if container then
+--                     player:addPremiumDays(7)
+--                     player:addPreyCards(2)
+--                     container:addItem(8151, 1)
+--                     container:addItem(9099, 1)
+--                     container:addItem(11372, 1)
+--                     container:addItem(26186, 1)
+--                     container:addItem(26186, 1)
+--                     container:addItem(637, 1)
+--                     container:addItem(637, 1)
+--                     container:addItem(637, 1)
+--                     container:addItem(9217, 1)
+--                     player:sendTextMessage(MESSAGE_LOOK, "Parabens! Voce adquiriu o Pacote Selvagem. Saia e entre novamente para ativar o VIP. Seus itens estao na Inbox da Store.")
+--                 end
+--                 return true
+--             end
+--         else
+--             player:sendTextMessage(MESSAGE_LOOK, "Voce nao possui Tibia Coins o suficiente.")
+--             player:getPosition():sendMagicEffect(CONST_ME_POFF)
+--             return true
+--         end
+--     elseif param == "compranoturno" then
+--         if tibiaCoins >= 500 then
+--             if player:removeTransferableCoins(500) then
+--                 local container = player:addItemStoreInbox(8860, 1)
+--                 if container then
+--                     player:addPremiumDays(14)
+--                     player:addPreyCards(4)
+--                     container:addItem(39036, 1)
+--                     container:addItem(20138, 1)
+--                     container:addItem(8151, 1)
+--                     container:addItem(9099, 1)
+--                     container:addItem(9099, 1)
+--                     container:addItem(11372, 1)
+--                     container:addItem(26186, 1)
+--                     container:addItem(26186, 1)
+--                     container:addItem(26186, 1)
+--                     container:addItem(637, 1)
+--                     container:addItem(637, 1)
+--                     container:addItem(637, 1)
+--                     container:addItem(637, 1)
+--                     container:addItem(637, 1)
+--                     container:addItem(9216, 1)
+--                 end
+--                 player:sendTextMessage(MESSAGE_LOOK, "Parabens! Voce adquiriu o Pacote Noturno. Saia e entre novamente para ativar o VIP. Seus itens estao na Inbox da Store.")
+--                 return true
+--             end
+--         else
+--             player:sendTextMessage(MESSAGE_LOOK, "Voce nao possui Tibia Coins o suficiente.")
+--             player:getPosition():sendMagicEffect(CONST_ME_POFF)
+--             return true
+--         end
+--     elseif param == "comprasombrio" then
+--         if tibiaCoins >= 1000 then
+--             if player:removeTransferableCoins(1000) then
+--                 local container = player:addItemStoreInbox(8860, 1)
+--                 if container then
+--                     player:addPremiumDays(30)
+--                     player:addPreyCards(6)
+--                     container:addItem(8778, 1)
+--                     container:addItem(39036, 1)
+--                     container:addItem(20138, 2)
+--                     container:addItem(8151, 1)
+--                     container:addItem(9099, 1)
+--                     container:addItem(9099, 1)
+--                     container:addItem(9099, 1)
+--                     container:addItem(11372, 1)
+--                     container:addItem(11372, 1)
+--                     container:addItem(26186, 1)
+--                     container:addItem(26186, 1)
+--                     container:addItem(26186, 1)
+--                     container:addItem(26186, 1)
+--                     container:addItem(22706, 1)
+--                     container:addItem(9215, 1)
+--                 end
+--                 player:sendTextMessage(MESSAGE_LOOK, "Parabens! Voce adquiriu o Pacote Sombrio. Saia e entre novamente para ativar o VIP. Seus itens estao na Inbox da Store.")
+--                 return true
+--             end
+--         else
+--             player:sendTextMessage(MESSAGE_LOOK, "Voce nao possui Tibia Coins o suficiente.")
+--             player:getPosition():sendMagicEffect(CONST_ME_POFF)
+--             return true
+--         end
+--     elseif param == "compraheroico" then
+--         if tibiaCoins >= 2000 then
+--             if player:removeTransferableCoins(2000) then
+--                 local container = player:addItemStoreInbox(8860, 1)
+--                 local container2 = player:addItemStoreInbox(8860, 1)
+--                 if container then
+--                     player:addPremiumDays(60)
+--                     player:addPreyCards(10)
+--                     container:addItem(3550, 1)
+--                     container:addItem(9223, 1)
+--                     container:addItem(8778, 1)
+--                     container:addItem(8778, 1)
+--                     container:addItem(39036, 1)
+--                     container:addItem(20138, 3)
+--                     container:addItem(8151, 1)
+--                     container:addItem(9099, 1)
+--                     container:addItem(9099, 1)
+--                     container:addItem(9099, 1)
+--                     container:addItem(9099, 1)
+--                     container:addItem(11372, 1)
+--                     container:addItem(11372, 1)
+--                     container:addItem(11372, 1)
+--                 end
+--                 if container2 then
+--                     container2:addItem(26186, 1)
+--                     container2:addItem(26186, 1)
+--                     container2:addItem(26186, 1)
+--                     container2:addItem(26186, 1)
+--                     container2:addItem(26186, 1)
+--                     container2:addItem(26186, 1)
+--                     container2:addItem(22706, 1)
+--                     container2:addItem(22706, 1)
+--                     container2:addItem(9215, 1)
+--                     container2:addItem(9215, 1)
+--                     container2:addItem(9215, 1)
+--                 end
+--                 player:sendTextMessage(MESSAGE_LOOK, "Parabens! Voce adquiriu o Pacote Heroico. Saia e entre novamente para ativar o VIP. Seus itens estao na Inbox da Store.")
+--                 return true
+--             end
+--         else
+--             player:sendTextMessage(MESSAGE_LOOK, "Voce nao possui Tibia Coins o suficiente.")
+--             player:getPosition():sendMagicEffect(CONST_ME_POFF)
+--             return true
+--         end
+--     elseif param == "compracrandoria" then
+--         if tibiaCoins >= 5000 then
+--             if player:removeTransferableCoins(5000) then
+--                 local container = player:addItemStoreInbox(8860, 1)
+--                 if container then
+--                     player:addPremiumDays(30)
+--                     container:addItem(3550, 1)
+--                     container:addItem(27522, 1)
+--                     container:addItem(18935, 1)
+--                     container:addItem(20342, 1)
+--                     container:addItem(39754, 1)
+--                     container:addItem(9215, 1)
+--                     container:addItem(9215, 1)
+--                     container:addItem(9215, 1)
+--                     container:addItem(9215, 1)
+--                     container:addItem(9215, 1)
+--                 end
+--                 player:sendTextMessage(MESSAGE_LOOK, "Parabens! Voce adquiriu o Pacote Crandoria. Saia e entre novamente para ativar o VIP. Seus itens estao na Inbox da Store.")
+--                 return true
+--             end
+--         else
+--             player:sendTextMessage(MESSAGE_LOOK, "Voce nao possui Tibia Coins o suficiente.")
+--             player:getPosition():sendMagicEffect(CONST_ME_POFF)
+--             return true
+--         end
+--     else
+--         player:popupFYI(msgDefault)
+-- 		return true
+--     end
+--     return true
+
+    
+
+-- end
+
+-- pacoteCrandoria:separator(" ")
+-- pacoteCrandoria:groupType("normal")
+-- pacoteCrandoria:register()

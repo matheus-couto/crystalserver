@@ -1,0 +1,372 @@
+local internalNpcName = "Mestre Aurelius"
+local npcType = Game.createNpcType(internalNpcName)
+local npcConfig = {}
+
+npcConfig.name = internalNpcName
+npcConfig.description = internalNpcName
+
+npcConfig.health = 100
+npcConfig.maxHealth = npcConfig.health
+npcConfig.walkInterval = 0
+npcConfig.walkRadius = 0
+
+npcConfig.outfit = {
+	lookType = 1173,
+	lookHead = 0,
+	lookBody = 114,
+	lookLegs = 86,
+	lookFeet = 86,
+    lookAddons = 3,
+}
+
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+
+npcType.onThink = function(npc, interval)
+    npcHandler:onThink(npc, interval)
+end
+
+npcType.onAppear = function(npc, creature)
+    npcHandler:onAppear(npc, creature)
+end
+
+npcType.onDisappear = function(npc, creature)
+    npcHandler:onDisappear(npc, creature)
+end
+
+npcType.onMove = function(npc, creature, fromPosition, toPosition)
+    npcHandler:onMove(npc, creature, fromPosition, toPosition)
+end
+
+npcType.onSay = function(npc, creature, type, message)
+    npcHandler:onSay(npc, creature, type, message)
+end
+
+npcType.onCloseChannel = function(npc, creature)
+    npcHandler:onCloseChannel(npc, creature)
+end
+
+
+
+local function creatureSayCallback(npc, creature, type, message)
+    local player = Player(creature)
+    local playerId = player:getId()
+
+    if not npcHandler:checkInteraction(npc, creature) then
+        return false
+    end
+
+    local kills = player:getStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.TotalCount)
+    if kills < 1 then 
+        kills = 0 
+    end
+
+    if MsgContains(message, "faction") or MsgContains(message, "faccao") then
+        if player:getStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.HelioxMember) < 1 then
+            if player:getStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.ArataxMember) < 1 then
+                if player:getLevel() >= 500 and player:getVipDays() > 0 then
+                    npcHandler:say("Qualquer um sera bem vindo a nossa faccao para poder buscar pela gloria e pela verdade! Mas nao sera de graca... \z
+                    Para participar voce tera que pagar uma taxa de 5.000.000 gold coins, obtendo todos os privilegios da nossa faccao. \z 
+                    Tambem posso fornecer informacoes sobre os {heliox}. Voce esta interessado em se juntar a nos?", npc, creature)
+                    npcHandler:setTopic(playerId, 1)
+                else
+                    npcHandler:say("Apenas jogadores VIP com nivel igual ou superior a 500 podem participar da faccao.", npc, creature)
+                    npcHandler:setTopic(playerId, 0)
+                end
+            else
+                npcHandler:say("Voce esta tentando trair sua faccao? Nao sei bem como interpretar isso, mas nao me parece boa coisa... \z
+                Saia da sua faccao atual antes de tentar entrar para os Heliox.", npc, creature)
+                npcHandler:setTopic(playerId, 0)
+            end
+        else
+            npcHandler:say("Voce pode checar seu {tempo} de faccao, utilizar um {poder} ou pedir para {sair} da faccao.", npc, creature)
+            npcHandler:setTopic(playerId, 0)
+        end
+    elseif MsgContains(message, "heliox") then
+        npcHandler:say("Os Heliox buscam pela paz e pelo fim de todo o caos. Ao contrario dos Aratax, os Heliox acreditam que o mal deve ser derrotado. \z
+        Nao acreditamos que o mal seja algo natural e que deve sempre existir, mas sim que devemos suprimi-lo tanto o quanto for possivel! \z
+        Se quiser, posso fornecer {informacoes} adicionais sobre a nossa faccao, assim como as vantagens que oferecemos.", npc, creature)
+        npcHandler:setTopic(playerId, 0)
+    elseif MsgContains(message, "informacoes") then
+        npcHandler:say("Enquanto estiver em uma faccao, voce recebe {bonus} e {recompensas} por derrotar jogadores da faccao inimiga.\z 
+        Um maximo de 5 mortes sao contabilizadas por semana, reiniciando junto aos bonus a meia noite de sabado para domingo. Alem disso, apos contribuir com tempo e mortes, voce pdoera usar {poderes} da faccao. \z
+        Esses poderem possuem tempo de recarga e um custo em gold sempre que forem utilizados.", npc, creature)
+        npcHandler:setTopic(playerId, 0)
+    elseif MsgContains(message, "bonus") then
+        npcHandler:say("Primeira morte: +5% Loot; Segunda morte: +5% Skills; Terceira morte: +10% Xp; Quarta morte: 2x Bestiary; Quinta morte: +15% Xp. Os bonus de Xp se acumulam, gerando +25% de xp. \z
+        Os bonus ficam ativos ao longo da semana ate a reinicializacao da contagem de mortes.", npc, creature)
+        npcHandler:setTopic(playerId, 0)
+    elseif MsgContains(message, "recompensas") then
+        npcHandler:say("As primeiras cinco kills da semana concederao 100k, 200k, 300k, 400k e 1kk de gold que serao enviados diretamente no seu inventario. Se nao houver espaco, o item caira no chao, fique atento!", npc, creature)
+        npcHandler:setTopic(playerId, 0)
+    elseif MsgFind(message, "poderes") then
+        npcHandler:say("Ao completar periodos de tempo e quantidade minima de kills pela faccao, voce recebera o direito de utilizar alguns de nossos poderes. Os poderes e seus efeitos estao listados no livro ao lado. \z
+        As exigencias de tempo e kills para usar cada poder tambem podem ser encontradas no livro. Todo poder tem um custo em ouro e um tempo de recarga. Caso queira usar um {poder}, basta dizer.", npc, creature)
+        npcHandler:setTopic(playerId, 0)
+    elseif MsgFind(message, "poder") then
+        local diff = os.time() - player:getStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.HelioxMemberTime)
+        local days = math.floor(diff / 86400)
+        if days < 14 then
+            npcHandler:say("Pelo seu tempo de contribuicao, voce nao pode usar nenhum poder ainda. Primeiro poder desbloqueado apos 2 semanas na faccao.", npc, creature)
+            npcHandler:setTopic(playerId, 0)
+        elseif days >= 14 and days < 28 then
+            npcHandler:say("Pelo seu tempo de contribuicao, voce pode utilizar o poder {stamina gain}.", npc, creature)
+            npcHandler:setTopic(playerId, 2)
+        elseif days >= 28 and days < 56 then
+            npcHandler:say("Pelo seu tempo de contribuicao, voce pode utilizar os poderes {stamina gain} e {xp boost}.", npc, creature)
+            npcHandler:setTopic(playerId, 3)
+        elseif days >= 56 and days < 112 then
+            npcHandler:say("Pelo seu tempo de contribuicao, voce pode utilizar os poderes {stamina gain}, {xp boost} e {double skill}.", npc, creature)
+            npcHandler:setTopic(playerId, 4)
+        elseif days >= 112 and days < 224 then
+            npcHandler:say("Pelo seu tempo de contribuicao, voce pode utilizar os poderes {stamina gain}, {xp boost}, {double skill} e {remove white skull}.", npc, creature)
+            npcHandler:setTopic(playerId, 5)
+        elseif days >= 224 then
+            npcHandler:say("Pelo seu tempo de contribuicao, voce pode utilizar os poderes {stamina gain}, {xp boost}, {double skill}, {remove white skull} e {remove red skull}.", npc, creature)
+            npcHandler:setTopic(playerId, 6)
+        end
+    elseif MsgFind(message, "stamina gain") then
+        if npcHandler:getTopic(playerId) >= 2 and npcHandler:getTopic(playerId) <= 6 then
+            local cooldown = 3 * 24 * 60 * 60 -- 3 dias em segundos
+            local lastUse = player:getStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.Cooldown1)
+            local now = os.time()
+            if kills > 1 then
+                if lastUse < now then
+                    npcHandler:say("Por 250.000 posso te fornecer 2h de stamina instantaneamente. Esse poder pode ser usado a cada 3 dias. Voce deseja usar esse poder?", npc, creature)
+                    npcHandler:setTopic(playerId, 7)
+                else
+                    local remaining = (lastUse + cooldown) - now
+                    if remaining < 0 then remaining = 0 end
+                    local hours = math.floor(remaining / 3600)
+                    local minutes = math.floor((remaining % 3600) / 60)
+                    npcHandler:say("Voce usou este poder ha pouco tempo. Espere por mais " .. hours .. " horas e " .. minutes .. " minutos.", npc, creature)
+                    npcHandler:setTopic(playerId, 0)
+                end
+            else
+                npcHandler:say("Voce precisa ter derrotado ao menos 2 jogadores da faccao inimiga para usar esse poder. Ate agora voce derrotou " ..kills.. ".", npc, creature)
+                npcHandler:setTopic(playerId, 0)
+            end
+        end
+    elseif MsgContains(message, "xp boost") then
+        if npcHandler:getTopic(playerId) >= 3 and npcHandler:getTopic(playerId) <= 6 then
+            local cooldown = 3 * 24 * 60 * 60 -- 3 dias em segundos
+            local lastUse = player:getStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.Cooldown2)
+            local now = os.time()
+            if kills > 4 then
+                if lastUse < now then
+                    npcHandler:say("Por 500.000 gold coins posso te fornecer 30 minutos de Xp Boost. Esse poder pode ser usado a cada 3 dias. Voce deseja usar esse poder?", npc, creature)
+                    npcHandler:setTopic(playerId, 8)
+                else
+                    local remaining = (lastUse + cooldown) - now
+                    if remaining < 0 then remaining = 0 end
+                    local hours = math.floor(remaining / 3600)
+                    local minutes = math.floor((remaining % 3600) / 60)
+                    npcHandler:say("Voce usou este poder ha pouco tempo. Espere por mais " .. hours .. " horas e " .. minutes .. " minutos.", npc, creature)
+                    npcHandler:setTopic(playerId, 0)
+                end
+            else
+                npcHandler:say("Voce precisa ter derrotado ao menos 5 jogadores da faccao inimiga para usar esse poder. Ate agora voce derrotou " ..kills.. ".", npc, creature)
+                npcHandler:setTopic(playerId, 0)
+            end
+        end
+    elseif MsgContains(message, "double skills") then
+        if npcHandler:getTopic(playerId) >= 4 and npcHandler:getTopic(playerId) <= 6 then
+            local cooldown = 7 * 24 * 60 * 60
+            local lastUse = player:getStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.Cooldown3)
+            local now = os.time()
+            if kills > 9 then
+                if lastUse < now then
+                    npcHandler:say("Por 1.000.000 gold coins posso te fornecer 6 horas de double skills. Esse poder pode ser usado a cada 7 dias. Voce deseja usar esse poder?", npc, creature)
+                    npcHandler:setTopic(playerId, 9)
+                else
+                    local remaining = (lastUse + cooldown) - now
+                    if remaining < 0 then remaining = 0 end
+                    local hours = math.floor(remaining / 3600)
+                    local minutes = math.floor((remaining % 3600) / 60)
+                    npcHandler:say("Voce usou este poder ha pouco tempo. Espere por mais " .. hours .. " horas e " .. minutes .. " minutos.", npc, creature)
+                    npcHandler:setTopic(playerId, 0)
+                end
+            else
+                npcHandler:say("Voce precisa ter derrotado ao menos 10 jogadores da faccao inimiga para usar esse poder. Ate agora voce derrotou " ..kills.. ".", npc, creature)
+                npcHandler:setTopic(playerId, 0)
+            end
+        end
+    elseif MsgContains(message, "remove white skull") or MsgContains(message, "remover white skull") then
+        if npcHandler:getTopic(playerId) >= 5 and npcHandler:getTopic(playerId) <= 6 then
+            local cooldown = 14 * 24 * 60 * 60
+            local lastUse = player:getStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.Cooldown4)
+            local now = os.time()
+            if kills > 14 then
+                if player:getSkull() == WHITE_SKULL then
+                    if lastUse < now then
+                        npcHandler:say("Por 2.500.000 gold coins posso remover seu status de White Skull instantaneamente. Esse poder pode ser usado a cada 14 dias. Voce deseja usar esse poder?", npc, creature)
+                        npcHandler:setTopic(playerId, 10)
+                    else
+                        local remaining = (lastUse + cooldown) - now
+                        if remaining < 0 then remaining = 0 end
+                        local hours = math.floor(remaining / 3600)
+                        local minutes = math.floor((remaining % 3600) / 60)
+                        npcHandler:say("Voce usou este poder ha pouco tempo. Espere por mais " .. hours .. " horas e " .. minutes .. " minutos.", npc, creature)
+                        npcHandler:setTopic(playerId, 0)
+                    end
+                else
+                    npcHandler:say("Voce nao possui White Skull no momento.", npc, creature)
+                    npcHandler:setTopic(playerId, 0)
+                end
+            else
+                npcHandler:say("Voce precisa ter derrotado ao menos 15 jogadores da faccao inimiga para usar esse poder. Ate agora voce derrotou " ..kills.. ".", npc, creature)
+                npcHandler:setTopic(playerId, 0)
+            end
+        end
+    elseif MsgContains(message, "remove red skull") or MsgContains(message, "remover red skull") then
+        if npcHandler:getTopic(playerId) >= 5 and npcHandler:getTopic(playerId) <= 6 then
+            local cooldown = 28 * 24 * 60 * 60
+            local lastUse = player:getStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.Cooldown5)
+            local now = os.time()
+            if kills > 24 then
+                if player:getSkull() == RED_SKULL then
+                    if lastUse < now then
+                        npcHandler:say("Por 10.000.000 gold coins posso remover seu status de White Skull instantaneamente. Esse poder pode ser usado a cada 28 dias. Voce deseja usar esse poder?", npc, creature)
+                        npcHandler:setTopic(playerId, 11)
+                    else
+                        local remaining = (lastUse + cooldown) - now
+                        if remaining < 0 then remaining = 0 end
+                        local hours = math.floor(remaining / 3600)
+                        local minutes = math.floor((remaining % 3600) / 60)
+                        npcHandler:say("Voce usou este poder ha pouco tempo. Espere por mais " .. hours .. " horas e " .. minutes .. " minutos.", npc, creature)
+                        npcHandler:setTopic(playerId, 0)
+                    end
+                else
+                    npcHandler:say("Voce nao possui Red Skull no momento.", npc, creature)
+                    npcHandler:setTopic(playerId, 0)
+                end
+            else
+                npcHandler:say("Voce precisa ter derrotado ao menos 25 jogadores da faccao inimiga para usar esse poder. Ate agora voce derrotou " ..kills.. ".", npc, creature)
+                npcHandler:setTopic(playerId, 0)
+            end
+        end
+    elseif MsgContains(message, "sair") then
+        if player:getStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.HelioxMember) == 1 then
+            npcHandler:say("Entao voce nao busca mais pelo caminho da luz e da verdade? Realmente isso seria uma pena... Mas tudo bem, cada um com seu caminho. \z
+            Deseja realmente deixar os Heliox?", npc, creature)
+            npcHandler:setTopic(playerId, 12)
+        else
+            npcHandler:say("Do que voce esta falando? Voce nao faz parte dessa faccao...", npc, creature)
+            npcHandler:setTopic(playerId, 0)
+        end
+    elseif (MsgContains(message, "yes") or MsgContains(message, "sim")) then
+        if npcHandler:getTopic(playerId) == 1 then
+            if player:removeMoneyBank(5000000) then
+                local currentWeek = tonumber(os.date("%W")) -- semana do ano (0 a 53)
+                player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.HelioxMember, 1)
+                player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.HelioxMemberTime, os.time())
+                player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.ArataxMember, 0)
+                player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.KillCount, 0)
+                player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.Bonus, 0)
+                player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.TotalCount, 0)
+                player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.SemanaCount, 0)
+                player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.Semana, currentWeek)
+                player:setIcon("heliox", CreatureIconCategory_Quests, CreatureIconQuests_BlueShield, 0)
+                npcHandler:say("Muito bem! Voce agora faz parte dos Heliox! Caso precise, posso fornecer {informacoes} importantes sobre as faccoes.", npc, creature)
+                npcHandler:setTopic(playerId, 0)
+            else
+                npcHandler:say("Parece que voce nao possui o valor total... nao se envergonhe, voce chega la... Retorne apos coletar um pouco mais de ouro.", npc, creature)
+                npcHandler:setTopic(playerId, 0)
+            end
+        elseif npcHandler:getTopic(playerId) == 7 then
+            if player:removeMoney(250000) then
+                local stamina = player:getStamina()
+                if stamina < 2400 then
+                    player:setStamina(math.min(2520, stamina + 120))
+                    player:getPosition():sendMagicEffect(CONST_ME_MAGIC_GREEN)
+                    npcHandler:say("Voce restaurou 2h de stamina.", npc, creature)
+                elseif stamina >= 2400 and stamina < 2520 then
+                    player:setStamina(2520)
+                    player:getPosition():sendMagicEffect(CONST_ME_MAGIC_GREEN)
+                    npcHandler:say("Sua stamina foi totalmente restaurada.", npc, creature)
+                end
+                local cooldown = 3 * 24 * 60 * 60
+                player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.Cooldown1, os.time() + cooldown)
+                npcHandler:setTopic(playerId, 0)
+            else
+                npcHandler:say("Voce precisa de 250.000 gold coins para usar esse poder.", npc, creature)
+                npcHandler:setTopic(playerId, 0)
+            end
+        elseif npcHandler:getTopic(playerId) == 8 then
+            local currentExpBoostTime = player:getExpBoostStamina()
+            local cooldown = 3 * 24 * 60 * 60
+            if currentExpBoostTime < 2.5 * 60 * 60 then
+                if player:removeMoney(500000) then
+                    player:setStoreXpBoost(50)
+                    player:setExpBoostStamina(currentExpBoostTime + 60 * 60)
+                    player:say('Sua hora de 50% de bonus de experiencia foi iniciado!', TALKTYPE_MONSTER_SAY)
+                    player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.Cooldown2, os.time() + cooldown)
+                    npcHandler:setTopic(playerId, 0)
+                else
+                    player:say('Voce precisa de 500.000 gold coins para usar esse poder.', TALKTYPE_MONSTER_SAY)
+                    npcHandler:setTopic(playerId, 0)
+                end
+            else
+                player:say('Voce nao pode acumular mais que 3 horas de Xp Boost.', TALKTYPE_MONSTER_SAY)
+                npcHandler:setTopic(playerId, 0)
+            end
+        elseif npcHandler:getTopic(playerId) == 9 then
+            local cooldown = 7 * 24 * 60 * 60
+            if player:removeMoney(1000000) then
+                player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.CooldownSkills, os.time() + 6 * 60 * 60)
+                player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.Cooldown3, os.time() + cooldown)
+                player:say('Voce recebeu 6 horas de bonus de skills, contando a partir de agora.', TALKTYPE_MONSTER_SAY)
+                npcHandler:setTopic(playerId, 0)
+            else
+                player:say('Voce precisa de 1.000.000 gold coins para usar esse poder.', TALKTYPE_MONSTER_SAY)
+                npcHandler:setTopic(playerId, 0)
+            end
+        elseif npcHandler:getTopic(playerId) == 10 then
+            local cooldown = 14 * 24 * 60 * 60
+            if player:removeMoney(2500000) then
+                player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.Cooldown4, os.time() + cooldown)
+                player:setSkull(SKULL_NONE)
+                player:say('Muito bem. Seu status de White Skull foi removido.', TALKTYPE_MONSTER_SAY)
+                npcHandler:setTopic(playerId, 0)
+            else
+                player:say('Voce precisa de 2.500.000 gold coins para usar esse poder.', TALKTYPE_MONSTER_SAY)
+                npcHandler:setTopic(playerId, 0)
+            end
+        elseif npcHandler:getTopic(playerId) == 11 then
+            local cooldown = 28 * 24 * 60 * 60
+            if player:removeMoney(2500000) then
+                player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.Cooldown5, os.time() + cooldown)
+                player:setSkull(SKULL_NONE)
+                player:say('Muito bem. Seu status de Red Skull foi removido.', TALKTYPE_MONSTER_SAY)
+                npcHandler:setTopic(playerId, 0)
+            else
+                player:say('Voce precisa de 10.000.000 gold coins para usar esse poder.', TALKTYPE_MONSTER_SAY)
+                npcHandler:setTopic(playerId, 0)
+            end
+        elseif npcHandler:getTopic(playerId) == 12 then
+            player:say('Muito bem. Considere feito! Voce nao faz mais parte dos Heliox.', TALKTYPE_MONSTER_SAY)
+            player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.ArataxMember, 0)
+            player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.HelioxMemberTime, -1)
+            player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.HelioxMember, 0)
+            player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.KillCount, 0)
+            player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.Bonus, 0)
+            player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.TotalCount, 0)
+            player:setStorageValue(Storage.Quest.Crandoria.CrandoriaFactions.SemanaCount, 0)
+            player:removeIcon("heliox")
+            npcHandler:setTopic(playerId, 0)
+        end
+    end
+end
+
+
+npcHandler:setMessage(MESSAGE_GREET, "Ola, |PLAYERNAME|... Lembre-se que todos precisamosde {ajuda} em um momento ou outro.")
+npcHandler:setMessage(MESSAGE_FAREWELL, "Ate mais.") 
+npcHandler:setMessage(MESSAGE_WALKAWAY, "Adeus.")
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+
+npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
+
+npcType:addDialogOptions("bye")
+-- npcType registering the npcConfig table
+npcType:register(npcConfig)

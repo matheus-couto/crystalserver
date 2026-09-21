@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<!--Announcements-->
+	<announce delay="1000" type="event" message="Pillage and plunder! Pirates have been sighted east of Magincia!." />
+	<!--Single Spawns-->
+	<areaspawn delay="1000" fromx="4821" fromy="5181" fromz="7" tox="4856" toy="5259" toz="7">
+		<monster name="Pirate Buccaneer" amount="20" />
+		<monster name="Pirate Cutthroat" amount="15" />
+		<monster name="Pirate Marauder" amount="15" />
+	</areaspawn>
+</raid>

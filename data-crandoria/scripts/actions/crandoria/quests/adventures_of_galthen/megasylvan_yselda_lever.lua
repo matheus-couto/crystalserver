@@ -1,0 +1,30 @@
+local config = {
+	boss = {
+		name = "Megasylvan Yselda",
+		position = Position(5437, 4456, 12)
+	},
+	requiredLevel = 250,
+	timeToFightAgain = 20 * 60 * 60,
+	timeToDefeatBoss = 20 * 60,
+	playerPositions = {
+		{pos = Position(5396, 4463, 12), teleport = Position(5437, 4461, 12), effect = CONST_ME_TELEPORT},
+		{pos = Position(5396, 4464, 12), teleport = Position(5437, 4461, 12), effect = CONST_ME_TELEPORT},
+		{pos = Position(5396, 4465, 12), teleport = Position(5437, 4461, 12), effect = CONST_ME_TELEPORT},
+		{pos = Position(5396, 4466, 12), teleport = Position(5437, 4461, 12), effect = CONST_ME_TELEPORT},
+		{pos = Position(5396, 4467, 12), teleport = Position(5437, 4461, 12), effect = CONST_ME_TELEPORT}
+	},
+	specPos = {
+		from = Position(5419, 4449, 12),
+		to = Position(5456, 4475, 12)
+	},
+	exit = Position(5398, 4443, 12),
+	storage = Storage.Quest.U12_70.AdventuresOfGalthen.MegasylvanYseldaTimer
+}
+
+local megasylvanYseldaLever = Action()
+function megasylvanYseldaLever.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	return CreateDefaultLeverBoss(player, config)
+end
+
+megasylvanYseldaLever:position({x = 5396, y = 4462, z = 12})
+megasylvanYseldaLever:register()

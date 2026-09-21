@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<announce delay="1000" type="event" message="Something is moving in the depths of the sea around Nautis" />
+	<announce delay="20000" type="event" message="Numerous Deepling monsters have been sighted in the seas around Nautis." />
+	<announce delay="60000" type="event" message="Deeplings emerged from the sea to attack Nautis." />
+	<areaspawn delay="60000" fromx="5568" fromy="4894" fromz="7" tox="5632" toy="4944" toz="7">
+		<monster name="Deepling Scout" amount="12" />
+		<monster name="Deepling Worker" amount="12" />
+		<monster name="Deepling Warrior" amount="12" />
+		<monster name="Deepling Guard" amount="12" />
+		<monster name="Deepling Tyrant" amount="10" />
+	</areaspawn>
+</raid>

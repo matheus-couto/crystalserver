@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<!--Announcements-->
+	<!-- <announce delay="1000" type="event" message="Cristais especiais estao se formando em Umbra." /> -->
+	<!--Single Spawns-->
+	<areaspawn delay="60000" fromx="5951" fromy="5282" fromz="7" tox="5970" toy="5323" toz="7">
+		<monster name="Blue Ancient Crystal" amount="1" />
+		<monster name="Green Ancient Crystal" amount="1" />
+		<monster name="Violet Ancient Crystal" amount="1" />
+	</areaspawn>
+	<areaspawn delay="60000" fromx="6109" fromy="5294" fromz="7" tox="6135" toy="5328" toz="7">
+		<monster name="Blue Ancient Crystal" amount="1" />
+		<monster name="Green Ancient Crystal" amount="1" />
+		<monster name="Violet Ancient Crystal" amount="1" />
+	</areaspawn>
+</raid>

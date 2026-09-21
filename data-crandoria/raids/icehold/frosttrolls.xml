@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<!--Announcements-->
+	<announce delay="1000" type="event" message="Frost Trolls are attacking in Icehold Hills." />
+	<announce delay="20000" type="event" message="More Frost Trolls in Icehold Hills!" />
+	<!--Single Spawns-->
+	<areaspawn delay="10000" fromx="4868" fromy="5393" fromz="6" tox="5002" toy="5470" toz="6">
+		<monster name="Frost Troll" amount="35" />
+	</areaspawn>
+	<areaspawn delay="20000" fromx="4868" fromy="5393" fromz="6" tox="5002" toy="5470" toz="6">
+		<monster name="Frost Troll" amount="35" />
+	</areaspawn>
+</raid>

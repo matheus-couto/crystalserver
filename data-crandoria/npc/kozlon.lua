@@ -1,0 +1,1754 @@
+﻿local internalNpcName = "Kozlon"
+local npcType = Game.createNpcType(internalNpcName)
+local npcConfig = {}
+
+npcConfig.name = internalNpcName
+npcConfig.description = internalNpcName
+
+npcConfig.health = 100
+npcConfig.maxHealth = npcConfig.health
+npcConfig.walkInterval = 4000
+npcConfig.walkRadius = 1
+
+npcConfig.outfit = {
+	lookType = 130,
+	lookHead = 0,
+	lookBody = 57,
+	lookLegs = 94,
+	lookFeet = 94,
+    	lookAddons = 1,
+}
+
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+
+npcType.onThink = function(npc, interval)
+    npcHandler:onThink(npc, interval)
+end
+
+npcType.onAppear = function(npc, creature)
+    npcHandler:onAppear(npc, creature)
+end
+
+npcType.onDisappear = function(npc, creature)
+    npcHandler:onDisappear(npc, creature)
+end
+
+npcType.onMove = function(npc, creature, fromPosition, toPosition)
+    npcHandler:onMove(npc, creature, fromPosition, toPosition)
+end
+
+npcType.onSay = function(npc, creature, type, message)
+    npcHandler:onSay(npc, creature, type, message)
+end
+
+npcType.onCloseChannel = function(npc, creature)
+    npcHandler:onCloseChannel(npc, creature)
+end
+
+-- local area = {
+--     fromPosition = {x = 4792, y = 5219, z = 6},
+--     toPosition = {x = 4795, y = 5224, z = 6}
+-- }
+
+-- local function isInArea(player, area)
+--     local playerPos = player:getPosition()
+--     return playerPos.x >= area.fromPosition.x and playerPos.x <= area.toPosition.x
+--         and playerPos.y >= area.fromPosition.y and playerPos.y <= area.toPosition.y
+--         and playerPos.z == area.fromPosition.z
+-- end
+
+local function creatureSayCallback(npc, creature, type, message)
+    local player = Player(creature)
+    local playerId = player:getId()
+
+    local storage = player:getStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem)
+
+    if not npcHandler:checkInteraction(npc, creature) then
+        return false
+    end
+
+    if MsgContains(message, "missao") or MsgContains(message, "mission") or MsgContains(message, "zarabastan") then
+        if player:getStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso) < 1 then
+            if npcHandler:getTopic(playerId) == 0 then
+                if player:getLevel() < 250 then
+                    npcHandler:say("Acho que voce nao esta pronto para a missao que eu tenho a oferecer... Volte quando estiver com nivel igual ou acima de 250.", npc, creature)
+                else
+                    npcHandler:say("Como voce sabe que preciso de ajuda com uma missao? Ok, nao importa. Ja estou tao sem opcoes que nao vou me dar ao luxo de perguntar. Estamos todos em perigo e preciso de alguem que possa ajudar. \z
+                    Zarabastan, o novo mestre dos Warlocks, esta treinando um exercito de warlocks, assassinos e mercenarios para tomar a cidade de Magincia. Eu sei disso pois estava entre eles, mas quando descobri seu plano decidi defender Magincia. \z
+                    Tentei conversar com os magos de Magincia mas eles nao me deram ouvidos. Apenas eu posso garantir a passagem de pessoas de fora na fortaleza dos warlocks, mas antes preciso da {permissao} de {Spectulus}.", npc, creature)
+                    npcHandler:setTopic(playerId, 1)
+                end
+            elseif npcHandler:getTopic(playerId) == 1 then
+                npcHandler:say("Para obter a perimssao de Spectulus preciso de um documento que esta em algum lugar na cidade destruida das Furys, descendo as escadas logo abaixo de onde estamos. Nesse documento esta toda informacao que precisamos para \z
+                convencer os magos de Magincia que estou do lado deles e que nao estou mentindo quando falo sobre o ataque. Voce esta disposto a me ajudar?", npc, creature)
+                npcHandler:setTopic(playerId, 2)
+            end
+        elseif player:getStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso) == 1 then
+            npcHandler:say("Voce encontrou o documento?", npc, creature)
+            npcHandler:setTopic(playerId, 3)
+        elseif player:getStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso) > 1 and player:getStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso) < 5 then
+            npcHandler:say("Por favor, converse com os magos de Magincia e faca-os enxergarem o que realmente esta acontecendo!", npc, creature)
+            npcHandler:setTopic(playerId, 0)
+        elseif player:getStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso) == 5 then
+            npcHandler:say("Voce conseguiu? Que otima noticia! Entao agora estamos a um passo de derrotar os Warlocks. A cidade deles fica no subsolo, passando pelos esgotos da cidade das Furys. Te darei uma permissao por meio de um feitico para que \z
+            voce possa passar pela porta magica que protege o local. Eles devem ter criado algum tipo de protecao para impedir intrusos de entrar depois da porta, para que eu nao conseguisse acessar. Voce tera que descobrir sozinho como passar por essa barreira. \z
+            Zarabastan esta sempre na Academia dos Warlocks, ao fundo da cidade, mas ele tem alguns {guardas} especiais que o protegem. Assassinos treinados. Se conseguir passar por eles e derrotar Zarabastan, retorne ate mim! Boa sorte.", npc, creature)
+            player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso, 6)
+            npcHandler:setTopic(playerId, 0)
+        elseif player:getStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso) == 6 then
+            npcHandler:say("Depressa! Nao temos muito tempo. Desca para a cidade das Furys e passe pelo esgoto para chegar ao esconderijo dos Warlocks e derrota Zarabastan!", npc, creature)
+            npcHandler:setTopic(playerId, 0)
+        elseif player:getStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso) == 7 then
+            npcHandler:say("Voce conseguiu? Sensacional! Ha ha ha. Quase inacreditavel. Por favor, leve as boas novas a Spectulus. Com certeza ele me deixara voltar para Magincia depois disso tudo. Me diga quais foram as palavras dele apos saber das boas noticias. \z
+            Por hora voce ja recebeu uma boa quantidade de experiencia pela missao. Esperarei pelo seu retorno.", npc, creature)
+            player:addExperience(player:getLevel() * 200000, true)
+            player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso, 8)
+            npcHandler:setTopic(playerId, 0)
+        elseif player:getStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso) == 8 then
+            npcHandler:say("Por favor, leve as boas novas a Spectulus. Com certeza ele me deixara voltar para Magincia depois disso tudo. Me diga quais foram as palavras dele apos saber das boas noticias.", npc, creature) 
+            npcHandler:setTopic(playerId, 0)
+        elseif player:getStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso) == 9 then
+            npcHandler:say("Spectulus me deixou voltar? De verdade? Hahaha eu sabia! Aquele magi ranzinza tem coracao! Escute, nao pense que esquecerei dos seus esforcos. Eu aprendi algumas magias especiais com os Warlocks enquanto estive la... \z
+            Um dos melhores truques que aprendi foi como transformar itens iguais em um item diferene a minha escolha. Posso te fornecer esse servico, so preciso de um reagente magico. Passe em minha casa em Magincia e te explicarei um pouco melhor! \z
+            Quando precisar de ajuda com essa troca, basta ir ate minha casa, ao lado do tapete de Uzon em Magincia, e dizer {transmutar}. Te vejo la!", npc, creature) 
+            player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso, 10)
+            player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Reward, 1)
+            local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+            player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 10)
+            player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+            player:addAchievement("Pacificador")
+            npcHandler:setTopic(playerId, 0)
+        end
+    elseif MsgContains(message, "permissao") or MsgContains(message, "permission") or MsgContains(message, "spectulus") then
+        npcHandler:say("Para obter a perimssao de Spectulus preciso de um documento que esta em algum lugar na cidade destruida das Furys, descendo as escadas logo abaixo de onde estamos. Nesse documento esta toda informacao que precisamos para \z
+        convencer os magos de Magincia que estou do lado deles e que o que eu digo e real. Voce esta disposto a me ajudar?", npc, creature)
+        npcHandler:setTopic(playerId, 2)
+    elseif MsgContains(message, "transmutar") or MsgContains(message, "transmute") then
+        npcHandler:say("Bom, como combinado, agora voce podera usar a transmutacao. Esse metodo antigo te permite trocar 3 itens de uma mesma classe por 1 item da mesma classe a sua escolha. \z
+        Para isso, voce precisara entrar no teleport descendo as escadas. Va! Leia o livro com as instrucoes e use o metodo quando quiser.", npc, creature)
+        player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso, 11)
+        npcHandler:setTopic(playerId, 0)
+    end
+
+
+
+    -- OLD TRANSMUTATION --
+    -- elseif MsgContains(message, "transmutar") or MsgContains(message, "transmute") then
+    --     if player:getStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Reward) > 0 then
+    --         npcHandler:say("Posso trocar equipamentos iguais por um diferente do mesmo nivel da sua escolha por meio da minha magia. Para realizar a troca, alem dos itens sera necessario um {Living Crystal}, obtido de Zarabastan. \z
+    --         Eu troco itens {cobra}, {lion}, {falcon}, {soul}, {primal} e, em casos especiais, ate mesmo {eldritch} e {sanguine}. Qual voce gostaria de trocar?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         npcHandler:setTopic(playerId, 4) 
+    --     end
+    -- elseif MsgContains(message, "yes") or MsgContains(message, "sim") then
+    --     if npcHandler:getTopic(playerId) == 2 then
+    --         npcHandler:say("Excelente! Eu sabia que encontraria alguem que finalmente poderia me ajudar. Desca as escadas e voce chegara na cidade destruida das Furys. Eu nao lembro bem onde esta o documento, mas lembro de ter guardado ele em uma \z
+    --         caixa em algumm lugar. Ou seria uma gaveta? Bom, de qualquer forma a cidade esta um caos, nao sera uma tarefa facil. Te desejo boa sorte!", npc, creature)
+    --         npcHandler:setTopic(playerId, 0)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso, 1)
+    --     elseif npcHandler:getTopic(playerId) == 3 then
+    --         if player:removeItem(7935, 1) then
+    --             npcHandler:say("Isso! Este realmente era o documento que eu mais precisava! Mas esute, eu nao possuo credibilidade em Magincia. Preciso que voce pegue o conteudo dessa carta e leve ate Zoltan. Ja fomos amigos um dia, ele vai acreditar em mim. \z
+    --             Por favor, leve isso para Zoltan. Me diga se conseguir uma resposta positiva sobre a incursao ate a cidade dos Warlocks.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso, 2)
+    --             player:addItem(348, 1)
+    --         else
+    --             npcHandler:say("E onde estao os documentos? Nao vejo nada com voce. Volte quando estiver com eles em maos!", npc, creature)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     elseif npcHandler:getTopic(playerId) == 17 then
+    --         if player:removeItem(24873, 1) then
+    --             npcHandler:say("Dois itens iguais e uma 'luminescent heart potion'? Eu nunca ouvi falar em algo assim, mas com certeza Filandrel, alquimista de Astralis, sabe algo sobre isso. Pergunte a ele sobre essa pocao e talvez ele te informe melhor sobre como obte-la.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso, 11)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     elseif npcHandler:getTopic(playerId) == 18 then
+    --         npcHandler:say("Excelente! E qual dos seus itens Eldritch ou Sanguine voce gostaria de trocar?", npc, creature)
+    --         npcHandler:setTopic(playerId, 15)
+    --     end
+    -- elseif MsgContains(message, "no") or MsgContains(message, "nao") then
+    --     npcHandler:say("Ah... Tudo bem entao.", npc, creature)
+    --     npcHandler:setTopic(playerId, 0)
+    --     ----------------------------------------- COBRA ----------------------------------------------
+    -- elseif MsgFind(message, "cobra") then
+    --     if npcHandler:getTopic(playerId) == 4 then
+    --         npcHandler:say("Posso trocar tres itens Cobra iguais por um item Cobra da sua escolha. So precisarei de um Living Crystal alem dos itens. Qual item repetido voce gostaria de trocar?", npc, creature)
+    --         npcHandler:setTopic(playerId, 5)
+    --     end
+    -- elseif MsgContains(message, "cobra axe") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 5 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Cobra Axes?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 30396)
+    --         npcHandler:setTopic(playerId, 6)
+    --     elseif npcHandler:getTopic(playerId) == 6 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(30396, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "cobra club") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 5 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Cobra Clubs?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 30395)
+    --         npcHandler:setTopic(playerId, 6)
+    --     elseif npcHandler:getTopic(playerId) == 6 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(30395, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "cobra sword") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 5 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 das suas Cobra Swords?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 30398)
+    --         npcHandler:setTopic(playerId, 6)
+    --     elseif npcHandler:getTopic(playerId) == 6 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(30398, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "cobra hood") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 5 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Cobra Hoods?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 30397)
+    --         npcHandler:setTopic(playerId, 6)
+    --     elseif npcHandler:getTopic(playerId) == 6 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(30397, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "cobra boots") or MsgContains(message, "cobra boot") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 5 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 das suas Cobra Boots?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 30394)
+    --         npcHandler:setTopic(playerId, 6)
+    --     elseif npcHandler:getTopic(playerId) == 6 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(30394, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "cobra crossbow") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 5 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Cobra Crossbows?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 30393)
+    --         npcHandler:setTopic(playerId, 6)
+    --     elseif npcHandler:getTopic(playerId) == 6 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(30393, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "cobra wand") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 5 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 das suas Cobra Wands?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 30399)
+    --         npcHandler:setTopic(playerId, 6)
+    --     elseif npcHandler:getTopic(playerId) == 6 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(30399, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "cobra rod") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 5 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 das suas Cobra Rods?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 30400)
+    --         npcHandler:setTopic(playerId, 6)
+    --     elseif npcHandler:getTopic(playerId) == 6 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(30400, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+
+    --     -------------------------------------- LION ----------------------------------------
+    -- elseif MsgFind(message, "lion") then
+    --     if npcHandler:getTopic(playerId) == 4 then
+    --         npcHandler:say("Posso trocar tres dos seus itens Lion iguais por um novo item Lion da sua escolha. So precisarei de um Living Crystal alem dos itens. Qual item repetido voce gostaria de trocar?", npc, creature)
+    --         npcHandler:setTopic(playerId, 7)
+    --     end
+    -- elseif MsgContains(message, "lion axe") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 7 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Lion Axes?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34253)
+    --         npcHandler:setTopic(playerId, 8)
+    --     elseif npcHandler:getTopic(playerId) == 8 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34253, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "lion hammer") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 7 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Lion Hammers?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34254)
+    --         npcHandler:setTopic(playerId, 8)
+    --     elseif npcHandler:getTopic(playerId) == 8 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34254, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "lion longsword") or MsgContains(message, "lion sword") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 7 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 das suas Lion Longswords?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34155)
+    --         npcHandler:setTopic(playerId, 8)
+    --     elseif npcHandler:getTopic(playerId) == 8 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34155, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "lion spangenhelm") or MsgContains(message, "lion helmet") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 7 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Lion Spangenhelms?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34156)
+    --         npcHandler:setTopic(playerId, 8)
+    --     elseif npcHandler:getTopic(playerId) == 8 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34156, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "lion plate") or MsgContains(message, "lion armor") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 7 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Lion Plates?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34157)
+    --         npcHandler:setTopic(playerId, 8)
+    --     elseif npcHandler:getTopic(playerId) == 8 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34157, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "lion spellbook") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 7 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Lion Spellbooks?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34153)
+    --         npcHandler:setTopic(playerId, 8)
+    --     elseif npcHandler:getTopic(playerId) == 8 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34153, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "lion shield") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 7 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Lion Shields?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34154)
+    --         npcHandler:setTopic(playerId, 8)
+    --     elseif npcHandler:getTopic(playerId) == 8 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34154, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "lion wand") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 7 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 das suas Lion Wands?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34152)
+    --         npcHandler:setTopic(playerId, 8)
+    --     elseif npcHandler:getTopic(playerId) == 8 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34152, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "lion rod") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 7 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 das suas Lion Rods?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34151)
+    --         npcHandler:setTopic(playerId, 8)
+    --     elseif npcHandler:getTopic(playerId) == 8 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34151, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "lion longbow") or MsgContains(message, "lion bow") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 7 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Lion Longbows?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34150)
+    --         npcHandler:setTopic(playerId, 8)
+    --     elseif npcHandler:getTopic(playerId) == 8 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34150, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+
+    --     ---------------------------- FALCON -----------------------------------
+    -- -- elseif MsgContains(message, "falcon") then
+    -- elseif MsgFind(message, "falcon") then
+    --     if npcHandler:getTopic(playerId) == 4 then
+    --         npcHandler:say("Posso trocar tres dos seus itens Falcon iguais por um novo item Falcon da sua escolha. So precisarei de um Living Crystal alem dos itens. Qual item repetido voce gostaria de trocar?", npc, creature)
+    --         npcHandler:setTopic(playerId, 9)
+    --     end
+    -- elseif MsgContains(message, "falcon battleaxe") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 9 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Falcon Battleaxes?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 28724)
+    --         npcHandler:setTopic(playerId, 10)
+    --     elseif npcHandler:getTopic(playerId) == 10 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(28724, 1)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "falcon mace") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 9 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 das suas Falcon Maces?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 28725)
+    --         npcHandler:setTopic(playerId, 10)
+    --     elseif npcHandler:getTopic(playerId) == 10 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(28725, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "falcon longsword") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 9 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 das suas Falcon Longsword?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 28723)
+    --         npcHandler:setTopic(playerId, 10)
+    --     elseif npcHandler:getTopic(playerId) == 10 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(28723, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "falcon shield") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 9 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Falcon Shield?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 28721)
+    --         npcHandler:setTopic(playerId, 10)
+    --     elseif npcHandler:getTopic(playerId) == 10 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(28721, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "falcon greaves") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 9 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 das suas Falcon Greaves?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 28720)
+    --         npcHandler:setTopic(playerId, 10)
+    --     elseif npcHandler:getTopic(playerId) == 10 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(28720, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "falcon plate") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 9 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 das suas Falcon Plates?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 28719)
+    --         npcHandler:setTopic(playerId, 10)
+    --     elseif npcHandler:getTopic(playerId) == 10 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(28719, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "falcon coif") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 9 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Falcon Coifs?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 28715)
+    --         npcHandler:setTopic(playerId, 10)
+    --     elseif npcHandler:getTopic(playerId) == 10 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(28715, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "falcon circlet") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 9 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Falcon Circlets?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 28714)
+    --         npcHandler:setTopic(playerId, 10)
+    --     elseif npcHandler:getTopic(playerId) == 10 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(28714, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "falcon bow") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 9 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Falcon Bows?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 28718)
+    --         npcHandler:setTopic(playerId, 10)
+    --     elseif npcHandler:getTopic(playerId) == 10 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(28718, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "falcon wand") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 9 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 das suas Falcon Wands?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 28717)
+    --         npcHandler:setTopic(playerId, 10)
+    --     elseif npcHandler:getTopic(playerId) == 10 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(28717, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "falcon rod") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 9 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 das suas Falcon Rods?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 28716)
+    --         npcHandler:setTopic(playerId, 10)
+    --     elseif npcHandler:getTopic(playerId) == 10 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(28716, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+
+    --     --------------------------------- SOUL -----------------------------------
+    -- elseif MsgFind(message, "soul") then
+    --     if npcHandler:getTopic(playerId) == 4 then
+    --         npcHandler:say("Posso trocar tres dos seus itens Soul iguais por um novo item Soul da sua escolha. So precisarei de um Living Crystal alem dos itens. Qual item repetido voce gostaria de trocar?", npc, creature)
+    --         npcHandler:setTopic(playerId, 11)
+    --     end
+    -- elseif MsgContains(message, "pair of soulstalkers") or MsgContains(message, "soulstalkers") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Pair of Soulstalkers?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34098)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34098, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "pair of soulwalkers") or MsgContains(message, "soulwalkers") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Pair of Soulwalkers?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34097)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34097, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "soulbastion") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Soulbastions?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34099)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34099, 1)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "soulbiter") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Soulbiters?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34084)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34084, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "soulbleeder") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Soulbleeders?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34088)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34088, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "soulcrusher") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Soulcrushers?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34086)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34086, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "soulcutter") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Soulcutters?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34082)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34082, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "souleater") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Souleaters?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34085)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34085, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "soulhexer") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Soulhexers?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34091)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34091, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "soulmaimer") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Soulmaimers?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34087)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34087, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "soulmantle") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Soulmantles?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34095)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34095, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "soulpiercer") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Soulpierces?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34089)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34089, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "soulshanks") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Soulshanks?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34092)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34092, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "soulshell") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Soulshells?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34094)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34094, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "soulshredder") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Soulshredders?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34083)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34083, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "soulshroud") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Souldhrouds?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34096)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34096, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "soulstrider") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Soulstriders?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34093)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34093, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "soultainter") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Soultainters?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 34090)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(34090, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "soul spear") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 11 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 das suas Soul Spears?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 6534)
+    --         npcHandler:setTopic(playerId, 12)
+    --     elseif npcHandler:getTopic(playerId) == 12 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(6534, 1)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+
+    --     ----------------------------------------- PRIMAL ----------------------------------------------
+    -- elseif MsgFind(message, "primal") then
+    --     if npcHandler:getTopic(playerId) == 4 then
+    --         npcHandler:say("Posso trocar tres dos seus itens Primal iguais por um novo item Primal da sua escolha. So precisarei de um Living Crystal alem dos itens. Qual item repetido voce gostaria de trocar?", npc, creature)
+    --         npcHandler:setTopic(playerId, 13)
+    --     end
+    -- elseif MsgContains(message, "alicorn headguard") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 13 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Alicorn Headguards?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 39149)
+    --         npcHandler:setTopic(playerId, 14)
+    --     elseif npcHandler:getTopic(playerId) == 14 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(39149, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "alicorn quiver") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 13 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Alicorn Quivers?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 39150)
+    --         npcHandler:setTopic(playerId, 14)
+    --     elseif npcHandler:getTopic(playerId) == 14 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(39150, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "alicorn ring") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 13 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Alicorn Rings?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 39182)
+    --         npcHandler:setTopic(playerId, 14)
+    --     elseif npcHandler:getTopic(playerId) == 14 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(39182, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "arboreal crown") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 13 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Arboreal Crowns?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 39153)
+    --         npcHandler:setTopic(playerId, 14)
+    --     elseif npcHandler:getTopic(playerId) == 14 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(39153, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "arboreal ring") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 13 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Arboreal Rings?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 39188)
+    --         npcHandler:setTopic(playerId, 14)
+    --     elseif npcHandler:getTopic(playerId) == 14 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(39188, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "arboreal tome") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 13 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Arboreal Tomes?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 39154)
+    --         npcHandler:setTopic(playerId, 14)
+    --     elseif npcHandler:getTopic(playerId) == 14 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(39154, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "arcanomancer folio") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 13 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Arcanomancer Folios?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 39152)
+    --         npcHandler:setTopic(playerId, 14)
+    --     elseif npcHandler:getTopic(playerId) == 14 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(39152, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "arcanomancer regalia") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 13 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Arcanomancer Regalias?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 39151)
+    --         npcHandler:setTopic(playerId, 14)
+    --     elseif npcHandler:getTopic(playerId) == 14 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(39151, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "arcanomancer sigil") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 13 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Arcanomancer Sigils?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 39185)
+    --         npcHandler:setTopic(playerId, 14)
+    --     elseif npcHandler:getTopic(playerId) == 14 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(39185, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "spiritthorn armor") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 13 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Spiritthorn Armors?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 39147)
+    --         npcHandler:setTopic(playerId, 14)
+    --     elseif npcHandler:getTopic(playerId) == 14 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(39147, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "spiritthorn helmet") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 13 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Spiritthorn Helmets?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 39148)
+    --         npcHandler:setTopic(playerId, 14)
+    --     elseif npcHandler:getTopic(playerId) == 14 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(39148, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "spiritthorn ring") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 13 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 3 dos seus Spiritthorn Rings?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 39179)
+    --         npcHandler:setTopic(playerId, 14)
+    --     elseif npcHandler:getTopic(playerId) == 14 then
+    --         if player:getItemCount(storage) >= 3 and player:getItemCount(24964) >= 1 then
+    --             player:removeItem(storage, 3)
+    --             player:removeItem(24964, 1)
+    --             player:addItem(39179, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgFind(message, "eldritch") or MsgFind(message, "sanguine") then
+    --     if npcHandler:getTopic(playerId) == 4 then
+    --         if player:getStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso) == 10 then
+    --             npcHandler:say({"Para transmutar itens Eldritch ou Sanguine antes precisarei da receita dessas transmutacoes. Mas ha um problema: Nao ha magos no Novo Continente que conhecem a receita. Embora, de acordo com algumas historias, exista uma criatura magica que possui tal conhecimento...",
+    --             "Eu nao sei que criatura seria essa, mas dizem que em uma terra misteriosa habitam seres magicos que podem fazer coisas inimaginaveis! Talvez, em algum momento, voce tenha a sorte de encontra-lo... Ou, talvez, voce ja possua a receita com voce. Voce possui essa receita especial?"}, npc, creature)
+    --             npcHandler:setTopic(playerId, 17)
+    --         elseif player:getStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso) == 11 then
+    --             npcHandler:say("Para transmutar itens Eldritch ou Sanguine em um novo item da sua escolha eu precisarei de 2 itens iguais e 1 Luminescent Heart Potion. Voce possui esses itens com voce?", npc, creature)
+    --             npcHandler:setTopic(playerId, 18)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "luminescent heart potion") then
+    --     npcHandler:say("Essas pocoes especiais sao utilizadas em rituais de transmutacao dos itens mais poderosos que existem, como os itens {eldritch} e {sanguine}. Para cada processo de transmutacao de itens eldritch, uma pocao sera necessaria. ...",
+    --     "Para cada transmutacao de itens Sanguine, duas pocoes serao necessarias. Eu so nao faco ideia de como obte-las... Alguns dizem que elas nem existem mais...", npc, creature)
+    --     npcHandler:setTopic(playerId, 0)
+    -- elseif MsgContains(message, "eldritch cuirass") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 das suas Eldritch Cuirass?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 36663)
+    --         npcHandler:setTopic(playerId, 16)
+    --     elseif npcHandler:getTopic(playerId) == 16 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(36663, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "eldritch breeches") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 das suas Eldritch Breeches?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 36667)
+    --         npcHandler:setTopic(playerId, 16)
+    --     elseif npcHandler:getTopic(playerId) == 16 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(36667, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "eldritch wand") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 das suas Eldritch Wands?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 36668)
+    --         npcHandler:setTopic(playerId, 16)
+    --     elseif npcHandler:getTopic(playerId) == 16 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(36668, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "eldritch rod") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 das suas Eldritch Rods?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 36674)
+    --         npcHandler:setTopic(playerId, 16)
+    --     elseif npcHandler:getTopic(playerId) == 16 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(36674, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "eldritch spear") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 das suas Eldritch Spears?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 32225)
+    --         npcHandler:setTopic(playerId, 16)
+    --     elseif npcHandler:getTopic(playerId) == 16 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(32225, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "eldritch bow") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 dos seus Eldritch Bows?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 36664)
+    --         npcHandler:setTopic(playerId, 16)
+    --     elseif npcHandler:getTopic(playerId) == 16 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(36664, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "eldritch cowl") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 dos seus Eldritch Cowls?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 36670)
+    --         npcHandler:setTopic(playerId, 16)
+    --     elseif npcHandler:getTopic(playerId) == 16 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(36670, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "eldritch hood") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 dos seus Eldritch Hoods?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 36671)
+    --         npcHandler:setTopic(playerId, 16)
+    --     elseif npcHandler:getTopic(playerId) == 16 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(36671, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "eldritch folio") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 dos seus Eldritch Folios?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 36672)
+    --         npcHandler:setTopic(playerId, 16)
+    --     elseif npcHandler:getTopic(playerId) == 16 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(36672, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "eldritch tome") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 dos seus Eldritch Tomes?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 36673)
+    --         npcHandler:setTopic(playerId, 16)
+    --     elseif npcHandler:getTopic(playerId) == 16 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(36673, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "eldritch quiver") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 dos seus Eldritch Quivers?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 36666)
+    --         npcHandler:setTopic(playerId, 16)
+    --     elseif npcHandler:getTopic(playerId) == 16 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(36666, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "eldritch greataxe") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 dos seus Eldritch Greataxes?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 36661)
+    --         npcHandler:setTopic(playerId, 16)
+    --     elseif npcHandler:getTopic(playerId) == 16 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(36661, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "eldritch warmace") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 das suas Eldritch Warmaces?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 36659)
+    --         npcHandler:setTopic(playerId, 16)
+    --     elseif npcHandler:getTopic(playerId) == 16 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(36659, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "eldritch claymore") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 das suas Eldritch Claymores?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 36657)
+    --         npcHandler:setTopic(playerId, 16)
+    --     elseif npcHandler:getTopic(playerId) == 16 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(36657, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "eldritch shield") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 dos seus Eldritch Shields?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 36656)
+    --         npcHandler:setTopic(playerId, 16)
+    --     elseif npcHandler:getTopic(playerId) == 16 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(36656, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+
+
+    --     -------------------- SANGUINE ---------------------------------------------
+    -- elseif MsgContains(message, "sanguine battleaxe") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 dos seus Sanguine Battleaxes?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 43874)
+    --         npcHandler:setTopic(playerId, 19)
+    --     elseif npcHandler:getTopic(playerId) == 19 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(43874, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "sanguine blade") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 das suas Sanguine Blades?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 43864)
+    --         npcHandler:setTopic(playerId, 19)
+    --     elseif npcHandler:getTopic(playerId) == 19 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(43864, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "sanguine bludgeon") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 dos seus Sanguine Bludgeons?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 43872)
+    --         npcHandler:setTopic(playerId, 19)
+    --     elseif npcHandler:getTopic(playerId) == 19 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(43872, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "sanguine boots") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 das suas Sanguine Boots?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 43884)
+    --         npcHandler:setTopic(playerId, 19)
+    --     elseif npcHandler:getTopic(playerId) == 19 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(43884, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "sanguine bow") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 dos seus Sanguine Bows?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 43877)
+    --         npcHandler:setTopic(playerId, 19)
+    --     elseif npcHandler:getTopic(playerId) == 19 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(43877, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "sanguine coil") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 das suas Sanguine Coils?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 43882)
+    --         npcHandler:setTopic(playerId, 19)
+    --     elseif npcHandler:getTopic(playerId) == 19 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(43882, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "sanguine crossbow") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 dos seus Sanguine Crossbows?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 43879)
+    --         npcHandler:setTopic(playerId, 19)
+    --     elseif npcHandler:getTopic(playerId) == 19 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(43879, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "sanguine cudgel") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 dos seus Sanguine Cudgels?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 43866)
+    --         npcHandler:setTopic(playerId, 19)
+    --     elseif npcHandler:getTopic(playerId) == 19 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(43866, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "sanguine galoshes") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 das suas Sanguine Galoshes?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 43887)
+    --         npcHandler:setTopic(playerId, 19)
+    --     elseif npcHandler:getTopic(playerId) == 19 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(43887, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "sanguine greaves") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 das suas Sanguine Greaves?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 43881)
+    --         npcHandler:setTopic(playerId, 19)
+    --     elseif npcHandler:getTopic(playerId) == 19 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(43881, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "sanguine hatchet") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 das suas Sanguine Hatchets?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 43868)
+    --         npcHandler:setTopic(playerId, 19)
+    --     elseif npcHandler:getTopic(playerId) == 19 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(43868, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "sanguine legs") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 das suas Sanguine Legs?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 43876)
+    --         npcHandler:setTopic(playerId, 19)
+    --     elseif npcHandler:getTopic(playerId) == 19 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(43876, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "sanguine razor") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 das suas Sanguine Razors?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 43870)
+    --         npcHandler:setTopic(playerId, 19)
+    --     elseif npcHandler:getTopic(playerId) == 19 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(43870, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- elseif MsgContains(message, "sanguine rod") then
+    --     if npcHandler:getTopic(playerId) == 4 or npcHandler:getTopic(playerId) == 15 then
+    --         npcHandler:say("E qual item voce gostaria de receber em troca de 2 das suas Sanguine Rods?", npc, creature)
+    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 43885)
+    --         npcHandler:setTopic(playerId, 19)
+    --     elseif npcHandler:getTopic(playerId) == 19 then
+    --         if player:getItemCount(storage) >= 2 and player:getItemCount(33892) >= 1 then
+    --             player:removeItem(storage, 2)
+    --             player:removeItem(33892, 1)
+    --             player:addItem(43885, 1, true)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --         else
+    --             npcHandler:say("Voce nao possui os itens necessarios.", npc, creature)
+    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.TradeItem, 0)
+    --             npcHandler:setTopic(playerId, 0)
+    --         end
+    --     end
+    -- end
+end
+
+keywordHandler:addKeyword({'living crystal'}, StdModule.say, {npcHandler = npcHandler, text = 'Os living crystal sao cristais criados por meio de pura magia pelo mago Zarabastan. Esses cristais possibilitam a execucao de feiticos nunca antes imaginados... Mas os cristais devem ser rapidamente manupulados uma vez adquiridos, por possuem tempo limitado de duracao.'})
+keywordHandler:addKeyword({'guardas'}, StdModule.say, {npcHandler = npcHandler, text = 'Ignacius, Vega, Nestor e os Lordes Mercenarios. Esses sao os guardas aos quais eu me refiro. Impiedosos e extremamente fortes, eles protegem os chamados Trinkets de Zarabastan. Apenas na posse dos 4 trinkets sera possivel acessar os aposentos do maldito feiticeiro.'})
+
+npcHandler:setMessage(MESSAGE_GREET, "Ola, meu jovem. Como andam as coisas?")
+npcHandler:setMessage(MESSAGE_FAREWELL, "Ate mais!")
+npcHandler:setMessage(MESSAGE_WALKAWAY, "Ate mais.")
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+
+npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
+
+-- npcType registering the npcConfig table
+npcType:register(npcConfig)

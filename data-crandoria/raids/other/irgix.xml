@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<announce delay="10000" type="event" message="Ventos frios e nuvens escuras trouxeram Irgix The Flimsy a Umbra!" />
+	<singlespawn delay="10000" name="Irgix The Flimsy" x="6045" y="5341" z="4" />
+</raid>
+

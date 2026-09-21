@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<!--Announcements-->
+	<announce delay="1000" type="Event" message="Corram para a superfície! Grorlam despertou de seu sono em Viridia!" />
+	<!--Single Spawns-->
+	<singlespawn delay="60000" name="Grorlam" x="4482" y="5341" z="9" />
+</raid>

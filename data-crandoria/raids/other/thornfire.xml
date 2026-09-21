@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<!--Announcements-->
+	<announce delay="60000" type="Event" message="Thornfire Wolves apareceram rondando as terras de Ilshenar." />
+	<!--Single Spawns-->
+	<singlespawn delay="60000" name="Thornfire Wolf" x="5408" y="5502" z="5"/>
+	<singlespawn delay="60000" name="Thornfire Wolf" x="5410" y="5502" z="5"/>
+	<singlespawn delay="60000" name="Thornfire Wolf" x="5417" y="5510" z="5"/>
+</raid>

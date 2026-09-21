@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<announce delay="10000" type="event" message="Vok The Freakish invadiu as terras de Umbra" />
+	<singlespawn delay="10000" name="Vok The Freakish" x="6066" y="5331" z="3" />
+</raid>
+

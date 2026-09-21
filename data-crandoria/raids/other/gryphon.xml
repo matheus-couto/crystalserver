@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<announce delay="10000" type="event" message="Gryphons foram avistados sobrevoando o Novo Continente" />
+	<areaspawn delay="2000" fromx="4955" fromy="4519" fromz="0" tox="4955" toy="4519" toz="0">
+		<monster name="Gryphon" amount="1" />
+	</areaspawn>
+	<areaspawn delay="2000" fromx="4958" fromy="4517" fromz="0" tox="4958" toy="4517" toz="0">
+		<monster name="Gryphon" amount="1" />
+	</areaspawn>
+</raid>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<announce delay="1000" type="event" message="Rebel Elf Scouts have been sighted near Elvenshire!" />
+	<announce delay="20000" type="event" message="The elves attack from the Elves Forest!" />
+	<announce delay="60000" type="event" message="Elvenshire is under attack!" />
+	<areaspawn delay="60000" fromx="4668" fromy="4755" fromz="7" tox="4736" toy="4820" toz="7">
+		<monster name="elf" amount="12" />
+		<monster name="elf scout" amount="12" />
+		<monster name="elf arcanist" amount="8" />
+	</areaspawn>
+</raid>

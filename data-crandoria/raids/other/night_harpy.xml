@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<announce delay="30000" type="event" message="Night Harpies estao invadindo a Stag Bastion." />
+	<areaspawn delay="60000" fromx="5228" fromy="5506" fromz="6" tox="5327" toy="5577" toz="6">
+		<monster name="Night Harpy" amount="30" />
+	</areaspawn>
+	<areaspawn delay="75000" fromx="5277" fromy="5471" fromz="5" tox="5329" toy="5539" toz="5">
+		<monster name="Night Harpy" amount="25" />
+	</areaspawn>
+	<areaspawn delay="90000" fromx="5299" fromy="5469" fromz="4" tox="5312" toy="5486" toz="4">
+		<monster name="Night Harpy" amount="8" />
+	</areaspawn>
+	<areaspawn delay="90000" fromx="5308" fromy="5441" fromz="4" tox="5328" toy="5470" toz="4">
+		<monster name="Night Harpy" amount="12" />
+	</areaspawn>
+</raid>

@@ -1,0 +1,276 @@
+<?xml version="1.0"?>
+<houses>
+	<house name="Depot House 1" houseid="3706" entryx="4963" entryy="5016" entryz="7" rent="2000000" townid="2" size="272" clientid="0" beds="0" />
+	<house name="Depot House 2" houseid="3707" entryx="4976" entryy="5016" entryz="7" rent="3800000" townid="2" size="272" clientid="0" beds="0" />
+	<house name="Depot Flat 1" houseid="3709" entryx="4957" entryy="5010" entryz="7" rent="2000000" townid="2" size="219" clientid="0" beds="0" />
+	<house name="Depot Flat 2" houseid="3710" entryx="4957" entryy="5003" entryz="7" rent="2000000" townid="2" size="235" clientid="0" beds="0" />
+	<house name="Frodo's flat" houseid="3711" entryx="4954" entryy="4989" entryz="6" rent="600000" townid="2" size="47" clientid="0" beds="0" />
+	<house name="Small Room" houseid="3712" entryx="4955" entryy="4981" entryz="7" rent="600000" townid="2" size="108" clientid="0" beds="0" />
+	<house name="Medium House 1" houseid="3713" entryx="4954" entryy="4970" entryz="7" rent="1500000" townid="2" size="185" clientid="0" beds="0" />
+	<house name="Garden House" houseid="3714" entryx="4951" entryy="4959" entryz="7" rent="5500000" townid="2" size="330" clientid="0" beds="0" />
+	<house name="Crandoria Manor" houseid="3718" entryx="4941" entryy="5027" entryz="7" rent="9000000" guildhall="true" townid="2" size="654" clientid="0" beds="0" />
+	<house name="Farm House" houseid="3719" entryx="4945" entryy="5034" entryz="7" rent="2000000" townid="2" size="350" clientid="0" beds="0" />
+	<house name="Crandoria's Palace" houseid="3720" entryx="4977" entryy="5041" entryz="7" rent="14000000" guildhall="true" townid="2" size="888" clientid="0" beds="0" />
+	<house name="Lake House 2" houseid="3722" entryx="4998" entryy="5022" entryz="7" rent="2000000" townid="2" size="225" clientid="0" beds="0" />
+	<house name="Lake House 3" houseid="3723" entryx="5010" entryy="5022" entryz="7" rent="2000000" townid="2" size="233" clientid="0" beds="0" />
+	<house name="Brick Appartment 1" houseid="3724" entryx="5028" entryy="5020" entryz="7" rent="500000" townid="2" size="54" clientid="0" beds="0" />
+	<house name="Brick Appartment 2" houseid="3725" entryx="5034" entryy="5020" entryz="7" rent="500000" townid="2" size="54" clientid="0" beds="0" />
+	<house name="Brick Appartment 3" houseid="3726" entryx="5040" entryy="5020" entryz="7" rent="500000" townid="2" size="54" clientid="0" beds="0" />
+	<house name="Brick Appartment 4" houseid="3727" entryx="5046" entryy="5020" entryz="7" rent="500000" townid="2" size="54" clientid="0" beds="0" />
+	<house name="Brick Appartment 5" houseid="3728" entryx="5028" entryy="5020" entryz="6" rent="500000" townid="2" size="27" clientid="0" beds="0" />
+	<house name="Brick Appartment 6" houseid="3729" entryx="5034" entryy="5020" entryz="6" rent="500000" townid="2" size="27" clientid="0" beds="0" />
+	<house name="Brick Appartment 7" houseid="3730" entryx="5040" entryy="5020" entryz="6" rent="500000" townid="2" size="27" clientid="0" beds="0" />
+	<house name="Brick Appartment 8" houseid="3731" entryx="5046" entryy="5020" entryz="6" rent="500000" townid="2" size="27" clientid="0" beds="0" />
+	<house name="Twin House 1" houseid="3732" entryx="5026" entryy="5032" entryz="7" rent="650000" townid="2" size="131" clientid="0" beds="0" />
+	<house name="Twin House 2" houseid="3733" entryx="5032" entryy="5032" entryz="7" rent="600000" townid="2" size="118" clientid="0" beds="0" />
+	<house name="Beach House 1" houseid="3734" entryx="5016" entryy="5042" entryz="7" rent="1000000" townid="2" size="159" clientid="0" beds="0" />
+	<house name="Beach Manor" houseid="3735" entryx="4996" entryy="5045" entryz="7" rent="2500000" townid="2" size="354" clientid="0" beds="0" />
+	<house name="River House 1" houseid="3736" entryx="5034" entryy="5014" entryz="7" rent="750000" townid="2" size="156" clientid="0" beds="0" />
+	<house name="River House 2" houseid="3737" entryx="5022" entryy="4966" entryz="7" rent="1000000" townid="2" size="358" clientid="0" beds="0" />
+	<house name="Small Room 1" houseid="3738" entryx="5023" entryy="4976" entryz="7" rent="400000" townid="2" size="102" clientid="0" beds="0" />
+	<house name="Small Room 2" houseid="3739" entryx="5021" entryy="4979" entryz="7" rent="400000" townid="2" size="72" clientid="0" beds="0" />
+	<house name="Medium Room" houseid="3740" entryx="5023" entryy="4976" entryz="6" rent="400000" townid="2" size="19" clientid="0" beds="0" />
+	<house name="Wall Warehouse 1" houseid="3741" entryx="5023" entryy="4959" entryz="7" rent="350000" townid="2" size="26" clientid="0" beds="0" />
+	<house name="Wall Warehouse 2" houseid="3742" entryx="5028" entryy="4959" entryz="7" rent="350000" townid="2" size="26" clientid="0" beds="0" />
+	<house name="Wall Warehouse 3" houseid="3743" entryx="5033" entryy="4959" entryz="7" rent="350000" townid="2" size="26" clientid="0" beds="0" />
+	<house name="Lake House 4" houseid="3744" entryx="5050" entryy="4961" entryz="6" rent="1000000" townid="2" size="212" clientid="0" beds="0" />
+	<house name="Small House 2" houseid="3746" entryx="4997" entryy="4970" entryz="7" rent="500000" townid="2" size="50" clientid="0" beds="0" />
+	<house name="Hostel 1" houseid="3747" entryx="5008" entryy="4966" entryz="7" rent="2500000" townid="2" size="112" clientid="0" beds="0" />
+	<house name="Hostel Flat 1" houseid="3748" entryx="5005" entryy="4970" entryz="6" rent="650000" townid="2" size="36" clientid="0" beds="0" />
+	<house name="Hostel Flat 2" houseid="3749" entryx="5005" entryy="4967" entryz="6" rent="650000" townid="2" size="29" clientid="0" beds="0" />
+	<house name="Hostel Room 1" houseid="3750" entryx="5006" entryy="4966" entryz="5" rent="300000" townid="2" size="14" clientid="0" beds="0" />
+	<house name="Hostel Flat 3" houseid="3751" entryx="5010" entryy="4966" entryz="5" rent="750000" townid="2" size="46" clientid="0" beds="0" />
+	<house name="The Watcher's House" houseid="3752" entryx="5015" entryy="4960" entryz="7" rent="1200000" townid="2" size="186" clientid="0" beds="0" />
+	<house name="Stone House" houseid="3753" entryx="4984" entryy="4962" entryz="7" rent="1000000" townid="2" size="88" clientid="0" beds="0" />
+	<house name="Stone House 2" houseid="3754" entryx="4930" entryy="5003" entryz="7" rent="750000" townid="2" size="140" clientid="0" beds="0" />
+	<house name="Stone House 3" houseid="3755" entryx="4930" entryy="5012" entryz="7" rent="650000" townid="2" size="160" clientid="0" beds="0" />
+	<house name="Brick Werehouse" houseid="3756" entryx="5018" entryy="5034" entryz="7" rent="500000" townid="2" size="26" clientid="0" beds="0" />
+	<house name="Brick Flat" houseid="3757" entryx="5018" entryy="5022" entryz="7" rent="1000000" townid="2" size="94" clientid="0" beds="0" />
+	<house name="The Great Guildhall" houseid="3758" entryx="5009" entryy="4927" entryz="7" rent="15000000" guildhall="true" townid="2" size="777" clientid="0" beds="0" />
+	<house name="Square House" houseid="3759" entryx="5065" entryy="4467" entryz="7" rent="500000" townid="7" size="57" clientid="0" beds="0" />
+	<house name="Small Tower House" houseid="3760" entryx="5064" entryy="4473" entryz="7" rent="600000" townid="7" size="47" clientid="0" beds="0" />
+	<house name="Brick House" houseid="3761" entryx="5074" entryy="4468" entryz="7" rent="1100000" townid="7" size="77" clientid="0" beds="0" />
+	<house name="Square Brick House" houseid="3762" entryx="5073" entryy="4479" entryz="7" rent="1200000" townid="7" size="148" clientid="0" beds="0" />
+	<house name="Depot House" houseid="3763" entryx="5091" entryy="4477" entryz="7" rent="2000000" townid="7" size="49" clientid="0" beds="0" />
+	<house name="Small Wooden Room" houseid="3764" entryx="5088" entryy="4481" entryz="6" rent="500000" townid="7" size="53" clientid="0" beds="0" />
+	<house name="Ocean View House" houseid="3765" entryx="5093" entryy="4462" entryz="7" rent="780000" townid="7" size="83" clientid="0" beds="0" />
+	<house name="Large Square House" houseid="3766" entryx="5095" entryy="4471" entryz="7" rent="1000000" townid="7" size="160" clientid="0" beds="0" />
+	<house name="Square Tree House" houseid="3767" entryx="4716" entryy="4763" entryz="7" rent="500000" townid="8" size="37" clientid="0" beds="0" />
+	<house name="Small Tree Room" houseid="3768" entryx="4715" entryy="4761" entryz="6" rent="300000" townid="8" size="10" clientid="0" beds="0" />
+	<house name="Twin Tree House 1" houseid="3769" entryx="4680" entryy="4761" entryz="6" rent="600000" townid="8" size="28" clientid="0" beds="0" />
+	<house name="Twin Tree House 2" houseid="3770" entryx="4680" entryy="4765" entryz="6" rent="600000" townid="8" size="33" clientid="0" beds="0" />
+	<house name="Medium Tree House" houseid="3771" entryx="4682" entryy="4765" entryz="7" rent="800000" townid="8" size="35" clientid="0" beds="0" />
+	<house name="Small Tree House" houseid="3772" entryx="4690" entryy="4770" entryz="7" rent="1000000" townid="8" size="60" clientid="0" beds="0" />
+	<house name="Square Tree House 2" houseid="3773" entryx="4716" entryy="4775" entryz="7" rent="1200000" townid="8" size="31" clientid="0" beds="0" />
+	<house name="Medium Tree House 2" houseid="3774" entryx="4722" entryy="4784" entryz="7" rent="1200000" townid="8" size="35" clientid="0" beds="0" />
+	<house name="Big Tree House" houseid="3775" entryx="4698" entryy="4798" entryz="7" rent="1400000" townid="8" size="48" clientid="0" beds="0" />
+	<house name="Medium Tree House 3" houseid="3776" entryx="4715" entryy="4799" entryz="7" rent="800000" townid="8" size="36" clientid="0" beds="0" />
+	<house name="Medium Tree Room" houseid="3777" entryx="4696" entryy="4796" entryz="6" rent="600000" townid="8" size="24" clientid="0" beds="0" />
+	<house name="Small Tree Room 2" houseid="3778" entryx="4700" entryy="4796" entryz="6" rent="400000" townid="8" size="20" clientid="0" beds="0" />
+	<house name="Small Tree Room 3" houseid="3779" entryx="4714" entryy="4799" entryz="6" rent="500000" townid="8" size="20" clientid="0" beds="0" />
+	<house name="Small Tree House 2" houseid="3780" entryx="4714" entryy="4803" entryz="6" rent="300000" townid="8" size="14" clientid="0" beds="0" />
+	<house name="Small Tree House 3" houseid="3781" entryx="4726" entryy="4804" entryz="6" rent="450000" townid="8" size="23" clientid="0" beds="0" />
+	<house name="Square Tree Guildhall" houseid="3782" entryx="4713" entryy="4810" entryz="7" rent="9500000" guildhall="true" townid="8" size="315" clientid="0" beds="0" />
+	<house name="Small Tree Room 4" houseid="3783" entryx="4694" entryy="4812" entryz="7" rent="450000" townid="8" size="20" clientid="0" beds="0" />
+	<house name="Tree Hostel" houseid="3784" entryx="4677" entryy="4798" entryz="7" rent="5000000" guildhall="true" townid="8" size="195" clientid="0" beds="0" />
+	<house name="Square Tree House 3" houseid="3785" entryx="4679" entryy="4780" entryz="7" rent="800000" townid="8" size="36" clientid="0" beds="0" />
+	<house name="Small Tree Room 5" houseid="3786" entryx="4672" entryy="4778" entryz="6" rent="400000" townid="8" size="14" clientid="0" beds="0" />
+	<house name="Small Tree Room 6" houseid="3787" entryx="4676" entryy="4778" entryz="6" rent="400000" townid="8" size="16" clientid="0" beds="0" />
+	<house name="Square Room 1" houseid="3788" entryx="4744" entryy="5224" entryz="6" rent="350000" townid="5" size="17" clientid="0" beds="0" />
+	<house name="Square Room 2" houseid="3789" entryx="4749" entryy="5224" entryz="6" rent="350000" townid="5" size="17" clientid="0" beds="0" />
+	<house name="Square Room 3" houseid="3790" entryx="4754" entryy="5224" entryz="6" rent="350000" townid="5" size="17" clientid="0" beds="0" />
+	<house name="Square Room 4" houseid="3791" entryx="4759" entryy="5224" entryz="6" rent="350000" townid="5" size="17" clientid="0" beds="0" />
+	<house name="Medium Mage's Room 1" houseid="3792" entryx="4746" entryy="5235" entryz="5" rent="550000" townid="5" size="25" clientid="0" beds="0" />
+	<house name="Medium Mage's Room 2" houseid="3793" entryx="4751" entryy="5235" entryz="5" rent="550000" townid="5" size="25" clientid="0" beds="0" />
+	<house name="Medium Mage's Room 3" houseid="3794" entryx="4756" entryy="5235" entryz="5" rent="550000" townid="5" size="25" clientid="0" beds="0" />
+	<house name="Medium Mage's Room 4" houseid="3795" entryx="4761" entryy="5235" entryz="5" rent="550000" townid="5" size="25" clientid="0" beds="0" />
+	<house name="Square Mage's House" houseid="3796" entryx="4746" entryy="5236" entryz="4" rent="1500000" townid="5" size="72" clientid="0" beds="0" />
+	<house name="Mage's House" houseid="3797" entryx="4755" entryy="5239" entryz="4" rent="1300000" townid="5" size="33" clientid="0" beds="0" />
+	<house name="Narrow Mage's House" houseid="3798" entryx="4765" entryy="5240" entryz="4" rent="1000000" townid="5" size="32" clientid="0" beds="0" />
+	<house name="Square Mage's House 2" houseid="3799" entryx="4761" entryy="5234" entryz="4" rent="1500000" townid="5" size="69" clientid="0" beds="0" />
+	<house name="Medium Mage's House" houseid="3800" entryx="4764" entryy="5227" entryz="4" rent="1500000" townid="5" size="36" clientid="0" beds="0" />
+	<house name="Bamboo House 1" houseid="3801" entryx="5548" entryy="5089" entryz="7" rent="550000" townid="3" size="31" clientid="0" beds="0" />
+	<house name="Bamboo House 2" houseid="3802" entryx="5522" entryy="5094" entryz="7" rent="800000" townid="3" size="46" clientid="0" beds="0" />
+	<house name="Bamboo House 4" houseid="3804" entryx="5525" entryy="5101" entryz="7" rent="1500000" townid="3" size="77" clientid="0" beds="0" />
+	<house name="Bamboo House 5" houseid="3805" entryx="5537" entryy="5123" entryz="7" rent="2000000" townid="3" size="64" clientid="0" beds="0" />
+	<house name="Bamboo House 6" houseid="3806" entryx="5545" entryy="5123" entryz="7" rent="2000000" townid="3" size="64" clientid="0" beds="0" />
+	<house name="Bamboo Manor" houseid="3807" entryx="5572" entryy="5125" entryz="7" rent="10000000" guildhall="true" townid="3" size="564" clientid="0" beds="0" />
+	<house name="Square Bamboo House 1" houseid="3808" entryx="5572" entryy="5116" entryz="7" rent="400000" townid="3" size="34" clientid="0" beds="0" />
+	<house name="Square Bamboo House 2" houseid="3809" entryx="5572" entryy="5111" entryz="7" rent="400000" townid="3" size="34" clientid="0" beds="0" />
+	<house name="Square Bamboo House 3" houseid="3810" entryx="5572" entryy="5106" entryz="7" rent="400000" townid="3" size="34" clientid="0" beds="0" />
+	<house name="Log House 1" houseid="3811" entryx="5588" entryy="5119" entryz="7" rent="750000" townid="3" size="91" clientid="0" beds="0" />
+	<house name="Log House 2" houseid="3812" entryx="5600" entryy="5119" entryz="7" rent="750000" townid="3" size="91" clientid="0" beds="0" />
+	<house name="Bamboo Guildhall" houseid="3813" entryx="5586" entryy="5100" entryz="7" rent="12000000" guildhall="true" townid="3" size="494" clientid="0" beds="0" />
+	<house name="Log House 3" houseid="3814" entryx="5563" entryy="5102" entryz="7" rent="1800000" townid="3" size="120" clientid="0" beds="0" />
+	<house name="Bamboo House 7" houseid="3815" entryx="5537" entryy="5101" entryz="7" rent="2000000" townid="3" size="64" clientid="0" beds="0" />
+	<house name="Bamboo House 8" houseid="3816" entryx="5548" entryy="5101" entryz="7" rent="2000000" townid="3" size="72" clientid="0" beds="0" />
+	<house name="Wooden House" houseid="3817" entryx="5525" entryy="5114" entryz="7" rent="2000000" townid="3" size="138" clientid="0" beds="0" />
+	<house name="Bamboo Hut 1" houseid="3818" entryx="5493" entryy="5141" entryz="6" rent="500000" townid="3" size="41" clientid="0" beds="0" />
+	<house name="Bamboo Hut 2" houseid="3819" entryx="5504" entryy="5147" entryz="6" rent="450000" townid="3" size="18" clientid="0" beds="0" />
+	<house name="Bamboo Hut 3" houseid="3820" entryx="5509" entryy="5155" entryz="6" rent="400000" townid="3" size="17" clientid="0" beds="0" />
+	<house name="Bamboo Hut 4" houseid="3821" entryx="5533" entryy="5153" entryz="6" rent="300000" townid="3" size="11" clientid="0" beds="0" />
+	<house name="Bamboo Hut 5" houseid="3822" entryx="5542" entryy="5150" entryz="6" rent="500000" townid="3" size="15" clientid="0" beds="0" />
+	<house name="Bamboo Hut 6" houseid="3823" entryx="5571" entryy="5161" entryz="6" rent="550000" townid="3" size="49" clientid="0" beds="0" />
+	<house name="Bamboo Hut 7" houseid="3824" entryx="5588" entryy="5158" entryz="6" rent="350000" townid="3" size="18" clientid="0" beds="0" />
+	<house name="Sand Room 1" houseid="3825" entryx="5703" entryy="4532" entryz="6" rent="850000" townid="10" size="44" clientid="0" beds="0" />
+	<house name="Sand Room 3" houseid="3826" entryx="5721" entryy="4532" entryz="6" rent="850000" townid="10" size="36" clientid="0" beds="0" />
+	<house name="Sand Room 2" houseid="3827" entryx="5703" entryy="4527" entryz="6" rent="850000" townid="10" size="45" clientid="0" beds="0" />
+	<house name="Sand Room 4" houseid="3828" entryx="5721" entryy="4527" entryz="6" rent="850000" townid="10" size="36" clientid="0" beds="0" />
+	<house name="Sand Room 5" houseid="3829" entryx="5706" entryy="4529" entryz="5" rent="600000" townid="10" size="24" clientid="0" beds="0" />
+	<house name="Sand Room 6" houseid="3830" entryx="5718" entryy="4529" entryz="5" rent="650000" townid="10" size="17" clientid="0" beds="0" />
+	<house name="Island House 1" houseid="3831" entryx="5714" entryy="4507" entryz="7" rent="750000" townid="10" size="94" clientid="0" beds="0" />
+	<house name="Island House 2" houseid="3832" entryx="5708" entryy="4499" entryz="7" rent="700000" townid="10" size="49" clientid="0" beds="0" />
+	<house name="Island House 3" houseid="3833" entryx="5713" entryy="4497" entryz="7" rent="600000" townid="10" size="37" clientid="0" beds="0" />
+	<house name="Nivabi's Palace" houseid="3834" entryx="5700" entryy="4499" entryz="7" rent="12000000" guildhall="true" townid="10" size="320" clientid="0" beds="0" />
+	<house name="Valkesh Guildhall" houseid="3835" entryx="5337" entryy="4663" entryz="7" rent="8000000" guildhall="true" townid="4" size="92" clientid="0" beds="0" />
+	<house name="Pyramid House 1" houseid="3836" entryx="5356" entryy="4661" entryz="6" rent="2800000" townid="4" size="66" clientid="0" beds="0" />
+	<house name="Small Pyramid Room" houseid="3837" entryx="5397" entryy="4672" entryz="7" rent="500000" townid="4" size="17" clientid="0" beds="0" />
+	<house name="Small Pyramid Room 2" houseid="3838" entryx="5397" entryy="4685" entryz="7" rent="500000" townid="4" size="17" clientid="0" beds="0" />
+	<house name="Pyramid Palace" houseid="3839" entryx="5385" entryy="4711" entryz="6" rent="14000000" townid="4" size="205" clientid="0" beds="0" />
+	<house name="Pyramid House 2" houseid="3840" entryx="5361" entryy="4702" entryz="7" rent="1200000" townid="4" size="31" clientid="0" beds="0" />
+	<house name="Pyramid House 3" houseid="3841" entryx="5344" entryy="4702" entryz="7" rent="1000000" townid="4" size="32" clientid="0" beds="0" />
+	<house name="Pyramid Room 1" houseid="3842" entryx="5369" entryy="4703" entryz="6" rent="200000" townid="4" size="7" clientid="0" beds="0" />
+	<house name="Pyramid Room 2" houseid="3843" entryx="5352" entryy="4703" entryz="6" rent="200000" townid="4" size="7" clientid="0" beds="0" />
+	<house name="Pyramid House 4" houseid="3844" entryx="5331" entryy="4706" entryz="7" rent="600000" townid="4" size="53" clientid="0" beds="0" />
+	<house name="Pyramid House 5" houseid="3845" entryx="5331" entryy="4707" entryz="7" rent="700000" townid="4" size="25" clientid="0" beds="0" />
+	<house name="Pyramid House 6" houseid="3846" entryx="5330" entryy="4707" entryz="7" rent="700000" townid="4" size="31" clientid="0" beds="0" />
+	<house name="Pyramid Room 3" houseid="3847" entryx="5329" entryy="4703" entryz="6" rent="500000" townid="4" size="9" clientid="0" beds="0" />
+	<house name="Pyramid Room 4" houseid="3848" entryx="5330" entryy="4703" entryz="6" rent="500000" townid="4" size="9" clientid="0" beds="0" />
+	<house name="Pyramid Room 5" houseid="3849" entryx="5329" entryy="4709" entryz="6" rent="500000" townid="4" size="7" clientid="0" beds="0" />
+	<house name="Pyramid Room 6" houseid="3850" entryx="5330" entryy="4709" entryz="6" rent="500000" townid="4" size="7" clientid="0" beds="0" />
+	<house name="Pyramid House 7" houseid="3851" entryx="5324" entryy="4687" entryz="7" rent="600000" townid="4" size="26" clientid="0" beds="0" />
+	<house name="Pyramid House 8" houseid="3852" entryx="5318" entryy="4676" entryz="7" rent="900000" townid="4" size="37" clientid="0" beds="0" />
+	<house name="Pyramid Room 7" houseid="3853" entryx="5324" entryy="4668" entryz="7" rent="650000" townid="4" size="17" clientid="0" beds="0" />
+	<house name="Pyramid Room 8" houseid="3854" entryx="5312" entryy="4668" entryz="7" rent="650000" townid="4" size="17" clientid="0" beds="0" />
+	<house name="Pramid Room 9" houseid="3855" entryx="5318" entryy="4666" entryz="6" rent="550000" townid="4" size="26" clientid="0" beds="0" />
+	<house name="Icehold Inn" houseid="3857" entryx="5013" entryy="5380" entryz="6" rent="20000000" guildhall="true" townid="11" size="477" clientid="0" beds="0" />
+	<house name="Hall Room 1" houseid="3858" entryx="5429" entryy="4489" entryz="8" rent="500000" townid="12" size="17" clientid="0" beds="0" />
+	<house name="Hall Room 3" houseid="3859" entryx="5434" entryy="4489" entryz="8" rent="500000" townid="12" size="17" clientid="0" beds="0" />
+	<house name="Hall Room 5" houseid="3860" entryx="5439" entryy="4489" entryz="8" rent="500000" townid="12" size="17" clientid="0" beds="0" />
+	<house name="Hall Room 7" houseid="3861" entryx="5444" entryy="4489" entryz="8" rent="500000" townid="12" size="17" clientid="0" beds="0" />
+	<house name="Hall Room 9" houseid="3862" entryx="5449" entryy="4489" entryz="8" rent="500000" townid="12" size="17" clientid="0" beds="0" />
+	<house name="Hall Room 2" houseid="3863" entryx="5429" entryy="4492" entryz="8" rent="500000" townid="12" size="17" clientid="0" beds="0" />
+	<house name="Hall Room 4" houseid="3864" entryx="5434" entryy="4492" entryz="8" rent="500000" townid="12" size="17" clientid="0" beds="0" />
+	<house name="Hall Room 6" houseid="3865" entryx="5439" entryy="4492" entryz="8" rent="500000" townid="12" size="17" clientid="0" beds="0" />
+	<house name="Hall Room 8" houseid="3866" entryx="5444" entryy="4492" entryz="8" rent="500000" townid="12" size="17" clientid="0" beds="0" />
+	<house name="Hall Room 10" houseid="3867" entryx="5449" entryy="4492" entryz="8" rent="500000" townid="12" size="17" clientid="0" beds="0" />
+	<house name="Balcony Room 1" houseid="3868" entryx="5429" entryy="4504" entryz="8" rent="500000" townid="12" size="17" clientid="0" beds="0" />
+	<house name="Balcony Room 2" houseid="3869" entryx="5434" entryy="4504" entryz="8" rent="500000" townid="12" size="17" clientid="0" beds="0" />
+	<house name="Balcony Room 3" houseid="3870" entryx="5439" entryy="4504" entryz="8" rent="500000" townid="12" size="17" clientid="0" beds="0" />
+	<house name="Balcony Room 4" houseid="3871" entryx="5444" entryy="4504" entryz="8" rent="500000" townid="12" size="17" clientid="0" beds="0" />
+	<house name="Balcony Room 5" houseid="3872" entryx="5449" entryy="4504" entryz="8" rent="500000" townid="12" size="17" clientid="0" beds="0" />
+	<house name="Dwarven Guildhall" houseid="3873" entryx="5450" entryy="4481" entryz="8" rent="14000000" guildhall="true" townid="12" size="262" clientid="0" beds="0" />
+	<house name="Dwarven Small House 1" houseid="3874" entryx="5450" entryy="4477" entryz="8" rent="650000" townid="12" size="25" clientid="0" beds="0" />
+	<house name="Dwarven Small House 2" houseid="3875" entryx="5450" entryy="4472" entryz="8" rent="650000" townid="12" size="25" clientid="0" beds="0" />
+	<house name="Dwarven Small House 3" houseid="3876" entryx="5450" entryy="4467" entryz="8" rent="650000" townid="12" size="25" clientid="0" beds="0" />
+	<house name="Dwarven Small House 4" houseid="3877" entryx="5445" entryy="4465" entryz="8" rent="500000" townid="12" size="29" clientid="0" beds="0" />
+	<house name="Dwarven Small House 5" houseid="3878" entryx="5436" entryy="4465" entryz="8" rent="650000" townid="12" size="36" clientid="0" beds="0" />
+	<house name="Dwarven Small House 6" houseid="3879" entryx="5429" entryy="4480" entryz="9" rent="500000" townid="12" size="21" clientid="0" beds="0" />
+	<house name="Dwarven Small House 7" houseid="3880" entryx="5435" entryy="4480" entryz="9" rent="500000" townid="12" size="21" clientid="0" beds="0" />
+	<house name="Dwarven Small House" houseid="3881" entryx="5441" entryy="4480" entryz="9" rent="500000" townid="12" size="30" clientid="0" beds="0" />
+	<house name="Dwarven Small House 8" houseid="3882" entryx="5436" entryy="4489" entryz="9" rent="550000" townid="12" size="26" clientid="0" beds="0" />
+	<house name="Dwarven Small House 9" houseid="3883" entryx="5436" entryy="4495" entryz="9" rent="550000" townid="12" size="26" clientid="0" beds="0" />
+	<house name="Dwarven Small House 10" houseid="3884" entryx="5436" entryy="4501" entryz="9" rent="550000" townid="12" size="26" clientid="0" beds="0" />
+	<house name="Guard's Room" houseid="3885" entryx="5452" entryy="4469" entryz="9" rent="500000" townid="12" size="13" clientid="0" beds="0" />
+	<house name="Small Dwarven House 11" houseid="3886" entryx="5448" entryy="4474" entryz="10" rent="550000" townid="12" size="16" clientid="0" beds="0" />
+	<house name="Dwarven Small House 12" houseid="3887" entryx="5440" entryy="4469" entryz="10" rent="550000" townid="12" size="13" clientid="0" beds="0" />
+	<house name="Dwarven Small House 13" houseid="3888" entryx="5440" entryy="4465" entryz="10" rent="550000" townid="12" size="13" clientid="0" beds="0" />
+	<house name="Small Dwarven House 14" houseid="3889" entryx="5440" entryy="4461" entryz="10" rent="550000" townid="12" size="13" clientid="0" beds="0" />
+	<house name="Dwarven Small House 15" houseid="3890" entryx="5440" entryy="4457" entryz="10" rent="550000" townid="12" size="13" clientid="0" beds="0" />
+	<house name="Dwarven Home" houseid="3891" entryx="5441" entryy="4456" entryz="10" rent="800000" townid="12" size="41" clientid="0" beds="0" />
+	<house name="Log Cabin 1" houseid="3892" entryx="5074" entryy="5379" entryz="7" rent="800000" townid="11" size="31" clientid="0" beds="0" />
+	<house name="Plank Hut 1" houseid="3893" entryx="5069" entryy="5373" entryz="7" rent="550000" townid="11" size="13" clientid="0" beds="0" />
+	<house name="Plank Hut 2" houseid="3894" entryx="5062" entryy="5373" entryz="7" rent="550000" townid="11" size="17" clientid="0" beds="0" />
+	<house name="Plank Hut 3" houseid="3895" entryx="5054" entryy="5371" entryz="7" rent="600000" townid="11" size="22" clientid="0" beds="0" />
+	<house name="Plant Hut 4" houseid="3896" entryx="5045" entryy="5371" entryz="7" rent="500000" townid="11" size="15" clientid="0" beds="0" />
+	<house name="Icehold Guildhall" houseid="3897" entryx="5041" entryy="5356" entryz="7" rent="13500000" guildhall="true" townid="11" size="276" clientid="0" beds="0" />
+	<house name="The Cold Palace" houseid="3898" entryx="5043" entryy="5384" entryz="7" rent="22000000" guildhall="true" townid="11" size="423" clientid="0" beds="0" />
+	<house name="Log Cabin 2" houseid="3899" entryx="5034" entryy="5391" entryz="7" rent="750000" townid="11" size="112" clientid="0" beds="0" />
+	<house name="Big Log Cabin 2" houseid="3900" entryx="5020" entryy="5402" entryz="7" rent="1000000" townid="11" size="41" clientid="0" beds="0" />
+	<house name="Log Cabin 3" houseid="3901" entryx="5054" entryy="5401" entryz="7" rent="600000" townid="11" size="38" clientid="0" beds="0" />
+	<house name="Log Cabin 5" houseid="3902" entryx="5052" entryy="5408" entryz="6" rent="0" townid="11" size="46" clientid="0" beds="0" />
+	<house name="Big Log Cabin 1" houseid="3903" entryx="5068" entryy="5400" entryz="7" rent="750000" townid="11" size="71" clientid="0" beds="0" />
+	<house name="Big Log Cabin" houseid="3904" entryx="5048" entryy="5412" entryz="7" rent="650000" townid="11" size="67" clientid="0" beds="0" />
+	<house name="Fur Hut 1" houseid="3905" entryx="5061" entryy="5414" entryz="7" rent="500000" townid="11" size="46" clientid="0" beds="0" />
+	<house name="Fur Tribal Hut" houseid="3906" entryx="5084" entryy="5417" entryz="7" rent="8500000" guildhall="true" townid="11" size="104" clientid="0" beds="0" />
+	<house name="Fur Tribal Hut 2" houseid="3907" entryx="5082" entryy="5412" entryz="7" rent="500000" townid="11" size="41" clientid="0" beds="0" />
+	<house name="Small Log Room 1" houseid="3908" entryx="5070" entryy="5397" entryz="7" rent="400000" townid="11" size="14" clientid="0" beds="0" />
+	<house name="Small Log Room 2" houseid="3909" entryx="5070" entryy="5401" entryz="7" rent="400000" townid="11" size="14" clientid="0" beds="0" />
+	<house name="Small Log Room 3" houseid="3910" entryx="5070" entryy="5405" entryz="7" rent="400000" townid="11" size="14" clientid="0" beds="0" />
+	<house name="Small Log Room 4" houseid="3911" entryx="5070" entryy="5409" entryz="7" rent="400000" townid="11" size="14" clientid="0" beds="0" />
+	<house name="Small Log Room 5" houseid="3912" entryx="5070" entryy="5413" entryz="7" rent="400000" townid="11" size="14" clientid="0" beds="0" />
+	<house name="Small Log Room 6" houseid="3913" entryx="5071" entryy="5397" entryz="6" rent="250000" townid="11" size="11" clientid="0" beds="0" />
+	<house name="Small Log Room 7" houseid="3914" entryx="5071" entryy="5401" entryz="6" rent="250000" townid="11" size="11" clientid="0" beds="0" />
+	<house name="Small Log Room 8" houseid="3915" entryx="5071" entryy="5405" entryz="6" rent="250000" townid="11" size="11" clientid="0" beds="0" />
+	<house name="Small Log Room 9" houseid="3916" entryx="5071" entryy="5409" entryz="6" rent="250000" townid="11" size="11" clientid="0" beds="0" />
+	<house name="Small Log Room 10" houseid="3917" entryx="5071" entryy="5413" entryz="6" rent="250000" townid="11" size="11" clientid="0" beds="0" />
+	<house name="Bertha's Room" houseid="3918" entryx="5059" entryy="5408" entryz="6" rent="600000" townid="11" size="26" clientid="0" beds="0" />
+	<house name="Small Watch Tower" houseid="3919" entryx="4773" entryy="5239" entryz="6" rent="250000" townid="5" size="7" clientid="0" beds="0" />
+	<house name="Unique Sandstone House" houseid="3920" entryx="5675" entryy="4542" entryz="7" rent="10000000" guildhall="true" townid="10" size="230" clientid="0" beds="0" />
+	<house name="Bamboo House 3" houseid="3921" entryx="5512" entryy="5094" entryz="7" rent="1500000" townid="3" size="46" clientid="0" beds="0" />
+	<house name="Blood Lust Guildhall" houseid="3927" entryx="6067" entryy="5307" entryz="3" rent="20000000" guildhall="true" townid="14" size="148" clientid="0" beds="0" />
+	<house name="Small House 1" houseid="3928" entryx="4990" entryy="4968" entryz="7" rent="500000" townid="2" size="37" clientid="0" beds="0" />
+	<house name="Lake House 1" houseid="3929" entryx="4988" entryy="5022" entryz="7" rent="1500000" townid="2" size="200" clientid="0" beds="0" />
+	<house name="The Warrior's Hideout" houseid="3930" entryx="4949" entryy="4819" entryz="7" rent="2000000" townid="2" size="191" clientid="0" beds="0" />
+	<house name="Brick House 1" houseid="3931" entryx="4939" entryy="4996" entryz="7" rent="1500000" townid="2" size="175" clientid="0" beds="0" />
+	<house name="Brick House 2" houseid="3932" entryx="4939" entryy="5014" entryz="7" rent="1500000" townid="2" size="174" clientid="0" beds="0" />
+	<house name="Crandoria's Castle" houseid="3933" entryx="4970" entryy="4979" entryz="7" rent="15000000" townid="2" size="882" clientid="0" beds="0" />
+	<house name="Small Farmer House 1" houseid="3934" entryx="4682" entryy="4559" entryz="7" rent="1500000" townid="1" size="98" clientid="0" beds="0" />
+	<house name="Small Farmer House 2" houseid="3935" entryx="4692" entryy="4555" entryz="7" rent="1800000" townid="1" size="84" clientid="0" beds="0" />
+	<house name="Small Farmer House 3" houseid="3936" entryx="4707" entryy="4555" entryz="7" rent="1800000" townid="1" size="87" clientid="0" beds="0" />
+	<house name="Small Farmer House 4" houseid="3937" entryx="4713" entryy="4566" entryz="7" rent="1800000" townid="1" size="104" clientid="0" beds="0" />
+	<house name="Medium Farmer House 1" houseid="3938" entryx="4718" entryy="4562" entryz="7" rent="1800000" townid="1" size="122" clientid="0" beds="0" />
+	<house name="Medium Farmer House 2" houseid="3939" entryx="4705" entryy="4574" entryz="7" rent="2000000" townid="1" size="118" clientid="0" beds="0" />
+	<house name="Farmer Large House" houseid="3940" entryx="4688" entryy="4580" entryz="7" rent="2000000" townid="1" size="154" clientid="0" beds="0" />
+	<house name="Medium Farmer House 3" houseid="3955" entryx="4719" entryy="4544" entryz="7" rent="2800000" townid="1" size="158" clientid="0" beds="0" />
+	<house name="VIP Farmer House 1" houseid="3956" entryx="4684" entryy="4603" entryz="7" rent="4800000" townid="16" size="172" clientid="0" beds="0" />
+	<house name="Astralis Guild Farm" houseid="3957" entryx="4674" entryy="4610" entryz="7" rent="20000000" guildhall="true" townid="16" size="1046" clientid="0" beds="0" />
+	<house name="VIP Farmer House 2" houseid="3959" entryx="4681" entryy="4618" entryz="7" rent="3600000" townid="16" size="202" clientid="0" beds="0" />
+	<house name="VIP Farmer House 3" houseid="3960" entryx="4704" entryy="4619" entryz="7" rent="3600000" townid="16" size="166" clientid="0" beds="0" />
+	<house name="VIP Farmer House 4" houseid="3961" entryx="4712" entryy="4601" entryz="7" rent="4800000" townid="16" size="138" clientid="0" beds="0" />
+	<house name="VIP Farmer House 5" houseid="3962" entryx="4709" entryy="4618" entryz="7" rent="4000000" townid="16" size="122" clientid="0" beds="0" />
+	<house name="VIP Farmer House 6" houseid="3963" entryx="4719" entryy="4625" entryz="7" rent="4800000" townid="16" size="55" clientid="0" beds="0" />
+	<house name="VIP Farmer House 7" houseid="3964" entryx="4720" entryy="4608" entryz="7" rent="4800000" townid="16" size="53" clientid="0" beds="0" />
+	<house name="VIP Farmer House 8" houseid="3965" entryx="4740" entryy="4613" entryz="7" rent="3300000" townid="16" size="99" clientid="0" beds="0" />
+	<house name="VIP Farmer House 9" houseid="3966" entryx="4739" entryy="4610" entryz="7" rent="4000000" townid="16" size="86" clientid="0" beds="0" />
+	<house name="VIP Farmer House 10" houseid="3967" entryx="4726" entryy="4593" entryz="7" rent="4400000" townid="16" size="106" clientid="0" beds="0" />
+	<house name="VIP Farmer House 11" houseid="3968" entryx="4731" entryy="4589" entryz="7" rent="3600000" townid="16" size="311" clientid="0" beds="0" />
+	<house name="Gamble House" houseid="3969" entryx="4891" entryy="5059" entryz="7" rent="1000000000" townid="2" size="14" clientid="0" beds="0" />
+	<house name="Sewers Hideout 1" houseid="3971" entryx="4546" entryy="5417" entryz="5" rent="1000000" townid="17" size="21" clientid="0" beds="0" />
+	<house name="Sewers Hideout 2" houseid="3972" entryx="4549" entryy="5425" entryz="5" rent="1000000" townid="17" size="19" clientid="0" beds="0" />
+	<house name="Sewers Hideout 3" houseid="3973" entryx="4559" entryy="5436" entryz="5" rent="1000000" townid="17" size="20" clientid="0" beds="0" />
+	<house name="Wooden Cabin" houseid="3974" entryx="4493" entryy="5459" entryz="4" rent="800000" townid="17" size="31" clientid="0" beds="0" />
+	<house name="Deposito 1" houseid="3975" entryx="4744" entryy="5416" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 2" houseid="3976" entryx="4744" entryy="5419" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 3" houseid="3977" entryx="4744" entryy="5422" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 4" houseid="3978" entryx="4744" entryy="5425" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 5" houseid="3979" entryx="4744" entryy="5428" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 6" houseid="3980" entryx="4746" entryy="5416" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 7" houseid="3981" entryx="4746" entryy="5419" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 8" houseid="3982" entryx="4746" entryy="5422" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 9" houseid="3983" entryx="4746" entryy="5425" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 10" houseid="3984" entryx="4746" entryy="5428" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 11" houseid="3985" entryx="4756" entryy="5416" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 12" houseid="3986" entryx="4756" entryy="5419" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 13" houseid="3987" entryx="4756" entryy="5422" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 14" houseid="3988" entryx="4756" entryy="5425" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 15" houseid="3989" entryx="4756" entryy="5428" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 16" houseid="3990" entryx="4758" entryy="5413" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 17" houseid="3991" entryx="4758" entryy="5416" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 18" houseid="3992" entryx="4758" entryy="5419" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 19" houseid="3993" entryx="4758" entryy="5422" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 20" houseid="3994" entryx="4758" entryy="5425" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Deposito 21" houseid="3995" entryx="4758" entryy="5428" entryz="15" rent="150000" townid="17" size="7" clientid="0" beds="0" />
+	<house name="Tiny House 1" houseid="3996" entryx="5020" entryy="5001" entryz="7" rent="500000" townid="2" size="17" clientid="0" beds="0" />
+	<house name="Tiny House 2" houseid="3997" entryx="5024" entryy="5001" entryz="7" rent="500000" townid="2" size="17" clientid="0" beds="0" />
+	<house name="Tiny House 3" houseid="3998" entryx="5020" entryy="5008" entryz="7" rent="500000" townid="2" size="17" clientid="0" beds="0" />
+	<house name="Tiny House 4" houseid="3999" entryx="5024" entryy="5008" entryz="7" rent="500000" townid="2" size="17" clientid="0" beds="0" />
+	<house name="Small Flat" houseid="4000" entryx="5027" entryy="4991" entryz="6" rent="300000" townid="2" size="12" clientid="0" beds="0" />
+	<house name="Bigger Flat" houseid="4001" entryx="5029" entryy="4991" entryz="6" rent="350000" townid="2" size="19" clientid="0" beds="0" />
+	<house name="East Island House 1" houseid="4002" entryx="4772" entryy="4547" entryz="7" rent="1800000" townid="1" size="226" clientid="0" beds="0" />
+	<house name="East Island House 2" houseid="4003" entryx="4786" entryy="4557" entryz="7" rent="1600000" townid="1" size="224" clientid="0" beds="0" />
+	<house name="East Island House 3" houseid="4004" entryx="4784" entryy="4563" entryz="7" rent="1800000" townid="1" size="138" clientid="0" beds="0" />
+	<house name="East Island House 4" houseid="4005" entryx="4752" entryy="4558" entryz="7" rent="1400000" townid="1" size="82" clientid="0" beds="0" />
+	<house name="East Island Hut" houseid="4006" entryx="4755" entryy="4573" entryz="7" rent="1800000" townid="1" size="88" clientid="0" beds="0" />
+	<house name="East Island House 5" houseid="4007" entryx="4753" entryy="4554" entryz="7" rent="1400000" townid="1" size="72" clientid="0" beds="0" />
+</houses>
