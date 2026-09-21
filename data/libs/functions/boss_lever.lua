@@ -339,3 +339,126 @@ function BossLever:register()
 	end
 	return true
 end
+
+-- CRANDORIA EDIT --
+
+function CreateDefaultLeverBoss(player, config)
+    -- This function is to suppress all default lever systems for boss
+    if config.playerPositions[1].pos ~= player:getPosition() then
+        return false
+    end
+
+    local spec = Spectators()
+    spec:setOnlyPlayer(false)
+    spec:setRemoveDestination(config.exit)
+    spec:setCheckPosition(config.specPos)
+    spec:check()
+
+    if spec:getPlayers() > 0 then
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Ja tem alguem desafiando " .. config.boss.name .. " no momento.")
+        return false
+    end
+
+    local lever = Lever()
+    lever:setPositions(config.playerPositions)
+    if type(config.condition) == "function" then
+        lever:setCondition(config.condition())
+    else
+        lever:setCondition(function(creature)
+            if not creature then
+                return true
+            elseif not creature:isPlayer() then
+                creature:getPosition():sendMagicEffect(CONST_ME_POFF)
+                return false
+            end
+
+            -- Lista de jogadores que são exceções à regra de IP
+            local exceptionPlayers = {
+                "GOD",
+            }
+
+            -- Função para verificar se um jogador está na lista de exceções
+            local function isExceptionPlayer(playerName)
+                for _, name in ipairs(exceptionPlayers) do
+                    if playerName == name then
+                        return true
+                    end
+                end
+                return false
+            end
+
+            -- Check for same IP condition
+            local ipCount = {}
+            local sameIpPlayers = 0
+            for _, pos in ipairs(config.playerPositions) do
+                local p = Tile(pos.pos):getTopCreature()
+                if p and p:isPlayer() and not isExceptionPlayer(p:getName()) then
+                    local ip = p:getIp()
+                    ipCount[ip] = (ipCount[ip] or 0) + 1
+                    if ipCount[ip] >= 3 then
+                        sameIpPlayers = sameIpPlayers + 1
+                    end
+                end
+            end
+            if sameIpPlayers > 0 then
+                creature:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Nao pode haver mais de dois jogadores com o mesmo IP para puxar a alavanca.")
+                return false
+            end
+
+            if config.requiredLevel and creature:getLevel() < config.requiredLevel then
+                creature:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Todos os jogadores precisam estar no nivel " .. config.requiredLevel .. " ou maior para puxar a alavanca.")
+                return false
+            end
+            if config.storage and creature:getStorageValue(config.storage) > os.time() then
+                local info = lever:getInfoPositions()
+                for _, v in pairs(info) do
+                    local newPlayer = v.creature
+                    if newPlayer then
+                        newPlayer:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce ou um membro da equipe devem esperar " .. string.diff(config.timeToFightAgain) .. " para enfrentar " .. config.boss.name .. " novamentem")
+                        if newPlayer:getStorageValue(config.storage) > os.time() then
+                            newPlayer:getPosition():sendMagicEffect(CONST_ME_POFF)
+                        end
+                    end
+                end
+                return false
+            end
+            return true
+        end)
+    end
+    lever:checkPositions()
+    if lever:checkConditions() then
+        spec:removeMonsters()
+		for _, monster in pairs(self.monsters) do
+			Game.createMonster(monster.name, monster.pos, true, true)
+		end
+        local boss = Game.createMonster(config.boss.name, config.boss.position, true, true)
+        if not boss then
+            return true
+        end
+        lever:teleportPlayers()
+        if config.storage then
+            lever:setStorageAllPlayers(config.storage, os.time() + config.timeToFightAgain)
+        elseif config.timeToFightAgain then
+            error("Not found config.storage")
+        end
+        addEvent(function()
+            local old_players = lever:getInfoPositions()
+            spec:clearCreaturesCache()
+            spec:setOnlyPlayer(true)
+            spec:check()
+            local player_remove = {}
+            for i, v in pairs(spec:getCreatureDetect()) do
+                for _, v_old in pairs(old_players) do
+                    if v_old.creature and not v_old.creature:isMonster() then
+                        if v:getName() == v_old.creature:getName() then
+                            table.insert(player_remove, v_old.creature)
+                        end
+                    end
+                end
+            end
+            spec:removePlayers(player_remove)
+        end, config.timeToDefeatBoss * 1000)
+        return true
+    end
+    return false
+end

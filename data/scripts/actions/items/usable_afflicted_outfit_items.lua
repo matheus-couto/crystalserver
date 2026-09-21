@@ -17,6 +17,9 @@ function usableAfflictedOutfitItems.onUse(player, item, fromPosition, target, to
 		player:say("You gained a plague mask for your outfit.", TALKTYPE_MONSTER_SAY, false, player)
 		player:getPosition():sendMagicEffect(CONST_ME_POFF)
 		player:addAchievementProgress("Beak Doctor", 2)
+		local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+		player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 1)
+		player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
 		item:remove()
 	elseif item.itemid == 12787 then
 		if not player:hasOutfit(outfitId) or player:hasOutfit(outfitId, 1) then
@@ -47,6 +50,9 @@ function usableAfflictedOutfitItems.onUse(player, item, fromPosition, target, to
 
 		player:addOutfit(430)
 		player:addOutfit(431)
+		local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+		player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 1)
+		player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
 		player:say("You have restored an outfit.", TALKTYPE_MONSTER_SAY, false, player)
 		player:getPosition():sendMagicEffect(CONST_ME_POFF)
 	end

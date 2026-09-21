@@ -39,7 +39,7 @@ local outfitConfig = {
 	[39545] = { female = 1569, male = 1568, addon = 2, achievement = "Friendly Fire", orangeText = "The flame engulfs you!" },
 
 	-- fiend slayer
-	[50067] = { female = 1808, male = 1809, effect = CONST_ME_BITE },
+	-- [50067] = { female = 1808, male = 1809, effect = CONST_ME_BITE },
 	[50060] = { female = 1808, male = 1809, addon = 1, achievement = "Fiend Slayer", effect = CONST_ME_BITE },
 	[50061] = { female = 1808, male = 1809, addon = 2, achievement = "Fiend Slayer", effect = CONST_ME_BITE },
 
@@ -50,6 +50,10 @@ local outfitConfig = {
 	-- Lord Retro
 	[37605] = { female = 1461, male = 1460, addon = 1, effect = CONST_ME_GREEN_HITAREA },
 	[37604] = { female = 1461, male = 1460, addon = 2, effect = CONST_ME_GREEN_HITAREA },
+
+	-- Draccoon
+	[44754] = { female = 1723, male = 1722, addon = 1, effect = CONST_ME_GREEN_HITAREA },
+	[44753] = { female = 1723, male = 1722, addon = 2, effect = CONST_ME_GREEN_HITAREA },
 }
 
 local usableOutfitItems = Action()
@@ -87,6 +91,10 @@ function usableOutfitItems.onUse(player, item, fromPosition, target, toPosition,
 
 	player:addOutfitAddon(outfitInfo.female, outfitInfo.addon)
 	player:addOutfitAddon(outfitInfo.male, outfitInfo.addon)
+	-- CRANDORIA EDIT --
+	local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+	player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 1)
+	player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
 	player:getPosition():sendMagicEffect(outfitInfo.effect or CONST_ME_GIFT_WRAPS)
 	if outfitInfo.orangeText then
 		player:say(outfitInfo.orangeText, TALKTYPE_MONSTER_SAY)

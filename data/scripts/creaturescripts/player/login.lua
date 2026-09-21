@@ -198,6 +198,10 @@ function playerLoginGlobal.onLogin(player)
 	player:registerEvent("RottenTaintGain")
 	player:registerEvent("BakragorePlayerDeath")
 
+	-- CRANDORIA EDIT --
+
+	player:setStorageValue(Storage.Quest.Crandoria.TheRedPath.DeepUmbra, 0)
+
 	-- Vocation Adjustment: re-frame the monk's active virtue. It was restored early in IOLoginData
 	-- (before the client's action bar existed), so the highlight did not stick; re-apply it here,
 	-- after the spell list is loaded, so the active-stance highlight is sent at the correct time.

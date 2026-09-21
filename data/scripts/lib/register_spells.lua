@@ -224,6 +224,14 @@ AREA_BEAM10 = {
 	{ 3 },
 }
 
+AREA_BEAM11 = {
+	{ 0, 0, 0, 0, 0 },
+	{ 0, 1, 1, 1, 0 },
+	{ 0, 0, 1, 0, 0 },
+	{ 0, 0, 1, 0, 0 },
+	{ 0, 0, 3, 0, 0 },
+}
+
 --Diagonal Beams
 AREADIAGONAL_BEAM5 = {
 	{ 1, 0, 0, 0, 0 },
@@ -449,6 +457,16 @@ AREA_ROOT_OPRESSOR = {
 	{ 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0 },
 	{ 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 },
 	{ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 },
+}
+
+-- CUSTOM CRANDORIA
+
+AREA_VLADRUKH = {
+	{ 0, 0, 1, 0, 0 },
+	{ 0, 1, 0, 1, 0 },
+	{ 1, 0, 3, 0, 1 },
+	{ 0, 1, 0, 1, 0 },
+	{ 0, 0, 1, 0, 0 },
 }
 
 -- The numbered-keys represents the damage values, and their table

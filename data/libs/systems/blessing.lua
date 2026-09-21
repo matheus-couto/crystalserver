@@ -83,9 +83,11 @@ Blessings.PlayerDeath = function(player, corpse, killer)
 	local hasAol = (player:getSlotItem(CONST_SLOT_NECKLACE) and player:getSlotItem(CONST_SLOT_NECKLACE):getId() == ITEM_AMULETOFLOSS)
 	local hasSkull = table.contains({ SKULL_RED, SKULL_BLACK }, player:getSkull())
 	local currBlessCount = player:getBlessings()
+	local storage1 == player:getStorageValue(Storage.Quest.Crandoria.TheRedPath.DeepUmbra) -- CRANDORIA EDIT
 
-	if hasSkull then
+	if hasSkull or storage1 == 1 then
 		Blessings.DropLoot(player, corpse, 100, true)
+		player:setStorageValue(Storage.Quest.Crandoria.TheRedPath.DeepUmbra, 0)
 	elseif #currBlessCount < 5 and not hasAol then
 		local equipLossChance = Blessings.LossPercent[#currBlessCount].item
 		Blessings.DropLoot(player, corpse, equipLossChance)

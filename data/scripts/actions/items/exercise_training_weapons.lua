@@ -108,12 +108,40 @@ local function exerciseTrainingEvent(playerId, tilePosition, weaponId, dummyId)
 		return false
 	end
 
+	-- -- CRANDORIA EDIT --
+	-- local storagelife = player:getStorageValue(Storage.Quest.Crandoria.ArvoreDeForca.LifeLevel)
+	-- local factorResiliencia = 1
+	-- if storagelife > 0 then
+	-- 	factorResiliencia = 1 + (storagelife * 0.005)
+	-- end
+
+	-- local rate = dummies[dummyId] / 100
+	-- local isMagic = exerciseWeaponsTable[weaponId].skill == SKILL_MAGLEVEL
+	-- if isMagic then
+	-- 	player:addManaSpent(600 * (rate * factorResiliencia))
+	-- else
+	-- 	player:addSkillTries(exerciseWeaponsTable[weaponId].skill, 7 * rate)
+	-- end
+
+	-- CRANDORIA EDIT --
+	local storagelife = getArvoreDeForcaValues(player).life
+	local storagemana = getArvoreDeForcaValues(player).mana
+	local factorResiliencia = 1
+	if storagelife > 0 then
+		factorResiliencia = 1 + (storagelife * 0.005)
+	end
+
+	local factorMagia = 1
+	if storagemana > 0 then
+		factorMagia = 1 + (storagemana * 0.005)
+	end
+	
 	local rate = dummies[dummyId] / 100
 	local isMagic = exerciseWeaponsTable[weaponId].skill == SKILL_MAGLEVEL
 	if isMagic then
-		player:addManaSpent(600 * rate)
+		player:addManaSpent(600 * (rate * factorMagia))
 	else
-		player:addSkillTries(exerciseWeaponsTable[weaponId].skill, 7 * rate)
+		player:addSkillTries(exerciseWeaponsTable[weaponId].skill, 7 * (rate * factorResiliencia))
 	end
 
 	weapon:setAttribute(ITEM_ATTRIBUTE_CHARGES, (weaponCharges - 1))
