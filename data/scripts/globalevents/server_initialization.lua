@@ -10,7 +10,11 @@ local function cleanupDatabase()
 	-- Delete guilds that are pending for 3 days
 	db.asyncQuery("DELETE FROM `guild_wars` WHERE `status` = 0 AND (`started` + 72 * 60 * 60) <= " .. currentTime)
 
-	db.asyncQuery("DELETE FROM `players` WHERE `deletion` != 0 AND `deletion` < " .. currentTime)
+	-- `charbazaar` = 0 e obrigatorio aqui: o char bazaar marca o personagem com
+	-- `deletion` = 1 para tira-lo da conta e bloquear o login enquanto o leilao
+	-- corre. Como 1 e sempre menor que o timestamp atual, sem este filtro todo
+	-- personagem anunciado seria apagado de vez no proximo restart do servidor.
+	db.asyncQuery("DELETE FROM `players` WHERE `deletion` != 0 AND `deletion` < " .. currentTime .. " AND `charbazaar` = 0")
 	db.asyncQuery("DELETE FROM `ip_bans` WHERE `expires_at` != 0 AND `expires_at` <= " .. currentTime)
 	db.asyncQuery("DELETE FROM `market_history` WHERE `inserted` <= " .. (currentTime - configManager.getNumber(configKeys.MARKET_OFFER_DURATION)))
 	db.query("DELETE FROM `player_storage` WHERE `key` IN (" .. Global.Storage.FamiliarSummonEvent10 .. ", " .. Global.Storage.FamiliarSummonEvent60 .. ")")
