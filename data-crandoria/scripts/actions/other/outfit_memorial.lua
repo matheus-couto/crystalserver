@@ -12,10 +12,14 @@ local function updateOutfitCache(storageKey, cache, lastUpdated)
 
 	local newCache = { [1] = {}, [2] = {}, [3] = {} }
 
-	local resultId = db.storeQuery("SELECT `name`, `value` FROM `player_storage` INNER JOIN `players` as `p` ON `p`.`id` = `player_id` WHERE `key` = " .. storageKey .. " AND `value` >= 1;")
+	-- Only tiers 1-3 have a cache bucket; anything else used to index nil and error.
+	local resultId = db.storeQuery("SELECT `name`, `value` FROM `player_storage` INNER JOIN `players` as `p` ON `p`.`id` = `player_id` WHERE `key` = " .. storageKey .. " AND `value` BETWEEN 1 AND 3;")
 	if resultId then
 		repeat
-			table.insert(newCache[Result.getNumber(resultId, "value")], Result.getString(resultId, "name"))
+			local tier = newCache[Result.getNumber(resultId, "value")]
+			if tier then
+				tier[#tier + 1] = Result.getString(resultId, "name")
+			end
 		until not Result.next(resultId)
 		Result.free(resultId)
 	end

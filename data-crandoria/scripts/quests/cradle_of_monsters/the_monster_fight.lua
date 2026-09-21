@@ -11,13 +11,13 @@ local encounter = Encounter("The Monster", {
 local function freeMonster()
 	local tile = Tile(Position(33844, 32591, 12))
 	if tile then
-		while true do
+		-- Bounded: a bar that refuses to be removed would spin here forever.
+		for _ = 1, 100 do
 			local item = tile:getItemById(jailBarsId)
-			if item then
-				item:remove()
-			else
+			if not item then
 				break
 			end
+			item:remove()
 		end
 	end
 end

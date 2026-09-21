@@ -110,8 +110,17 @@ monster.events = {
 	"MirrorImageTransform",
 }
 
+-- SoulWarQuest lives in a lib that may be disabled, so never index it blindly.
+local fallbackApparitionNames = {
+	"Druid's Apparition",
+	"Knight's Apparition",
+	"Paladin's Apparition",
+	"Sorcerer's Apparition",
+	"Monk's Apparition",
+}
+
 mType.onPlayerAttack = function(monster, attackerPlayer)
-	logger.info("Player {}, attacking monster {}", attackerPlayer:getName(), monster:getName())
+	logger.debug("Player {}, attacking monster {}", attackerPlayer:getName(), monster:getName())
 
 	local apparitionType = ""
 
@@ -128,14 +137,29 @@ mType.onPlayerAttack = function(monster, attackerPlayer)
 		apparitionType = "Monk's Apparition"
 	end
 
+	local apparitionNames = (SoulWarQuest and SoulWarQuest.apparitionNames) or fallbackApparitionNames
+	if #apparitionNames == 0 then
+		return
+	end
+
+	-- Vocations outside the list (or none at all) still need an apparition.
+	if apparitionType == "" then
+		apparitionType = apparitionNames[math.random(#apparitionNames)]
+	end
+
 	if math.random(100) > sameVocationProbability then
-		repeat
-			local randomIndex = math.random(#SoulWarQuest.apparitionNames)
-			if SoulWarQuest.apparitionNames[randomIndex] ~= apparitionType then
-				apparitionType = SoulWarQuest.apparitionNames[randomIndex]
-				break
+		-- Build the candidate list instead of retrying at random, which could
+		-- never terminate when every name matches the player's vocation.
+		local candidates = {}
+		for _, name in ipairs(apparitionNames) do
+			if name ~= apparitionType then
+				candidates[#candidates + 1] = name
 			end
-		until false
+		end
+
+		if #candidates > 0 then
+			apparitionType = candidates[math.random(#candidates)]
+		end
 	end
 
 	Game.createMonster(apparitionType, monster:getPosition(), true, true)
