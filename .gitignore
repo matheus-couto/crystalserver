@@ -404,3 +404,7 @@ cmake-build-*
 data-crandoria/world/*.otbm
 data-crandoria/*.rar
 config.lua copy.dist
+
+# Cliente oficial do Tibia 15.25 (595MB, e bin/Qt6WebEngineCore.dll passa
+# dos 100MB por arquivo que o GitHub aceita). Fica na pasta, fora do git.
+client/
