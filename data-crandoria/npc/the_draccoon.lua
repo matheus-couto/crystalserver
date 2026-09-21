@@ -61,7 +61,8 @@ local function creatureSayCallback(npc, creature, type, message)
 	elseif MsgContains(message, "yes") or MsgContains(message, "sim") then
 		if npcHandler:getTopic(playerId) == 1 then
 			if player:getItemCount(11682) >= 10 and player:getItemCount(9081) >= 1 then
-				player:removeItem(11682, 10) and player:removeItem(9081, 1)
+				player:removeItem(11682, 10)
+				player:removeItem(9081, 1)
 				npcHandler:say("<nhac!> Aaaah! Isso que eu chamo de comida de verdade! Maravilhoso. Tudo bem como combinado, voce pode passar pelo teleport. Boa sorte com os Bulltaurs.", npc, creature)
 				player:setStorageValue(Storage.Quest.Crandoria.TheFalseGod.Progresso, 9)
 				npcHandler:setTopic(playerId, 0)
