@@ -1,6 +1,12 @@
 -- This function load the table "CreateItemOnMap"from script "create_item.lua"
 -- Basically it works to create items on the map without the need to edit the map
 function CreateMapItem(tablename)
+	-- Tabelas do mapa global ficam comentadas neste datapack (mapa proprio),
+	-- entao a tabela chega nil. Sem tabela nao ha nada para carregar.
+	if type(tablename) ~= "table" then
+		return
+	end
+
 	for index, value in pairs(tablename) do
 		for i = 1, #value.itemPos do
 			local item
@@ -20,6 +26,12 @@ end
 
 -- These functions load the action/unique tables on the map
 function loadLuaMapAction(tablename)
+	-- Tabelas do mapa global ficam comentadas neste datapack (mapa proprio),
+	-- entao a tabela chega nil. Sem tabela nao ha nada para carregar.
+	if type(tablename) ~= "table" then
+		return
+	end
+
 	-- It load actions
 	for index, value in pairs(tablename) do
 		for i = 1, #value.itemPos do
@@ -58,6 +70,12 @@ function loadLuaMapAction(tablename)
 end
 
 function loadLuaMapUnique(tablename)
+	-- Tabelas do mapa global ficam comentadas neste datapack (mapa proprio),
+	-- entao a tabela chega nil. Sem tabela nao ha nada para carregar.
+	if type(tablename) ~= "table" then
+		return
+	end
+
 	-- It load uniques
 	for index, value in pairs(tablename) do
 		local tile = Tile(value.itemPos)
@@ -87,6 +105,12 @@ function loadLuaMapUnique(tablename)
 end
 
 function loadLuaMapSign(tablename)
+	-- Tabelas do mapa global ficam comentadas neste datapack (mapa proprio),
+	-- entao a tabela chega nil. Sem tabela nao ha nada para carregar.
+	if type(tablename) ~= "table" then
+		return
+	end
+
 	-- It load signs on map table
 	for index, value in pairs(tablename) do
 		local tile = Tile(value.itemPos)
@@ -113,6 +137,12 @@ function loadLuaMapSign(tablename)
 end
 
 function loadLuaMapBookDocument(tablename)
+	-- Tabelas do mapa global ficam comentadas neste datapack (mapa proprio),
+	-- entao a tabela chega nil. Sem tabela nao ha nada para carregar.
+	if type(tablename) ~= "table" then
+		return
+	end
+
 	-- Index 1: total valid, index 2: total loaded
 	local totals = { 0, 0 }
 	for index, value in ipairs(tablename) do
@@ -167,6 +197,12 @@ function loadLuaMapBookDocument(tablename)
 end
 
 function updateKeysStorage(tablename)
+	-- Tabelas do mapa global ficam comentadas neste datapack (mapa proprio),
+	-- entao a tabela chega nil. Sem tabela nao ha nada para carregar.
+	if type(tablename) ~= "table" then
+		return
+	end
+
 	-- It updates old storage keys from quests for all players
 	local newUpdate = tablename[0].latest
 	local oldUpdate = getGlobalStorage(GlobalStorage.KeysUpdate)
