@@ -40,13 +40,19 @@ function loadLuaMapAction(tablename)
 			-- Checks if the position is valid
 			if tile then
 				-- Checks that you have no items created
-				if not value.itemId == false and tile:getItemCountById(value.itemId) == 0 then
-					logger.error("[loadLuaMapAction] - Wrong item id {} found", value.itemId)
-					logger.warn("Action id: {}, position {}", index, tile:getPosition():toString())
-					goto continue
-				end
-
-				if value.itemId ~= false and tile:getItemCountById(value.itemId) > 0 then
+				-- itemId = false significa "o que estiver no tile". Qualquer outro
+				-- valor precisa ser um id. Escrito antes como "not value.itemId == false",
+				-- que por precedencia vira "(not value.itemId) == false" e nao cobria nil:
+				-- com a chave ausente ou com o nome errado (itemID em vez de itemId),
+				-- getItemCountById(nil) devolvia nil e a comparacao derrubava o
+				-- carregamento inteiro do mapa a partir daquele ponto.
+				if value.itemId ~= false then
+					local found = value.itemId and tile:getItemCountById(value.itemId) or 0
+					if found == 0 then
+						logger.error("[loadLuaMapAction] - Wrong item id {} found", value.itemId)
+						logger.warn("Action id: {}, position {}", index, tile:getPosition():toString())
+						goto continue
+					end
 					item = tile:getItemById(value.itemId)
 				end
 
@@ -83,14 +89,12 @@ function loadLuaMapUnique(tablename)
 		-- Checks if the position is valid
 		if tile then
 			-- Checks that you have no items created
-			if not value.itemId == false and tile:getItemCountById(value.itemId) == 0 then
+			-- Unique id exige um item concreto: nil (chave ausente/errada) e false
+			-- nao servem, e chamar getItemCountById com eles devolvia nil.
+			local found = value.itemId and tile:getItemCountById(value.itemId) or 0
+			if found < 1 then
 				logger.error("[loadLuaMapUnique] - Wrong item id {} found", value.itemId)
 				logger.warn("Unique id: {}, position {}", index, tile:getPosition():toString())
-				goto continue
-			end
-			if tile:getItemCountById(value.itemId) < 1 or value.itemId == false then
-				logger.warn("[loadLuaMapUnique] - Wrong item id {} found", value.itemId)
-				logger.warn("Unique id: {}, position {}, item id: wrong", index, tile:getPosition():toString())
 				goto continue
 			end
 			item = tile:getItemById(value.itemId)
@@ -118,12 +122,13 @@ function loadLuaMapSign(tablename)
 		-- Checks if the position is valid
 		if tile then
 			-- Checks that you have no items created
-			if tile:getItemCountById(value.itemId) == 0 then
+			local found = value.itemId and tile:getItemCountById(value.itemId) or 0
+			if found == 0 then
 				logger.error("[loadLuaMapSign] - Wrong item id {} found", value.itemId)
 				logger.warn("Sign id: {}, position {}, item id: wrong", index, tile:getPosition():toString())
 				goto continue
 			end
-			if tile:getItemCountById(value.itemId) == 1 then
+			if found == 1 then
 				item = tile:getItemById(value.itemId)
 			end
 			-- If he found the item, add the text

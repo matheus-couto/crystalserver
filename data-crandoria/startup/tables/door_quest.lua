@@ -8,19 +8,19 @@ QuestDoorAction = {
 	-- Crandoria
 	-- Boss Custom 4 demon quests
 	[Storage.Quest.U8_2.TheInquisitionQuest.Reward] = {
-		itemID = 1644,
+		itemId = 1644,
 		itemPos = {{x = 5178, y = 4643, z = 11}}
 	},
 	[Storage.Quest.U8_2.TheDemonOak.Done] = {
-		itemID = 1644,
+		itemId = 1644,
 		itemPos = {{x = 5178, y = 4641, z = 11}}
 	},
 	[Storage.Quest.U6_4.DemonHelmet.Rewards.DemonHelmet] = {
-		itemID = 1644,
+		itemId = 1644,
 		itemPos = {{x = 5178, y = 4637, z = 11}}
 	},
 	[Storage.Quest.U7_24.TheAnnihilator.Reward] = {
-		itemID = 1644,
+		itemId = 1644,
 		itemPos = {{x = 5178, y = 4639, z = 11}}
 	},
 	-- The queens of the banshee door
