@@ -263,9 +263,12 @@ void LuaEnums::initOthersEnums(lua_State* L) {
 }
 
 void LuaEnums::initWorldTypeEnums(lua_State* L) {
-	registerEnum(L, WORLDTYPE_OPTIONAL);
+	registerEnum(L, WORLDTYPE_NONE);
 	registerEnum(L, WORLDTYPE_OPEN);
+	registerEnum(L, WORLDTYPE_OPTIONAL);
 	registerEnum(L, WORLDTYPE_HARDCORE);
+	registerEnum(L, WORLDTYPE_RETRO_PVP);
+	registerEnum(L, WORLDTYPE_RETRO_HARDCORE);
 	registerEnum(L, WORLDTYPE_FIRST);
 	registerEnum(L, WORLDTYPE_LAST);
 }
@@ -469,7 +472,6 @@ void LuaEnums::initConditionParamEnums(lua_State* L) {
 	registerEnum(L, CONDITION_PARAM_INCREASE_MANADRAINPERCENT);
 	registerEnum(L, CONDITION_PARAM_INCREASE_DROWNPERCENT);
 	registerEnum(L, CONDITION_PARAM_CHARM_CHANCE_MODIFIER);
-	registerEnum(L, CONDITION_PARAM_FOODTICKS);
 }
 
 void LuaEnums::initAttributeConditionSubIdEnums(lua_State* L) {

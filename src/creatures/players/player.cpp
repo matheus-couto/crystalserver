@@ -1421,7 +1421,7 @@ bool Player::canWalkthrough(const std::shared_ptr<Creature> &creature) {
 
 	if (player) {
 		const auto &playerTile = player->getTile();
-		if (!playerTile || (!playerTile->hasFlag(TILESTATE_NOPVPZONE) && !playerTile->hasFlag(TILESTATE_PROTECTIONZONE) && player->getLevel() > static_cast<uint32_t>(g_configManager().getNumber(PROTECTION_LEVEL)) && g_game().getWorldType() != WORLDTYPE_OPTIONAL)) {
+		if (!playerTile || (!playerTile->hasFlag(TILESTATE_NOPVPZONE) && !playerTile->hasFlag(TILESTATE_PROTECTIONZONE) && player->getLevel() > static_cast<uint32_t>(g_configManager().getNumber(PROTECTION_LEVEL)) && g_game().worlds().getCurrentWorld()->type != WORLDTYPE_OPTIONAL)) {
 			return false;
 		}
 
@@ -1469,7 +1469,7 @@ bool Player::canWalkthroughEx(const std::shared_ptr<Creature> &creature) const {
 	const auto &npc = creature->getNpc();
 	if (player) {
 		const auto &playerTile = player->getTile();
-		return playerTile && (playerTile->hasFlag(TILESTATE_NOPVPZONE) || playerTile->hasFlag(TILESTATE_PROTECTIONZONE) || player->getLevel() <= static_cast<uint32_t>(g_configManager().getNumber(PROTECTION_LEVEL)) || g_game().getWorldType() == WORLDTYPE_OPTIONAL);
+		return playerTile && (playerTile->hasFlag(TILESTATE_NOPVPZONE) || playerTile->hasFlag(TILESTATE_PROTECTIONZONE) || player->getLevel() <= static_cast<uint32_t>(g_configManager().getNumber(PROTECTION_LEVEL)) || g_game().worlds().getCurrentWorld()->type == WORLDTYPE_OPTIONAL);
 	} else if (npc) {
 		const auto &tile = npc->getTile();
 		const auto &houseTile = std::dynamic_pointer_cast<HouseTile>(tile);
@@ -2924,7 +2924,7 @@ void Player::onAttackedCreatureChangeZone(ZoneType_t zone) {
 				onAttackedCreatureDisappear(false);
 			}
 		}
-	} else if (zone == ZONE_NORMAL && g_game().getWorldType() == WORLDTYPE_OPTIONAL) {
+	} else if (zone == ZONE_NORMAL && g_game().worlds().getCurrentWorld()->type == WORLDTYPE_OPTIONAL) {
 		// attackedCreature can leave a pvp zone if not pzlocked
 		if (attackedCreature->getPlayer()) {
 			setAttackedCreature(nullptr);
@@ -3601,7 +3601,7 @@ void Player::addExperience(const std::shared_ptr<Creature> &target, uint64_t exp
 		return;
 	}
 
-	const auto rate = exp / rawExp;
+	const auto rate = rawExp != 0 ? exp / rawExp : 1;
 	const std::map<std::string, std::string> attrs({ { "player", getName() }, { "level", std::to_string(getLevel()) }, { "rate", std::to_string(rate) } });
 	if (sendText) {
 		g_metrics().addCounter("player_experience_raw", rawExp, attrs);
@@ -4104,7 +4104,7 @@ void Player::death(const std::shared_ptr<Creature> &lastHitCreature) {
 			magLevel--;
 		}
 
-		manaSpent -= lostMana;
+		manaSpent = (lostMana > manaSpent) ? 0 : manaSpent - lostMana;
 
 		uint64_t nextReqMana = vocation->getReqMana(magLevel + 1);
 		if (nextReqMana > vocation->getReqMana(magLevel)) {
@@ -4158,7 +4158,7 @@ void Player::death(const std::shared_ptr<Creature> &lastHitCreature) {
 				skills[i].level--;
 			}
 
-			skills[i].tries = std::max<int32_t>(0, skills[i].tries - lostSkillTries);
+			skills[i].tries = (lostSkillTries > skills[i].tries) ? 0 : skills[i].tries - lostSkillTries;
 			skills[i].percent = Player::getPercentLevel(skills[i].tries, vocation->getReqSkillTries(i, skills[i].level));
 		}
 
@@ -4423,22 +4423,59 @@ std::shared_ptr<Item> Player::getCorpse(const std::shared_ptr<Creature> &lastHit
 	} else {
 		descriptionStream << fmt::format("You recognize {}. {} was killed by ", getNameDescription(), subjectPronoun);
 
-		std::vector<std::string> killers;
-		std::string firstMonster;
+		// Only attackers of the fight that ended in this death count. damageMap is cleared only
+		// when the player goes idle, so during a long hunt it still holds every creature that has
+		// hit the player since the hunt began. Same in-fight window as Creature::onDeath.
+		const int64_t timeNow = OTSYS_TIME();
+		const uint32_t inFightTicks = g_configManager().getNumber(PZ_LOCKED);
+		const auto isRecentAttacker = [timeNow, inFightTicks](const CountBlock_t &damageInfo) {
+			return damageInfo.total > 0 && damageInfo.ticks > 0 && timeNow - damageInfo.ticks <= inFightTicks;
+		};
 
+		// The monster named is the one that landed the killing blow - the creature the death list
+		// (player_deaths.killed_by) is derived from. damageMap is ordered by creature id, so taking
+		// its first monster named whichever attacker had been alive the longest, e.g. a monster that
+		// hit the player on the way into a hunting area instead of the one that killed them there.
+		// Only when the last hit was not a monster of this fight (a player, an ownerless field) the
+		// monster with the most damage in it is named.
+		// Not the mostDamageCreature argument: Creature::onDeath has already replaced it with the
+		// summon's master and, under shared experience, with the party leader.
+		std::shared_ptr<Creature> killerMonster;
+		if (lastHitCreature && lastHitCreature->isMonster()) {
+			const auto it = damageMap.find(lastHitCreature->getID());
+			if (it != damageMap.end() && isRecentAttacker(it->second)) {
+				killerMonster = lastHitCreature;
+			}
+		}
+		const bool killerIsLastHit = killerMonster != nullptr;
+		int32_t killerMonsterDamage = 0;
+
+		std::vector<std::string> killers;
 		for (const auto &[creatureId, damageInfo] : damageMap) {
-			auto damageDealer = g_game().getCreatureByID(creatureId);
-			if (damageDealer) {
-				if (damageDealer->isPlayer()) {
-					killers.push_back(damageDealer->getNameDescription());
-				} else if (damageDealer->isMonster() && firstMonster.empty()) {
-					auto master = damageDealer->getMaster();
-					if (master && master->isPlayer()) {
-						firstMonster = fmt::format("{} summoned by {}", damageDealer->getNameDescription(), master->getNameDescription());
-					} else {
-						firstMonster = damageDealer->getNameDescription();
-					}
-				}
+			if (creatureId == 0 || creatureId == getID() || !isRecentAttacker(damageInfo)) {
+				continue;
+			}
+
+			const auto damageDealer = g_game().getCreatureByID(creatureId);
+			if (!damageDealer) {
+				continue;
+			}
+
+			if (damageDealer->isPlayer()) {
+				killers.push_back(damageDealer->getNameDescription());
+			} else if (!killerIsLastHit && damageDealer->isMonster() && damageInfo.total > killerMonsterDamage) {
+				killerMonster = damageDealer;
+				killerMonsterDamage = damageInfo.total;
+			}
+		}
+
+		std::string monsterKiller;
+		if (killerMonster) {
+			const auto master = killerMonster->getMaster();
+			if (master && master->isPlayer()) {
+				monsterKiller = fmt::format("{} summoned by {}", killerMonster->getNameDescription(), master->getNameDescription());
+			} else {
+				monsterKiller = killerMonster->getNameDescription();
 			}
 		}
 
@@ -4449,11 +4486,11 @@ std::shared_ptr<Item> Player::getCorpse(const std::shared_ptr<Creature> &lastHit
 				}
 				descriptionStream << killers[i];
 			}
-			if (!firstMonster.empty()) {
-				descriptionStream << " and " << firstMonster;
+			if (!monsterKiller.empty()) {
+				descriptionStream << " and " << monsterKiller;
 			}
-		} else if (!firstMonster.empty()) {
-			descriptionStream << firstMonster;
+		} else if (!monsterKiller.empty()) {
+			descriptionStream << monsterKiller;
 		} else {
 			descriptionStream << "an unknown attacker";
 		}
@@ -5371,7 +5408,7 @@ uint32_t Player::getCapacity() const {
 	if (hasFlag(PlayerFlags_t::HasInfiniteCapacity)) {
 		return std::numeric_limits<uint32_t>::max();
 	}
-	return capacity + bonusCapacity + varStats[STAT_CAPACITY] + (m_wheelPlayer->getStat(WheelStat_t::CAPACITY) * 100);
+	return static_cast<uint32_t>(std::max<int64_t>(0, static_cast<int64_t>(capacity) + bonusCapacity + varStats[STAT_CAPACITY] + (m_wheelPlayer->getStat(WheelStat_t::CAPACITY) * 100)));
 }
 
 uint32_t Player::getBonusCapacity() const {
@@ -5939,8 +5976,12 @@ std::shared_ptr<Thing> Player::getThing(size_t index) const {
 
 // TODO: review this function
 bool Player::updateSaleShopList(const std::shared_ptr<Item> &item) {
+	if (!item) {
+		return true;
+	}
+
 	const uint16_t itemId = item->getID();
-	if (!itemId || !item) {
+	if (!itemId) {
 		return true;
 	}
 
@@ -6310,7 +6351,7 @@ void Player::onCombatRemoveCondition(const std::shared_ptr<Condition> &condition
 	// Creature::onCombatRemoveCondition(condition);
 	if (condition->getId() > 0) {
 		// Means the condition is from an item, id == slot
-		if (g_game().getWorldType() == WORLDTYPE_HARDCORE) {
+		if (g_game().worlds().getCurrentWorld()->type == WORLDTYPE_HARDCORE) {
 			const auto &item = getInventoryItem(static_cast<Slots_t>(condition->getId()));
 			if (item) {
 				// 25% chance to destroy the item
@@ -6356,7 +6397,7 @@ void Player::onAttackedCreature(const std::shared_ptr<Creature> &target) {
 
 	const auto &targetPlayer = target->getPlayer();
 	if (targetPlayer && !isPartner(targetPlayer) && !isGuildMate(targetPlayer)) {
-		if (!pzLocked && g_game().getWorldType() == WORLDTYPE_HARDCORE) {
+		if (!pzLocked && g_game().worlds().getCurrentWorld()->type == WORLDTYPE_HARDCORE) {
 			pzLocked = true;
 			sendIcons();
 		}
@@ -6432,10 +6473,10 @@ void Player::onAttackedCreatureDrainHealth(const std::shared_ptr<Creature> &targ
 
 void Player::onTargetCreatureGainHealth(const std::shared_ptr<Creature> &target, int32_t points) {
 	if (target && m_party) {
-		std::shared_ptr<Player> tmpPlayer = nullptr;
+		std::shared_ptr<Player> tmpPlayer;
 
-		if (isPartner(tmpPlayer) && (tmpPlayer != getPlayer())) {
-			tmpPlayer = target->getPlayer();
+		if (const auto &targetPlayer = target->getPlayer()) {
+			tmpPlayer = targetPlayer;
 		} else if (const auto &targetMaster = target->getMaster()) {
 			if (const auto &targetMasterPlayer = targetMaster->getPlayer()) {
 				tmpPlayer = targetMasterPlayer;
@@ -7006,7 +7047,11 @@ void Player::sendRemoveTileThing(const Position &pos, int32_t stackpos) const {
 
 void Player::sendUpdateTileCreature(const std::shared_ptr<Creature> &creature) {
 	if (client) {
-		client->sendUpdateTileCreature(creature->getPosition(), creature->getTile()->getClientIndexOfCreature(static_self_cast<Player>(), creature), creature);
+		const auto &tile = creature->getTile();
+		if (!tile) {
+			return;
+		}
+		client->sendUpdateTileCreature(creature->getPosition(), tile->getClientIndexOfCreature(static_self_cast<Player>(), creature), creature);
 	}
 }
 
@@ -7046,7 +7091,7 @@ Skulls_t Player::getSkull() const {
 }
 
 Skulls_t Player::getSkullClient(const std::shared_ptr<Creature> &creature) {
-	if (!creature || g_game().getWorldType() != WORLDTYPE_OPEN) {
+	if (!creature || g_game().worlds().getCurrentWorld()->type != WORLDTYPE_OPEN) {
 		return SKULL_NONE;
 	}
 
@@ -7112,7 +7157,7 @@ void Player::clearAttacked() {
 }
 
 void Player::addUnjustifiedDead(const std::shared_ptr<Player> &attacked) {
-	if (hasFlag(PlayerFlags_t::NotGainInFight) || hasFlag(PlayerFlags_t::NotGainUnjustified) || attacked == getPlayer() || g_game().getWorldType() == WORLDTYPE_HARDCORE) {
+	if (hasFlag(PlayerFlags_t::NotGainInFight) || hasFlag(PlayerFlags_t::NotGainUnjustified) || attacked == getPlayer() || g_game().worlds().getCurrentWorld()->type == WORLDTYPE_HARDCORE) {
 		return;
 	}
 
@@ -7246,7 +7291,7 @@ double Player::getLostPercent() const {
 		return std::max<int32_t>(0, deathLosePercent) / 100.;
 	}
 
-	bool isRetro = g_configManager().getBoolean(TOGGLE_SERVER_IS_RETRO);
+	bool isRetro = g_game().isRetroPVP();
 	const auto factor = (isRetro ? 6.31 : 8);
 	double percentReduction = (blessingCount * factor) / 100.;
 
@@ -8385,9 +8430,9 @@ void Player::sendHighscoresNoData() const {
 	}
 }
 
-void Player::sendHighscores(const std::vector<HighscoreCharacter> &characters, uint8_t categoryId, uint32_t vocationId, uint16_t page, uint16_t pages, uint32_t updateTimer) const {
+void Player::sendHighscores(const std::string &selectedWorld, const std::vector<HighscoreCharacter> &characters, uint8_t categoryId, uint32_t vocationId, uint16_t page, uint16_t pages, uint32_t updateTimer) const {
 	if (client) {
-		client->sendHighscores(characters, categoryId, vocationId, page, pages, updateTimer);
+		client->sendHighscores(selectedWorld, characters, categoryId, vocationId, page, pages, updateTimer);
 	}
 }
 
@@ -8406,6 +8451,12 @@ void Player::resetAsyncOngoingTask(uint64_t flags) {
 void Player::sendEnterWorld() const {
 	if (client) {
 		client->sendEnterWorld();
+	}
+}
+
+void Player::sendMapDescription(const Position &pos) const {
+	if (client) {
+		client->sendMapDescription(pos);
 	}
 }
 
@@ -8553,7 +8604,7 @@ void Player::onThink(uint32_t interval) {
 		}
 	}
 
-	if (g_game().getWorldType() != WORLDTYPE_HARDCORE) {
+	if (g_game().worlds().getCurrentWorld()->type != WORLDTYPE_HARDCORE) {
 		checkSkullTicks(interval / 1000);
 	}
 
@@ -9234,6 +9285,7 @@ ReturnValue Player::addItemFromStash(uint16_t itemId, uint32_t itemCount) {
 	}
 
 	uint32_t addedItemCount = 0;
+	uint32_t totalWithdrawn = finalRetrievable;
 	uint32_t remainingToRetrieve = finalRetrievable;
 
 	if (itemType.stackable) {
@@ -9247,6 +9299,11 @@ ReturnValue Player::addItemFromStash(uint16_t itemId, uint32_t itemCount) {
 				auto &stackableItem = *it;
 				if (addValue == 0) {
 					break;
+				}
+
+				if (!stackableItem || !stackableItem->getParent()) {
+					it = stackableItemsCache.erase(it);
+					continue;
 				}
 
 				uint32_t spaceInStack = stackableItem->getStackSize() - stackableItem->getItemCount();
@@ -9334,6 +9391,13 @@ ReturnValue Player::addItemFromStash(uint16_t itemId, uint32_t itemCount) {
 				++cacheIndex;
 			}
 		}
+	}
+
+	// Refund unplaced items back to stash
+	if (addedItemCount < totalWithdrawn) {
+		uint32_t unplaced = totalWithdrawn - addedItemCount;
+		stashItems[itemId] += unplaced;
+		g_logger().warn("[addItemFromStash] Refunded {}x itemId: {} back to stash for player {}", unplaced, itemId, getName());
 	}
 
 	std::string itemName = itemType.name + (addedItemCount > 1 ? "s" : "");
@@ -13174,7 +13238,7 @@ void Player::removeEquippedWeaponProficiency(const uint16_t itemId) {
 
 bool Player::canExiva(const std::string &spellParam) const {
 	const bool restrictOnlyOptional = g_configManager().getBoolean(EXIVA_RESTRICTIONS_ONLY_OPTIONAL_WORLDS);
-	const bool isOptionalWorld = g_game().getWorldType() == WORLDTYPE_OPTIONAL;
+	const bool isOptionalWorld = g_game().worlds().getCurrentWorld()->type == WORLDTYPE_OPTIONAL;
 
 	if (restrictOnlyOptional && !isOptionalWorld) {
 		return true;
