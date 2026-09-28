@@ -1,0 +1,53 @@
+# Complemento do docker-compose.yml para producao.
+#
+# Uso (sempre os dois arquivos, nesta ordem):
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#
+# O compose base sobe banco, servidor de jogo e login-server. Este arquivo
+# acrescenta o que o servidor Crandoria precisa e o base nao tem:
+#   myacc   site e endpoint /login.php que o cliente chama
+#   donate  worker do Asaas (cria os links e ouve o webhook)
+
+name: crystalserver
+
+services:
+  # O cliente oficial tem http://<host>/login.php fixo no binario, na porta 80.
+  # Por isso o MyAAC fica exposto na 80, e nao atras de outra porta.
+  myacc:
+    build:
+      context: ../myacc
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - '.env'
+    networks:
+      - crystalserver-net
+    ports:
+      - '80:80'
+    volumes:
+      # Bind mount, nao imagem: config.local.php e as imagens enviadas pelos
+      # jogadores precisam sobreviver a um rebuild.
+      - '../myacc:/var/www/html'
+      # O MyAAC le config.lua para descobrir dados do servidor. Somente leitura.
+      - '../config.lua:/srv/crystalserver/config.lua:ro'
+    depends_on:
+      database:
+        condition: service_healthy
+
+  donate:
+    build:
+      context: ../tools/asaas-donate
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - '../tools/asaas-donate/.env'
+    networks:
+      - crystalserver-net
+    ports:
+      # O Asaas precisa alcancar esta porta pela internet. Se voce usar um
+      # reverse proxy com TLS (recomendado), troque por '127.0.0.1:3000:3000'
+      # e aponte o proxy para ca.
+      - '3000:3000'
+    depends_on:
+      database:
+        condition: service_healthy
