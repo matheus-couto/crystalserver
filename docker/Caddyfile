@@ -47,12 +47,34 @@ crandoriaot.com.br {
 	}
 
 	header {
-		# O MyAAC monta paginas com HTML proprio; nao force CSP aqui para nao
-		# quebrar templates. Estes tres sao seguros e ajudam.
+		# O MyAAC monta paginas com HTML e JS inline proprios; uma CSP
+		# restritiva quebraria os templates, entao ela fica de fora.
 		X-Content-Type-Options nosniff
 		X-Frame-Options SAMEORIGIN
 		Referrer-Policy strict-origin-when-cross-origin
+		X-XSS-Protection "1; mode=block"
+		Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+		# Um ano, obrigando HTTPS em visitas futuras. Fica so no bloco 443:
+		# o navegador ignora HSTS vindo por HTTP, e o /login.php do cliente
+		# precisa continuar atendendo em texto puro.
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+		# Nao anuncie a stack.
+		-Server
+		-X-Powered-By
 	}
+
+	# Nada aqui deve ser alcancavel de fora: arquivos de configuracao com
+	# senha, dumps, backups e o diretorio .git. O Apache ja barra, mas
+	# bloquear na borda evita que a requisicao chegue ao PHP.
+	@proibido {
+		path /config.local.php /config.php
+		path /install/* "/install old/*"
+		path /.git /.git/*
+		path *.sql *.log *.dist *.bak *.old *.yml *.yaml *.lock
+	}
+	respond @proibido 404
 
 	log {
 		output file /var/log/caddy/access.log {

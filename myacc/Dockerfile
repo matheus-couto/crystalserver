@@ -12,8 +12,8 @@ RUN apt-get update \
 		libicu-dev \
 		libonig-dev \
 	&& docker-php-ext-configure gd --with-freetype --with-jpeg \
-	&& docker-php-ext-install -j"$(nproc)" pdo_mysql zip gd intl mbstring opcache \
-	&& a2enmod rewrite remoteip \
+	&& docker-php-ext-install -j"$(nproc)" pdo_mysql zip gd intl mbstring opcache bcmath \
+	&& a2enmod rewrite remoteip headers \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
@@ -38,6 +38,37 @@ RUN { \
 		echo 'ServerName crandoriaot.com.br'; \
 	} > /etc/apache2/conf-available/behind-proxy.conf \
 	&& a2enconf behind-proxy
+
+# Bloqueia o que nao deve ser servido.
+#
+# O MyAAC guarda config.php e config.local.php dentro do proprio webroot, com
+# a senha do banco. Enquanto o PHP funciona eles sao executados e nao expoem
+# nada, mas uma falha de modulo faz o Apache servir o codigo-fonte como texto.
+# A pasta do instalador recria contas e reescreve configuracao, entao tambem
+# fica fora do alcance.
+RUN { \
+		echo '<Files "config.local.php">'; \
+		echo '  Require all denied'; \
+		echo '</Files>'; \
+		echo '<Files "config.php">'; \
+		echo '  Require all denied'; \
+		echo '</Files>'; \
+		echo '<DirectoryMatch "^/var/www/html/(install|install old)">'; \
+		echo '  Require all denied'; \
+		echo '</DirectoryMatch>'; \
+		echo '<FilesMatch "\.(sql|log|md|dist|bak|old|ini|yml|yaml|lock)$">'; \
+		echo '  Require all denied'; \
+		echo '</FilesMatch>'; \
+		echo '<DirectoryMatch "/\.(git|svn)">'; \
+		echo '  Require all denied'; \
+		echo '</DirectoryMatch>'; \
+		echo '# Listagem de diretorio revela estrutura e arquivos esquecidos.'; \
+		echo '<Directory /var/www/html>'; \
+		echo '  Options -Indexes +FollowSymLinks'; \
+		echo '  AllowOverride All'; \
+		echo '</Directory>'; \
+	} > /etc/apache2/conf-available/hardening.conf \
+	&& a2enconf hardening
 
 # O MyAAC faz upload de imagens de guild; o padrao de 2M nao basta.
 RUN { \
