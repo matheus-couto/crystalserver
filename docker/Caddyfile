@@ -1,0 +1,63 @@
+# Caddy na frente de tudo. Ele obtem e renova o certificado do Let's Encrypt
+# sozinho, entao nao ha certbot nem cron de renovacao.
+
+{
+	email matheus.couto@hotmail.com
+}
+
+# ---------------------------------------------------------------------------
+# HTTP puro (porta 80)
+#
+# Existe por causa do cliente oficial: a URL de login esta gravada no binario
+# como http://.../login.php, em HTTP. O comportamento padrao do Caddy seria
+# redirecionar 80 -> 443, e o cliente nao segue redirecionamento no POST de
+# login -- a tentativa simplesmente falharia.
+#
+# Por isso /login.php e atendido em HTTP e todo o resto e empurrado para HTTPS.
+# ---------------------------------------------------------------------------
+http://crandoriaot.com.br, http://151.244.40.110 {
+	handle /login.php* {
+		reverse_proxy myacc:80
+	}
+
+	handle /clientcreateaccount.php* {
+		reverse_proxy myacc:80
+	}
+
+	handle {
+		redir https://crandoriaot.com.br{uri} permanent
+	}
+}
+
+# ---------------------------------------------------------------------------
+# HTTPS (porta 443)
+# ---------------------------------------------------------------------------
+crandoriaot.com.br {
+	encode gzip
+
+	# Webhook do Asaas. Fica antes do bloco geral porque o handle e avaliado
+	# na ordem em que aparece.
+	handle /asaas/webhook* {
+		reverse_proxy donate:3000
+	}
+
+	# Site e area de conta.
+	handle {
+		reverse_proxy myacc:80
+	}
+
+	header {
+		# O MyAAC monta paginas com HTML proprio; nao force CSP aqui para nao
+		# quebrar templates. Estes tres sao seguros e ajudam.
+		X-Content-Type-Options nosniff
+		X-Frame-Options SAMEORIGIN
+		Referrer-Policy strict-origin-when-cross-origin
+	}
+
+	log {
+		output file /var/log/caddy/access.log {
+			roll_size 10MiB
+			roll_keep 5
+		}
+	}
+}

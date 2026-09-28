@@ -3,27 +3,31 @@
 # Uso (sempre os dois arquivos, nesta ordem):
 #   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 #
-# O compose base sobe banco, servidor de jogo e login-server. Este arquivo
-# acrescenta o que o servidor Crandoria precisa e o base nao tem:
-#   myacc   site e endpoint /login.php que o cliente chama
-#   donate  worker do Asaas (cria os links e ouve o webhook)
+# O compose base sobe banco, servidor de jogo e login-server. Este arquivo:
+#   - desliga o login-server (imagem inexistente e redundante aqui)
+#   - fecha a porta do banco para a internet
+#   - acrescenta myacc, donate e caddy
 
 name: crystalserver
 
 services:
-  # O login-server do compose base fica desligado: a imagem
-  # crystalserver/login-server:latest nao existe no Docker Hub (o pull e
-  # negado), e ele seria redundante de qualquer forma - o cliente oficial
-  # procura o /login.php na porta 80, que e o MyAAC quem responde.
+  # O banco so precisa ser alcancavel pelos outros containers. O compose base
+  # publica 3306 em 0.0.0.0; aqui ela volta para o loopback, onde continua
+  # acessivel por tunel SSH mas nao pela internet.
+  database:
+    ports:
+      - '127.0.0.1:3306:3306'
+
+  # A imagem crystalserver/login-server:latest nao existe no Docker Hub (o pull
+  # e negado e derruba o `up` inteiro). Ela tambem seria redundante: o cliente
+  # oficial procura o /login.php na porta 80, respondido pelo MyAAC.
   #
-  # O profile mantem o servico declarado sem subir por padrao. Para ligar
-  # um dia:  docker compose --profile login-server up -d login
+  # O profile mantem o servico declarado sem subir por padrao. Para ligar:
+  #   docker compose --profile login-server up -d login
   login:
     profiles:
       - login-server
 
-  # O cliente oficial tem http://<host>/login.php fixo no binario, na porta 80.
-  # Por isso o MyAAC fica exposto na 80, e nao atras de outra porta.
   myacc:
     build:
       context: ../myacc
@@ -33,14 +37,18 @@ services:
       - '.env'
     networks:
       - crystalserver-net
-    ports:
-      - '80:80'
+    # Sem `ports`: quem fala com a internet e o Caddy. O Apache e alcancado
+    # pelo nome `myacc` dentro da rede do compose.
+    expose:
+      - '80'
     volumes:
       # Bind mount, nao imagem: config.local.php e as imagens enviadas pelos
       # jogadores precisam sobreviver a um rebuild.
       - '../myacc:/var/www/html'
-      # O MyAAC le config.lua para descobrir dados do servidor. Somente leitura.
-      - '../config.lua:/srv/crystalserver/config.lua:ro'
+      # O MyAAC le arquivos do servidor a partir de server_path: config.lua,
+      # data/vocations.xml, data/items/ e por ai. Montar so o config.lua
+      # deixava o site em erro 500 procurando vocations.xml.
+      - '../:/srv/crystalserver:ro'
     depends_on:
       database:
         condition: service_healthy
@@ -54,11 +62,35 @@ services:
       - '../tools/asaas-donate/.env'
     networks:
       - crystalserver-net
-    ports:
-      # O Asaas precisa alcancar esta porta pela internet. Se voce usar um
-      # reverse proxy com TLS (recomendado), troque por '127.0.0.1:3000:3000'
-      # e aponte o proxy para ca.
-      - '3000:3000'
+    # Tambem sem `ports`: o webhook chega pelo Caddy, com TLS. O Asaas exige
+    # HTTPS em producao, e assim a 3000 nao fica exposta.
+    expose:
+      - '3000'
     depends_on:
       database:
         condition: service_healthy
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    networks:
+      - crystalserver-net
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+    volumes:
+      - './Caddyfile:/etc/caddy/Caddyfile:ro'
+      - 'caddy-data:/data'
+      - 'caddy-config:/config'
+      - 'caddy-logs:/var/log/caddy'
+    depends_on:
+      - myacc
+      - donate
+
+volumes:
+  # Guarda os certificados. Sem este volume, cada `docker compose down` faria
+  # o Caddy pedir certificado novo e bater no limite do Let's Encrypt.
+  caddy-data:
+  caddy-config:
+  caddy-logs:
