@@ -44,6 +44,18 @@ services:
     profiles:
       - login-server
 
+  server:
+    # O compose base publica apenas gameProtocolPort e statusProtocolPort do
+    # .env (7172 e 7171). Falta a porta do protocolo de status.
+    #
+    # Com o sistema multiworld, quem responde ao status nao e o
+    # statusProtocolPort do config.lua e sim o `port_status` da tabela
+    # `worlds` - verificado na pratica: enviando o pacote de status, a 7173
+    # devolve 557 bytes e a 7171 apenas aceita a conexao sem responder.
+    # Sem publicar a 7173, o site marca o servidor como offline.
+    ports:
+      - '7173:7173'
+
   myacc:
     build:
       context: ../myacc
