@@ -170,7 +170,13 @@ registerNpcType.shop = function(npcType, mask)
 				parent:setSellPrice(sellPrice)
 			end
 
-			if clientId then
+			-- Lojas com moeda propria (medalhas, tokens, moedas de evento) ficam
+			-- fora da comparacao. O preco delas nao e em gold, entao confrontar
+			-- "1" de um Silver Medal Trader com os 45000 gold que outro NPC paga
+			-- acusa um exploit que nao existe. Sem currency o padrao e gold.
+			local tradesInGold = (mask.currency == nil) or (mask.currency == ITEM_GOLD_COIN)
+
+			if clientId and tradesInGold then
 				local priceEntry = NpcPriceChecker[clientId]
 				if not priceEntry then
 					priceEntry = { buy = nil, sell = nil, buyNpc = nil, sellNpc = nil, itemName = nil }
