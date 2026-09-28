@@ -45,6 +45,31 @@ services:
       - login-server
 
   server:
+    # Roda o binario direto, sem o start.sh.
+    #
+    # O start.sh e um script interativo: ele vigia o servidor com
+    #     while kill -0 $SERVER_PID; do read -t 1 -n 1 input; ...
+    # esperando que alguem aperte 'q' para sair. Num container sem TTY o
+    # stdin esta fechado, entao o `read -t 1` retorna na hora com EOF em vez
+    # de aguardar um segundo, e o laco gira a toda velocidade: 99% de um core
+    # so para vigiar um processo que usa 1,6%.
+    #
+    # O laco de restart dele tambem e redundante aqui, porque o proprio
+    # compose ja tem restart: unless-stopped.
+    #
+    # De quebra some o pipe `| awk | tee` do start.sh, que deixava o
+    # `docker compose logs` vazio: sem TTY o spdlog passa a usar buffer de
+    # bloco e a saida ficava presa no pipe.
+    entrypoint: ["/bin/crystalserver"]
+
+    # PTY para o spdlog voltar a usar buffer de linha e a saida aparecer em
+    # tempo real no `docker compose logs`.
+    tty: true
+
+    # O start.sh fazia `ulimit -c unlimited`; sem ele, preserva o core dump.
+    ulimits:
+      core: -1
+
     # O compose base publica apenas gameProtocolPort e statusProtocolPort do
     # .env (7172 e 7171). Falta a porta do protocolo de status.
     #
