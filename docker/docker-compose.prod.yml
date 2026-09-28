@@ -11,6 +11,17 @@
 name: crystalserver
 
 services:
+  # O login-server do compose base fica desligado: a imagem
+  # crystalserver/login-server:latest nao existe no Docker Hub (o pull e
+  # negado), e ele seria redundante de qualquer forma - o cliente oficial
+  # procura o /login.php na porta 80, que e o MyAAC quem responde.
+  #
+  # O profile mantem o servico declarado sem subir por padrao. Para ligar
+  # um dia:  docker compose --profile login-server up -d login
+  login:
+    profiles:
+      - login-server
+
   # O cliente oficial tem http://<host>/login.php fixo no binario, na porta 80.
   # Por isso o MyAAC fica exposto na 80, e nao atras de outra porta.
   myacc:
