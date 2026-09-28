@@ -15,8 +15,14 @@ services:
   # publica 3306 em 0.0.0.0; aqui ela volta para o loopback, onde continua
   # acessivel por tunel SSH mas nao pela internet.
   database:
-    ports:
-      - '127.0.0.1:3306:3306'
+    # O compose base publica 3306 no host. Aqui a publicacao e removida por
+    # inteiro: servidor, myacc e donate alcancam o banco pelo nome `database`
+    # dentro da rede do compose, e nada precisa da porta no host.
+    #
+    # Para administrar de fora, use um container efemero na mesma rede:
+    #   docker compose exec database mariadb -u root -p crandoria
+    # ou um tunel SSH apontando para esse container.
+    ports: !reset []
     # O timeout de 5s do compose base e curto demais aqui. Com 2 vCPU e o
     # servidor de jogo ocupando CPU, o healthcheck.sh estoura o prazo e o
     # banco e marcado unhealthy mesmo ja tendo logado "ready for connections",
