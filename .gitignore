@@ -408,3 +408,14 @@ config.lua copy.dist
 # Cliente oficial do Tibia 15.25 (595MB, e bin/Qt6WebEngineCore.dll passa
 # dos 100MB por arquivo que o GitHub aceita). Fica na pasta, fora do git.
 client/
+
+# Worker de doacoes (Asaas): dependencias e credenciais
+tools/asaas-donate/node_modules/
+tools/asaas-donate/.env
+
+# Pacote compactado do servidor (155MB, acima do limite do GitHub)
+crystalserver.7z
+*.7z
+
+# Configuracao local do Claude Code
+.claude/

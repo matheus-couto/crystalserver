@@ -748,3 +748,23 @@ OTCRFeatures = {
     disableFeature = {
     }
 }
+
+-- Doacoes via Asaas (comando !donate)
+-- O jogador digita !donate 100 para doar R$ 100,00. O worker em
+-- tools/asaas-donate cria o link de pagamento e devolve o link num scroll.
+-- Quando o webhook do Asaas confirmar, as coins sao creditadas.
+donateEnabled = false
+-- Cotacao: quantas Tibia Coins cada R$ 1,00 vale.
+-- Com 10, um !donate 100 credita 1000 coins.
+donateCoinsPerReal = 10
+-- Limites por doacao, em reais inteiros. O minimo do Asaas por cobranca
+-- e R$ 5,00, entao nao use um valor menor que isso aqui.
+donateMinValue = 5
+donateMaxValue = 5000
+-- De quanto em quanto tempo o jogo olha a tabela donate_transactions,
+-- para entregar o scroll e creditar pagamentos confirmados (ms).
+donateCheckInterval = 5000
+-- Tempo que uma intencao nao paga continua valendo (minutos).
+donateExpireMinutes = 60
+-- Item usado para entregar o link ao jogador. 639 e o scroll gravavel.
+donateScrollItemId = 639

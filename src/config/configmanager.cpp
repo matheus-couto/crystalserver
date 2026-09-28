@@ -106,6 +106,7 @@ bool ConfigManager::load() {
 	loadBoolConfig(L, CYCLOPEDIA_HOUSE_AUCTION, "toggleCyclopediaHouseAuction", true);
 	loadBoolConfig(L, DISABLE_MONSTER_ARMOR, "disableMonsterArmor", false);
 	loadBoolConfig(L, DISCORD_SEND_FOOTER, "discordSendFooter", true);
+	loadBoolConfig(L, DONATE_ENABLED, "donateEnabled", false);
 	loadBoolConfig(L, EMOTE_SPELLS, "emoteSpells", false);
 	loadBoolConfig(L, ENABLE_MARKET, "enableMarket", true);
 	loadBoolConfig(L, ENABLE_OFFLINE_TRAINING, "enableOfflineTraining", true);
@@ -287,6 +288,15 @@ bool ConfigManager::load() {
 	loadIntConfig(L, DEFAULT_DESPAWNRANGE, "deSpawnRange", 2);
 	loadIntConfig(L, DEFAULT_RESPAWN_TIME, "defaultRespawnTime", 60);
 	loadIntConfig(L, DISCORD_WEBHOOK_DELAY_MS, "discordWebhookDelayMs", Webhook::DEFAULT_DELAY_MS);
+	// Doacoes via Asaas. donateCoinsPerReal e a cotacao: quantas Tibia Coins
+	// cada R$ 1,00 vale. Os limites sao em reais inteiros, e o minimo de 5
+	// acompanha o minimo por cobranca do proprio Asaas.
+	loadIntConfig(L, DONATE_CHECK_INTERVAL, "donateCheckInterval", 5000);
+	loadIntConfig(L, DONATE_COINS_PER_REAL, "donateCoinsPerReal", 10);
+	loadIntConfig(L, DONATE_EXPIRE_MINUTES, "donateExpireMinutes", 60);
+	loadIntConfig(L, DONATE_MAX_VALUE, "donateMaxValue", 5000);
+	loadIntConfig(L, DONATE_MIN_VALUE, "donateMinValue", 5);
+	loadIntConfig(L, DONATE_SCROLL_ITEM_ID, "donateScrollItemId", 639);
 	loadIntConfig(L, EX_ACTIONS_DELAY_INTERVAL, "timeBetweenExActions", 1000);
 	loadIntConfig(L, EXPERIENCE_SHARE_ACTIVITY, "experienceShareActivity", 2 * 60 * 1000);
 	loadIntConfig(L, EXP_FROM_PLAYERS_LEVEL_RANGE, "expFromPlayersLevelRange", 75);
