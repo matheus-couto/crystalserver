@@ -43,7 +43,18 @@ if (empty($getpage_download)) {
                                             <tr>
                                                 <td style="text-align: center; padding: 1.5rem;">
                                                     <h1>Official <?= configLua('serverName') ?> Client</h1>
-                                                    <a href="<?= $config['client_link'] ?? '' ?>" target="_new">
+<?php if (empty($config['client_link'])): ?>
+                                                    <?php // Sem link configurado, um <a href=""> so recarregaria a pagina.
+                                                          // Enquanto o executavel nao esta hospedado, mostra um aviso. ?>
+                                                    <img alt="<?= configLua('serverName') ?> Client"
+                                                         style="width: 90px; height: 90px; border: 0; opacity: 0.35;"
+                                                         src="<?= $template_path ?>/images/download_windows.gif">
+                                                    <br>
+                                                    <span style="font-size: 12pt;">Download em breve</span>
+                                                    <br>
+                                                    <small>O cliente ainda nao esta disponivel para download.</small>
+<?php else: ?>
+                                                    <a href="<?= $config['client_link'] ?>" target="_new">
                                                         <img alt="<?= configLua('serverName') ?> Client"
                                                              style="width: 90px; height: 90px; border: 0;"
                                                              src="<?= $template_path ?>/images/download_windows.gif">
@@ -55,6 +66,7 @@ if (empty($getpage_download)) {
                                                         <br>
                                                         <small>Version <?= config('client') / 100 ?></small>
                                                     </a>
+<?php endif; ?>
                                                 </td>
                                             </tr>
                                             </tbody>

@@ -419,3 +419,7 @@ crystalserver.7z
 
 # Configuracao local do Claude Code
 .claude/
+
+# Imagens de item geradas por tools/item-images/generate.py a partir do
+# Tibia.dat/Tibia.spr. 35 mil arquivos e ~140MB: sao artefato, nao fonte.
+myacc/images/items/
