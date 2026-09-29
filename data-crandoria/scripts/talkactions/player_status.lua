@@ -61,7 +61,7 @@ local function getGeneralText(target)
 
     local rank = getReputationRank(rep)
 
-    local resetStorage = target:getStorageValue(Storage.Quest.Crandoria.DracantusQuest.KillCount)
+    local resetStorage = target:getStorageValue(Storage.Quest.Crandoria.Reset.Count)
     local resets = resetStorage > 0 and resetStorage or 0
 
     return

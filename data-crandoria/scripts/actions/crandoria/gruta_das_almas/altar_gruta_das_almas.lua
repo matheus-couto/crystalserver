@@ -82,7 +82,7 @@ local function sendRitualWindow(player, position)
     window:addButton("Sim", function()
         beginRitual(position)
         Game.createItem(5024, 1, Position(5504, 4641, 15))
-		player:setStorageValue(Storage.Quest.Crandoria.Reputation.Poins, player:getStorageValue(Storage.Quest.Crandoria.Reputation.Poins) - 20)
+		player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points) - 20)
         player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "O Ritual foi iniciado!")
     end)
 

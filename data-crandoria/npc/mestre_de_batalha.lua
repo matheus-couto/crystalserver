@@ -299,7 +299,7 @@ local function creatureSayCallback(npc, creature, type, message)
     local lastPassTime = player:getStorageValue(storageTimer)
     local lastPassDate = os.date("*t", lastPassTime)
 
-	local reset = player:getStorageValue(Storage.Quest.Crandoria.DracantusQuest.KillCount)
+	local reset = player:getStorageValue(Storage.Quest.Crandoria.Reset.Count)
 
 	if reset < 1 then
 		reset = 0

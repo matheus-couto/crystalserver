@@ -9,9 +9,9 @@ function jesseKill.onDeath(creature, corpse, killer, mostDamage, unjustified, mo
 	for key, _ in pairs(damageMap) do
 		local player = Player(key)
 		if player then
-			local storage = player:getStorageValue(Storage.Quest.Crandoria.HerbertQuest.Progresso)
+			local storage = player:getStorageValue(Storage.Quest.Crandoria.QuestHerbert.Progresso)
 			if storage == 1 then
-				player:setStorageValue(Storage.Quest.Crandoria.HerbertQuest.Progresso, 2)
+				player:setStorageValue(Storage.Quest.Crandoria.QuestHerbert.Progresso, 2)
 				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce derrotou Jesse the Wicked.")
 				return true
 			end

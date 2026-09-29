@@ -60,7 +60,7 @@ local function creatureSayCallback(npc, creature, type, message)
     
     local storage = player:getStorageValue(Storage.Quest.Crandoria.DrystanQuest.Progresso)
 	local timer = player:getStorageValue(Storage.Quest.Crandoria.DrystanQuest.Timer)
-	local count = player:getStorageValue(Storage.Quest.Crandoria.DracantusQuest.KillCount)
+	local count = player:getStorageValue(Storage.Quest.Crandoria.DrystanQuest.KillCount)
 	local rep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
 
     if MsgContains(message, "missao") or MsgContains(message, "mission") or MsgContains(message, "tarefa") then

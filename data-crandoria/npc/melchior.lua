@@ -66,7 +66,7 @@ local function creatureSayCallback(npc, creature, type, message)
 
 	local storage = player:getStorageValue(Storage.Quest.Crandoria.SociedadeDeAstralis.Progresso)
 	local repStorage = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
-	local reset = player:getStorageValue(Storage.Quest.Crandoria.DracantusQuest.KillCount)
+	local reset = player:getStorageValue(Storage.Quest.Crandoria.Reset.Count)
 	local rep = "Ilustres"
 	if repStorage > 174 then
 		rep = "Nobres"

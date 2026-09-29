@@ -54,7 +54,7 @@ local function creatureSayCallback(npc, creature, type, message)
         return false
     end
 
-    local storage = player:getStorageValue(Storage.Quest.Crandoria.BakragoreTimer)
+    local storage = player:getStorageValue(Storage.Quest.Crandoria.KassandraTimer)
 
     if MsgContains(message, "info") or MsgContains(message, "informacao") then
         if storage < os.time() then
@@ -127,7 +127,7 @@ local function creatureSayCallback(npc, creature, type, message)
                 elseif chance == 20 then
                     npcHandler:say("Cave a areia ao leste da piramide para acessar uma passagem secreta que leva aos mercadores Djinns. Mas nao fui eu quem te disse isso...", npc, creature)
                 end
-                player:setStorageValue(Storage.Quest.Crandoria.BakragoreTimer, os.time() + 20 * 60 * 60)
+                player:setStorageValue(Storage.Quest.Crandoria.KassandraTimer, os.time() + 20 * 60 * 60)
                 npcHandler:setTopic(playerId, 0)
             else
                 npcHandler:say("Sinto muito. Sem ouro, sem informacao.", npc, creature)

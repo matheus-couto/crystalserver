@@ -12,9 +12,9 @@ function torneioTile.onStepIn(creature, item, position, fromPosition)
 
 	local playerIP = player:getIp()
 
-	local primeiro = player:getStorageValue(Storage.Quest.Crandoria.Viridia.Torneio.Primeiro)
-	local segundo = player:getStorageValue(Storage.Quest.Crandoria.Viridia.Torneio.Segundo)
-	local terceiro = player:getStorageValue(Storage.Quest.Crandoria.Viridia.Torneio.Terceiro)
+	local primeiro = player:getStorageValue(Storage.Quest.Crandoria.ViridiaTorneio.Primeiro)
+	local segundo = player:getStorageValue(Storage.Quest.Crandoria.ViridiaTorneio.Segundo)
+	local terceiro = player:getStorageValue(Storage.Quest.Crandoria.ViridiaTorneio.Terceiro)
 
 	local name = player:getName()
 
@@ -32,7 +32,7 @@ function torneioTile.onStepIn(creature, item, position, fromPosition)
 			return true
 		end
 
-		if player:getStorageValue(Storage.Quest.Crandoria.Viridia.Torneio.TimerTile) < 1737074400 then
+		if player:getStorageValue(Storage.Quest.Crandoria.ViridiaTorneio.TimerTile) < 1737074400 then
 			player:sendTextMessage(MESSAGE_INFO_DESCR, "Seu personagem foi criado ha muito tempo, voce nao pode vencer o Torneio.")
 			player:teleportTo(fromPosition) 
 			return true
@@ -43,7 +43,7 @@ function torneioTile.onStepIn(creature, item, position, fromPosition)
 			player:teleportTo(Position(4541, 5432, 2))
 			return true
 		else
-			player:setStorageValue(Storage.Quest.Crandoria.Viridia.Torneio.Primeiro, os.time())
+			player:setStorageValue(Storage.Quest.Crandoria.ViridiaTorneio.Primeiro, os.time())
 			player:sendTextMessage(MESSAGE_STATUS_SMALL, "Parabens! Voce atingiu o nivel 400 em Viridia! Comunique a Staff sobre sua conquista imediatamente.")
 			addEvent(Game.broadcastMessage, 5 * 1000, "O jogador " ..name.. " atingiu o nivel 400 em Viridia!", MESSAGE_EVENT_ADVANCE)
 		end
@@ -69,9 +69,9 @@ torneioTile:register()
 
 -- 	local playerIP = player:getIp()
 
--- 	local primeiro = player:getStorageValue(Storage.Quest.Crandoria.Viridia.Torneio.Primeiro)
--- 	local segundo = player:getStorageValue(Storage.Quest.Crandoria.Viridia.Torneio.Segundo)
--- 	local terceiro = player:getStorageValue(Storage.Quest.Crandoria.Viridia.Torneio.Terceiro)
+-- 	local primeiro = player:getStorageValue(Storage.Quest.Crandoria.ViridiaTorneio.Primeiro)
+-- 	local segundo = player:getStorageValue(Storage.Quest.Crandoria.ViridiaTorneio.Segundo)
+-- 	local terceiro = player:getStorageValue(Storage.Quest.Crandoria.ViridiaTorneio.Terceiro)
 
 -- 	local name = player:getName()
 
@@ -95,7 +95,7 @@ torneioTile:register()
 -- 			return true
 -- 		else
 -- 			if Game.getStorageValue(GlobalStorage.Crandoria.TorneioIronMan.Primeiro) < os.time() then
--- 				player:setStorageValue(Storage.Quest.Crandoria.Viridia.Torneio.Primeiro, 1)
+-- 				player:setStorageValue(Storage.Quest.Crandoria.ViridiaTorneio.Primeiro, 1)
 -- 				Game.setStorageValue(GlobalStorage.Crandoria.TorneioIronMan.Primeiro, os.time() + 30 * 24 * 60 * 60)
 -- 				player:teleportTo(Position(4541, 5432, 2))
 -- 				accessedIPs[playerIP] = player:getGuid()
@@ -103,7 +103,7 @@ torneioTile:register()
 -- 				addEvent(Game.broadcastMessage, 5 * 1000, "O jogador " ..name.. " foi o primeiro a atingir o nivel 400 em Viridia!", MESSAGE_EVENT_ADVANCE)
 -- 			else
 -- 				if Game.getStorageValue(GlobalStorage.Crandoria.TorneioIronMan.Segundo) < 1 then
--- 					player:setStorageValue(Storage.Quest.Crandoria.Viridia.Torneio.Segundo, 1)
+-- 					player:setStorageValue(Storage.Quest.Crandoria.ViridiaTorneio.Segundo, 1)
 -- 					Game.setStorageValue(GlobalStorage.Crandoria.TorneioIronMan.Segundo, 1)
 -- 					player:teleportTo(Position(4541, 5432, 2))
 -- 					accessedIPs[playerIP] = player:getGuid()
@@ -111,7 +111,7 @@ torneioTile:register()
 -- 					addEvent(Game.broadcastMessage, 5 * 1000, "O jogador " ..name.. " foi o segundo a atingir o nivel 400 em Viridia!", MESSAGE_EVENT_ADVANCE)
 -- 				else
 -- 					if Game.getStorageValue(GlobalStorage.Crandoria.TorneioIronMan.Terceiro) < 1 then
--- 						player:setStorageValue(Storage.Quest.Crandoria.Viridia.Torneio.Terceiro, 1)
+-- 						player:setStorageValue(Storage.Quest.Crandoria.ViridiaTorneio.Terceiro, 1)
 -- 						Game.setStorageValue(GlobalStorage.Crandoria.TorneioIronMan.Terceiro, 1)
 -- 						player:teleportTo(Position(4541, 5432, 2))
 -- 						accessedIPs[playerIP] = player:getGuid()
@@ -126,21 +126,21 @@ torneioTile:register()
 -- 			end
 -- 		end
 -- 	elseif item:getPosition() == Position(4500, 5522, 6) then
--- 		if player:getStorageValue(Storage.Quest.Crandoria.Viridia.Torneio.Primeiro) < 1 then
+-- 		if player:getStorageValue(Storage.Quest.Crandoria.ViridiaTorneio.Primeiro) < 1 then
 -- 			player:teleportTo(Position(4500, 5519, 6))
 -- 			return true
 -- 		else
 -- 			return true
 -- 		end
 -- 	elseif item:getPosition() == Position(4502, 5522, 6) then
--- 		if player:getStorageValue(Storage.Quest.Crandoria.Viridia.Torneio.Segundo) < 1 then
+-- 		if player:getStorageValue(Storage.Quest.Crandoria.ViridiaTorneio.Segundo) < 1 then
 -- 			player:teleportTo(Position(4502, 5519, 6))
 -- 			return true
 -- 		else
 -- 			return true
 -- 		end
 -- 	elseif item:getPosition() == Position(4504, 5522, 6) then
--- 		if player:getStorageValue(Storage.Quest.Crandoria.Viridia.Torneio.Terceiro) < 1 then
+-- 		if player:getStorageValue(Storage.Quest.Crandoria.ViridiaTorneio.Terceiro) < 1 then
 -- 			player:teleportTo(Position(4504, 5519, 6))
 -- 			return true
 -- 		else

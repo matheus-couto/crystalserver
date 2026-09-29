@@ -56,7 +56,6 @@ local function creatureSayCallback(npc, creature, type, message)
     end
     
     local storage = player:getStorageValue(Storage.Quest.Crandoria.TheFalseGod.Progresso)
-    local storageTimer = player:getStorageValue(Storage.Quest.Crandoria.TheFalseGod.Timer)
 
     if MsgContains(message, "missao") or MsgContains(message, "mission") then
         if storage < 1 then

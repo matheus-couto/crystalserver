@@ -108,7 +108,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		return chosen.id, chosen.name
 	end
 
-	local reset = player:getStorageValue(Storage.Quest.Crandoria.DracantusQuest.KillCount)
+	local reset = player:getStorageValue(Storage.Quest.Crandoria.Reset.Count)
     local boss = player:getStorageValue(Storage.Quest.Crandoria.BossTasks.Boss)
 	local count = player:getStorageValue(Storage.Quest.Crandoria.BossTasks.Count)
 	local timer = player:getStorageValue(Storage.Quest.Crandoria.BossTasks.Timer)
