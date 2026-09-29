@@ -123,6 +123,33 @@ services:
       database:
         condition: service_healthy
 
+  painel:
+    build:
+      context: ../tools/painel
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - '../tools/painel/.env'
+    networks:
+      - crystalserver-net
+    # Sem `ports`: quem fala com o painel e o Caddy, que poe o TLS na frente.
+    expose:
+      - '3100'
+    volumes:
+      # Montagens estreitas de proposito. O painel edita script e nada mais -
+      # nao enxerga config.lua, nem o .env, nem o codigo do site. Se ele for
+      # comprometido, o estrago para onde a montagem termina.
+      - '../data-crandoria:/srv/crystalserver/data-crandoria'
+      - '../data:/srv/crystalserver/data'
+      - '../backups:/opt/crandoria/backups'
+      - '../logs/painel:/var/log/painel'
+      # Socket do agente do host: e por aqui que sai reiniciar, ler log e
+      # gerar dump. O socket do Docker nao entra no container.
+      - '/run/crandoria-painel:/run/crandoria-painel'
+    depends_on:
+      database:
+        condition: service_healthy
+
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped

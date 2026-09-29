@@ -1,0 +1,39 @@
+[Unit]
+Description=Agente privilegiado do painel CrandoriaOT
+Documentation=file:///opt/crandoria/tools/painel/README.md
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /opt/crandoria/tools/painel/agent/agent.py
+Restart=always
+RestartSec=5
+
+# Precisa de root para falar com o Docker, mas nao precisa de mais nada:
+# o resto abaixo tira tudo que da para tirar.
+User=root
+RuntimeDirectory=crandoria-painel
+RuntimeDirectoryMode=0750
+
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=no
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+
+# Unicos caminhos graváveis: o socket e a pasta de backups.
+ReadWritePaths=/run/crandoria-painel /opt/crandoria/backups /tmp
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=painel-agent
+
+[Install]
+WantedBy=multi-user.target

@@ -83,3 +83,42 @@ crandoriaot.com.br {
 		}
 	}
 }
+
+# ---------------------------------------------------------------------------
+# Painel de administracao (subdominio proprio)
+# ---------------------------------------------------------------------------
+# Subdominio separado, e nao um caminho dentro do site, por dois motivos: o
+# cookie de sessao do painel nunca e enviado junto com uma visita ao site, e
+# um furo no MyAAC nao alcanca o painel.
+painel.crandoriaot.com.br {
+	encode gzip
+
+	# Teto baixo de corpo: o maior envio legitimo e um script de alguns KB.
+	request_body {
+		max_size 10MB
+	}
+
+	handle {
+		reverse_proxy painel:3100 {
+			# O painel confia em exatamente um salto para descobrir o IP de
+			# quem chamou. Sem estes cabecalhos o bloqueio por tentativa veria
+			# todo mundo como o proprio Caddy e travaria os dois de uma vez.
+			header_up X-Real-IP {remote_host}
+		}
+	}
+
+	header {
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+		Referrer-Policy no-referrer
+		Permissions-Policy "geolocation=(), microphone=(), camera=()"
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		-Server
+		-X-Powered-By
+	}
+
+	log {
+		output file /var/log/caddy/painel.log
+		format console
+	}
+}

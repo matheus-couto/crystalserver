@@ -1,0 +1,76 @@
+/* Tema do editor, nas mesmas cores do painel.
+ * Vem depois do codemirror.css para sobrescrever o tema claro padrao. */
+
+.CodeMirror {
+  height: 62vh;
+  min-height: 380px;
+  border: 1px solid var(--linha);
+  border-radius: 8px;
+  background: #0f131b;
+  color: #d6d3cd;
+  font: 13px/1.55 Consolas, "Courier New", monospace;
+}
+
+.CodeMirror-gutters {
+  background: #141821;
+  border-right: 1px solid var(--linha);
+}
+.CodeMirror-linenumber { color: #5a6275; }
+.CodeMirror-cursor { border-left: 2px solid var(--ouro); }
+.CodeMirror-selected { background: #2b3446 !important; }
+.CodeMirror-focused .CodeMirror-selected { background: #33405a !important; }
+.CodeMirror-activeline-background { background: #171d28; }
+.CodeMirror-matchingbracket {
+  color: var(--ouro) !important;
+  border-bottom: 1px solid var(--ouro);
+  font-weight: 700;
+}
+.CodeMirror-nonmatchingbracket { color: var(--erro) !important; }
+
+/* Sintaxe. Comentario apagado e palavra-chave em destaque e o que mais
+   ajuda a ler Lua de servidor, que tem bloco longo e muito aninhamento. */
+.cm-comment  { color: #6b7385; font-style: italic; }
+.cm-keyword  { color: #c98bd9; }
+.cm-atom     { color: #d99a3b; }
+.cm-number   { color: #d99a3b; }
+.cm-string   { color: #8fbf6f; }
+.cm-string-2 { color: #8fbf6f; }
+.cm-variable { color: #d6d3cd; }
+.cm-variable-2 { color: #7fb3d9; }
+.cm-variable-3 { color: #7fb3d9; }
+.cm-builtin  { color: #5a8fcf; }
+.cm-def      { color: #e8c877; }
+.cm-property { color: #9fc6e8; }
+.cm-operator { color: #c8a24a; }
+.cm-tag      { color: #cf7a7a; }
+.cm-attribute { color: #e8c877; }
+.cm-error    { color: var(--erro); }
+
+/* Caixa de busca do Ctrl+F */
+.CodeMirror-dialog {
+  background: var(--card);
+  border-bottom: 1px solid var(--linha);
+  color: var(--fg);
+  padding: 8px 10px;
+  font-size: 13px;
+}
+.CodeMirror-dialog input {
+  background: #131822;
+  color: var(--fg);
+  border: 1px solid var(--linha);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-family: inherit;
+}
+.CodeMirror-search-hint { color: var(--fraco); font-size: 12px; }
+.cm-searching { background: rgba(200, 162, 74, .28); }
+
+.barra-editor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.barra-editor .dica { color: var(--fraco); font-size: 12px; }
+#pos-editor { color: var(--fraco); font-size: 12px; font-variant-numeric: tabular-nums; }

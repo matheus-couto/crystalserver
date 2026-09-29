@@ -1,0 +1,24 @@
+{
+  "name": "crandoria-painel",
+  "version": "1.0.0",
+  "description": "Painel de administracao do servidor: status, logs, scripts, itens, doacoes e backup.",
+  "private": true,
+  "type": "commonjs",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "senha": "node tools/senha.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "codemirror": "^5.65.21",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "mysql2": "^3.11.5"
+  },
+  "devDependencies": {
+    "codemirror": "^5.65.19"
+  }
+}
