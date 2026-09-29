@@ -627,6 +627,7 @@ Storage = {
 				AncientShellTimer = 12640,
 				LordBoscoTimer = 12641,
 				QueenOfHeartsTimer = 12642,
+				Morseman = 13412, -- o Morseman usava sem declarar
 				},
 			DragonfruitTrees = { -- 12646 - 12648
 				NumberOfTrees = 12646
@@ -861,6 +862,7 @@ Storage = {
 					Item = 12931,
 					TimerQuest = 12932,
 					TimerDoor = 12933,
+					TimerItem = 13414, -- a Mirana usava sem declarar
 				},
 				Bonus = { -- 12936 - 12940
 					Exp = 12936,
@@ -963,6 +965,7 @@ Storage = {
 				GrugaroshTimer = 13068,
 				KillCount = 13069,
 				SihrazzTimer = 13070,
+				Timer = 13413, -- carregamento da Sivyna, usado sem declarar
 			},
 			Encantamento = { -- 13081 - 13085
 				Utilitario = 13081,
@@ -1244,6 +1247,7 @@ Storage = {
 				Spell = 13369,
 				Potions = 13370,
 				SpellTimer = 13371,
+				Addon = 13415, -- o Sinclair usava sem declarar
 			},
 			BuffAntiAfk = { -- 13375 - 13378
 				Xp = 13375,
@@ -1276,6 +1280,36 @@ Storage = {
 			TheRiseOfPodzilla = { -- 13404 - 13406
 				Progresso = 13404,
 				RootkrakenTimer = 13405,
+			},
+			-- A Fada do Doce lia e gravava Candia.Progresso, mas a chave nunca
+			-- foi declarada: cada fala dela caia em "Storage key is nil" e a
+			-- quest de Candia nunca funcionou.
+			Candia = { -- 13407 - 13409
+				Progresso = 13407,
+			},
+			-- Chaves que os scripts ja usavam sem estarem declaradas; cada uso
+			-- caia em "Storage key is nil".
+			KassandraTimer = 13410, -- dicas da Kassandra, uma a cada 20 horas
+			-- Contagem de resets. Ainda nao existe sistema de reset: fica em -1
+			-- e o que exige reset (Thorwulf, Melchior, Victor, Mestre de Batalha)
+			-- continua fechado ate ele existir.
+			Reset = { -- 13411
+				Count = 13411,
+			},
+			TasksPompan = { -- 13416 - 13419
+				Progresso = 13416,
+				Active = 13417,
+				Count = 13418,
+				Type = 13419,
+			},
+			-- Torneio de Viridia (nivel 400, janeiro de 2025). O bloco antigo
+			-- 12941-12945 foi reaproveitado pelo EventoBemVindos; estas chaves
+			-- sao novas. TimerTile nunca e gravado, entao o piso recusa todos.
+			ViridiaTorneio = { -- 13420 - 13423
+				Primeiro = 13420,
+				Segundo = 13421,
+				Terceiro = 13422,
+				TimerTile = 13423,
 			},
 		},
 		-- Start of quests per version

@@ -95,15 +95,45 @@ local TAREFAS = {
 		foraDoPrazo = "O tempo da missao esgotou. Fale com Gerard novamente.",
 		migrar = migrarGerard,
 	},
+	{
+		-- O Lord Vikram zera o contador ao dar cada caca e confere o total,
+		-- mas nada somava os kills: quem comprava o passe na Store travava nos
+		-- 50 rotworms da primeira missao. O alvo e fixo por etapa, entao nao
+		-- ha storage de raca - vem de alvoPorEtapa.
+		rotulo = "Passe dos Novatos",
+		progresso = Storage.Quest.Crandoria.PasseNovatos.Progresso,
+		contagem = Storage.Quest.Crandoria.PasseNovatos.Count,
+		etapas = { [2] = 50, [6] = 50, [10] = 20, [18] = 200 },
+		alvoPorEtapa = { [2] = "Rotworm", [6] = "Tarantula", [10] = "Giant Spider", [18] = "Hydra" },
+		concluido = "Voce concluiu a missao do Passe dos Novatos. Fale com Lord Vikram.",
+	},
 }
+
+-- raceId de um nome de monstro, com cache: MonsterType() nao e gratis e roda
+-- a cada kill.
+local racaDoNome = {}
+local function racaDe(nome)
+	local r = racaDoNome[nome]
+	if r == nil then
+		local mType = MonsterType(nome)
+		r = mType and mType:raceId() or 0
+		racaDoNome[nome] = r
+	end
+	return r
+end
 
 local function contar(player, raceId, t)
 	if t.migrar then
 		t.migrar(player)
 	end
 
-	local alvo = t.etapas[player:getStorageValue(t.progresso)]
-	if not alvo or player:getStorageValue(t.raca) ~= raceId then
+	local etapa = player:getStorageValue(t.progresso)
+	local alvo = t.etapas[etapa]
+	if not alvo then
+		return
+	end
+	local racaAlvo = t.alvoPorEtapa and racaDe(t.alvoPorEtapa[etapa]) or player:getStorageValue(t.raca)
+	if racaAlvo ~= raceId then
 		return
 	end
 
