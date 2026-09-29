@@ -1,19 +1,57 @@
 
 -- =========================================================
--- WATER CAN ACTION 
+-- WATER CAN ACTION
 -- =========================================================
 local waterCan = Action()
 
 function waterCan.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-    
+
     -- Storages
     local skillCultivoCount = player:getStorageValue(Storage.Quest.Crandoria.SkillsColeta.CultivoCount)
     local skillCultivoLevel = player:getStorageValue(Storage.Quest.Crandoria.SkillsColeta.CultivoLevel)
     local skillCultivoNext = player:getStorageValue(Storage.Quest.Crandoria.SkillsColeta.CultivoNextLevel)
-    
+
+    local setBonus = 0
+    local helmet = player:getSlotItem(CONST_SLOT_HEAD)
+    local shirt = player:getSlotItem(CONST_SLOT_ARMOR)
+    local legs = player:getSlotItem(CONST_SLOT_LEGS)
+    local boots = player:getSlotItem(CONST_SLOT_FEET)
+
+    if helmet then
+        if helmet.itemid == 11700 then
+            setBonus = setBonus + 1
+        elseif helmet.itemid == 3226 then
+            setBonus = setBonus + 2
+        end
+    end
+
+    if shirt then
+        if shirt.itemid == 32099 then
+            setBonus = setBonus + 2
+        elseif shirt.itemid == 32585 then
+            setBonus = setBonus + 3
+        end
+    end
+
+    if legs then
+        if legs.itemid == 32097 then
+            setBonus = setBonus + 2
+        elseif legs.itemid == 24402 then
+            setBonus = setBonus + 3
+        end
+    end
+
+    if boots then
+        if boots.itemid == 9017 then
+            setBonus = setBonus + 1
+        elseif boots.itemid == 32098 then
+            setBonus = setBonus + 2
+        end
+    end
+
     local function updateCultivoSkill(player, skillCultivoCount, skillCultivoLevel, skillCultivoNext)
         if skillCultivoLevel >= 100 then
-            return 
+            return
         end
 
         if skillCultivoCount < 1 then
@@ -35,6 +73,10 @@ function waterCan.onUse(player, item, fromPosition, target, toPosition, isHotkey
     end
 
 
+    local growTime1 = 1 * 60 * 60
+    local growTime2 = 2 * 60 * 60
+    local growTime3 = 3 * 60 * 60
+
     if target.actionid == 12340 then
         --------- ESTAGIO 0 ----------
         if target.itemid == 5462 then
@@ -42,12 +84,8 @@ function waterCan.onUse(player, item, fromPosition, target, toPosition, isHotkey
             -- local factorSorte = player:getStorageValue(Storage.Quest.Crandoria.ArvoreDeForca.LuckLevel)
             local arvore = getArvoreDeForcaValues(player)
 	        local storagesorte = arvore.luck
-            local skillFactor = math.max(1, (skillCultivoLevel + factorLevel + storagesorte + 2))
+            local skillFactor = math.max(1, (setBonus + skillCultivoLevel + factorLevel + storagesorte + 2))
             local chancePlant = math.random(skillFactor, 200)
-            local growTime1 = 1 * 60 * 60
-            local growTime2 = 2 * 60 * 60
-            local growTime2 = 3 * 60 * 60
-
             if chancePlant < 110 then -- bananas
                 local newPlantId = 5091
                 target:setActionId(13159)
@@ -180,7 +218,7 @@ function waterCan.onUse(player, item, fromPosition, target, toPosition, isHotkey
             if chanceSkill > 1 then
                 updateCultivoSkill(player, skillCultivoCount, skillCultivoLevel, skillCultivoNext)
             end
-            return true  
+            return true
         elseif target.itemid == 3742 then -- Fresh Fruits - Pronta
             player:say('Pronta para colher', TALKTYPE_MONSTER_SAY)
             target:getPosition():sendMagicEffect(CONST_ME_POFF)
@@ -199,7 +237,7 @@ function waterCan.onUse(player, item, fromPosition, target, toPosition, isHotkey
             if chanceSkill > 1 then
                 updateCultivoSkill(player, skillCultivoCount, skillCultivoLevel, skillCultivoNext)
             end
-            return true  
+            return true
         elseif target.itemid == 38823 then -- Pineapple - Pronta
             player:say('Pronta para colher', TALKTYPE_MONSTER_SAY)
             target:getPosition():sendMagicEffect(CONST_ME_POFF)
@@ -218,7 +256,7 @@ function waterCan.onUse(player, item, fromPosition, target, toPosition, isHotkey
             if chanceSkill > 1 then
                 updateCultivoSkill(player, skillCultivoCount, skillCultivoLevel, skillCultivoNext)
             end
-            return true  
+            return true
         elseif target.itemid == 22292 then -- Dragonfruit - Pronta
             player:say('Pronta para colher', TALKTYPE_MONSTER_SAY)
             target:getPosition():sendMagicEffect(CONST_ME_POFF)
@@ -237,7 +275,7 @@ function waterCan.onUse(player, item, fromPosition, target, toPosition, isHotkey
             if chanceSkill > 1 then
                 updateCultivoSkill(player, skillCultivoCount, skillCultivoLevel, skillCultivoNext)
             end
-            return true  
+            return true
         elseif target.itemid == 27459 then -- Winterberries - Pronta
             player:say('Pronta para colher', TALKTYPE_MONSTER_SAY)
             target:getPosition():sendMagicEffect(CONST_ME_POFF)

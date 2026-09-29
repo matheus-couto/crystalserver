@@ -349,7 +349,7 @@ local area1 = {
     fromPosition = {x = 5056, y = 5024, z = 7},
     toPosition = {x = 5067, y = 5027, z = 7}
 }
- 
+
 local area2 = {
     fromPosition = {x = 5053, y = 5027, z = 7},
     toPosition = {x = 5067, y = 5037, z = 7}
@@ -379,7 +379,8 @@ function removeSummonsInAreas()
     end
 end
 
-local function checkIPInArea(area)
+local function checkIPInArea(area, player)
+    local playerIP = player:getIp()
     for x = area.fromPosition.x, area.toPosition.x do
         for y = area.fromPosition.y, area.toPosition.y do
             for z = area.fromPosition.z, area.toPosition.z do
@@ -506,8 +507,47 @@ local function fishingCycle(playerId, targetTile, pickaxeId, startPosition, hitC
     if storagesorte < 1 then
         storagesorte = 0
     end
+
+    local setBonus = 0
+    local helmet = player:getSlotItem(CONST_SLOT_HEAD)
+    local shirt = player:getSlotItem(CONST_SLOT_ARMOR)
+    local legs = player:getSlotItem(CONST_SLOT_LEGS)
+    local boots = player:getSlotItem(CONST_SLOT_FEET)
+
+    if helmet then
+        if helmet.itemid == 11700 then
+            setBonus = setBonus + 1
+        elseif helmet.itemid == 3226 then
+            setBonus = setBonus + 2
+        end
+    end
+
+    if shirt then
+        if shirt.itemid == 32099 then
+            setBonus = setBonus + 2
+        elseif shirt.itemid == 32585 then
+            setBonus = setBonus + 3
+        end
+    end
+
+    if legs then
+        if legs.itemid == 32097 then
+            setBonus = setBonus + 2
+        elseif legs.itemid == 24402 then
+            setBonus = setBonus + 3
+        end
+    end
+
+    if boots then
+        if boots.itemid == 9017 then
+            setBonus = setBonus + 1
+        elseif boots.itemid == 32098 then
+            setBonus = setBonus + 2
+        end
+    end
+
     local level = player:getLevel()
-	local skill = player:getEffectiveSkillLevel(SKILL_FISHING) + storagesorte + math.max(1, level / 80)
+	local skill = player:getEffectiveSkillLevel(SKILL_FISHING) + storagesorte + math.max(1, level / 80) + (setBonus / 2)
 
     if isInRange1 then
         skill = skill - 10
@@ -523,14 +563,14 @@ local function fishingCycle(playerId, targetTile, pickaxeId, startPosition, hitC
 	local chanceStamina = math.random(1, 300)
 	local chance2 = math.random(1, 3000)
 
-    if checkIPInArea(area1) or checkIPInArea(area2) then
+    if checkIPInArea(area1, player) or checkIPInArea(area2, player) then
         player:sendTextMessage(MESSAGE_FAILURE, "Voce so pode pescar com um personagem por vez.")
         leaveFishing(playerId)
         player:teleportTo(Position(4934, 4962, 6))
         return false
     end
 
-		
+
     if player:getItemCount(8177) >= 1 then
 
         targetTile:sendMagicEffect(CONST_ME_PLUNGING_FISH)
@@ -540,7 +580,7 @@ local function fishingCycle(playerId, targetTile, pickaxeId, startPosition, hitC
         player:addItem(lootTable2[math.random(#lootTable2)], 1)
         if player:getStorageValue(Storage.Quest.Crandoria.SociedadeDeAstralis.BuffColeta) > os.time() then
             player:addItem(lootTable2[math.random(#lootTable2)], 1)
-        end 
+        end
 
         if player:getItemCount(3035) >= 100 then
             if player:removeItem(3035, 100) then
@@ -573,7 +613,7 @@ local function fishingCycle(playerId, targetTile, pickaxeId, startPosition, hitC
 
         if player:getSkillLevel(SKILL_FISHING) >= 110 then
             if chanceShoes < 100 then
-                player:addItem(lootTable2[math.random(#lootTable2)], 1) 
+                player:addItem(lootTable2[math.random(#lootTable2)], 1)
                 player:sendTextMessage(MESSAGE_FAILURE, "Voce pescou um Item Extra! (Bonus de Skill)")
             end
         end
@@ -587,11 +627,11 @@ local function fishingCycle(playerId, targetTile, pickaxeId, startPosition, hitC
         if player:getItemCount(3492) >= 1 then
             targetTile:sendMagicEffect(CONST_ME_PLUNGING_FISH)
             player:say("GLUP!", TALKTYPE_MONSTER_SAY, false, nil, targetTile)
-            
+
             player:addItem(lootTable[math.random(#lootTable)], 1)
             if player:getStorageValue(Storage.Quest.Crandoria.SociedadeDeAstralis.BuffColeta) > os.time() then
                 player:addItem(lootTable[math.random(#lootTable)], 1)
-            end 
+            end
 
             player:addCondition(exhaustHealGroup)
             player:addCondition(exhaustSupportGroup)
@@ -654,7 +694,7 @@ function fishingAction.onUse(player, item, fromPosition, target, toPosition, isH
             return true
         end
 
-        if player:getIp() == 0 then 
+        if player:getIp() == 0 then
             player:save()
             player:remove()
             return false

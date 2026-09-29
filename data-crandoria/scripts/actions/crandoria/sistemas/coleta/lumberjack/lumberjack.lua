@@ -1,5 +1,5 @@
 -- =========================================================
--- LUMBERJACK ACTION 
+-- LUMBERJACK ACTION
 -- =========================================================
 local lumberjack = Action()
 
@@ -19,13 +19,51 @@ function lumberjack.onUse(player, item, fromPosition, target, toPosition, isHotk
         storagesorte = 0
     end
 
+    local setBonus = 0
+    local helmet = player:getSlotItem(CONST_SLOT_HEAD)
+    local shirt = player:getSlotItem(CONST_SLOT_ARMOR)
+    local legs = player:getSlotItem(CONST_SLOT_LEGS)
+    local boots = player:getSlotItem(CONST_SLOT_FEET)
+
+    if helmet then
+        if helmet.itemid == 11700 then
+            setBonus = setBonus + 1
+        elseif helmet.itemid == 3226 then
+            setBonus = setBonus + 2
+        end
+    end
+
+    if shirt then
+        if shirt.itemid == 32099 then
+            setBonus = setBonus + 2
+        elseif shirt.itemid == 32585 then
+            setBonus = setBonus + 3
+        end
+    end
+
+    if legs then
+        if legs.itemid == 32097 then
+            setBonus = setBonus + 2
+        elseif legs.itemid == 24402 then
+            setBonus = setBonus + 3
+        end
+    end
+
+    if boots then
+        if boots.itemid == 9017 then
+            setBonus = setBonus + 1
+        elseif boots.itemid == 32098 then
+            setBonus = setBonus + 2
+        end
+    end
+
     local skillLumberjackCount = player:getStorageValue(Storage.Quest.Crandoria.SkillsColeta.LumberjackCount)
     local skillLumberjackLevel = player:getStorageValue(Storage.Quest.Crandoria.SkillsColeta.LumberjackLevel)
     local skillLumberjackNext = player:getStorageValue(Storage.Quest.Crandoria.SkillsColeta.LumberjackNextLevel)
 
     local function updateLumberjackSkill(player, skillLumberjackCount, skillLumberjackLevel, skillLumberjackNext)
         if skillLumberjackLevel >= 100 then
-            return 
+            return
         end
 
         if skillLumberjackCount < 1 then
@@ -74,7 +112,7 @@ function lumberjack.onUse(player, item, fromPosition, target, toPosition, isHotk
                     end
                     return true
                 else
-                    local factor = (level / 50) + storagesorte + (skillLumberjackLevel / 4)
+                    local factor = (level / 50) + storagesorte + (skillLumberjackLevel / 4) + (setBonus / 2)
                     local chance = math.random(factor, 100)
                     if chance <= 40 then
                         player:setStorageValue(Storage.Quest.Crandoria.Lumberjack.HitTimer, os.time() + 1)
@@ -192,7 +230,7 @@ function lumberjack.onUse(player, item, fromPosition, target, toPosition, isHotk
                         if chanceSkill == 2 then
                             updateLumberjackSkill(player, skillLumberjackCount, skillLumberjackLevel, skillLumberjackNext)
                         end
-                        
+
                         if chance > 40 and chance <= 65 then
                             player:addItem(36722, 1)
                             player:sendTextMessage(MESSAGE_EVENT_DEFAULT, "Voce recebeu algum produto da arvore.")

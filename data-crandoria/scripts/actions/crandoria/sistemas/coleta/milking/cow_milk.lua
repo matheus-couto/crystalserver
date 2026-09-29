@@ -5,13 +5,51 @@ function milkChurn.onUse(player, item, fromPosition, target, toPosition, isHotke
     local activeBoost = player:getExpBoostStamina()
 	local house = player:getHouse()
 
+    local setBonus = 0
+    local helmet = player:getSlotItem(CONST_SLOT_HEAD)
+    local shirt = player:getSlotItem(CONST_SLOT_ARMOR)
+    local legs = player:getSlotItem(CONST_SLOT_LEGS)
+    local boots = player:getSlotItem(CONST_SLOT_FEET)
+
+    if helmet then
+        if helmet.itemid == 11700 then
+            setBonus = setBonus + 1
+        elseif helmet.itemid == 3226 then
+            setBonus = setBonus + 2
+        end
+    end
+
+    if shirt then
+        if shirt.itemid == 32099 then
+            setBonus = setBonus + 2
+        elseif shirt.itemid == 32585 then
+            setBonus = setBonus + 3
+        end
+    end
+
+    if legs then
+        if legs.itemid == 32097 then
+            setBonus = setBonus + 2
+        elseif legs.itemid == 24402 then
+            setBonus = setBonus + 3
+        end
+    end
+
+    if boots then
+        if boots.itemid == 9017 then
+            setBonus = setBonus + 1
+        elseif boots.itemid == 32098 then
+            setBonus = setBonus + 2
+        end
+    end
+
     local skillOrdenhaCount = player:getStorageValue(Storage.Quest.Crandoria.SkillsColeta.OrdenhaCount)
     local skillOrdenhaLevel = player:getStorageValue(Storage.Quest.Crandoria.SkillsColeta.OrdenhaLevel)
     local skillOrdenhaNextLevel = player:getStorageValue(Storage.Quest.Crandoria.SkillsColeta.OrdenhaNextLevel)
 
     local function updateOrdenhaSkill(player, skillOrdenhaCount, skillOrdenhaLevel, skillOrdenhaNextLevel)
         if skillOrdenhaLevel >= 100 then
-            return 
+            return
         end
 
         if skillOrdenhaCount < 1 then
@@ -39,7 +77,7 @@ function milkChurn.onUse(player, item, fromPosition, target, toPosition, isHotke
         local mType = creature:getType():getName()
 
         if mType == "Cow" and player:getStorageValue(Storage.Quest.Crandoria.FarmSystem.Cow) < os.time() then
-            local factor = (player:getLevel() / 50) + storagesorte + skillOrdenhaLevel
+            local factor = (player:getLevel() / 50) + storagesorte + skillOrdenhaLevel + setBonus
             local chance = math.random(factor, 200)
 
             if chance < 80 then

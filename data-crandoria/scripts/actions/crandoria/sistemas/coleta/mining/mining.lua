@@ -1,6 +1,5 @@
 
 
-
 local now = os.date("*t")
 local day = now.day
 local month = now.month
@@ -813,7 +812,7 @@ local function calculateChances5(skill)
 		elseif chance <= 99.95 then
 			loot = lootSuperRare5
 		elseif chance > 99.95 then
-			loot = lootUltraRar5
+			loot = lootUltraRare5
 		end
 	end
 	return loot
@@ -1250,6 +1249,10 @@ end
 
 local function miningCycle(playerId, crystalPosition, pickaxeId, startPosition, hitCount)
     local player = Player(playerId)
+    if not player then
+        return leaveMining(playerId)
+    end
+
 	local level = player:getLevel()
 	local magicLevel = player:getBaseMagicLevel()
 
@@ -1271,7 +1274,7 @@ local function miningCycle(playerId, crystalPosition, pickaxeId, startPosition, 
 	local function transformCrystal(item)
 		local randomIndex = math.random(1, #RandomCrystals)
 		local newCrystalId = RandomCrystals[randomIndex]
-	
+
 		-- Transforma o cristal antigo no novo cristal
 		item:transform(newCrystalId)
 		item:getPosition():sendMagicEffect(CONST_ME_MAGIC_GREEN)  -- Efeito visual da transformação
@@ -1280,10 +1283,6 @@ local function miningCycle(playerId, crystalPosition, pickaxeId, startPosition, 
 	local skillMining = player:getStorageValue(Storage.Quest.Crandoria.SkillsColeta.MiningCount)
 	local skillMiningLevel = player:getStorageValue(Storage.Quest.Crandoria.SkillsColeta.MiningLevel)
 	local skillMiningNext = player:getStorageValue(Storage.Quest.Crandoria.SkillsColeta.MiningNextLevel)
-
-    if not player then
-        return leaveMining(playerId)
-    end
 
     if player:getPosition() ~= startPosition then
         player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce se moveu da posicao, a mineracao parou.")
@@ -1295,13 +1294,13 @@ local function miningCycle(playerId, crystalPosition, pickaxeId, startPosition, 
     end
 
     -- Verifica se há um cristal válido na posição
-    local crystalItem = Tile(crystalPosition):getItemById(15319) or 
-                        Tile(crystalPosition):getItemById(14941) or 
+    local crystalItem = Tile(crystalPosition):getItemById(15319) or
+                        Tile(crystalPosition):getItemById(14941) or
                         Tile(crystalPosition):getItemById(14961)
 
 	if player:getVipDays() > 0 then
-		crystalItem = Tile(crystalPosition):getItemById(15319) or 
-                        Tile(crystalPosition):getItemById(14941) or 
+		crystalItem = Tile(crystalPosition):getItemById(15319) or
+                        Tile(crystalPosition):getItemById(14941) or
                         Tile(crystalPosition):getItemById(14961) or
 						Tile(crystalPosition):getItemById(19311)
 	end
@@ -1376,16 +1375,54 @@ local function miningCycle(playerId, crystalPosition, pickaxeId, startPosition, 
 	if storagesorte < 1 then
 		storagesorte = 0
 	end
-	
+
 	if skillMiningLevel < 1 then
 		skillMiningLevel = 0
 	end
-	
+
 	if skillMining < 1 then
 		skillMining = 1
 	end
-	
-	local skill = (level / 15) + (skillMiningLevel * 0.8) + storagesorte
+
+    local setBonus = 0
+    local helmet = player:getSlotItem(CONST_SLOT_HEAD)
+    local shirt = player:getSlotItem(CONST_SLOT_ARMOR)
+    local legs = player:getSlotItem(CONST_SLOT_LEGS)
+    local boots = player:getSlotItem(CONST_SLOT_FEET)
+
+    if helmet then
+        if helmet.itemid == 11700 then
+            setBonus = setBonus + 1
+        elseif helmet.itemid == 3226 then
+            setBonus = setBonus + 2
+        end
+    end
+
+    if shirt then
+        if shirt.itemid == 32099 then
+            setBonus = setBonus + 2
+        elseif shirt.itemid == 32585 then
+            setBonus = setBonus + 3
+        end
+    end
+
+    if legs then
+        if legs.itemid == 32097 then
+            setBonus = setBonus + 2
+        elseif legs.itemid == 24402 then
+            setBonus = setBonus + 3
+        end
+    end
+
+    if boots then
+        if boots.itemid == 9017 then
+            setBonus = setBonus + 1
+        elseif boots.itemid == 32098 then
+            setBonus = setBonus + 2
+        end
+    end
+
+	local skill = (level / 15) + (skillMiningLevel * 0.8) + storagesorte + (setBonus / 2)
 
 
 	if isInRange1 then
@@ -1585,14 +1622,14 @@ function miningAction.onUse(player, item, fromPosition, target, toPosition, isHo
             player:removeItem(39037, 1)
             fromPosition:sendMagicEffect(CONST_ME_HITAREA)
             local chanceCobalt = math.random(1, 25)
-            if chance == 25 then
+            if chanceCobalt == 25 then
                 local storageTC = player:getStorageValue(Storage.Quest.Crandoria.SkillsColeta.ContagemTC)
                 local limiteTC = Game.getStorageValue(GlobalStorage.Crandoria.TibiaCoinsColeta.LimiteDiario)
                 if limiteTC < 0 then
                     limiteTC = 0
                 end
                 local valorTC = 25 - limiteTC
-                if valorTC >= 1 then 
+                if valorTC >= 1 then
                     player:addTransferableCoins(1)
                     player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu 1 Tibia Coin.")
                     setGlobalStorage(GlobalStorage.Crandoria.TibiaCoinsColeta.CoinsTotal, getGlobalStorage(GlobalStorage.Crandoria.TibiaCoinsColeta.CoinsTotal) + 1)
@@ -1639,7 +1676,7 @@ function miningAction.onUse(player, item, fromPosition, target, toPosition, isHo
             return true
         end
 
-        if player:getIp() == 0 then 
+        if player:getIp() == 0 then
             player:remove()
             return false
         end
@@ -1659,4 +1696,3 @@ end
 
 miningAction:id(32711)  -- ID da picareta
 miningAction:register()
-
