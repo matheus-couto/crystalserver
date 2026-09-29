@@ -1184,7 +1184,7 @@ local function calculateChances8(skill)
 		elseif chance > 99.99 then
 			loot = lootSuperRare8
 		end
-	elseif skill > 120 and skill <= 130 then
+	elseif skill > 120 and skill <= 140 then
 		if chance <= 15 then
 			loot = lootTrash8
 		elseif chance <= 40 then
@@ -1657,7 +1657,7 @@ function miningAction.onUse(player, item, fromPosition, target, toPosition, isHo
                 player:addItem(3037, 1)
                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce abriu um Cobalt Ridge e encontrou 1 Yellow Gem.")
                 return true
-            elseif chanceCobalt > 1 and chanceCobalt <= 5 then
+            elseif chanceCobalt >= 1 and chanceCobalt <= 5 then
                 player:addItem(3036, 1)
                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce abriu um Cobalt Ridge e encontrou 1 Violet Gem.")
                 return true

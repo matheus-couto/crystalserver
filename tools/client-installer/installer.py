@@ -26,7 +26,13 @@ SITE = "https://crandoriaot.com.br"
 BG = "#141821"
 FG = "#e8e6e3"
 ACCENT = "#c8a24a"
+ACCENT_HOVER = "#dcb75c"
 MUTED = "#8b93a7"
+FIELD = "#1e2430"
+FIELD_EDGE = "#2a3240"
+
+PAD = 30          # respiro lateral da janela
+MIN_WIDTH = 540   # piso, para a janela nao encolher com texto curto
 
 
 def payload_path():
@@ -40,6 +46,33 @@ def payload_path():
 def default_target():
     base = os.environ.get("LOCALAPPDATA") or os.path.expanduser("~")
     return os.path.join(base, "Programs", APP_NAME)
+
+
+def enable_dpi_awareness():
+    """Sem isso o Windows estica a janela como imagem e tudo sai borrado.
+
+    Precisa vir antes de criar a Tk, senao a janela ja nasce com o tamanho
+    errado.
+    """
+    try:
+        from ctypes import windll
+    except Exception:
+        return
+    try:
+        windll.shcore.SetProcessDpiAwareness(1)  # por monitor
+    except Exception:
+        try:
+            windll.user32.SetProcessDPIAware()   # Windows 7/8
+        except Exception:
+            pass
+
+
+def system_dpi():
+    try:
+        from ctypes import windll
+        return windll.user32.GetDpiForSystem()
+    except Exception:
+        return 0
 
 
 def make_shortcut(link_path, target, workdir, description):
@@ -111,9 +144,12 @@ class Installer(tk.Tk):
         super().__init__()
         self.title("Instalar " + APP_NAME)
         self.configure(bg=BG)
-        self.resizable(False, False)
-        self.geometry("520x300")
-        self._center()
+
+        dpi = system_dpi()
+        if dpi:
+            # Tk mede fontes em pontos; sem isso elas ficam miudas num
+            # monitor 4K e enormes num 1080p com escala alta.
+            self.tk.call("tk", "scaling", dpi / 72.0)
 
         self.target = tk.StringVar(value=default_target())
         self.shortcut_desktop = tk.BooleanVar(value=True)
@@ -121,62 +157,103 @@ class Installer(tk.Tk):
         self.running = False
 
         self._build()
+        self._fit()
 
-    def _center(self):
+    def _fit(self):
+        """Dimensiona a janela pelo que os widgets pediram, e so entao centra.
+
+        A versao anterior fixava 520x300. Numa tela com escala do Windows
+        acima de 100% as fontes crescem mas o pixel nao, entao o que estava
+        embaixo - justamente o botao - saia cortado. Perguntando o tamanho
+        ao proprio Tk isso nao acontece em escala nenhuma.
+        """
         self.update_idletasks()
-        w, h = 520, 300
+        w = max(self.winfo_reqwidth(), MIN_WIDTH)
+        h = self.winfo_reqheight()
         x = (self.winfo_screenwidth() - w) // 2
-        y = (self.winfo_screenheight() - h) // 2
-        self.geometry("%dx%d+%d+%d" % (w, h, x, y))
+        y = (self.winfo_screenheight() - h) // 3  # um terco: agrada mais que o meio
+        self.geometry("%dx%d+%d+%d" % (w, h, x, max(y, 0)))
+        self.minsize(w, h)
+        self.resizable(False, False)
 
     def _build(self):
-        tk.Label(self, text=APP_NAME, bg=BG, fg=ACCENT,
-                 font=("Segoe UI", 20, "bold")).pack(pady=(22, 0))
-        tk.Label(self, text="Instalacao do cliente de jogo", bg=BG, fg=MUTED,
-                 font=("Segoe UI", 9)).pack(pady=(0, 18))
+        head = tk.Frame(self, bg=BG)
+        head.pack(fill="x", padx=PAD, pady=(26, 0))
+        tk.Label(head, text=APP_NAME, bg=BG, fg=ACCENT,
+                 font=("Segoe UI", 22, "bold")).pack(anchor="center")
+        tk.Label(head, text="Instalacao do cliente de jogo", bg=BG, fg=MUTED,
+                 font=("Segoe UI", 9)).pack(anchor="center", pady=(2, 0))
 
-        row = tk.Frame(self, bg=BG)
-        row.pack(fill="x", padx=28)
-        tk.Label(row, text="Pasta de instalacao", bg=BG, fg=FG,
+        body = tk.Frame(self, bg=BG)
+        body.pack(fill="x", padx=PAD, pady=(22, 0))
+
+        tk.Label(body, text="Pasta de instalacao", bg=BG, fg=FG,
                  font=("Segoe UI", 9)).pack(anchor="w")
 
-        pick = tk.Frame(self, bg=BG)
-        pick.pack(fill="x", padx=28, pady=(4, 14))
-        self.entry = tk.Entry(pick, textvariable=self.target, bg="#1e2430",
+        pick = tk.Frame(body, bg=BG)
+        pick.pack(fill="x", pady=(5, 0))
+        # A borda e um Frame por tras do Entry: o Tk no Windows nao tem
+        # borda colorida de 1px em widget classico.
+        edge = tk.Frame(pick, bg=FIELD_EDGE)
+        edge.pack(side="left", fill="x", expand=True)
+        self.entry = tk.Entry(edge, textvariable=self.target, bg=FIELD,
                               fg=FG, insertbackground=FG, relief="flat",
                               font=("Segoe UI", 9))
-        self.entry.pack(side="left", fill="x", expand=True, ipady=5)
+        self.entry.pack(fill="x", expand=True, padx=1, pady=1, ipady=6)
+
         self.browse = tk.Button(pick, text="Procurar", command=self._browse,
-                                bg="#2a3240", fg=FG, relief="flat",
-                                font=("Segoe UI", 9), padx=12, cursor="hand2")
-        self.browse.pack(side="left", padx=(8, 0))
+                                bg=FIELD_EDGE, fg=FG, relief="flat",
+                                activebackground="#333c4d", activeforeground=FG,
+                                font=("Segoe UI", 9), width=10, cursor="hand2")
+        self.browse.pack(side="left", padx=(10, 0), ipady=5)
 
-        opts = tk.Frame(self, bg=BG)
-        opts.pack(fill="x", padx=28)
-        for var, text in ((self.shortcut_desktop, "Atalho na area de trabalho"),
-                          (self.shortcut_menu, "Atalho no menu iniciar")):
+        opts = tk.Frame(body, bg=BG)
+        opts.pack(fill="x", pady=(16, 0))
+        for var, text in ((self.shortcut_desktop, "Criar atalho na area de trabalho"),
+                          (self.shortcut_menu, "Criar atalho no menu iniciar")):
             tk.Checkbutton(opts, text=text, variable=var, bg=BG, fg=FG,
-                           selectcolor="#1e2430", activebackground=BG,
-                           activeforeground=FG, relief="flat",
-                           font=("Segoe UI", 9)).pack(anchor="w")
+                           selectcolor=FIELD, activebackground=BG,
+                           activeforeground=FG, relief="flat", bd=0,
+                           highlightthickness=0, anchor="w",
+                           font=("Segoe UI", 9)).pack(fill="x", pady=1)
 
-        self.status = tk.Label(self, text="", bg=BG, fg=MUTED,
-                               font=("Segoe UI", 8))
-        self.status.pack(pady=(14, 2))
+        prog = tk.Frame(self, bg=BG)
+        prog.pack(fill="x", padx=PAD, pady=(20, 0))
+        # Altura reservada desde o inicio: sem isso a janela pularia de
+        # tamanho no primeiro texto de status.
+        self.status = tk.Label(prog, text="Pronto para instalar", bg=BG,
+                               fg=MUTED, font=("Segoe UI", 8), anchor="w")
+        self.status.pack(fill="x", pady=(0, 6))
 
         style = ttk.Style(self)
         style.theme_use("default")
-        style.configure("bar.Horizontal.TProgressbar", troughcolor="#1e2430",
+        style.configure("bar.Horizontal.TProgressbar", troughcolor=FIELD,
                         background=ACCENT, borderwidth=0, thickness=6)
-        self.bar = ttk.Progressbar(self, style="bar.Horizontal.TProgressbar",
-                                   length=464, mode="determinate")
-        self.bar.pack(padx=28)
+        self.bar = ttk.Progressbar(prog, style="bar.Horizontal.TProgressbar",
+                                   mode="determinate")
+        self.bar.pack(fill="x")
 
-        self.action = tk.Button(self, text="Instalar", command=self._start,
-                                bg=ACCENT, fg="#1a1a1a", relief="flat",
-                                font=("Segoe UI", 10, "bold"),
-                                padx=28, pady=7, cursor="hand2")
-        self.action.pack(pady=16)
+        foot = tk.Frame(self, bg=BG)
+        foot.pack(fill="x", padx=PAD, pady=(24, 26))
+        # width em caracteres, nao em pixels: o botao nao muda de tamanho
+        # quando o rotulo vira "Instalando..." ou "Jogar agora".
+        self.action = tk.Button(foot, text="Instalar", command=self._start,
+                                bg=ACCENT, fg="#16181d", relief="flat",
+                                activebackground=ACCENT_HOVER,
+                                activeforeground="#16181d",
+                                disabledforeground="#6d6552",
+                                font=("Segoe UI", 11, "bold"),
+                                width=18, cursor="hand2")
+        self.action.pack(ipady=9)
+        self.action.bind("<Enter>", lambda e: self._hover(True))
+        self.action.bind("<Leave>", lambda e: self._hover(False))
+
+        tk.Label(foot, text=SITE, bg=BG, fg=MUTED,
+                 font=("Segoe UI", 8)).pack(pady=(14, 0))
+
+    def _hover(self, on):
+        if str(self.action["state"]) != "disabled":
+            self.action.config(bg=ACCENT_HOVER if on else ACCENT)
 
     def _browse(self):
         d = filedialog.askdirectory(title="Escolha onde instalar")
@@ -198,7 +275,7 @@ class Installer(tk.Tk):
             return
 
         self.running = True
-        self.action.config(state="disabled", text="Instalando...")
+        self.action.config(state="disabled", text="Instalando...", bg=FIELD_EDGE)
         self.browse.config(state="disabled")
         self.entry.config(state="disabled")
         threading.Thread(target=self._install, args=(target,), daemon=True).start()
@@ -221,7 +298,7 @@ class Installer(tk.Tk):
                     done += m.file_size
                     pct = done * 100 / total
                     if int(pct) % 2 == 0:
-                        self._set("Instalando   %d%%" % pct, pct)
+                        self._set("Copiando arquivos   %d%%" % pct, pct)
 
             self._set("Criando atalhos...", 100)
             exe = os.path.join(target, EXE_NAME.replace("/", "\\"))
@@ -255,7 +332,7 @@ class Installer(tk.Tk):
     def _done(self, target, exe):
         self.running = False
         self._set("Instalado em %s" % target, 100)
-        self.action.config(text="Jogar agora", state="normal",
+        self.action.config(text="Jogar agora", state="normal", bg=ACCENT,
                            command=lambda: self._launch(exe))
 
     def _launch(self, exe):
@@ -268,11 +345,12 @@ class Installer(tk.Tk):
     def _failed(self, msg):
         self.running = False
         self._set("Falhou: %s" % msg)
-        self.action.config(text="Tentar de novo", state="normal")
+        self.action.config(text="Tentar de novo", state="normal", bg=ACCENT)
         self.browse.config(state="normal")
         self.entry.config(state="normal")
         messagebox.showerror(APP_NAME, "A instalacao falhou.\n\n%s" % msg)
 
 
 if __name__ == "__main__":
+    enable_dpi_awareness()
     Installer().mainloop()

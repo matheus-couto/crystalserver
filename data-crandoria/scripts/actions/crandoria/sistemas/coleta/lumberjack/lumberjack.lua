@@ -113,7 +113,7 @@ function lumberjack.onUse(player, item, fromPosition, target, toPosition, isHotk
                     return true
                 else
                     local factor = (level / 50) + storagesorte + (skillLumberjackLevel / 4) + (setBonus / 2)
-                    local chance = math.random(factor, 100)
+                    local chance = math.random(math.min(factor, 100), 100)
                     if chance <= 40 then
                         player:setStorageValue(Storage.Quest.Crandoria.Lumberjack.HitTimer, os.time() + 1)
                         local chanceHit2 = math.random(1, 2)
@@ -201,7 +201,7 @@ function lumberjack.onUse(player, item, fromPosition, target, toPosition, isHotk
                     return true
                 else
                     local factor = (level / 50) + storagesorte + (skillLumberjackLevel / 4)
-                    local chance = math.random(factor, 100)
+                    local chance = math.random(math.min(factor, 100), 100)
                     if chance <= 40 then
                         player:setStorageValue(Storage.Quest.Crandoria.Lumberjack.HitTimer, os.time() + 1)
                         local chanceHit2 = math.random(1, 2)
