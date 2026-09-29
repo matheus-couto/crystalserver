@@ -63,11 +63,12 @@ local HANDLERS = {
 		if not texto or texto == "" then
 			return false, "mensagem vazia"
 		end
-		local n = 0
-		for _, player in ipairs(Game.getPlayers()) do
-			player:sendTextMessage(MESSAGE_GAMEMASTER_BROADCAST, texto)
-			n = n + 1
-		end
+		-- MESSAGE_GAME_HIGHLIGHT, e nao a constante de broadcast que existe em
+		-- outros servidores: aqui ela nao e exportada para o Lua, entao chegava
+		-- como nil, o C++ lia 0 = MESSAGE_NONE e respondia ao jogador com
+		-- "There was a problem requesting your message".
+		local n = #Game.getPlayers()
+		Game.broadcastMessage(texto, MESSAGE_GAME_HIGHLIGHT)
 		return true, string.format("enviado para %d jogador(es)", n)
 	end,
 }

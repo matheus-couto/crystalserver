@@ -45,6 +45,14 @@ services:
       - login-server
 
   server:
+    environment:
+      TZ: America/Sao_Paulo
+    # TZ sozinho nao basta: nenhuma destas imagens traz o banco de fusos.
+    # Montando o do host - que ja esta em America/Sao_Paulo - a hora do log
+    # passa a bater com a de Brasilia sem reconstruir imagem nenhuma.
+    volumes:
+      - '/usr/share/zoneinfo:/usr/share/zoneinfo:ro'
+      - '/etc/localtime:/etc/localtime:ro'
     # Roda o binario direto, sem o start.sh.
     #
     # O start.sh e um script interativo: ele vigia o servidor com
@@ -82,6 +90,8 @@ services:
       - '7173:7173'
 
   myacc:
+    environment:
+      TZ: America/Sao_Paulo
     build:
       context: ../myacc
       dockerfile: Dockerfile
@@ -95,6 +105,8 @@ services:
     expose:
       - '80'
     volumes:
+      - '/usr/share/zoneinfo:/usr/share/zoneinfo:ro'
+      - '/etc/localtime:/etc/localtime:ro'
       # Bind mount, nao imagem: config.local.php e as imagens enviadas pelos
       # jogadores precisam sobreviver a um rebuild.
       - '../myacc:/var/www/html'
@@ -107,6 +119,14 @@ services:
         condition: service_healthy
 
   donate:
+    environment:
+      TZ: America/Sao_Paulo
+    # TZ sozinho nao basta: nenhuma destas imagens traz o banco de fusos.
+    # Montando o do host - que ja esta em America/Sao_Paulo - a hora do log
+    # passa a bater com a de Brasilia sem reconstruir imagem nenhuma.
+    volumes:
+      - '/usr/share/zoneinfo:/usr/share/zoneinfo:ro'
+      - '/etc/localtime:/etc/localtime:ro'
     build:
       context: ../tools/asaas-donate
       dockerfile: Dockerfile
@@ -124,6 +144,8 @@ services:
         condition: service_healthy
 
   painel:
+    environment:
+      TZ: America/Sao_Paulo
     build:
       context: ../tools/painel
       dockerfile: Dockerfile
@@ -136,6 +158,8 @@ services:
     expose:
       - '3100'
     volumes:
+      - '/usr/share/zoneinfo:/usr/share/zoneinfo:ro'
+      - '/etc/localtime:/etc/localtime:ro'
       # Montagens estreitas de proposito. O painel edita script e nada mais -
       # nao enxerga config.lua, nem o .env, nem o codigo do site. Se ele for
       # comprometido, o estrago para onde a montagem termina.
@@ -151,6 +175,8 @@ services:
         condition: service_healthy
 
   caddy:
+    environment:
+      TZ: America/Sao_Paulo
     image: caddy:2-alpine
     restart: unless-stopped
     networks:
@@ -160,6 +186,8 @@ services:
       - '443:443'
       - '443:443/udp'
     volumes:
+      - '/usr/share/zoneinfo:/usr/share/zoneinfo:ro'
+      - '/etc/localtime:/etc/localtime:ro'
       - './Caddyfile:/etc/caddy/Caddyfile:ro'
       - 'caddy-data:/data'
       - 'caddy-config:/config'

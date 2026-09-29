@@ -81,6 +81,13 @@ vale olhar. Tem tambem a lista de "mesmo item em varios chars da mesma
 conta", que e o padrao de quem duplica e distribui para nao aparecer no
 ranking individual.
 
+Os nomes vem do `items.xml`, lido para a memoria na primeira consulta (38 mil
+ids em ~60 ms, 8 MB de heap) e relido sozinho quando o arquivo muda. Nao ha
+tabela no banco de proposito: uma tabela precisaria de reimportacao a cada
+alteracao do XML, e a primeira vez que alguem esquecesse disso o painel
+passaria a mostrar nome errado — pior do que nao mostrar nome nenhum. A busca
+aceita nome ou id: "crystal coin" abre direto, "gold" lista os 60 que casam.
+
 > **Os numeros so valem para quem esta offline.** O inventario de quem esta
 > online mora na memoria do servidor e so desce para o banco no logout ou no
 > save. O painel avisa isso na tela e mostra quantos estao online. Para um
@@ -93,6 +100,18 @@ administracao aberta. Ele grava em `panel_commands` e um globalevent em Lua
 consome a cada 5 segundos, do mesmo jeito que o sistema de doacoes ja faz.
 Se o painel cair, o jogo nem percebe. Hoje aceita `kick`, `save` e
 `broadcast`; qualquer outro tipo e recusado sem executar nada.
+
+## Fuso horario
+
+Os containers nascem em UTC, o que fazia o log do servidor marcar 18:05 quando
+no Brasil eram 15:05. O `TZ` sozinho nao resolve porque nenhuma das imagens
+traz o banco de fusos, entao o compose monta o `zoneinfo` do host em
+`server`, `myacc`, `donate`, `painel` e `caddy`.
+
+O `database` ficou de fora de proposito: colunas `TIMESTAMP` do MySQL sao
+guardadas em UTC e convertidas na leitura pelo fuso da sessao, entao mudar o
+fuso do container faria todo registro antigo do MyAAC aparecer tres horas
+deslocado.
 
 ## Operacao
 

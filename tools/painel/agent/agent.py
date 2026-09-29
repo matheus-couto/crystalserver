@@ -158,6 +158,18 @@ def v_host(_req):
     return {"ok": True, "host": dados}
 
 
+# Sequencias de escape ANSI - cor, negrito, movimento de cursor. No terminal
+# viram formatacao; no navegador chegam como "B[31mB[1merrorB[m". O
+# `--no-color` do compose nao resolve: ele so tira a cor do prefixo que o
+# proprio compose escreve, enquanto o servidor de jogo emite as suas dentro
+# da linha.
+ANSI = re.compile("\x1b\\[[0-9;?]*[a-zA-Z]|\x1b[@-Z\\\\-_]|[\x00-\x08\x0b\x0c\x0e-\x1f]")
+
+
+def limpar_ansi(texto):
+    return ANSI.sub("", texto or "")
+
+
 def v_logs(req):
     servico = check_service(req.get("servico", "server"))
     linhas = req.get("linhas", 200)
@@ -168,7 +180,7 @@ def v_logs(req):
     # O compose escreve parte do log em stderr; juntar os dois e o que da a
     # visao completa.
     texto = (out or "") + (err or "") if code == 0 else (err or out or "")
-    return {"ok": code == 0, "texto": texto[-600000:]}
+    return {"ok": code == 0, "texto": limpar_ansi(texto)[-600000:]}
 
 
 def v_restart(req):

@@ -146,6 +146,9 @@ const EDITOR_HEAD = `
 <script src="/estatico/cm/search.js" defer></script>
 <script src="/estatico/editor.js" defer></script>`;
 
+/** A pagina de log precisa rolar para o fim sozinha. */
+const LOG_HEAD = `<script src="/estatico/logs.js" defer></script>`;
+
 const MENU = [
   ['/', 'Visao geral'],
   ['/logs', 'Logs'],
@@ -217,6 +220,23 @@ function formBotao(action, campos, rotulo, { classe = 'btn', confirmar = null } 
     ${ocultos}<button class="${e(classe)}" type="submit">${e(rotulo)}</button></form>`;
 }
 
+/**
+ * Load average em porcentagem da capacidade da maquina.
+ *
+ * Load 2.0 em 2 vCPU e 100%: a fila de processos prontos ocupa exatamente os
+ * nucleos disponiveis. Acima disso ha processo esperando vez.
+ */
+function cargaPct(carga, cpus) {
+  if (!carga || !cpus) return 0;
+  return Math.round((carga / cpus) * 100);
+}
+
+function rotuloCarga(pct) {
+  if (pct < 70) return '<span class="pill ok">tranquilo</span>';
+  if (pct < 100) return '<span class="pill alerta">ocupado</span>';
+  return '<span class="pill erro">saturado</span>';
+}
+
 function barra(pct, quenteAcima = 85) {
   const p = Math.max(0, Math.min(100, Number(pct) || 0));
   return `<div class="barra"><i class="${p >= quenteAcima ? 'quente' : ''}" style="width:${p}%"></i></div>`;
@@ -242,4 +262,5 @@ function colorirLog(texto) {
 module.exports = {
   e, moeda, numero, dataHora, duracao, tamanho,
   pagina, paginaLogin, formBotao, barra, cartao, colorirLog, MENU, EDITOR_HEAD,
+  cargaPct, rotuloCarga, LOG_HEAD,
 };

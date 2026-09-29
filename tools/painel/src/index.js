@@ -22,6 +22,7 @@ const auth = require('./auth');
 const agent = require('./agent');
 const scripts = require('./scripts');
 const q = require('./queries');
+const nomesItens = require('./itemnames');
 const v = require('./view');
 
 const PORTA = Number(process.env.PORT || 3100);
@@ -222,9 +223,12 @@ app.get('/', async (req, res, next) => {
         v.barra(h.mem_pct)),
       v.cartao('Disco', (h.disco_pct || 0) + '%',
         `${h.disco_usado_gb} de ${h.disco_total_gb} GB`, v.barra(h.disco_pct, 80)),
-      v.cartao('Carga (2 vCPU)',
-        h.carga ? h.carga.map((x) => x.toFixed(2)).join('  ') : '—',
-        '1, 5 e 15 minutos'),
+      v.cartao('Uso de CPU',
+        h.carga ? v.cargaPct(h.carga[0], h.cpus) + '%  ' + v.rotuloCarga(v.cargaPct(h.carga[0], h.cpus)) : '—',
+        h.carga
+          ? `5 min: ${v.cargaPct(h.carga[1], h.cpus)}%   15 min: ${v.cargaPct(h.carga[2], h.cpus)}%   (${h.cpus} vCPU)`
+          : '',
+        h.carga ? v.barra(v.cargaPct(h.carga[0], h.cpus), 90) : ''),
       v.cartao('Uptime da maquina', v.duracao(h.uptime_s), ''),
     ].join('');
 
@@ -347,9 +351,40 @@ app.get('/logs', async (req, res, next) => {
         <button class="btn" type="submit">Ver</button>
         <a class="btn cinza" href="/logs?s=${servico}&n=${linhas}&f=error">So erros</a>
         <a class="btn cinza" href="/logs?s=${servico}&n=${linhas}">Limpar filtro</a>
+        <a class="btn cinza" href="/logs/baixar?s=${servico}&n=${linhas}${filtro ? '&f=' + encodeURIComponent(filtro) : ''}">Baixar .txt</a>
       </form>
       <pre class="log">${v.colorirLog(texto)}</pre>
-    `, avisoDaQuery(req));
+      <div class="linha" style="margin-top:10px">
+        <a class="btn cinza mini" href="#" id="ir-topo">Ir para o inicio</a>
+        <a class="btn cinza mini" href="#" id="ir-fim">Ir para o fim</a>
+        <span style="color:var(--fraco);font-size:12px">
+          Mostrando as ultimas ${v.numero(linhas)} linhas; a pagina abre no fim.</span>
+      </div>
+    `, avisoDaQuery(req), v.LOG_HEAD);
+  } catch (err) { next(err); }
+});
+
+app.get('/logs/baixar', async (req, res, next) => {
+  try {
+    const servico = ['server', 'myacc', 'database', 'caddy', 'donate']
+      .includes(req.query.s) ? req.query.s : 'server';
+    const linhas = Math.min(Math.max(parseInt(req.query.n, 10) || 1000, 20), 2000);
+    const filtro = String(req.query.f || '');
+
+    const r = await agent.logs(servico, linhas);
+    let texto = r.texto || r.erro || '';
+    if (filtro) {
+      const alvo = filtro.toLowerCase();
+      texto = texto.split(/\r?\n/).filter((l) => l.toLowerCase().includes(alvo)).join('\n');
+    }
+
+    const carimbo = new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' })
+      .replace(/[: ]/g, '-');   // 'sv-SE' da o formato AAAA-MM-DD HH:MM:SS
+    const nome = `${servico}-${carimbo}.txt`;
+    await auditar(req, 'log.baixado', servico, `${linhas} linhas${filtro ? `, filtro "${filtro}"` : ''}`);
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename="${nome}"`);
+    res.send(texto);
   } catch (err) { next(err); }
 });
 
@@ -525,9 +560,18 @@ app.post('/scripts/enviar', express.raw({ type: 'multipart/form-data', limit: '8
 
 app.get('/itens', async (req, res, next) => {
   try {
-    const item = parseInt(req.query.item, 10);
     const jogador = parseInt(req.query.jogador, 10);
     const { online } = await q.frescorDosItens(db);
+
+    // O campo aceita id ou nome. Numero vai direto; texto vira busca no
+    // items.xml, e se der um resultado so, abre ele em vez de listar.
+    const busca = String(req.query.item || '').trim();
+    let item = /^\d+$/.test(busca) ? parseInt(busca, 10) : NaN;
+    let candidatos = [];
+    if (busca && !Number.isInteger(item)) {
+      candidatos = await nomesItens.buscar(busca, 60);
+      if (candidatos.length === 1) item = candidatos[0].id;
+    }
 
     const avisoFrescor = online
       ? `<div class="aviso">Estes numeros vem do banco, que so recebe o inventario de
@@ -538,14 +582,16 @@ app.get('/itens', async (req, res, next) => {
     if (Number.isInteger(jogador)) {
       const itens = await q.itensDoJogador(db, jogador);
       const [[p]] = await db.query('SELECT `name`,`level`,`account_id` FROM `players` WHERE `id`=?', [jogador]);
+      const nomes = await nomesItens.nomes(itens.map((i) => i.itemtype));
       const linhas = itens.length ? itens.map((i) => `<tr>
         <td class="num mono"><a href="/itens?item=${i.itemtype}">${i.itemtype}</a></td>
+        <td>${nomes.get(i.itemtype) ? v.e(nomes.get(i.itemtype)) : '<span style="color:var(--fraco)">—</span>'}</td>
         <td class="num">${v.numero(i.total)}</td>
         <td class="num">${v.numero(i.inventario)}</td>
         <td class="num">${v.numero(i.depot)}</td>
         <td class="num">${v.numero(i.inbox)}</td>
         <td class="num">${v.numero(i.pilhas)}</td></tr>`).join('')
-        : '<tr><td colspan="6" style="color:var(--fraco)">Nenhum item salvo.</td></tr>';
+        : '<tr><td colspan="7" style="color:var(--fraco)">Nenhum item salvo.</td></tr>';
 
       return render(req, res, 'Itens do jogador', '/itens', `
         <div class="crumbs"><a href="/itens">&larr; Itens</a></div>
@@ -553,7 +599,7 @@ app.get('/itens', async (req, res, next) => {
         <p class="sub">${p ? `Level ${v.numero(p.level)} · conta ${v.e(p.account_id)}` : ''} ·
           ${itens.length} tipo(s) de item</p>
         ${avisoFrescor}
-        <table><thead><tr><th class="num">Item</th><th class="num">Total</th>
+        <table><thead><tr><th class="num">Id</th><th>Item</th><th class="num">Total</th>
           <th class="num">Inventario</th><th class="num">Depot</th><th class="num">Inbox</th>
           <th class="num">Pilhas</th></tr></thead><tbody>${linhas}</tbody></table>
       `, avisoDaQuery(req));
@@ -576,10 +622,12 @@ app.get('/itens', async (req, res, next) => {
           <td class="num">${v.numero(d.inbox)}</td></tr>`;
       }).join('') : '<tr><td colspan="8" style="color:var(--fraco)">Ninguem tem este item salvo.</td></tr>';
 
-      return render(req, res, 'Item ' + item, '/itens', `
+      const nomeItem = await nomesItens.nome(item);
+      return render(req, res, nomeItem || ('Item ' + item), '/itens', `
         <div class="crumbs"><a href="/itens">&larr; Itens</a></div>
-        <h1>Item ${v.e(item)}</h1>
-        <p class="sub">${v.numero(total)} unidades no total, com ${donos.length} jogador(es)</p>
+        <h1>${nomeItem ? v.e(nomeItem) : 'Item ' + v.e(item)}</h1>
+        <p class="sub">id ${v.e(item)} · ${v.numero(total)} unidades no total,
+          com ${donos.length} jogador(es)</p>
         ${avisoFrescor}
         <table><thead><tr><th>Jogador</th><th class="num">Level</th><th class="num">Conta</th>
           <th class="num">Total</th><th class="num">% do estoque</th>
@@ -588,17 +636,43 @@ app.get('/itens', async (req, res, next) => {
       `, avisoDaQuery(req));
     }
 
+    if (candidatos.length > 1) {
+      const linhas = candidatos.map((c) => `<tr>
+        <td class="num mono"><a href="/itens?item=${c.id}">${c.id}</a></td>
+        <td><a href="/itens?item=${c.id}">${v.e(c.nome)}</a></td></tr>`).join('');
+      return render(req, res, 'Busca', '/itens', `
+        <div class="crumbs"><a href="/itens">&larr; Itens</a></div>
+        <h1>${candidatos.length} itens com "${v.e(busca)}"</h1>
+        <p class="sub">Clique para ver quem tem.</p>
+        <table><thead><tr><th class="num">Id</th><th>Nome</th></tr></thead>
+          <tbody>${linhas}</tbody></table>
+      `, avisoDaQuery(req));
+    }
+
+    if (busca && !candidatos.length && !Number.isInteger(item)) {
+      return render(req, res, 'Busca', '/itens', `
+        <div class="crumbs"><a href="/itens">&larr; Itens</a></div>
+        <h1>Nada com "${v.e(busca)}"</h1>
+        <p class="sub">Nenhum item do items.xml tem esse nome. Tente um pedaco
+          menor, ou informe o id.</p>
+      `, avisoDaQuery(req));
+    }
+
     const [ranking, espalhados] = await Promise.all([
       q.rankingItens(db, 100, 2),
       q.itensEspalhadosPorConta(db, 30),
     ]);
 
+    const nomesRank = await nomesItens.nomes(ranking.map((r) => r.itemtype));
     const linhasRank = ranking.map((r) => {
       // Um item concentrado num jogador so e suspeito quando ha mais de um
       // dono possivel. Item que so uma pessoa tem da 100% por definicao.
       const suspeito = r.concentracao >= 90 && r.donos > 1 && r.total >= 100;
+      const nome = nomesRank.get(r.itemtype);
       return `<tr>
         <td class="num mono"><a href="/itens?item=${r.itemtype}">${r.itemtype}</a></td>
+        <td>${nome ? `<a href="/itens?item=${r.itemtype}">${v.e(nome)}</a>`
+                   : '<span style="color:var(--fraco)">—</span>'}</td>
         <td class="num">${v.numero(r.total)}</td>
         <td class="num">${v.numero(r.donos)}</td>
         <td class="num">${v.numero(r.maior)}</td>
@@ -606,33 +680,39 @@ app.get('/itens', async (req, res, next) => {
           ${suspeito ? ' <span class="pill alerta">concentrado</span>' : ''}</td></tr>`;
     }).join('');
 
+    const nomesEsp = await nomesItens.nomes(espalhados.map((l) => l.itemtype));
     const linhasEsp = espalhados.length ? espalhados.map((l) => `<tr>
       <td class="num">${v.e(l.account_id)}</td>
       <td class="num mono"><a href="/itens?item=${v.e(l.itemtype)}">${v.e(l.itemtype)}</a></td>
+      <td>${nomesEsp.get(Number(l.itemtype))
+              ? v.e(nomesEsp.get(Number(l.itemtype)))
+              : '<span style="color:var(--fraco)">—</span>'}</td>
       <td class="num">${v.numero(l.chars)}</td>
       <td class="num">${v.numero(l.total)}</td></tr>`).join('')
-      : '<tr><td colspan="4" style="color:var(--fraco)">Nada espalhado entre chars da mesma conta.</td></tr>';
+      : '<tr><td colspan="5" style="color:var(--fraco)">Nada espalhado entre chars da mesma conta.</td></tr>';
 
     render(req, res, 'Itens', '/itens', `
       <h1>Itens</h1>
       <p class="sub">Estoque agregado de inventario, depot e inbox — para achar duplicacao.</p>
       ${avisoFrescor}
       <form class="linha" method="get">
-        <input name="item" placeholder="ver um item pelo id (ex: 3043)" size="28">
-        <button class="btn" type="submit">Ver item</button>
+        <input name="item" placeholder="nome ou id do item (ex: crystal coin, 3043)" size="34">
+        <button class="btn" type="submit">Procurar</button>
         <a class="btn cinza" href="/jogadores">Buscar por jogador</a>
+        <span style="color:var(--fraco);font-size:12px">
+          ${v.numero(await nomesItens.total())} nomes carregados do items.xml</span>
       </form>
 
       <h2>Maiores estoques</h2>
       <p class="sub">A coluna <b>concentracao</b> e a fatia do estoque que esta com um unico
         jogador. Item legitimo se espalha; quando um so responde por quase tudo, vale olhar.</p>
-      <table><thead><tr><th class="num">Item</th><th class="num">Total</th>
+      <table><thead><tr><th class="num">Id</th><th>Item</th><th class="num">Total</th>
         <th class="num">Donos</th><th class="num">Maior detentor</th>
         <th class="num">Concentracao</th></tr></thead><tbody>${linhasRank}</tbody></table>
 
       <h2>Mesmo item em varios chars da mesma conta</h2>
       <p class="sub">Padrao comum de quem duplica e distribui para nao aparecer no ranking.</p>
-      <table><thead><tr><th class="num">Conta</th><th class="num">Item</th>
+      <table><thead><tr><th class="num">Conta</th><th class="num">Id</th><th>Item</th>
         <th class="num">Personagens</th><th class="num">Total</th></tr></thead>
         <tbody>${linhasEsp}</tbody></table>
     `, avisoDaQuery(req));
