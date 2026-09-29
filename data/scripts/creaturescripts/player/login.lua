@@ -125,7 +125,11 @@ function playerLoginGlobal.onLogin(player)
 		end
 
 		-- A Piece of Cake Quest - bonus xp
-		if player:isPremium() and os.time() < CakeQuest.get(CakeQuest.Keys.WorldBonusUntil, 0) then
+		-- CakeQuest vive em data-global/scripts/lib/, e o data pack deste
+		-- servidor e o data-crandoria - a lib nunca e carregada. Sem a
+		-- guarda o erro so nao aparecia porque ninguem era premium e o
+		-- `and` fazia curto-circuito antes de tocar no nome.
+		if CakeQuest and player:isPremium() and os.time() < CakeQuest.get(CakeQuest.Keys.WorldBonusUntil, 0) then
 			baseRate = baseRate + (baseRate * (CakeQuest.Config.EXP_BONUS_PERCENT / 100))
 		end
 
