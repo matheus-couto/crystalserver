@@ -101,6 +101,20 @@ local config = {
 	},
 }
 
+-- DESLIGADO neste servidor.
+--
+-- Este script do core entrega o set brass por vocacao no primeiro login,
+-- e a data-crandoria ja entrega o proprio set de leather pelo
+-- Newhaven.giveStarterItems. Com os dois ativos o jogador nascia com dois
+-- conjuntos completos.
+--
+-- Desligar aqui e seguro: o giveStarterItems cria a mochila quando ela nao
+-- existe e a enche com pocoes, ouro e ferramentas, entao nada essencial se
+-- perde. Para reativar, remova o bloco do return abaixo.
+do
+	return
+end
+
 local sendFirstItems = CreatureEvent("SendFirstItems")
 
 function sendFirstItems.onLogin(player)

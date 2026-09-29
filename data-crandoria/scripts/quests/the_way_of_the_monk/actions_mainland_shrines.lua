@@ -33,7 +33,8 @@ function shrineAction.onUse(player, item, fromPosition, target, toPosition, isHo
 	end
 
 	local kv = player:questKV(MONK_QUEST)
-	if (kv:get(shrineConfig.questlineKey) or 0) < 2 then
+	-- if (kv:get(shrineConfig.questlineKey) or 0) < 2 then
+	if kv:get(shrineConfig.questlineKey) < 2 then
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Inicie sua peregrinacao com Enpa-Deia Pema.")
 		return true
 	end

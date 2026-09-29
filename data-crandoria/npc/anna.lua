@@ -7,8 +7,11 @@ npcConfig.description = internalNpcName
 
 npcConfig.health = 100
 npcConfig.maxHealth = npcConfig.health
-npcConfig.walkInterval = 2000
-npcConfig.walkRadius = 2
+-- Parada: walkInterval 0 desliga o passo e o raio 0 nao deixa margem
+-- para ela sair do lugar.
+npcConfig.walkInterval = 0
+npcConfig.walkRadius = 0
+npcConfig.speed = 0
 
 npcConfig.outfit = {
 	lookType = 1576,
