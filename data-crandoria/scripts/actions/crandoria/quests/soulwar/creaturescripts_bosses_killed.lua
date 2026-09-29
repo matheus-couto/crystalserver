@@ -9,12 +9,15 @@ local bosses = {
 
 local BAG_KILL_COUNT_STORAGE = Storage.Quest.U12_40.SoulWar.BagKillCount
 
+-- onDeath no proprio boss, em vez de onKill no jogador: o onKill era chamado
+-- em toda morte que qualquer jogador causava, so para conferir o nome e sair.
 local bossesSoulWar = CreatureEvent("SoulWarKill")
-function bossesSoulWar.onKill(creature, target)
-	local targetMonster = target:getMonster()
-	if not targetMonster or targetMonster:getMaster() then
+function bossesSoulWar.onDeath(creature, corpse, killer, mostDamageKiller)
+	if creature:getMaster() or not getDeathCreditPlayer(mostDamageKiller) then
 		return true
 	end
+	local target = creature
+	local targetMonster = creature
 
 	local bossName = targetMonster:getName():lower()
 	local bossConfig = bosses[bossName]
@@ -64,6 +67,17 @@ function bossesSoulWar.onKill(creature, target)
 end
 
 bossesSoulWar:register()
+
+local startup = GlobalEvent("SoulWarKillStartup")
+function startup.onStartup()
+	local nomes = {}
+	for nome in pairs(bosses) do
+		nomes[#nomes + 1] = nome
+	end
+	registerDeathEvent("SoulWarKill", nomes)
+	return true
+end
+startup:register()
 
 
 -- local bosses = {

@@ -1,19 +1,19 @@
 local boss = {
-	["apocalypse"] = {storage = Storage.Quest.Crandoria.TradeSpecialNPC.ApocalypseKilled},
-
+	["apocalypse"] = { storage = Storage.Quest.Crandoria.TradeSpecialNPC.ApocalypseKilled },
 }
 
+-- onDeath no proprio boss, em vez de onKill no jogador: o onKill era chamado
+-- em toda morte que qualquer jogador causava, so para conferir o nome e sair.
 local bossApocalypse = CreatureEvent("CrandoriaApocalypseKill")
-function bossApocalypse.onKill(creature, target)
-	local targetMonster = target:getMonster()
-	if not targetMonster or targetMonster:getMaster() then
+function bossApocalypse.onDeath(creature, corpse, killer, mostDamageKiller)
+	if creature:getMaster() or not getDeathCreditPlayer(mostDamageKiller) then
 		return true
 	end
-	local bossConfig = boss[targetMonster:getName():lower()]
+	local bossConfig = boss[creature:getName():lower()]
 	if not bossConfig then
 		return true
 	end
-	for key, value in pairs(targetMonster:getDamageMap()) do
+	for key, value in pairs(creature:getDamageMap()) do
 		local attackerPlayer = Player(key)
 		if attackerPlayer then
 			if bossConfig.storage then
@@ -24,3 +24,10 @@ function bossApocalypse.onKill(creature, target)
 	return true
 end
 bossApocalypse:register()
+
+local startup = GlobalEvent("CrandoriaApocalypseKillStartup")
+function startup.onStartup()
+	registerDeathEvent("CrandoriaApocalypseKill", { "Apocalypse" })
+	return true
+end
+startup:register()

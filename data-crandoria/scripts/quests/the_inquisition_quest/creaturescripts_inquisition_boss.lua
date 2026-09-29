@@ -8,14 +8,16 @@ local bosses = {
 	["hellgorak"] = 205,
 }
 
+-- onDeath no proprio boss, em vez de onKill no jogador: o onKill era chamado
+-- em toda morte que qualquer jogador causava, so para conferir o nome e sair.
 local inquisitionBossKill = CreatureEvent("InquisitionBossKill")
-function inquisitionBossKill.onKill(player, target)
-	local targetMonster = target:getMonster()
-	if not targetMonster then
+function inquisitionBossKill.onDeath(creature, corpse, killer, mostDamageKiller)
+	local player = getDeathCreditPlayer(mostDamageKiller)
+	if not player then
 		return true
 	end
 
-	local targetName = targetMonster:getName():lower()
+	local targetName = creature:getName():lower()
 	local bossStorage = bosses[targetName]
 	if not bossStorage then
 		return true
@@ -35,3 +37,14 @@ function inquisitionBossKill.onKill(player, target)
 end
 
 inquisitionBossKill:register()
+
+local startup = GlobalEvent("InquisitionBossKillStartup")
+function startup.onStartup()
+	local nomes = {}
+	for nome in pairs(bosses) do
+		nomes[#nomes + 1] = nome
+	end
+	registerDeathEvent("InquisitionBossKill", nomes)
+	return true
+end
+startup:register()

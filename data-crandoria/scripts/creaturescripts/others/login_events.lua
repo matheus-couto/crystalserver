@@ -1,5 +1,11 @@
 local loginEvents = CreatureEvent("LoginEvents")
 function loginEvents.onLogin(player)
+	-- Os eventos de morte de boss (Ahau, Timira, Queen of Hearts, Viridia,
+	-- Soul War, Inquisition, Apocalypse, The Monster) e o TaskCreature nao
+	-- ficam mais aqui. Eram onKill registrados no jogador, que o servidor
+	-- chama em TODA morte que o jogador causa - doze chamadas e doze avisos
+	-- no log por rotworm. Viraram onDeath registrado no proprio monstro, cada
+	-- um no seu arquivo.
 	local events = {
 		"RookgaardAdvance",
 		--Quests
@@ -9,13 +15,7 @@ function loginEvents.onLogin(player)
 		"RottenBloodLogin",
 		-- Crandoria
 		"BossesRottenBloodKill",
-		"CrandoriaApocalypseKill",
-		"Ahau",
 		"AhauDeath",
-		-- Custom Events
-		"TaskCreature",
-		-- Timira Reward
-		"Timira",
 		-- King Zelos
 		"zelosDeath",
 		-- Pale Worm
@@ -26,8 +26,6 @@ function loginEvents.onLogin(player)
 		"asuraFrostDeath",
 		"asuraFireDeath",
 		"asuraMidnightDeath",
-		-- Queen of Hearts Events
-		"QueenofHearts",
 		-- Zarabastan event
 		"zarabastanDeath",
 		-- Faceless Bane
@@ -36,7 +34,6 @@ function loginEvents.onLogin(player)
 		"scarlettEtzelDeath",
 		"drumeDeath",
 		"grandMasterOberonDeath",
-		"InquisitionBossKill",
 		-- -- Groguron
 		-- "groguronDeath",
 		-- -- percht queen
@@ -48,15 +45,8 @@ function loginEvents.onLogin(player)
 		-- "chaosTotemDeath",
 		-- scourge of oblivion
 		"oblivionDeath",
-		"themonsterDeath",
-		"SoulWarKill",
 		-- -- aramPvP
 		-- "PlayerEventDeath",
-		-- Viridia
-		"mikarahDeath",
-		"PythiusDeath",
-		"SuonDeath",
-		"SonofHoradronDeath",
 		-- clash
 		"crandoriaTotemDeath",
 		"umbraTotemDeath",

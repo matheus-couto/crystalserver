@@ -6,21 +6,22 @@ local function removeTeleport(position)
 	end
 end
 
+-- onDeath no proprio boss, em vez de onKill no jogador: o onKill era chamado
+-- em toda morte que qualquer jogador causava, so para conferir o nome e sair.
 local ahau = CreatureEvent("Ahau")
-function ahau.onKill(creature, target)
-	local targetMonster = target:getMonster()
-	if not target or not targetMonster or targetMonster:getName():lower() ~= "ahau" then
+function ahau.onDeath(creature, corpse, killer, mostDamageKiller)
+	if not getDeathCreditPlayer(mostDamageKiller) then
 		return true
 	end
 
-	local position = targetMonster:getPosition()
+	local position = creature:getPosition()
 	position:sendMagicEffect(CONST_ME_TELEPORT)
 	local item = Game.createItem(1949, 1, position)
 	local teleportToPosition = Position(5570, 5119, 15)
 	if item:isTeleport() then
 		item:setDestination(teleportToPosition)
 	end
-	targetMonster:say("You have 2 minutes to enter the teleport and claim your reward", TALKTYPE_MONSTER_SAY, 0, 0, position)
+	creature:say("You have 2 minutes to enter the teleport and claim your reward", TALKTYPE_MONSTER_SAY, 0, 0, position)
 	--remove portal after 2 min
 	addEvent(removeTeleport, 2 * 60 * 1000, position)
 
@@ -28,7 +29,7 @@ function ahau.onKill(creature, target)
 	local spectators, spectator = Game.getSpectators(Position(5492, 5150, 15), false, false, 10, 10, 10, 10)
 	for i = 1, #spectators do
 		spectator = spectators[i]
-		if spectator:isMonster() then
+		if spectator:isMonster() and spectator ~= creature then
 			spectator:getPosition():sendMagicEffect(CONST_ME_POFF)
 			spectator:remove()
 		end
@@ -46,3 +47,10 @@ function ahau.onKill(creature, target)
 end
 
 ahau:register()
+
+local startup = GlobalEvent("AhauStartup")
+function startup.onStartup()
+	registerDeathEvent("Ahau", { "Ahau" })
+	return true
+end
+startup:register()
