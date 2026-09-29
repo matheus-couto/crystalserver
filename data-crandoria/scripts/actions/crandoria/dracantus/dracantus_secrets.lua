@@ -27,7 +27,7 @@ function dracantusSecret.onUse(player, item, fromPosition, target, toPosition, i
 	if player:getStorageValue(Storage.Quest.U11_02.TheFirstDragon.Progresso) >= 11 then
 		player:showTextDialog(item, texto, false)
 	else
-		player:sendTextMessage(MESSAGE_EVENT_ADVANGE, "Voce ainda nao tem capacidade de interpretar as escrituras.")
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce ainda nao tem capacidade de interpretar as escrituras.")
 		return false
 	end
 	return false
