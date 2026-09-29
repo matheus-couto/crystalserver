@@ -128,7 +128,6 @@ local function creatureSayCallback(npc, creature, type, message)
     local raceIdA = mTypeA:raceId()
     local monsteridA = selectedMonsterA.id
     local bestiaryA = (player:getStorageValue(61305000 + raceIdA)) + 2
-    local monsterNameAA = getMonsterNameByIdA(monsterA, player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt))
     
     
     local selectedMonsterB = monsterB[math.random(1, #monsterB)]
@@ -138,7 +137,6 @@ local function creatureSayCallback(npc, creature, type, message)
     local raceIdB = mTypeB:raceId()
     local monsteridB = selectedMonsterB.id
     local bestiaryB = (player:getStorageValue(61305000 + raceIdB)) + 2
-    local monsterNameBB = getMonsterNameByIdB(monsterB, player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt))
 
     local selectedMonsterC = monsterC[math.random(1, #monsterC)]
     
@@ -147,9 +145,49 @@ local function creatureSayCallback(npc, creature, type, message)
     local raceIdC = mTypeC:raceId()
     local monsteridC = selectedMonsterC.id
     local bestiaryC = (player:getStorageValue(61305000 + raceIdC)) + 2
-    local monsterNameCC = getMonsterNameByIdC(monsterC, player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt))
     
     local storage = player:getStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.Progresso)
+
+    -- As cacas usam contador proprio (Storage.Quest.Crandoria.Viridia.Haldor.CacaRaca/CacaContagem).
+    -- Antes usavam Estacoes.QuestPrimavera*, que o Gerard e os bosses
+    -- sazonais tambem escrevem - um zerava o outro.
+    local function raceIdDe(nome)
+        local mType = MonsterType(nome)
+        return mType and mType:raceId() or 0
+    end
+
+    local function nomeDoAlvo(lista)
+        local raca = player:getStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.CacaRaca)
+        for _, m in ipairs(lista) do
+            if raceIdDe(m.name) == raca then
+                return m.name
+            end
+        end
+        return "Unknown"
+    end
+
+    -- Quem estava no meio de uma caca quando o contador mudou de chave:
+    -- aproveita o alvo antigo se ele for valido para a etapa, senao sorteia.
+    -- A contagem antiga nunca funcionou, entao ninguem perde kills.
+    local listaDaEtapa = ({ [2] = monsterA, [6] = monsterB, [16] = monsterC })[storage]
+    if listaDaEtapa and player:getStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.CacaRaca) < 1 then
+        local antiga = player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId)
+        local valida = false
+        for _, m in ipairs(listaDaEtapa) do
+            if raceIdDe(m.name) == antiga then
+                valida = true
+            end
+        end
+        if not valida then
+            antiga = raceIdDe(listaDaEtapa[math.random(#listaDaEtapa)].name)
+        end
+        player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.CacaRaca, antiga)
+        player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.CacaContagem, 0)
+    end
+
+    local monsterNameAA = nomeDoAlvo(monsterA)
+    local monsterNameBB = nomeDoAlvo(monsterB)
+    local cacaContagem = math.max(0, player:getStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.CacaContagem))
 
     if MsgContains(message, "mission") or MsgContains(message, "missao") then
         if storage < 1 then
@@ -158,26 +196,22 @@ local function creatureSayCallback(npc, creature, type, message)
             Tenha isso em mente antes de continuar seu desafio para se tornar um Guerreiro de Ferro de Crandoria. Voce tem certeza de que voce esta pronto para iniciar essa jornada?", npc, creature)
             npcHandler:setTopic(playerId, 1)
         elseif storage == 1 then
-            player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, bestiaryA)
-            player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, monsteridA)
-            player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, raceIdA)
-            player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 1)
+            player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.CacaRaca, raceIdA)
+            player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.CacaContagem, 0)
             player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.Progresso, 2)
             npcHandler:say("Para iniciar suas missoes, faremos um teste de poder de batalha. Quero que voce derrote alguns monstros. Para comecar, derrote 25 " ..monsterNameA.. " e retorne ate mim. \z
             Voce encontrara essa criatura proxima a cidade, entao nao se preocupe. Caso sinta que ainda nao esta pronto, treine um pouco mais suas skills ou evolua um pouco mais nos trolls. \z
             Se o nome do monstro falhar, fale novamente {missao}. Estarei aguardando pelo seu retorno.", npc, creature)
             npcHandler:setTopic(playerId, 0)
         elseif storage == 2 then
-            if player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount) < 25 then
+            if cacaContagem < 25 then
                 npcHandler:say("Como eu havia dito, eu preciso que voce derrote 25 " ..monsterNameAA.." . Retorne quando tiver conseguido.", npc, creature)
                 npcHandler:setTopic(playerId, 0)
             else
                 npcHandler:say("Excelente! Aqui esta uma pequena quantia de experiencia. Me diga quando estiver preparado para a proxima {missao}.", npc, creature)
                 player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.Progresso, 3)
-                player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, 0)
-                player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, 0)
-                player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, 0)
-                player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 0)
+                player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.CacaRaca, 0)
+                player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.CacaContagem, 0)
                 player:addExperience(10000)
                 npcHandler:setTopic(playerId, 0)
             end
@@ -206,26 +240,22 @@ local function creatureSayCallback(npc, creature, type, message)
                 npcHandler:setTopic(playerId, 0)
             end
         elseif storage == 5 then
-            player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, bestiaryB)
-            player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, monsteridB)
-            player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, raceIdB)
-            player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 1)
+            player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.CacaRaca, raceIdB)
+            player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.CacaContagem, 0)
             player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.Progresso, 6)
             npcHandler:say("Voce esta no caminho certo, |PLAYERNAME|, mas ha ainda muitas missoes a serem concluidas antes que voce possa partir para Crandoria. Na sua proxima missao testaremos seus poderes com monstros um pouco mais fortes. \z
             Pegue uma das saidas a oeste da cidade e derrote 50 " ..monsterNameBB.. ". Cuidado! Essa missao pode ser pouco mais perigosa que a ultima. Caso tenha um companheiro de batalha, aconselho leva-lo com voce. \z
             Se o nome do monstro falhar, fale novamente {missao}. Ao terminar o desafio retorne ate mim e te darei uma boa recompensa pelo seu esforco. Boa sorte.", npc, creature)
             npcHandler:setTopic(playerId, 0)
         elseif storage == 6 then
-            if player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount) < 50 then
+            if cacaContagem < 50 then
                 npcHandler:say("Como eu havia dito, eu preciso que voce derrote 50 " ..monsterNameBB.." . Retorne quando tiver conseguido.", npc, creature)
                 npcHandler:setTopic(playerId, 0)
             else
                 npcHandler:say("Muito bem! Foi mais rapido do que eu imaginava. Vejo isso como um bom sinal. Aqui, uma boa recompensa em ouro pelo seu trabalho bem executado. Me avise quando estiver em busca de outra {missao}.", npc, creature)
                 player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.Progresso, 7)
-                player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, 0)
-                player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, 0)
-                player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, 0)
-                player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 0)
+                player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.CacaRaca, 0)
+                player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.CacaContagem, 0)
                 player:addExperience(35000)
                 player:addItem(3035, 30)
                 npcHandler:setTopic(playerId, 0)
@@ -277,10 +307,8 @@ local function creatureSayCallback(npc, creature, type, message)
             end
         elseif storage == 15 then
             if player:getLevel() >= 40 then
-                player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, bestiaryC)
-                player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, monsteridC)
-                player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, raceIdC)
-                player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 1)
+                player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.CacaRaca, raceIdC)
+                player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.CacaContagem, 0)
                 player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.Progresso, 16)
                 npcHandler:say("Vamos direto ao ponto: Se voce quer mostrar sua bravura, precisa conseguir derrotar alguns dragoes. Muitos dragoes... Derrote 100 dragons e retorne ate mim, se voce conseguir...", npc, creature)
                 npcHandler:setTopic(playerId, 0)
@@ -289,16 +317,14 @@ local function creatureSayCallback(npc, creature, type, message)
                 npcHandler:setTopic(playerId, 0)
             end
         elseif storage == 16 then
-            if player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount) < 99 then
+            if cacaContagem < 100 then
                 npcHandler:say("Como eu havia dito, eu preciso que voce derrote 100 dragons. Retorne quando tiver conseguido.", npc, creature)
                 npcHandler:setTopic(playerId, 0)
             else
                 npcHandler:say("Muito bem! Demorou um pouco, mas pelo menos obteve um bom resultado e, para a surpresa de muitos, retornou com vida! Hahaha. Aqui, uma recompensa pela sua bravura.", npc, creature)
                 player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.Progresso, 17)
-                player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraItem, 0)
-                player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraHunt, 0)
-                player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, 0)
-                player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 0)
+                player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.CacaRaca, 0)
+                player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.CacaContagem, 0)
                 player:addExperience(100000)
                 player:addItem(3035, 50)
                 npcHandler:setTopic(playerId, 0)
@@ -518,7 +544,9 @@ local function creatureSayCallback(npc, creature, type, message)
         if npcHandler:getTopic(playerId) == 5 then
             if player:getStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.Progresso) == 35 then
                 npcHandler:say("Muito bem! Como voce terminou todos os meus desafios recebera tambem uma recompensa pela conquista de missoes quando sair de Viridia. Parabens, |PLAYERNAME|.", npc, creature)
-                player:setStorageValue(Storage.Quest.Crandoria.Viridia.Conquistas.Missoes, 1)
+                -- Era Conquistas.Missoes, chave que nao existe: o setStorageValue(nil)
+                -- abortava a fala e o jogador ficava preso na etapa 35.
+                player:setStorageValue(Storage.Quest.Crandoria.Viridia.Conquistas.QuestsHaldor, 1)
                 player:setStorageValue(Storage.Quest.Crandoria.Viridia.Haldor.Progresso, 36)
                 npcHandler:setTopic(playerId, 0)
             else

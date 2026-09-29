@@ -1,3 +1,27 @@
+-- CRANDORIA EDIT --
+-- Texto das missoes de caca do Almirante Haldor: mostra o monstro sorteado e
+-- a contagem atual, lidos do contador proprio da caca (Haldor.CacaRaca e
+-- Haldor.CacaContagem, alimentados por scripts/tasks/tasks_global.lua).
+local function haldorCaca(total, nomes)
+	return function(player)
+		local haldor = Storage.Quest.Crandoria.Viridia.Haldor
+		local raca = player:getStorageValue(haldor.CacaRaca)
+		local alvo = nomes[1]
+		for _, nome in ipairs(nomes) do
+			local mType = MonsterType(nome)
+			if mType and mType:raceId() == raca then
+				alvo = nome
+				break
+			end
+		end
+		local feitos = math.min(math.max(0, player:getStorageValue(haldor.CacaContagem)), total)
+		if feitos >= total then
+			return string.format("Voce derrotou %d %s. Retorne ao Almirante Haldor para receber sua recompensa.", total, alvo)
+		end
+		return string.format("Derrote %d %s e retorne ao Almirante Haldor. Progresso: %d/%d.", total, alvo, feitos, total)
+	end
+end
+
 if not Quests then
 	Quests = {
 		[1] = {
@@ -6846,10 +6870,200 @@ if not Quests then
 			},
 		},
 
+		-- CRANDORIA EDIT --
+		-- Todas as missoes leem Haldor.Progresso, cada uma numa faixa.
+		-- ignoreendvalue mantem a missao listada como concluida depois que o
+		-- progresso passa dela; sem isso ela sumiria do log.
+		[51] = {
+			name = "O Caminho de Ferro",
+			startStorageId = Storage.Quest.Crandoria.Viridia.Haldor.Progresso,
+			startStorageValue = 1,
+			missions = {
+				[1] = {
+					name = "O teste de batalha",
+					storageId = Storage.Quest.Crandoria.Viridia.Haldor.Progresso,
+					missionId = 12901,
+					startValue = 1,
+					endValue = 3,
+					ignoreendvalue = true,
+					states = {
+						[1] = "Fale com o Almirante Haldor, em Viridia, para receber sua primeira missao.",
+						[2] = haldorCaca(25, { "Dwarf", "Rotworm", "Minotaur", "Orc" }),
+						[3] = "Voce provou seu poder de batalha ao Almirante Haldor.",
+					},
+				},
+				[2] = {
+					name = "A sacola roubada",
+					storageId = Storage.Quest.Crandoria.Viridia.Haldor.Progresso,
+					missionId = 12902,
+					startValue = 3,
+					endValue = 5,
+					ignoreendvalue = true,
+					states = {
+						[3] = "Alcance o nivel 15 e fale com o Almirante Haldor para receber a proxima missao.",
+						[4] = "Encontre a sacola roubada no vilarejo das amazonas, na saida oeste de Viridia, e leve-a ao Almirante Haldor.",
+						[5] = "Voce devolveu os pertences do guerreiro. Agora pode comprar sua promotion com o King Tibianus, no ultimo andar da Academia de Crandoria.",
+					},
+				},
+				[3] = {
+					name = "Monstros mais fortes",
+					storageId = Storage.Quest.Crandoria.Viridia.Haldor.Progresso,
+					missionId = 12903,
+					startValue = 5,
+					endValue = 7,
+					ignoreendvalue = true,
+					states = {
+						[5] = "Fale com o Almirante Haldor, em Viridia, para receber a proxima missao.",
+						[6] = haldorCaca(50, { "Cyclops", "Elf Scout", "Tarantula" }),
+						[7] = "Voce completou a caca a oeste de Viridia.",
+					},
+				},
+				[4] = {
+					name = "Permissao de comercio",
+					storageId = Storage.Quest.Crandoria.Viridia.Haldor.Progresso,
+					missionId = 12904,
+					startValue = 7,
+					endValue = 9,
+					ignoreendvalue = true,
+					states = {
+						[7] = "Fale com o Almirante Haldor, em Viridia, para receber a proxima missao.",
+						[8] = "Leve ao Almirante Haldor 1 Bat Wing, 3 Frost Giant Pelts e 1 Iron Ore.",
+						[9] = "Voce tem permissao para vender produtos de criaturas a Orlando, no segundo andar do depot.",
+					},
+				},
+				[5] = {
+					name = "Os pertences de Barthos",
+					storageId = Storage.Quest.Crandoria.Viridia.Haldor.Progresso,
+					missionId = 12905,
+					startValue = 9,
+					endValue = 12,
+					ignoreendvalue = true,
+					states = {
+						[9] = "Fale com o Almirante Haldor, em Viridia, para receber a proxima missao.",
+						[10] = "Va ate a casa de Barthos, no pantano ao norte de Viridia, e traga o que encontrar de valor.",
+						[11] = "Voce encontrou os pertences de Barthos. Leve-os ao Almirante Haldor.",
+						[12] = "Voce recuperou os pertences de Barthos.",
+					},
+				},
+				[6] = {
+					name = "Os planos dos necromancers",
+					storageId = Storage.Quest.Crandoria.Viridia.Haldor.Progresso,
+					missionId = 12906,
+					startValue = 12,
+					endValue = 15,
+					ignoreendvalue = true,
+					states = {
+						[12] = "Alcance o nivel 30 e fale com o Almirante Haldor para receber a proxima missao.",
+						[13] = "Invada as torres dos necromancers, a oeste do pantano, e encontre algum registro de seus planos.",
+						[14] = "Voce encontrou os planos dos necromancers. Leve-os ao Almirante Haldor.",
+						[15] = "Voce descobriu os planos dos necromancers.",
+					},
+				},
+				[7] = {
+					name = "Cacador de dragoes",
+					storageId = Storage.Quest.Crandoria.Viridia.Haldor.Progresso,
+					missionId = 12907,
+					startValue = 15,
+					endValue = 17,
+					ignoreendvalue = true,
+					states = {
+						[15] = "Alcance o nivel 40 e fale com o Almirante Haldor para receber a proxima missao.",
+						[16] = haldorCaca(100, { "Dragon" }),
+						[17] = "Voce derrotou 100 dragons.",
+					},
+				},
+				[8] = {
+					name = "O Black Knight",
+					storageId = Storage.Quest.Crandoria.Viridia.Haldor.Progresso,
+					missionId = 12908,
+					startValue = 17,
+					endValue = 20,
+					ignoreendvalue = true,
+					states = {
+						[17] = "Alcance o nivel 50 e fale com o Almirante Haldor para receber a proxima missao.",
+						[18] = "No extremo norte do pantano, desca ao esconderijo dos Heroes, derrote o Black Knight e seus servos e pegue o tesouro do bau.",
+						[19] = "Voce derrotou o Black Knight. Retorne ao Almirante Haldor.",
+						[20] = "Voce derrotou o Black Knight.",
+					},
+				},
+				[9] = {
+					name = "O paradeiro de Argentus",
+					storageId = Storage.Quest.Crandoria.Viridia.Haldor.Progresso,
+					missionId = 12909,
+					startValue = 20,
+					endValue = 23,
+					ignoreendvalue = true,
+					states = {
+						[20] = "Alcance o nivel 100 e fale com o Almirante Haldor para receber a proxima missao.",
+						[21] = "Encontre a civilizacao dos Iks, ao norte da selva a leste de Viridia, e descubra algo sobre Argentus.",
+						[22] = "Voce encontrou pistas de Argentus. Retorne ao Almirante Haldor.",
+						[23] = "Voce encontrou pistas de Argentus entre os Iks.",
+					},
+				},
+				[10] = {
+					name = "Os mestres Drakens",
+					storageId = Storage.Quest.Crandoria.Viridia.Haldor.Progresso,
+					missionId = 12910,
+					startValue = 23,
+					endValue = 27,
+					ignoreendvalue = true,
+					states = {
+						[23] = "Alcance o nivel 150 e fale com o Almirante Haldor para receber a proxima missao.",
+						[24] = "Na fortaleza da selva de Viridia, derrote o Draken Elite e pegue seu tesouro.",
+						[25] = "Agora derrote o Draken Abomination e pegue seu tesouro.",
+						[26] = "Voce derrotou os mestres Drakens. Retorne ao Almirante Haldor.",
+						[27] = "Voce derrotou os mestres Drakens.",
+					},
+				},
+				[11] = {
+					name = "A fonte de sangue",
+					storageId = Storage.Quest.Crandoria.Viridia.Haldor.Progresso,
+					missionId = 12911,
+					startValue = 27,
+					endValue = 30,
+					ignoreendvalue = true,
+					states = {
+						[27] = "Alcance o nivel 180 e fale com o Almirante Haldor para receber a proxima missao.",
+						[28] = "Encontre a fonte de sangue no castelo dos vampiros, na ilha a oeste de Viridia, e encha o frasco que o Almirante lhe deu.",
+						[29] = "Voce coletou o Sangue de Lorde Vampiro. Leve-o ao Almirante Haldor.",
+						[30] = "Voce trouxe o sangue da fonte dos vampiros.",
+					},
+				},
+				[12] = {
+					name = "Os Vexclaws",
+					storageId = Storage.Quest.Crandoria.Viridia.Haldor.Progresso,
+					missionId = 12912,
+					startValue = 30,
+					endValue = 33,
+					ignoreendvalue = true,
+					states = {
+						[30] = "Fale com o Almirante Haldor, em Viridia, para receber a proxima missao.",
+						[31] = "Descubra como entrar na Catedral das Trevas, nas masmorras abaixo dos Heroes, e derrote os dois Vexclaws.",
+						[32] = "Voce derrotou os Vexclaws. Retorne ao Almirante Haldor.",
+						[33] = "Voce derrotou os Vexclaws.",
+					},
+				},
+				[13] = {
+					name = "Mestre do Caminho de Ferro",
+					storageId = Storage.Quest.Crandoria.Viridia.Haldor.Progresso,
+					missionId = 12913,
+					startValue = 33,
+					endValue = 36,
+					ignoreendvalue = true,
+					states = {
+						[33] = "Fale com o Almirante Haldor para receber sua ultima missao.",
+						[34] = "Leve ao Almirante Haldor 1 Rift Shield, 1 Golden Legs, 1 Magic Plate Armor e 1 Ornate Crossbow.",
+						[35] = "Voce completou todas as missoes. Peca ao Almirante Haldor para registrar sua conquista de missoes.",
+						[36] = "Voce se tornou um Mestre do Caminho de Ferro.",
+					},
+				},
+			},
+		},
+
 ------------------- CRANDORIA EDIT ---------------------
 
 
-		-- [51] = {
+		-- [52] = {
 		-- 	name = "No Rest for the Wicked",
 		-- 	startStorageId = Storage.Quest.U14_10.NoRestForTheWicked.Questlog,
 		-- 	startStorageValue = 1,
@@ -6915,7 +7129,7 @@ if not Quests then
 		-- },
 
 
-		-- [52] = {
+		-- [53] = {
 		-- 	name = "The Way of the Monk",
 		-- 	startStorageId = Storage.Quest.U15_00.TheWayOfTheMonk.Questlog,
 		-- 	startStorageValue = 3,
@@ -7034,7 +7248,7 @@ if not Quests then
 		-- 	},
 		-- },
 
-		-- [53] = {
+		-- [54] = {
 		-- 	name = "Bloody Tusks Quest",
 		-- 	startStorageId = Storage.Quest.U15_10.BloodyTusks.Questline,
 		-- 	startStorageValue = 1,

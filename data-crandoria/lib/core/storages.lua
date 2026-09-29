@@ -840,6 +840,11 @@ Storage = {
 					DrakenElite = 12908,
 					DrakenAbomination = 12909,
 					Permissao = 12910,
+					-- Contador proprio das missoes de caca. Antes usava
+					-- Estacoes.QuestPrimaveraRaceId/Count, que o Gerard e os
+					-- bosses sazonais tambem escrevem.
+					CacaRaca = 12911,
+					CacaContagem = 12912,
 				},
 				Citizen = 12916,
 				FrozenKey = 12917,
@@ -880,6 +885,9 @@ Storage = {
 					Timer = 12949,
 					ArenaTimer = 12950,
 					Reward = 12951,
+					-- Contador proprio da task do Gerard; ver Haldor.CacaRaca.
+					CacaRaca = 12953,
+					CacaContagem = 12954,
 				},
 				FloatingChest = 12956,
 				SeaSerpentQuest = 12957,

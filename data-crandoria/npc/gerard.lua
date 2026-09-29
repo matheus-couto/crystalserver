@@ -65,6 +65,16 @@ local function creatureSayCallback(npc, creature, type, message)
 
     local storage = player:getStorageValue(Storage.Quest.Crandoria.Viridia.WarmasterOutfits.Progresso)
 
+    -- Contador proprio da caca (WarmasterOutfits.CacaRaca/CacaContagem). Antes
+    -- usava Estacoes.QuestPrimavera*, que o Haldor e os bosses sazonais tambem
+    -- escrevem - o Haldor zerava a contagem daqui ao concluir uma caca dele.
+    -- Quem ja estava na task e migrado; a contagem antiga nunca funcionou.
+    local warmaster = Storage.Quest.Crandoria.Viridia.WarmasterOutfits
+    if storage == 1 and player:getStorageValue(warmaster.CacaRaca) < 1 then
+        player:setStorageValue(warmaster.CacaRaca, raceIdA)
+        player:setStorageValue(warmaster.CacaContagem, 0)
+    end
+
 
     local area1 = {
         fromPosition = {x = 4457, y = 5464, z = 15},
@@ -106,12 +116,12 @@ local function creatureSayCallback(npc, creature, type, message)
             Ja sei! Derrote 1000 Dragon Lords e retorne ate mim. Mas escute: Voce so tera tres dias! Estarei esperando. Espero que retorne com vida! Ha ha ha ha!", npc, creature)
             player:setStorageValue(Storage.Quest.Crandoria.Viridia.WarmasterOutfits.Progresso, 1)
             player:setStorageValue(Storage.Quest.Crandoria.Viridia.WarmasterOutfits.Timer, os.time() + 3 * 24 * 60 * 60)
-            player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, raceIdA)
-            player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 1)
+            player:setStorageValue(warmaster.CacaRaca, raceIdA)
+            player:setStorageValue(warmaster.CacaContagem, 0)
             npcHandler:setTopic(playerId, 0)
         elseif storage == 1 then
             if player:getStorageValue(Storage.Quest.Crandoria.Viridia.WarmasterOutfits.Timer) > os.time() then
-                if player:getStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount) < 1000 then
+                if math.max(0, player:getStorageValue(warmaster.CacaContagem)) < 1000 then
                     npcHandler:say("Voce ainda nao derrotou os 1000 Dragon Lords que eu pedi para medir seu poder, ams voce ainda tem tempo. Volte qunado terminar a missao.", npc, creature)
                     npcHandler:setTopic(playerId, 0)
                 else
@@ -126,8 +136,8 @@ local function creatureSayCallback(npc, creature, type, message)
                 npcHandler:say("Parece que voce nao conseguiu derrotar os 1000 Dragon Lords a tempo, nao e mesmo? Bom, te darei uma segunda chance. Va! Derrote as criaturas em ate tres dias.", npc, creature)
                 player:setStorageValue(Storage.Quest.Crandoria.Viridia.WarmasterOutfits.Progresso, 1)
                 player:setStorageValue(Storage.Quest.Crandoria.Viridia.WarmasterOutfits.Timer, os.time() + 3 * 24 * 60 * 60)
-                player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraRaceId, raceIdA)
-                player:setStorageValue(Storage.Quest.Crandoria.Estacoes.QuestPrimaveraCount, 1)
+                player:setStorageValue(warmaster.CacaRaca, raceIdA)
+                player:setStorageValue(warmaster.CacaContagem, 0)
                 npcHandler:setTopic(playerId, 0)
             end
         elseif storage == 2 then
