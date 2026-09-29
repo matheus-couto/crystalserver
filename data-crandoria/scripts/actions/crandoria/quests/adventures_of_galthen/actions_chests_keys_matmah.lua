@@ -6,15 +6,15 @@ function keysMitmah.onUse(player, item, fromPosition, target, toPosition, isHotk
 		return true
 	end
 
-	local storage1 = player:getStoargeValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key1)
-	local storage2 = player:getStoargeValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key2)
-	local storage3 = player:getStoargeValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key3)
-	local storage3 = player:getStoargeValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key4)
+	local storage1 = player:getStorageValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key1)
+	local storage2 = player:getStorageValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key2)
+	local storage3 = player:getStorageValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key3)
+	local storage3 = player:getStorageValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key4)
 
 	if item:getPosition() == Position(5616, 5519, 14) then
 		if storage1 < 1 then
 			player:addItem(44674, 1)
-			player:setStoargeValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key1, 1)
+			player:setStorageValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key1, 1)
 			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce encontrou uma chave.")
 			return true
 		else
@@ -24,7 +24,7 @@ function keysMitmah.onUse(player, item, fromPosition, target, toPosition, isHotk
 	elseif item:getPosition() == Position(5644, 5588, 14) then
 		if storage2 < 1 then
 			player:addItem(44675, 1)
-			player:setStoargeValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key2, 1)
+			player:setStorageValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key2, 1)
 			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce encontrou uma chave.")
 			return true
 		else
@@ -34,7 +34,7 @@ function keysMitmah.onUse(player, item, fromPosition, target, toPosition, isHotk
 	elseif item:getPosition() == Position(5732, 5599, 14) then
 		if storage3 < 1 then
 			player:addItem(44673, 1)
-			player:setStoargeValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key3, 1)
+			player:setStorageValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key3, 1)
 			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce encontrou uma chave.")
 			return true
 		else
@@ -44,7 +44,7 @@ function keysMitmah.onUse(player, item, fromPosition, target, toPosition, isHotk
 	elseif item:getPosition() == Position(5629, 5448, 15) then
 		if storage4 < 1 then
 			player:addItem(44672, 1)
-			player:setStoargeValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key4, 1)
+			player:setStorageValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key4, 1)
 			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce encontrou uma chave.")
 			return true
 		else
@@ -69,11 +69,11 @@ function gateEntranceMitmah.onUse(player, item, fromPosition, target, toPosition
 		return true
 	end
 
-	local storage1 = player:getStoargeValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key1)
-	local storage2 = player:getStoargeValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key2)
-	local storage3 = player:getStoargeValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key3)
-	local storage3 = player:getStoargeValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key4)
-	local storageAccess = player:getStoargeValue(Storage.Quest.U12_70.AdventuresOfGalthen.AccessDoor)
+	local storage1 = player:getStorageValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key1)
+	local storage2 = player:getStorageValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key2)
+	local storage3 = player:getStorageValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key3)
+	local storage3 = player:getStorageValue(Storage.Quest.U12_70.AdventuresOfGalthen.Key4)
+	local storageAccess = player:getStorageValue(Storage.Quest.U12_70.AdventuresOfGalthen.AccessDoor)
 
 	if storage1 >= 1 and storage2 >= 1 and storage3 >= 1 and storage4 >= 1 then
 		if storageAccess < 1 then
@@ -84,7 +84,7 @@ function gateEntranceMitmah.onUse(player, item, fromPosition, target, toPosition
 				player:removeItem(44675, 1)
 				player:teleportTo(Position(5708, 5411, 15))
 				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu acesso aos dominios de Mitmah Vanguard.")
-				player:setStoargeValue(Storage.Quest.U12_70.AdventuresOfGalthen.AccessDoor, 1)
+				player:setStorageValue(Storage.Quest.U12_70.AdventuresOfGalthen.AccessDoor, 1)
 				return true
 			end
 		else

@@ -1,3 +1,14 @@
+-- CRANDORIA EDIT --
+
+-- Desativado: substituido por scripts/custom/donate/talkaction_donate.lua
+-- (doacao via Asaas).
+--
+-- Os dois registravam "!donate". O servidor guarda so o primeiro que
+-- carrega, e a ordem de carga vem do disco: este era lido antes. Entao o
+-- !donate caia aqui, quebrava em sendRulesModalWindow - que nao existe
+-- nesta versao do servidor - e o sistema do Asaas nunca era alcancado.
+
+--[==[
 local donate = TalkAction("!donate")
 
 function donate.onSay(player, words, param)
@@ -78,3 +89,4 @@ end
 donate:separator(" ")
 donate:groupType("normal")
 donate:register()
+]==]

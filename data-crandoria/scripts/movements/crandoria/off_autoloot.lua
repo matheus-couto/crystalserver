@@ -47,7 +47,9 @@ function teleport.onStepIn(creature, item, position, fromPosition)
 	local storage = player:getStorageValue(Storage.Quest.Crandoria.TheRedPath.House)
 	local house = player:getHouse()
 
-	player:setStorageValue(STORAGEVALUE_EMOTE, 1)
+	-- Aqui havia player:setStorageValue(STORAGEVALUE_EMOTE, 1). A constante
+	-- nao existe mais: o emote de spells deixou de ser opcao por jogador e
+	-- virou o `emoteSpells` do config.lua, valendo para todos.
 	if player:getStorageValue(Storage.Quest.Crandoria.TibiaClash.Time) > 0 then
 		player:setStorageValue(Storage.Quest.Crandoria.TibiaClash.Time, 0)
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce saiu do Tibia Clash.")

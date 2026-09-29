@@ -21,7 +21,7 @@ function amberSickle.onUse(player, item, fromPosition, target, toPosition, isHot
             end
         end
         toPosition:sendMagicEffect(CONST_ME_SLASH)
-        target:tranform(45603)
+        target:transform(45603)
         addEvent(function()
             target:transform(45602)
         end, 45000)
@@ -38,7 +38,7 @@ function amberSickle.onUse(player, item, fromPosition, target, toPosition, isHot
             end
         end
         toPosition:sendMagicEffect(CONST_ME_SLASH)
-        target:tranform(45605)
+        target:transform(45605)
         addEvent(function()
             target:transform(45604)
         end, 45000)
