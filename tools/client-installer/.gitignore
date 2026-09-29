@@ -1,0 +1,7 @@
+# artefatos do build: o .exe final tem ~380 MB
+__pycache__/
+build/
+dist/
+*.spec
+*.zip
+CrandoriaOT-Setup.exe
