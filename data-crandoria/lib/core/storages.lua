@@ -683,6 +683,11 @@ Storage = {
 				ItensDeQualidade = 12701,
 				ItemsTimer = 12702,
 				CountGondariel = 12703,
+				-- Teste PvP do Crassus (etapas 164-167)
+				PvpAlvos = 13424,
+				PvpAlvo1 = 13425,
+				PvpAlvo2 = 13426,
+				PvpMaosLimpas = 13427,
 				},
 			QuestTimers = { -- 12711 - 12725
 				Frigard = 12711,

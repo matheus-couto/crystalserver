@@ -20,6 +20,8 @@ function loginEvents.onLogin(player)
 		"YalahariHealth",
 		"RottenBloodLogin",
 		-- Crandoria
+		-- Morte do proprio jogador: conta para o teste PvP do Crassus.
+		"CrassusPvpDeath",
 		-- Antibot
 		"AntiAfk",
 		-- -- Groguron

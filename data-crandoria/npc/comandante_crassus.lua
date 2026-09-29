@@ -1657,6 +1657,45 @@ local function creatureSayCallback(npc, creature, type, message)
                     O jogador nao pode ter mais que 100 niveis abaixo do seu! Boa sorte limpando Crandoria dos malfeitores.", npc, creature)
                     player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 164)
                     npcHandler:setTopic(playerId, 0)
+                elseif storage == 164 then
+                    npcHandler:say("Paz na Guerra: derrote um jogador com skull - White, Red ou Black - que tenha no maximo 100 niveis a menos que voce. A morte precisa ser justa e nao vale personagem do mesmo IP que o seu.", npc, creature)
+                    npcHandler:setTopic(playerId, 0)
+                elseif storage == 165 then
+                    npcHandler:say("Muito bem, " ..dear.. " |PLAYERNAME|. Um malfeitor a menos nas ruas de Crandoria! Aqui esta sua recompensa. \z
+                    A segunda missao se chama 'Justica em Crandoria': derrote tres jogadores DIFERENTES com skull, seguindo a mesma regra - no maximo 100 niveis a menos que voce. Retorne quando terminar.", npc, creature)
+                    player:addExperience(2500000 * (player:getLevel() / 100), true)
+                    player:addMoney(300000, true)
+                    player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
+                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.PvpAlvos, 0)
+                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.PvpAlvo1, -1)
+                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.PvpAlvo2, -1)
+                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 166)
+                    npcHandler:setTopic(playerId, 0)
+                elseif storage == 166 then
+                    local feitos = math.max(0, player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.PvpAlvos))
+                    npcHandler:say("Justica em Crandoria: derrote tres jogadores diferentes com skull, com no maximo 100 niveis a menos que voce. Voce ja derrotou " ..feitos.. " de 3.", npc, creature)
+                    npcHandler:setTopic(playerId, 0)
+                elseif storage == 167 then
+                    local maosLimpas = player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.PvpMaosLimpas)
+                    if maosLimpas < 1 then
+                        npcHandler:say("Tres malfeitores derrotados! Crandoria agradece, " ..dear.. " |PLAYERNAME|. Aqui esta sua recompensa. \z
+                        Mas um verdadeiro defensor sabe quando NAO lutar. A ultima missao do teste se chama 'Maos Limpas': fique 24 horas sem matar nenhum jogador de forma injustificada e volte sem skull. \z
+                        Se matar alguem injustamente, o prazo recomeca.", npc, creature)
+                        player:addExperience(2500000 * (player:getLevel() / 100), true)
+                        player:addMoney(300000, true)
+                        player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
+                        player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.PvpMaosLimpas, os.time())
+                    elseif player:getSkull() ~= SKULL_NONE then
+                        npcHandler:say("Voce esta marcado com uma skull, " ..dear.. " |PLAYERNAME|. Volte quando ela tiver sumido.", npc, creature)
+                    elseif os.time() - maosLimpas < 24 * 60 * 60 then
+                        local horas = math.ceil((maosLimpas + 24 * 60 * 60 - os.time()) / 3600)
+                        npcHandler:say("Maos Limpas: continue sem matar ninguem de forma injustificada. Faltam cerca de " ..horas.. " hora(s).", npc, creature)
+                    else
+                        npcHandler:say("Maos limpas e cabeca fria. Voce passou no meu teste, " ..dear.. " |PLAYERNAME|! Fale comigo novamente sobre a proxima {missao}.", npc, creature)
+                        player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
+                        player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 168)
+                    end
+                    npcHandler:setTopic(playerId, 0)
                 elseif storage == 168 then
                     npcHandler:say("Bom, " ..dear.. " |PLAYERNAME|, Voce agora tornou Crandoria um local mais seguro. Mas tambem sera importante entender como se sentem os criminosos do nosso mundo... \z
                     Por isso sua proxima missao sera ir para a prisao! Ha ha ha. Voce nao ouviu errado... \z

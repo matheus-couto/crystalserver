@@ -7741,10 +7741,23 @@ if not Quests then
 					ignoreendvalue = true,
 					states = {
 						[163] = "Fale com o Comandante Crassus para receber a proxima missao.",
-						[164] = "Pa na Guerra: derrote um jogador com White Skull que tenha no maximo 100 niveis a menos que voce.",
-						[165] = "Continue o teste do Comandante Crassus.",
-						[166] = "Continue o teste do Comandante Crassus.",
-						[167] = "Continue o teste do Comandante Crassus.",
+						[164] = "Paz na Guerra: derrote um jogador com skull (White, Red ou Black) que tenha no maximo 100 niveis a menos que voce. A morte precisa ser justa e nao vale personagem do mesmo IP.",
+						[165] = "Voce derrotou um malfeitor. Volte ao Comandante Crassus.",
+						[166] = function(player)
+							local feitos = math.max(0, player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.PvpAlvos))
+							return string.format("Justica em Crandoria: derrote 3 jogadores diferentes com skull, com no maximo 100 niveis a menos que voce. Progresso: %d/3.", feitos)
+						end,
+						[167] = function(player)
+							local inicio = player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.PvpMaosLimpas)
+							if inicio < 1 then
+								return "Voce derrotou 3 malfeitores. Volte ao Comandante Crassus."
+							end
+							local horas = math.ceil((inicio + 24 * 60 * 60 - os.time()) / 3600)
+							if horas <= 0 then
+								return "Maos Limpas: o prazo terminou. Volte ao Comandante Crassus sem skull."
+							end
+							return string.format("Maos Limpas: fique 24 horas sem matar nenhum jogador de forma injustificada e volte ao Comandante Crassus sem skull. Faltam cerca de %d hora(s).", horas)
+						end,
 						[168] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[169] = "Seja preso pelo sistema Anti Afk - respondendo errado ou deixando o tempo acabar - e volte ao Comandante Crassus.",
 						[170] = "Voce conheceu a prisao. Volte ao Comandante Crassus.",
