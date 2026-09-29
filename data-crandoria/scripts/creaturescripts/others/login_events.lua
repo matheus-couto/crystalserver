@@ -6,6 +6,12 @@ function loginEvents.onLogin(player)
 	-- chama em TODA morte que o jogador causa - doze chamadas e doze avisos
 	-- no log por rotworm. Viraram onDeath registrado no proprio monstro, cada
 	-- um no seu arquivo.
+	-- Eventos de MORTE DE BOSS nao entram aqui. Registrado no jogador, um
+	-- onDeath dispara quando o proprio jogador morre - em qualquer lugar.
+	-- Os scripts desses bosses varrem uma arena fixa e dao progresso e
+	-- reputacao a quem esta la, entao cada morte no servidor pagava quem
+	-- estivesse parado nas arenas. Eles ficam registrados so no boss, via
+	-- monster.events ou onStartup.
 	local events = {
 		"RookgaardAdvance",
 		--Quests
@@ -14,26 +20,8 @@ function loginEvents.onLogin(player)
 		"YalahariHealth",
 		"RottenBloodLogin",
 		-- Crandoria
-		"BossesRottenBloodKill",
-		"AhauDeath",
-		-- King Zelos
-		"zelosDeath",
-		-- Pale Worm
-		"paleWormDeath",
 		-- Antibot
 		"AntiAfk",
-		-- Asuras Secret
-		"asuraFrostDeath",
-		"asuraFireDeath",
-		"asuraMidnightDeath",
-		-- Zarabastan event
-		"zarabastanDeath",
-		-- Faceless Bane
-		"facelessBaneDeath",
-		-- Scarlett, Drume e Oberon
-		"scarlettEtzelDeath",
-		"drumeDeath",
-		"grandMasterOberonDeath",
 		-- -- Groguron
 		-- "groguronDeath",
 		-- -- percht queen
@@ -43,13 +31,8 @@ function loginEvents.onLogin(player)
 		-- "massiveChaosTowerDeath",
 		-- "anvilluxTotemDeath",
 		-- "chaosTotemDeath",
-		-- scourge of oblivion
-		"oblivionDeath",
 		-- -- aramPvP
 		-- "PlayerEventDeath",
-		-- clash
-		"crandoriaTotemDeath",
-		"umbraTotemDeath",
 	}
 
 	for i = 1, #events do

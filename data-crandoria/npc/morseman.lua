@@ -89,7 +89,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		if npcHandler:getTopic(playerId) == 1 then
 			if player:removeItem(27461, 1) then
 				npcHandler:say("Que maravilha! Ha muito tempo eu nao tomava um vinho tao bom! Aproveitando esse momento unico, quero saber se voce gostaria de ouvir uma proposta para uma {missao}...", npc, creature)
-				player:getStorageValue(Storage.Quest.Crandoria.AliceMcronald.Morseman, 1)
+				player:setStorageValue(Storage.Quest.Crandoria.AliceMcronald.Morseman, 1)
 				npcHandler:setTopic(playerId, 2)
 			else
 				npcHandler:say("Onde esta o vinho? Nao tente me enganar, forasteiro!", npc, creature)
@@ -114,7 +114,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		elseif npcHandler:getTopic(playerId) == 3 then
 			npcHandler:say("Enfrentar os mares nao parece nada para voce, nao e mesmo? HA! Melhor para mim. Na prquena praia la fora coce vai encontrar um vortex de agua proximo a superficie. Esse vortex te levara ate a area submersa onde vivem as terriveis \z
 			criaturas do mar. Esperto que voce tenha mais sorte do que eu ao lidar com elas... Boa sorte! Estarei esperando pela minha joia.", npc, creature)
-			player:getStorageValue(Storage.Quest.Crandoria.AliceMcronald.Morseman, 2)
+			player:setStorageValue(Storage.Quest.Crandoria.AliceMcronald.Morseman, 2)
 			npcHandler:setTopic(playerId, 0)
 		end
 	end

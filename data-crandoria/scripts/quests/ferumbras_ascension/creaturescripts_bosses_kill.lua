@@ -23,8 +23,8 @@ local crystals = {
 local function transformCrystal()
 	for c = 1, #crystals do
 		local crystal = crystals[c]
-		Game.getStorageValue(crystal.globalStorage, 0)
-		Game.getStorageValue(GlobalStorage.FerumbrasAscendant.Crystals.AllCrystals, 0)
+		Game.setStorageValue(crystal.globalStorage, 0)
+		Game.setStorageValue(GlobalStorage.FerumbrasAscendant.Crystals.AllCrystals, 0)
 		local item = Tile(crystal.crystalPosition):getItemById(14961)
 		if item then
 			item:transform(14955)

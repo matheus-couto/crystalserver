@@ -134,7 +134,7 @@ local function creatureSayCallback(npc, creature, type, message)
 						player:addExperience(exp)
 						player:setStorageValue(Storage.Quest.Crandoria.BossTasks.Count, 0)
 						player:setStorageValue(Storage.Quest.Crandoria.BossTasks.Boss, 0)
-						player:getStorageValue(Storage.Quest.Crandoria.BossTasks.Timer, 0)
+						player:setStorageValue(Storage.Quest.Crandoria.BossTasks.Timer, 0)
 						player:setStorageValue(Storage.Quest.Crandoria.BossTasks.Cooldown, os.time() + 20 * 60 * 60)
 						npcHandler:setTopic(playerId, 0)
 					end

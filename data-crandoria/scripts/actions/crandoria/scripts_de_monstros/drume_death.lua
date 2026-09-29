@@ -43,3 +43,15 @@ function event.onDeath(creature)
 end
 
 event:register()
+
+-- O drumeDeath nao estava em monster.events do Drume, so no login de todo
+-- jogador. Registrado no jogador, o onDeath dispara quando O JOGADOR morre:
+-- a etapa 94 -> 95 dos Defensores de Crandoria e a contagem do Passe de
+-- Batalha so andavam quando alguem morria com outro jogador parado na arena,
+-- e nunca ao matar o Drume. Agora e registrado no boss.
+local startup = GlobalEvent("drumeDeathStartup")
+function startup.onStartup()
+	registerDeathEvent("drumeDeath", { "Drume" })
+	return true
+end
+startup:register()
