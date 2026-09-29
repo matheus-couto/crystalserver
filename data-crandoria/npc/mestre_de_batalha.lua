@@ -299,13 +299,13 @@ local function creatureSayCallback(npc, creature, type, message)
     local lastPassTime = player:getStorageValue(storageTimer)
     local lastPassDate = os.date("*t", lastPassTime)
 
-	local reset = player:getStorageValue(Storage.Quest.Crandoria.Reset.Count)
+	-- local reset = player:getStorageValue(Storage.Quest.Crandoria.DracantusQuest.KillCount)
 
-	if reset < 1 then
-		reset = 0
-	end
+	-- if reset < 1 then
+	-- 	reset = 0
+	-- end
 
-	local factorXp = 1 + (0.35 * reset)
+	local factorXp = 1 -- sem bonus por reset: o servidor nao tem sistema de reset
 
 	-- JANEIRO --
 
