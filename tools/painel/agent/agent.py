@@ -38,7 +38,7 @@ COMPOSE_DIR = "/opt/crandoria/docker"
 SERVICES = ("server", "myacc", "database", "caddy", "donate")
 
 # Verbos que mudam estado. Separados para o log distinguir leitura de acao.
-WRITE_VERBS = ("restart", "stop", "start")
+WRITE_VERBS = ("restart", "stop", "start", "config_gravar")
 
 MAX_REQUEST = 12 * 1024 * 1024
 MAX_LINES = 2000
@@ -284,6 +284,61 @@ def v_dump(req):
     return {"ok": True, "arquivo": destino, "bytes": os.path.getsize(destino)}
 
 
+# O config.lua fica fora das montagens do painel de proposito: montar um
+# arquivo avulso prende o container ao inode, e um `sed -i` no host troca o
+# inode - o painel passaria a mostrar e gravar uma versao que o servidor nao
+# le mais. Pelo agente o caminho e fixo e nao vem do pedido.
+CONFIG_PATH = "/opt/crandoria/config.lua"
+CONFIG_BACKUP_DIR = "/opt/crandoria/backups/scripts/config"
+
+
+def v_config_ler(_req):
+    st = os.stat(CONFIG_PATH)
+    with open(CONFIG_PATH, encoding="utf-8", errors="replace") as f:
+        texto = f.read()
+    return {"ok": True, "texto": texto, "tamanho": st.st_size,
+            "mtime": int(st.st_mtime * 1000)}
+
+
+def v_config_gravar(req):
+    conteudo = req.get("conteudo")
+    if not isinstance(conteudo, str):
+        raise ValueError("conteudo ausente")
+    if len(conteudo) > 4 * 1024 * 1024:
+        raise ValueError("conteudo grande demais")
+
+    # Um config.lua quebrado impede o boot do servidor inteiro.
+    check = v_luacheck({"conteudo": conteudo})
+    if not check["ok"]:
+        return {"ok": False, "erro": check["erro"], "sintaxe": True}
+
+    try:
+        gid = grp.getgrnam(SOCKET_GROUP).gr_gid
+    except KeyError:
+        gid = 0
+
+    # Mesmo nome e formato de carimbo dos backups do painel, para o
+    # historico e a poda de la enxergarem estes tambem.
+    os.makedirs(CONFIG_BACKUP_DIR, exist_ok=True)
+    os.chown(CONFIG_BACKUP_DIR, 0, gid)
+    os.chmod(CONFIG_BACKUP_DIR, 0o2770)
+    carimbo = time.strftime("%Y-%m-%dT%H-%M-%S-000Z", time.gmtime())
+    backup = os.path.join(CONFIG_BACKUP_DIR, "config.lua." + carimbo)
+    shutil.copy2(CONFIG_PATH, backup)
+    os.chown(backup, 0, gid)
+    os.chmod(backup, 0o660)
+
+    st = os.stat(CONFIG_PATH)
+    tmp = CONFIG_PATH + ".painel-tmp"
+    with open(tmp, "w", encoding="utf-8", newline="") as f:
+        f.write(conteudo)
+    os.chown(tmp, st.st_uid, st.st_gid)
+    os.chmod(tmp, st.st_mode & 0o7777)
+    os.replace(tmp, CONFIG_PATH)
+    log("config.lua gravado pelo painel (%d bytes); anterior em %s" % (len(conteudo.encode("utf-8")), backup))
+    return {"ok": True, "backup": backup, "bytes": len(conteudo.encode("utf-8"))}
+
+
 VERBOS = {
     "status": v_status,
     "stats": v_stats,
@@ -294,6 +349,8 @@ VERBOS = {
     "start": v_start,
     "luacheck": v_luacheck,
     "dump": v_dump,
+    "config_ler": v_config_ler,
+    "config_gravar": v_config_gravar,
 }
 
 

@@ -29,7 +29,21 @@ const RAIZ = process.env.SERVER_ROOT || '/srv/crystalserver';
 const AREAS = [
   { chave: 'crandoria', rotulo: 'data-crandoria (seus scripts)', rel: 'data-crandoria' },
   { chave: 'core', rotulo: 'data (core do servidor)', rel: 'data' },
+  // Sem montagem: o painel le e grava pelo agente do host (ver agent.py).
+  { chave: 'config', rotulo: 'config.lua', rel: null, viaAgente: true },
 ];
+
+const CONFIG_NOME = 'config.lua';
+
+function ehConfig(areaChave) {
+  return areaChave === 'config';
+}
+
+async function lerConfig() {
+  const r = await agent.configLer();
+  if (!r.ok) throw new Error('nao consegui ler o config.lua: ' + (r.erro || 'erro no agente'));
+  return r;
+}
 
 const EXT_EDITAVEIS = new Set(['.lua', '.xml', '.json', '.txt', '.md']);
 const MAX_BYTES = 4 * 1024 * 1024;
@@ -48,7 +62,7 @@ function areaPorChave(chave) {
  */
 async function resolver(areaChave, rel, { precisaExistir = true } = {}) {
   const area = areaPorChave(areaChave);
-  if (!area) throw new Error('area desconhecida');
+  if (!area || area.viaAgente) throw new Error('area desconhecida');
 
   const base = path.resolve(RAIZ, area.rel);
   const alvo = path.resolve(base, rel || '.');
@@ -72,6 +86,13 @@ async function resolver(areaChave, rel, { precisaExistir = true } = {}) {
 }
 
 async function listar(areaChave, rel) {
+  if (ehConfig(areaChave)) {
+    const c = await lerConfig();
+    return {
+      area: areaPorChave(areaChave), rel: '',
+      itens: [{ nome: CONFIG_NOME, pasta: false, tamanho: c.tamanho, mtime: c.mtime, editavel: true }],
+    };
+  }
   const { real, base, area } = await resolver(areaChave, rel);
   const st = await fs.stat(real);
   if (!st.isDirectory()) throw new Error('nao e uma pasta');
@@ -105,6 +126,11 @@ async function listar(areaChave, rel) {
 }
 
 async function ler(areaChave, rel) {
+  if (ehConfig(areaChave)) {
+    if (rel !== CONFIG_NOME) throw new Error('caminho nao encontrado');
+    const c = await lerConfig();
+    return { texto: c.texto, tamanho: c.tamanho, mtime: c.mtime };
+  }
   const { real } = await resolver(areaChave, rel);
   const st = await fs.stat(real);
   if (st.isDirectory()) throw new Error('e uma pasta');
@@ -150,6 +176,13 @@ async function guardarBackup(real, areaChave, rel) {
  * o servidor poderia ler o arquivo pela metade se recarregasse no meio.
  */
 async function gravar(areaChave, rel, conteudo, { validar = true } = {}) {
+  if (ehConfig(areaChave)) {
+    // Arquivo unico e caminho fixo: o agente valida, guarda o anterior e grava.
+    if (rel !== CONFIG_NOME) throw new Error('so o config.lua pode ser gravado nesta area');
+    const r = await agent.configGravar(conteudo);
+    if (!r.ok && !r.sintaxe) throw new Error(r.erro || 'o agente nao gravou o config.lua');
+    return r;
+  }
   const ext = path.extname(rel).toLowerCase();
   if (!EXT_EDITAVEIS.has(ext)) {
     throw new Error('extensao nao permitida: ' + (ext || '(sem extensao)'));
@@ -253,7 +286,93 @@ async function podarBackups(manterDias = 30, manterPorArquivo = 10) {
   return removidos;
 }
 
+/**
+ * Conteudo de uma versao guardada, para comparar com a atual.
+ *
+ * O nome vem da URL, entao passa pelo mesmo teste da lista do historico:
+ * precisa ser um backup daquele arquivo, e nada com barra entra.
+ */
+async function lerBackup(areaChave, rel, nome) {
+  const prefixo = path.basename(rel) + '.';
+  if (!nome || nome.includes('/') || nome.includes('\\') || !nome.startsWith(prefixo)) {
+    throw new Error('versao invalida');
+  }
+  if (!areaPorChave(areaChave)) throw new Error('area desconhecida');
+  const completo = path.join(BACKUP_DIR, areaChave, path.dirname(rel), nome);
+  const base = path.resolve(BACKUP_DIR, areaChave);
+  if (!path.resolve(completo).startsWith(base + path.sep)) throw new Error('versao invalida');
+  const st = await fs.stat(completo).catch(() => null);
+  if (!st) throw new Error('versao nao encontrada');
+  if (st.size > MAX_BYTES) throw new Error('versao grande demais para comparar');
+  return { texto: await fs.readFile(completo, 'utf8'), mtime: st.mtimeMs };
+}
+
+/**
+ * Arquivos editaveis alterados nos ultimos `dias`, do mais novo para o mais
+ * velho, em todas as areas.
+ *
+ * Varre as pastas inteiras (uns 10 mil arquivos), entao o resultado fica
+ * guardado por alguns segundos: recarregar a pagina nao repete a varredura.
+ */
+let cacheRecentes = { quando: 0, itens: null };
+const CACHE_RECENTES_MS = 15 * 1000;
+
+async function varrerTudo() {
+  if (cacheRecentes.itens && Date.now() - cacheRecentes.quando < CACHE_RECENTES_MS) {
+    return cacheRecentes.itens;
+  }
+  const itens = [];
+  for (const area of AREAS) {
+    if (area.viaAgente) continue;
+    const base = path.resolve(RAIZ, area.rel);
+    const pilha = [''];
+    while (pilha.length) {
+      const rel = pilha.pop();
+      let entradas;
+      try {
+        entradas = await fs.readdir(path.join(base, rel), { withFileTypes: true });
+      } catch (_) {
+        continue;
+      }
+      for (const d of entradas) {
+        if (d.name.startsWith('.')) continue;
+        const r = rel ? rel + '/' + d.name : d.name;
+        // Sem seguir link simbolico: e o mesmo confinamento do resolver.
+        if (d.isDirectory()) { pilha.push(r); continue; }
+        if (!d.isFile() || !EXT_EDITAVEIS.has(path.extname(d.name).toLowerCase())) continue;
+        try {
+          const s = await fs.stat(path.join(base, r));
+          itens.push({ area: area.chave, rel: r, tamanho: s.size, mtime: s.mtimeMs });
+        } catch (_) { /* sumiu no meio */ }
+      }
+    }
+  }
+  try {
+    const c = await lerConfig();
+    itens.push({ area: 'config', rel: CONFIG_NOME, tamanho: c.tamanho, mtime: c.mtime });
+  } catch (_) { /* agente fora: a lista sai sem o config */ }
+
+  itens.sort((a, b) => b.mtime - a.mtime);
+  cacheRecentes = { quando: Date.now(), itens };
+  return itens;
+}
+
+async function recentes({ dias = 7, busca = '', area = '', limite = 300 } = {}) {
+  const desde = Date.now() - dias * 86400000;
+  const termo = String(busca || '').toLowerCase();
+  const todos = await varrerTudo();
+  const filtrados = todos.filter((i) => i.mtime >= desde
+    && (!area || i.area === area)
+    && (!termo || i.rel.toLowerCase().includes(termo)));
+  return { itens: filtrados.slice(0, limite), total: filtrados.length };
+}
+
+function esquecerRecentes() {
+  cacheRecentes = { quando: 0, itens: null };
+}
+
 module.exports = {
   AREAS, EXT_EDITAVEIS, MAX_BYTES, BACKUP_DIR, RAIZ,
   listar, ler, gravar, historico, validarLua, podarBackups, resolver,
+  lerBackup, recentes, esquecerRecentes,
 };

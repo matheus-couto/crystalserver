@@ -21,6 +21,7 @@ const crypto = require('crypto');
 const auth = require('./auth');
 const agent = require('./agent');
 const scripts = require('./scripts');
+const diff = require('./diff');
 const q = require('./queries');
 const nomesItens = require('./itemnames');
 const v = require('./view');
@@ -401,16 +402,23 @@ app.get('/scripts', async (req, res, next) => {
       const { texto, mtime } = await scripts.ler(area, caminho);
       const hist = await scripts.historico(area, caminho);
 
+      const linkDiff = (nome) => `/scripts/diff?a=${encodeURIComponent(area)}&p=${encodeURIComponent(rel)}`
+        + `&f=${encodeURIComponent(arquivo)}&v=${encodeURIComponent(nome)}`;
       const linhasHist = hist.length
-        ? hist.map((h) => `<tr><td class="mono">${v.e(h.quando)}</td>
-            <td class="num">${v.tamanho(h.tamanho)}</td></tr>`).join('')
-        : '<tr><td colspan="2" style="color:var(--fraco)">Nenhuma versao anterior guardada.</td></tr>';
+        ? hist.map((h) => `<tr><td>${v.dataHora(h.mtime)}</td>
+            <td class="num">${v.tamanho(h.tamanho)}</td>
+            <td><a href="${linkDiff(h.nome)}">comparar com a atual</a></td></tr>`).join('')
+        : '<tr><td colspan="3" style="color:var(--fraco)">Nenhuma versao anterior guardada.</td></tr>';
 
       return render(req, res, arquivo, '/scripts', `
         <div class="crumbs"><a href="/scripts?a=${v.e(area)}&p=${encodeURIComponent(rel)}">&larr; ${v.e(rel || 'raiz')}</a></div>
         <h1>${v.e(arquivo)}</h1>
         <p class="sub">Alterado em ${v.dataHora(mtime)}.
-          ${caminho.endsWith('.lua') ? 'Ao salvar, a sintaxe e conferida no luajit antes de gravar.' : ''}</p>
+          ${caminho.endsWith('.lua') ? 'Ao salvar, a sintaxe e conferida no luajit antes de gravar.' : ''}
+          ${hist.length ? `<a href="${linkDiff(hist[0].nome)}">Ver o que mudou desde a ultima versao guardada</a>` : ''}</p>
+        ${area === 'config' ? `<div class="aviso">Este arquivo tem a senha do banco e o IP do servidor, que sao
+          diferentes da copia do seu computador - edite aqui, nao cole o config.lua local por cima.
+          Mudancas so valem depois de reiniciar o servidor.</div>` : ''}
         <form id="form-editor" method="post" action="/scripts/salvar">
           <input type="hidden" name="_csrf" value="${v.e(req.csrf)}">
           <input type="hidden" name="a" value="${v.e(area)}">
@@ -427,7 +435,7 @@ app.get('/scripts', async (req, res, next) => {
           </div>
         </form>
         <h2>Versoes anteriores</h2>
-        <table><thead><tr><th>Quando</th><th class="num">Tamanho</th></tr></thead>
+        <table><thead><tr><th>Guardada em</th><th class="num">Tamanho</th><th></th></tr></thead>
           <tbody>${linhasHist}</tbody></table>
         <p class="sub" style="margin-top:8px">Guardadas em
           <span class="mono">${v.e(scripts.BACKUP_DIR)}</span> no servidor.</p>
@@ -439,7 +447,7 @@ app.get('/scripts', async (req, res, next) => {
 
     const abas = scripts.AREAS.map((a) =>
       `<a class="btn ${a.chave === area ? '' : 'cinza'} mini" href="/scripts?a=${a.chave}">${v.e(a.rotulo)}</a>`
-    ).join(' ');
+    ).join(' ') + ' <a class="btn cinza mini" href="/scripts/recentes">&#128337; Alterados recentemente</a>';
 
     const linhas = [
       atual ? `<tr><td colspan="4"><a href="/scripts?a=${v.e(area)}&p=${encodeURIComponent(pai)}">&larr; voltar</a></td></tr>` : '',
@@ -479,6 +487,121 @@ app.get('/scripts', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
+/** Link do editor para um arquivo `a/b/c.lua` de uma area. */
+function linkEditor(area, rel) {
+  const i = rel.lastIndexOf('/');
+  const pasta = i >= 0 ? rel.slice(0, i) : '';
+  const nome = i >= 0 ? rel.slice(i + 1) : rel;
+  return `/scripts?a=${encodeURIComponent(area)}&p=${encodeURIComponent(pasta)}&f=${encodeURIComponent(nome)}`;
+}
+
+app.get('/scripts/recentes', async (req, res, next) => {
+  try {
+    const periodos = [[1, '24 horas'], [3, '3 dias'], [7, '7 dias'], [30, '30 dias'], [90, '90 dias']];
+    const dias = periodos.some(([d]) => d === Number(req.query.dias)) ? Number(req.query.dias) : 7;
+    const area = scripts.AREAS.some((a) => a.chave === req.query.area) ? req.query.area : '';
+    const busca = String(req.query.q || '').slice(0, 100);
+
+    const { itens, total } = await scripts.recentes({ dias, busca, area });
+
+    // Quem alterou pelo painel: a ultima gravacao de cada arquivo na
+    // auditoria. Alteracao feita fora do painel (deploy, scp) nao tem dono.
+    const quem = new Map();
+    if (itens.length) {
+      const [linhas] = await db.query(
+        'SELECT `target`,`username`,`at` FROM `panel_audit` WHERE `action` IN (?,?) AND `at` >= ? ORDER BY `id` DESC',
+        ['script.editado', 'script.enviado', Date.now() - dias * 86400000 - 120000]
+      );
+      for (const l of linhas) if (!quem.has(l.target)) quem.set(l.target, l);
+    }
+
+    const rotuloArea = (c) => (scripts.AREAS.find((a) => a.chave === c) || {}).rotulo || c;
+    const corpo = itens.length ? itens.map((i) => {
+      const autor = quem.get(`${i.area}:${i.rel}`);
+      // A gravacao e registrada no mesmo instante; se o arquivo mudou depois,
+      // quem mexeu por ultimo nao foi o painel.
+      const doPainel = autor && Math.abs(Number(autor.at) - i.mtime) < 120000;
+      return `<tr>
+        <td>${v.dataHora(i.mtime)}</td>
+        <td><a href="${linkEditor(i.area, i.rel)}">${v.e(i.rel)}</a></td>
+        <td><span class="pill frio">${v.e(rotuloArea(i.area))}</span></td>
+        <td>${doPainel ? v.e(autor.username) : '<span style="color:var(--fraco)">fora do painel</span>'}</td>
+        <td class="num">${v.tamanho(i.tamanho)}</td></tr>`;
+    }).join('') : '<tr><td colspan="5" style="color:var(--fraco)">Nenhum arquivo alterado neste periodo.</td></tr>';
+
+    const opcoesPeriodo = periodos.map(([d, r]) =>
+      `<option value="${d}" ${d === dias ? 'selected' : ''}>${r}</option>`).join('');
+    const opcoesArea = ['<option value="">todas as areas</option>', ...scripts.AREAS.map((a) =>
+      `<option value="${a.chave}" ${a.chave === area ? 'selected' : ''}>${v.e(a.rotulo)}</option>`)].join('');
+
+    render(req, res, 'Alterados recentemente', '/scripts', `
+      <div class="crumbs"><a href="/scripts">&larr; Scripts</a></div>
+      <h1>Alterados recentemente</h1>
+      <p class="sub">Arquivos editaveis que mudaram no periodo, do mais novo para o mais velho.
+        Clique para abrir no editor; la, "comparar com a atual" mostra o que mudou em cada versao guardada.</p>
+      <form method="get" action="/scripts/recentes" class="linha">
+        <select name="dias">${opcoesPeriodo}</select>
+        <select name="area">${opcoesArea}</select>
+        <input type="search" name="q" value="${v.e(busca)}" placeholder="filtrar por nome ou pasta">
+        <button class="btn mini" type="submit">Filtrar</button>
+      </form>
+      <table><thead><tr><th>Alterado</th><th>Arquivo</th><th>Area</th><th>Por</th>
+        <th class="num">Tamanho</th></tr></thead><tbody>${corpo}</tbody></table>
+      ${total > itens.length ? `<p class="sub" style="margin-top:8px">Mostrando ${itens.length} de ${total}.
+        Diminua o periodo ou filtre pelo nome.</p>` : ''}
+    `, avisoDaQuery(req));
+  } catch (err) { next(err); }
+});
+
+app.get('/scripts/diff', async (req, res, next) => {
+  try {
+    const area = String(req.query.a || 'crandoria');
+    const rel = String(req.query.p || '');
+    const arquivo = String(req.query.f || '');
+    const versao = String(req.query.v || '');
+    const caminho = rel ? rel + '/' + arquivo : arquivo;
+
+    const atual = await scripts.ler(area, caminho);
+    const antiga = await scripts.lerBackup(area, caminho, versao);
+    const r = diff.trechos(antiga.texto, atual.texto, 3);
+    const voltar = `/scripts?a=${encodeURIComponent(area)}&p=${encodeURIComponent(rel)}&f=${encodeURIComponent(arquivo)}`;
+
+    let corpo;
+    if (!r) {
+      corpo = `<div class="aviso">As duas versoes sao diferentes demais para listar linha a linha
+        (mais de ${diff.MAX_EDICOES} linhas mudaram).</div>`;
+    } else if (!r.trechos.length) {
+      corpo = '<div class="aviso ok">As duas versoes sao iguais.</div>';
+    } else {
+      const classe = (t) => (t === '+' ? 'da' : t === '-' ? 'dr' : 'di');
+      corpo = r.trechos.map((t) => `<table class="diff"><tbody>${t.map((o) => `<tr class="${classe(o.t)}">`
+        + `<td class="n">${o.a || ''}</td><td class="n">${o.b || ''}</td>`
+        + `<td class="s">${o.t === ' ' ? '' : o.t}</td><td class="t">${v.e(o.texto)}</td></tr>`).join('')}</tbody></table>`).join('');
+    }
+
+    render(req, res, 'Comparar ' + arquivo, '/scripts', `
+      <style>
+        table.diff{font-family:Consolas,"Courier New",monospace;font-size:12px;margin-bottom:14px;
+          border:1px solid var(--linha);border-collapse:collapse;width:100%;table-layout:fixed}
+        table.diff td{padding:1px 6px;border:0;vertical-align:top}
+        table.diff td.n{width:52px;text-align:right;color:var(--fraco);user-select:none}
+        table.diff td.s{width:14px;user-select:none}
+        table.diff td.t{white-space:pre-wrap;word-break:break-all}
+        table.diff tr.da{background:rgba(74,169,108,.14)} table.diff tr.da td.s{color:var(--ok)}
+        table.diff tr.dr{background:rgba(207,90,90,.14)} table.diff tr.dr td.s{color:var(--erro)}
+      </style>
+      <div class="crumbs"><a href="${voltar}">&larr; ${v.e(arquivo)}</a></div>
+      <h1>O que mudou em ${v.e(arquivo)}</h1>
+      <p class="sub">De <b>${v.dataHora(antiga.mtime)}</b> (versao guardada) para
+        <b>${v.dataHora(atual.mtime)}</b> (atual).
+        ${r ? `<span style="color:var(--ok)">+${r.adicionadas}</span> /
+          <span style="color:var(--erro)">-${r.removidas}</span> linhas.` : ''}</p>
+      ${corpo}
+      <p><a class="btn cinza mini" href="${voltar}">Abrir no editor</a></p>
+    `, avisoDaQuery(req));
+  } catch (err) { next(err); }
+});
+
 app.post('/scripts/salvar', exigirCsrf, async (req, res, next) => {
   try {
     const { a, p, f, conteudo } = req.body;
@@ -492,6 +615,7 @@ app.post('/scripts/salvar', exigirCsrf, async (req, res, next) => {
         'Nao gravei: o arquivo tem erro de sintaxe. ' + r.erro));
     }
 
+    scripts.esquecerRecentes();
     await auditar(req, 'script.editado', `${a}:${caminho}`,
       `${r.bytes} bytes; anterior em ${r.backup || '(arquivo novo)'}`);
     res.redirect(comAviso(destino, 'ok',
@@ -549,6 +673,7 @@ app.post('/scripts/enviar', express.raw({ type: 'multipart/form-data', limit: '8
         return res.redirect(comAviso(destinoPagina, 'erro',
           `Recusei ${arquivo.nome}: ${r.erro}`));
       }
+      scripts.esquecerRecentes();
       await auditar(req, 'script.enviado', `${area}:${caminho}`,
         `${r.bytes} bytes; anterior em ${r.backup || '(arquivo novo)'}`);
       res.redirect(comAviso(destinoPagina, 'ok',

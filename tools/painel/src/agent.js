@@ -64,5 +64,7 @@ module.exports = {
   start: (servico) => chamar('start', { servico }),
   luacheck: (conteudo) => chamar('luacheck', { conteudo }, 30000),
   dump: (destino) => chamar('dump', { destino }, 600000),
+  configLer: () => chamar('config_ler', {}, 20000),
+  configGravar: (conteudo) => chamar('config_gravar', { conteudo }, 40000),
   SOCKET,
 };
