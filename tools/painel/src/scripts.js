@@ -338,7 +338,8 @@ async function varrerTudo() {
         if (d.name.startsWith('.')) continue;
         const r = rel ? rel + '/' + d.name : d.name;
         // Sem seguir link simbolico: e o mesmo confinamento do resolver.
-        if (d.isDirectory()) { pilha.push(r); continue; }
+        // logs/ sao registros do servidor (logins, comandos), nao codigo.
+        if (d.isDirectory()) { if (d.name !== 'logs') pilha.push(r); continue; }
         if (!d.isFile() || !EXT_EDITAVEIS.has(path.extname(d.name).toLowerCase())) continue;
         try {
           const s = await fs.stat(path.join(base, r));
@@ -357,14 +358,35 @@ async function varrerTudo() {
   return itens;
 }
 
-async function recentes({ dias = 7, busca = '', area = '', limite = 300 } = {}) {
+// Muitos arquivos com o mesmo minuto sao um envio em lote (deploy, upload
+// da pasta inteira), nao edicoes. Soltos na lista, enterrariam o resto.
+const MIN_LOTE = 30;
+const minuto = (ms) => Math.floor(ms / 60000);
+
+/**
+ * Alterados no periodo. Envios em lote saem da lista e voltam resumidos em
+ * `lotes`; com `lote` (o minuto de um deles), lista so os arquivos dele.
+ */
+async function recentes({ dias = 7, busca = '', area = '', lote = null, limite = 300 } = {}) {
   const desde = Date.now() - dias * 86400000;
   const termo = String(busca || '').toLowerCase();
   const todos = await varrerTudo();
   const filtrados = todos.filter((i) => i.mtime >= desde
     && (!area || i.area === area)
     && (!termo || i.rel.toLowerCase().includes(termo)));
-  return { itens: filtrados.slice(0, limite), total: filtrados.length };
+
+  if (lote != null) {
+    const soLote = filtrados.filter((i) => minuto(i.mtime) === lote);
+    return { itens: soLote.slice(0, limite), total: soLote.length, lotes: [] };
+  }
+
+  const porMinuto = new Map();
+  for (const i of filtrados) porMinuto.set(minuto(i.mtime), (porMinuto.get(minuto(i.mtime)) || 0) + 1);
+  const lotes = [...porMinuto].filter(([, n]) => n >= MIN_LOTE)
+    .map(([m, n]) => ({ minuto: m, quantidade: n })).sort((a, b) => b.minuto - a.minuto);
+  const emLote = new Set(lotes.map((l) => l.minuto));
+  const soltos = filtrados.filter((i) => !emLote.has(minuto(i.mtime)));
+  return { itens: soltos.slice(0, limite), total: soltos.length, lotes };
 }
 
 function esquecerRecentes() {

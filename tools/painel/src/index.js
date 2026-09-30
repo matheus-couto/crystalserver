@@ -501,8 +501,9 @@ app.get('/scripts/recentes', async (req, res, next) => {
     const dias = periodos.some(([d]) => d === Number(req.query.dias)) ? Number(req.query.dias) : 7;
     const area = scripts.AREAS.some((a) => a.chave === req.query.area) ? req.query.area : '';
     const busca = String(req.query.q || '').slice(0, 100);
+    const lote = /^\d{1,12}$/.test(String(req.query.lote || '')) ? Number(req.query.lote) : null;
 
-    const { itens, total } = await scripts.recentes({ dias, busca, area });
+    const { itens, total, lotes } = await scripts.recentes({ dias, busca, area, lote });
 
     // Quem alterou pelo painel: a ultima gravacao de cada arquivo na
     // auditoria. Alteracao feita fora do painel (deploy, scp) nao tem dono.
@@ -529,6 +530,18 @@ app.get('/scripts/recentes', async (req, res, next) => {
         <td class="num">${v.tamanho(i.tamanho)}</td></tr>`;
     }).join('') : '<tr><td colspan="5" style="color:var(--fraco)">Nenhum arquivo alterado neste periodo.</td></tr>';
 
+    const filtroUrl = (extra) => `/scripts/recentes?dias=${dias}&area=${encodeURIComponent(area)}`
+      + `&q=${encodeURIComponent(busca)}${extra || ''}`;
+    const blocoLotes = lotes.length ? `<h2>Envios em lote</h2>
+      <p class="sub">Muitos arquivos alterados no mesmo minuto - deploy ou envio da pasta inteira.
+        Ficam fora da lista acima para nao esconder as edicoes.</p>
+      <table><thead><tr><th>Quando</th><th class="num">Arquivos</th><th></th></tr></thead><tbody>
+      ${lotes.map((l) => `<tr><td>${v.dataHora(l.minuto * 60000)}</td><td class="num">${v.numero(l.quantidade)}</td>
+        <td><a href="${filtroUrl('&lote=' + l.minuto)}">ver arquivos</a></td></tr>`).join('')}
+      </tbody></table>` : '';
+    const avisoLote = lote != null ? `<div class="aviso">Mostrando so o envio em lote de
+      ${v.dataHora(lote * 60000)}. <a href="${filtroUrl('')}">Voltar para a lista completa</a></div>` : '';
+
     const opcoesPeriodo = periodos.map(([d, r]) =>
       `<option value="${d}" ${d === dias ? 'selected' : ''}>${r}</option>`).join('');
     const opcoesArea = ['<option value="">todas as areas</option>', ...scripts.AREAS.map((a) =>
@@ -545,10 +558,12 @@ app.get('/scripts/recentes', async (req, res, next) => {
         <input type="search" name="q" value="${v.e(busca)}" placeholder="filtrar por nome ou pasta">
         <button class="btn mini" type="submit">Filtrar</button>
       </form>
+      ${avisoLote}
       <table><thead><tr><th>Alterado</th><th>Arquivo</th><th>Area</th><th>Por</th>
         <th class="num">Tamanho</th></tr></thead><tbody>${corpo}</tbody></table>
       ${total > itens.length ? `<p class="sub" style="margin-top:8px">Mostrando ${itens.length} de ${total}.
         Diminua o periodo ou filtre pelo nome.</p>` : ''}
+      ${blocoLotes}
     `, avisoDaQuery(req));
   } catch (err) { next(err); }
 });
