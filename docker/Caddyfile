@@ -3,6 +3,15 @@
 
 {
 	email matheus.couto@hotmail.com
+
+	# Sem HTTP/3. O upload por QUIC nesta maquina ficava em 200-300 KB/s
+	# contra ~10 MB/s por HTTP/2 na mesma conexao (medido no log do painel),
+	# e o navegador passa a preferir HTTP/3 depois da primeira visita - o
+	# envio do mapa de 126 MB levava 8 minutos. Para um site deste porte o
+	# HTTP/3 nao traz ganho que compense.
+	servers {
+		protocols h1 h2
+	}
 }
 
 # ---------------------------------------------------------------------------
