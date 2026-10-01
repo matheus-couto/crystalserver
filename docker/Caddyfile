@@ -94,8 +94,15 @@ painel.crandoriaot.com.br {
 	encode gzip
 
 	# Teto baixo de corpo: o maior envio legitimo e um script de alguns KB.
-	request_body {
+	# A excecao e o envio em fluxo, por onde entra o mapa (.otbm, ~130 MB);
+	# o painel exige sessao e CSRF antes de ler o corpo e para em 512 MB.
+	@envioArquivo path /scripts/enviar-arquivo
+	@resto not path /scripts/enviar-arquivo
+	request_body @resto {
 		max_size 10MB
+	}
+	request_body @envioArquivo {
+		max_size 600MB
 	}
 
 	handle {

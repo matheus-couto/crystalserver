@@ -70,7 +70,9 @@ app.use((req, res, next) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('Content-Security-Policy',
     "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; " +
-    "form-action 'self'; base-uri 'none'; frame-ancestors 'none'; img-src 'self' data:");
+    "form-action 'self'; base-uri 'none'; frame-ancestors 'none'; img-src 'self' data:; " +
+    // O envio de arquivo vai por XHR, para mostrar o progresso do mapa.
+    "connect-src 'self'");
   next();
 });
 
@@ -461,7 +463,8 @@ app.get('/scripts', async (req, res, next) => {
         return `<tr><td>${i.pasta ? '📁 ' : ''}${nome}</td>
           <td class="num">${i.pasta ? '' : v.tamanho(i.tamanho)}</td>
           <td>${i.pasta ? '' : v.dataHora(i.mtime)}</td>
-          <td>${i.pasta || i.editavel ? '' : '<span class="pill frio">nao editavel</span>'}</td></tr>`;
+          <td>${i.pasta || i.editavel ? '' : i.mapa ? '<span class="pill frio">mapa - substitua pelo envio</span>'
+            : '<span class="pill frio">nao editavel</span>'}</td></tr>`;
       }),
     ].join('');
 
@@ -474,16 +477,18 @@ app.get('/scripts', async (req, res, next) => {
         <tbody>${linhas}</tbody></table>
 
       <h2>Enviar arquivo</h2>
-      <form method="post" action="/scripts/enviar" enctype="multipart/form-data" class="linha">
+      <form id="form-enviar" method="post" action="/scripts/enviar" enctype="multipart/form-data" class="linha">
         <input type="hidden" name="_csrf" value="${v.e(req.csrf)}">
         <input type="hidden" name="a" value="${v.e(area)}">
         <input type="hidden" name="p" value="${v.e(atual)}">
         <input type="file" name="arquivo" required>
         <button class="btn" type="submit">Enviar para esta pasta</button>
+        <span id="estado-envio"></span>
       </form>
       <p class="sub">Substitui o arquivo de mesmo nome, guardando a versao anterior.
-        Aceita ${[...scripts.EXT_EDITAVEIS].join(', ')}.</p>
-    `, avisoDaQuery(req));
+        Aceita ${[...scripts.EXT_EDITAVEIS, ...scripts.EXT_MAPA].join(', ')}.
+        O mapa (.otbm) so e lido no boot: envie e depois reinicie o servidor.</p>
+    `, avisoDaQuery(req), v.ENVIO_HEAD);
   } catch (err) { next(err); }
 });
 
@@ -626,8 +631,9 @@ app.post('/scripts/salvar', exigirCsrf, async (req, res, next) => {
     const destino = `/scripts?a=${encodeURIComponent(a)}&p=${encodeURIComponent(p || '')}&f=${encodeURIComponent(f)}`;
     if (!r.ok) {
       await auditar(req, 'script.recusado', `${a}:${caminho}`, r.erro);
-      return res.redirect(comAviso(destino, 'erro',
-        'Nao gravei: o arquivo tem erro de sintaxe. ' + r.erro));
+      return res.redirect(comAviso(destino, 'erro', r.sintaxe
+        ? 'Nao gravei: o arquivo tem erro de sintaxe. ' + r.erro
+        : 'Nao gravei: ' + r.erro));
     }
 
     scripts.esquecerRecentes();
@@ -695,6 +701,37 @@ app.post('/scripts/enviar', express.raw({ type: 'multipart/form-data', limit: '8
         `${arquivo.nome} enviado. Reinicie o servidor para valer.`));
     } catch (err) { next(err); }
   });
+
+// Envio em fluxo: o arquivo vem cru no corpo, sem multipart, e vai direto
+// para o disco. E por aqui que o enviar.js manda tudo - e o unico caminho
+// que aguenta o mapa (130 MB, binario). O multipart acima fica para quando
+// o JavaScript nao carrega.
+app.post('/scripts/enviar-arquivo', async (req, res) => {
+  const area = String(req.query.a || 'crandoria');
+  const pasta = String(req.query.p || '');
+  const nome = path.basename(String(req.query.f || ''));
+  const caminho = pasta ? pasta + '/' + nome : nome;
+  try {
+    if (!auth.csrfConfere(req.sid, SEGREDO, req.get('x-csrf-token'))) {
+      return res.status(403).json({ ok: false, erro: 'Token invalido. Recarregue a pagina.' });
+    }
+    if (!nome || nome.startsWith('.')) return res.status(400).json({ ok: false, erro: 'nome de arquivo invalido' });
+
+    const r = await scripts.receber(area, caminho, req, Number(req.get('content-length')) || 0);
+    if (!r.ok) {
+      await auditar(req, 'script.recusado', `${area}:${caminho}`, r.erro);
+      return res.json({ ok: false, erro: (r.sintaxe ? 'erro de sintaxe. ' : '') + r.erro });
+    }
+    scripts.esquecerRecentes();
+    await auditar(req, 'script.enviado', `${area}:${caminho}`,
+      `${r.bytes} bytes; anterior em ${r.backup || '(arquivo novo)'}`);
+    const destinoPagina = `/scripts?a=${encodeURIComponent(area)}&p=${encodeURIComponent(pasta)}`;
+    res.json({ ok: true, destino: comAviso(destinoPagina, 'ok', `${nome} enviado. Reinicie o servidor para valer.`) });
+  } catch (err) {
+    await auditar(req, 'script.recusado', `${area}:${caminho}`, err.message).catch(() => {});
+    res.status(400).json({ ok: false, erro: err.message });
+  }
+});
 
 // ------------------------------------------------------------------ itens
 
@@ -1142,6 +1179,10 @@ setInterval(() => {
   scripts.podarBackups().catch((e) => console.error('poda de backups:', e.message));
 }, 60 * 60 * 1000).unref();
 
-app.listen(PORTA, '0.0.0.0', () => {
+const servidor = app.listen(PORTA, '0.0.0.0', () => {
   console.log(`painel ouvindo na porta ${PORTA}; agente em ${agent.SOCKET}`);
 });
+// O padrao do Node corta a requisicao em 5 minutos, e o mapa (130 MB) numa
+// conexao de subida de 3 Mbit/s leva quase 6. O cabecalho continua com o
+// prazo curto de sempre.
+servidor.requestTimeout = 30 * 60 * 1000;

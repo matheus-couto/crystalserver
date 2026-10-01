@@ -20,6 +20,8 @@ const fssync = require('fs');
 const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
+const { Transform } = require('stream');
+const { pipeline } = require('stream/promises');
 
 const agent = require('./agent');
 
@@ -47,6 +49,13 @@ async function lerConfig() {
 
 const EXT_EDITAVEIS = new Set(['.lua', '.xml', '.json', '.txt', '.md']);
 const MAX_BYTES = 4 * 1024 * 1024;
+
+// O mapa nao abre no editor - e binario e tem 130 MB -, mas pode ser
+// substituido pelo envio em fluxo (`receber`).
+const EXT_MAPA = new Set(['.otbm']);
+const MAX_ENVIO = 512 * 1024 * 1024;
+// Cada versao guardada do mapa ocupa o mesmo que ele, num disco de 38 GB.
+const BACKUPS_POR_MAPA = 2;
 const BACKUP_DIR = process.env.BACKUP_SCRIPTS_DIR || '/opt/crandoria/backups/scripts';
 
 function areaPorChave(chave) {
@@ -109,12 +118,14 @@ async function listar(areaChave, rel) {
       tamanho = s.size;
       mtime = s.mtimeMs;
     } catch (_) { /* arquivo sumiu entre o readdir e o stat */ }
+    const ext = path.extname(d.name).toLowerCase();
     itens.push({
       nome: d.name,
       pasta: d.isDirectory(),
       tamanho,
       mtime,
-      editavel: !d.isDirectory() && EXT_EDITAVEIS.has(path.extname(d.name).toLowerCase()),
+      editavel: !d.isDirectory() && EXT_EDITAVEIS.has(ext),
+      mapa: !d.isDirectory() && EXT_MAPA.has(ext),
     });
   }
 
@@ -156,16 +167,12 @@ async function validarLua(conteudo) {
 }
 
 async function guardarBackup(real, areaChave, rel) {
-  let anterior;
-  try {
-    anterior = await fs.readFile(real);
-  } catch (_) {
-    return null;  // arquivo novo: nao ha o que guardar
-  }
+  if (!fssync.existsSync(real)) return null;  // arquivo novo: nao ha o que guardar
   const carimbo = new Date().toISOString().replace(/[:.]/g, '-');
   const destino = path.join(BACKUP_DIR, areaChave, rel + '.' + carimbo);
   await fs.mkdir(path.dirname(destino), { recursive: true });
-  await fs.writeFile(destino, anterior);
+  // copyFile, e nao ler para a memoria: o anterior pode ser o mapa inteiro.
+  await fs.copyFile(real, destino);
   return destino;
 }
 
@@ -180,7 +187,7 @@ async function gravar(areaChave, rel, conteudo, { validar = true } = {}) {
     // Arquivo unico e caminho fixo: o agente valida, guarda o anterior e grava.
     if (rel !== CONFIG_NOME) throw new Error('so o config.lua pode ser gravado nesta area');
     const r = await agent.configGravar(conteudo);
-    if (!r.ok && !r.sintaxe) throw new Error(r.erro || 'o agente nao gravou o config.lua');
+    if (!r.ok) return { ok: false, erro: r.erro || 'o agente nao gravou o config.lua', sintaxe: !!r.sintaxe };
     return r;
   }
   const ext = path.extname(rel).toLowerCase();
@@ -219,6 +226,91 @@ async function gravar(areaChave, rel, conteudo, { validar = true } = {}) {
   }
 
   return { ok: true, backup, bytes: Buffer.byteLength(conteudo, 'utf8') };
+}
+
+/**
+ * Recebe um arquivo enviado, lendo de `origem` (a propria requisicao) direto
+ * para o disco.
+ *
+ * Existe por causa do mapa: o envio multipart junta o corpo inteiro na
+ * memoria e converte para texto, o que nao serve para 130 MB de binario.
+ * Aqui o arquivo vai para um temporario ao lado do destino e so troca de
+ * nome no fim, entao um envio interrompido nao deixa o mapa pela metade.
+ *
+ * Lua continua passando pelo luajit: e pequeno, entao junta e cai no
+ * `gravar` de sempre.
+ */
+async function receber(areaChave, rel, origem, tamanhoDeclarado = 0) {
+  if (ehConfig(areaChave)) throw new Error('o config.lua se altera pelo editor, nao por envio');
+  const ext = path.extname(rel).toLowerCase();
+  if (!EXT_EDITAVEIS.has(ext) && !EXT_MAPA.has(ext)) {
+    throw new Error('extensao nao permitida: ' + (ext || '(sem extensao)'));
+  }
+  if (tamanhoDeclarado > MAX_ENVIO) throw new Error('arquivo grande demais');
+
+  if (ext === '.lua') {
+    const partes = [];
+    let total = 0;
+    for await (const pedaco of origem) {
+      total += pedaco.length;
+      if (total > MAX_BYTES) throw new Error('conteudo grande demais');
+      partes.push(pedaco);
+    }
+    return gravar(areaChave, rel, Buffer.concat(partes).toString('utf8'));
+  }
+
+  const { real, alvo } = await resolver(areaChave, rel, { precisaExistir: false });
+  const destinoFinal = real || alvo;
+
+  // Temporario + versao guardada + o arquivo atual ficam no disco ao mesmo
+  // tempo. Melhor recusar antes do que encher o disco no meio do envio.
+  if (tamanhoDeclarado && fs.statfs) {
+    const sf = await fs.statfs(path.dirname(destinoFinal));
+    const livre = sf.bavail * sf.bsize;
+    if (livre < tamanhoDeclarado * 2 + 512 * 1024 * 1024) {
+      throw new Error(`pouco espaco em disco (${Math.round(livre / 2 ** 20)} MB livres)`);
+    }
+  }
+
+  let total = 0;
+  let inicio = Buffer.alloc(0);
+  const contador = new Transform({
+    transform(pedaco, _enc, cb) {
+      total += pedaco.length;
+      if (total > MAX_ENVIO) return cb(new Error('arquivo grande demais'));
+      if (inicio.length < 8) inicio = Buffer.concat([inicio, pedaco.subarray(0, 8)]).subarray(0, 8);
+      cb(null, pedaco);
+    },
+  });
+
+  const tmp = destinoFinal + '.painel-tmp';
+  try {
+    await pipeline(origem, contador, fssync.createWriteStream(tmp));
+    if (!total) throw new Error('arquivo vazio');
+    // Cabecalho OTBM: identificador "OTBM" (ou quatro zeros, que o loader
+    // tambem aceita) seguido do inicio do no raiz, 0xFE. Pega o engano mais
+    // comum - mandar o .rar, o .otbm de outro editor salvo errado - antes
+    // de ele derrubar o boot.
+    if (EXT_MAPA.has(ext)) {
+      const id = inicio.subarray(0, 4).toString('latin1');
+      if (inicio.length < 5 || (id !== 'OTBM' && inicio.readUInt32LE(0) !== 0) || inicio[4] !== 0xFE) {
+        throw new Error('nao parece um mapa .otbm valido');
+      }
+    }
+    const backup = await guardarBackup(destinoFinal, areaChave, rel);
+    await fs.rename(tmp, destinoFinal);
+    if (EXT_MAPA.has(ext)) podarBackups().catch(() => {});
+    return { ok: true, backup, bytes: total };
+  } catch (err) {
+    await fs.unlink(tmp).catch(() => {});
+    if (err.code === 'EACCES' || err.code === 'EPERM') {
+      throw new Error(
+        'sem permissao de escrita nesta pasta. No servidor, rode: ' +
+        `chgrp -R painel ${RAIZ}/<area> && chmod -R g+rwX ${RAIZ}/<area>`
+      );
+    }
+    throw err;
+  }
 }
 
 /** Backups do arquivo, do mais novo para o mais velho. */
@@ -272,10 +364,12 @@ async function podarBackups(manterDias = 30, manterPorArquivo = 10) {
         porArquivo.get(base).push({ completo, mtime: s.mtimeMs });
       } catch (_) { /* ignora */ }
     }
-    for (const lista of porArquivo.values()) {
+    for (const [base, lista] of porArquivo) {
+      const manter = EXT_MAPA.has(path.extname(base).toLowerCase())
+        ? Math.min(manterPorArquivo, BACKUPS_POR_MAPA) : manterPorArquivo;
       lista.sort((a, b) => b.mtime - a.mtime);
       for (let i = 0; i < lista.length; i++) {
-        if (i >= manterPorArquivo || lista[i].mtime < limite) {
+        if (i >= manter || lista[i].mtime < limite) {
           try { await fs.unlink(lista[i].completo); removidos += 1; } catch (_) { /* ignora */ }
         }
       }
@@ -394,7 +488,7 @@ function esquecerRecentes() {
 }
 
 module.exports = {
-  AREAS, EXT_EDITAVEIS, MAX_BYTES, BACKUP_DIR, RAIZ,
-  listar, ler, gravar, historico, validarLua, podarBackups, resolver,
+  AREAS, EXT_EDITAVEIS, EXT_MAPA, MAX_BYTES, BACKUP_DIR, RAIZ,
+  listar, ler, gravar, receber, historico, validarLua, podarBackups, resolver,
   lerBackup, recentes, esquecerRecentes,
 };

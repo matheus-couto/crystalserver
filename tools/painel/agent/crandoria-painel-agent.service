@@ -28,8 +28,12 @@ RestrictRealtime=yes
 RestrictSUIDSGID=yes
 LockPersonality=yes
 
-# Unicos caminhos graváveis: o socket e a pasta de backups.
-ReadWritePaths=/run/crandoria-painel /opt/crandoria/backups /tmp
+# Caminhos graváveis: o socket, os backups e /opt/crandoria, onde fica o
+# config.lua. Liberar so o arquivo nao basta: a gravacao e atomica
+# (temporario ao lado + rename), o que exige escrita na pasta - e um
+# ReadWritePaths de arquivo avulso prenderia o agente ao inode. O caminho
+# gravado continua fixo no codigo (CONFIG_PATH), nao vem do pedido.
+ReadWritePaths=/run/crandoria-painel /opt/crandoria /tmp
 
 StandardOutput=journal
 StandardError=journal

@@ -330,11 +330,22 @@ def v_config_gravar(req):
 
     st = os.stat(CONFIG_PATH)
     tmp = CONFIG_PATH + ".painel-tmp"
-    with open(tmp, "w", encoding="utf-8", newline="") as f:
-        f.write(conteudo)
-    os.chown(tmp, st.st_uid, st.st_gid)
-    os.chmod(tmp, st.st_mode & 0o7777)
-    os.replace(tmp, CONFIG_PATH)
+    try:
+        with open(tmp, "w", encoding="utf-8", newline="") as f:
+            f.write(conteudo)
+        os.chown(tmp, st.st_uid, st.st_gid)
+        os.chmod(tmp, st.st_mode & 0o7777)
+        os.replace(tmp, CONFIG_PATH)
+    except OSError as exc:
+        # Sem isto o erro virava "falha interna do agente", que nao diz nada.
+        # O caso comum e EROFS: o ProtectSystem do unit nao libera a pasta.
+        for p in (tmp, backup):
+            try:
+                os.unlink(p)
+            except OSError:
+                pass
+        log("config.lua nao gravado: %r" % exc)
+        return {"ok": False, "erro": "nao consegui gravar %s: %s" % (CONFIG_PATH, exc.strerror or exc)}
     log("config.lua gravado pelo painel (%d bytes); anterior em %s" % (len(conteudo.encode("utf-8")), backup))
     return {"ok": True, "backup": backup, "bytes": len(conteudo.encode("utf-8"))}
 

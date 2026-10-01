@@ -30,7 +30,10 @@ uid 6000, nao como root.
 
 **3. O codigo confina o caminho.** Todo arquivo e resolvido com `realpath` e
 comparado com a raiz da area; `..`, caminho absoluto e link simbolico nao
-escapam. So grava `.lua`, `.xml`, `.json`, `.txt` e `.md`.
+escapam. So grava `.lua`, `.xml`, `.json`, `.txt` e `.md` - e `.otbm`, so
+por envio: o mapa vai em fluxo para o disco (`/scripts/enviar-arquivo`), com
+o cabecalho OTBM conferido antes de trocar, e guarda so 2 versoes anteriores
+porque cada uma ocupa ~130 MB.
 
 ## Login
 

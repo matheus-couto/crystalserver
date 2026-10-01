@@ -146,6 +146,9 @@ const EDITOR_HEAD = `
 <script src="/estatico/cm/search.js" defer></script>
 <script src="/estatico/editor.js" defer></script>`;
 
+/** Envio de arquivo com barra de progresso - o mapa leva minutos. */
+const ENVIO_HEAD = `<script src="/estatico/enviar.js" defer></script>`;
+
 /** A pagina de log precisa rolar para o fim sozinha. */
 const LOG_HEAD = `<script src="/estatico/logs.js" defer></script>`;
 
@@ -262,5 +265,5 @@ function colorirLog(texto) {
 module.exports = {
   e, moeda, numero, dataHora, duracao, tamanho,
   pagina, paginaLogin, formBotao, barra, cartao, colorirLog, MENU, EDITOR_HEAD,
-  cargaPct, rotuloCarga, LOG_HEAD,
+  cargaPct, rotuloCarga, LOG_HEAD, ENVIO_HEAD,
 };
