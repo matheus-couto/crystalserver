@@ -973,6 +973,10 @@ app.get('/donates', async (req, res, next) => {
 
 // -------------------------------------------------------------- jogadores
 
+// Iguais aos do globalevent_panel_commands.lua, que confere de novo.
+const MAX_COINS = 1000000;
+const MAX_DIAS_VIP = 365;
+
 app.get('/jogadores', async (req, res, next) => {
   try {
     const termo = String(req.query.q || '');
@@ -984,7 +988,10 @@ app.get('/jogadores', async (req, res, next) => {
       <td class="num">${v.numero(p.level)}</td>
       <td class="num">${v.e(p.account_id)}</td>
       <td>${v.dataHora(p.lastlogin)}</td>
+      <td class="num">${v.numero(p.coins_transferable)}${Number(p.coins) ? ` <span style="color:var(--fraco)">+ ${v.numero(p.coins)}</span>` : ''}</td>
+      <td>${Number(p.lastday) * 1000 > Date.now() ? v.dataHora(Number(p.lastday) * 1000) : '<span style="color:var(--fraco)">—</span>'}</td>
       <td><a class="btn mini cinza" href="/itens?jogador=${v.e(p.id)}">Itens</a>
+        <a class="btn mini cinza" href="/jogadores?q=${encodeURIComponent(termo)}&creditar=${encodeURIComponent(p.name)}#creditar">Coins/VIP</a>
         ${v.formBotao('/jogadores/comando',
           { _csrf: req.csrf, kind: 'kick', player: p.name }, 'Kickar',
           { classe: 'btn mini cinza', confirmar: `Desconectar ${p.name}?` })}
@@ -992,7 +999,8 @@ app.get('/jogadores', async (req, res, next) => {
           { _csrf: req.csrf, kind: 'save', player: p.name }, 'Salvar',
           { classe: 'btn mini cinza' })}
       </td></tr>`).join('')
-      : '<tr><td colspan="5" style="color:var(--fraco)">Nada encontrado.</td></tr>';
+      : '<tr><td colspan="7" style="color:var(--fraco)">Nada encontrado.</td></tr>';
+    const creditar = String(req.query.creditar || '').slice(0, 64);
 
     const [fila] = await db.query(
       'SELECT `id`,`kind`,`payload`,`status`,`result`,`created_by`,`created_at`,`executed_at` FROM `panel_commands` ORDER BY `id` DESC LIMIT 15'
@@ -1016,7 +1024,24 @@ app.get('/jogadores', async (req, res, next) => {
         <a class="btn cinza" href="/jogadores">So online</a>
       </form>
       <table><thead><tr><th>Personagem</th><th class="num">Level</th><th class="num">Conta</th>
-        <th>Ultimo login</th><th>Acoes</th></tr></thead><tbody>${linhas}</tbody></table>
+        <th>Ultimo login</th><th class="num" title="transferiveis + normais">Coins</th><th>VIP ate</th>
+        <th>Acoes</th></tr></thead><tbody>${linhas}</tbody></table>
+
+      <h2 id="creditar">Coins e dias VIP</h2>
+      <form method="post" action="/jogadores/comando" class="linha">
+        <input type="hidden" name="_csrf" value="${v.e(req.csrf)}">
+        <input name="player" value="${v.e(creditar)}" placeholder="nome do personagem" size="24" required>
+        <select name="kind">
+          <option value="coins:transferivel">Tibia Coins transferiveis</option>
+          <option value="coins:normal">Tibia Coins normais</option>
+          <option value="vip">Dias VIP</option>
+        </select>
+        <input name="quantidade" type="number" min="1" max="${MAX_COINS}" placeholder="quantidade" required style="width:120px">
+        <button class="btn" type="submit">Adicionar</button>
+      </form>
+      <p class="sub">Vai para a conta do personagem. Online, recebe na hora com aviso no jogo;
+        offline, entra no banco e ele ja encontra ao logar. Transferiveis sao as mesmas da doacao.
+        Limites: ${v.numero(MAX_COINS)} coins e ${MAX_DIAS_VIP} dias por vez.</p>
 
       <h2>Anuncio para todos</h2>
       <form method="post" action="/jogadores/comando" class="linha">
@@ -1037,13 +1062,32 @@ app.get('/jogadores', async (req, res, next) => {
 
 app.post('/jogadores/comando', exigirCsrf, async (req, res, next) => {
   try {
-    const kind = String(req.body.kind || '');
-    if (!['kick', 'save', 'broadcast'].includes(kind)) {
+    let kind = String(req.body.kind || '');
+    let payload;
+    if (kind.startsWith('coins:') || kind === 'vip') {
+      // Coins e VIP sao da conta: resolve o nome aqui, para recusar nome
+      // errado na hora em vez de deixar o comando falhar na fila.
+      const nome = String(req.body.player || '').trim().slice(0, 64);
+      const qtd = Number(req.body.quantidade);
+      const max = kind === 'vip' ? MAX_DIAS_VIP : MAX_COINS;
+      const voltar = '/jogadores?creditar=' + encodeURIComponent(nome) + '#creditar';
+      if (!Number.isInteger(qtd) || qtd < 1 || qtd > max) {
+        return res.redirect(comAviso(voltar, 'erro', `Quantidade invalida (de 1 a ${max}).`));
+      }
+      const [[p]] = await db.query('SELECT `name`,`account_id` FROM `players` WHERE `name` = ?', [nome]);
+      if (!p) return res.redirect(comAviso(voltar, 'erro', `Personagem "${nome}" nao existe.`));
+      // O Lua le os campos como texto (ver campo() no globalevent).
+      payload = JSON.stringify(kind === 'vip'
+        ? { player: p.name, conta: String(p.account_id), dias: String(qtd) }
+        : { player: p.name, conta: String(p.account_id), quantidade: String(qtd), tipo: kind.slice(6) });
+      kind = kind === 'vip' ? 'vip' : 'coins';
+    } else if (['kick', 'save', 'broadcast'].includes(kind)) {
+      payload = JSON.stringify(kind === 'broadcast'
+        ? { texto: String(req.body.texto || '').slice(0, 200) }
+        : { player: String(req.body.player || '').slice(0, 64) });
+    } else {
       return res.redirect(comAviso('/jogadores', 'erro', 'Comando desconhecido.'));
     }
-    const payload = JSON.stringify(kind === 'broadcast'
-      ? { texto: String(req.body.texto || '').slice(0, 200) }
-      : { player: String(req.body.player || '').slice(0, 64) });
 
     await db.query(
       'INSERT INTO `panel_commands` (`kind`,`payload`,`created_by`,`created_at`) VALUES (?,?,?,?)',

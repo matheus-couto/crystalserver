@@ -40,12 +40,18 @@ async function resumoServidor(db) {
   };
 }
 
+// Saldo da conta, junto de cada personagem. Coins moram no banco (o jogo le
+// e grava direto la); o fim do VIP de quem esta online pode estar alguns
+// minutos atrasado, ate o proximo save.
+const CONTA = 'a.`coins`, a.`coins_transferable`, a.`lastday`';
+
 async function jogadoresOnline(db) {
   const [linhas] = await db.query(
     `SELECT p.\`id\`, p.\`name\`, p.\`level\`, p.\`vocation\`, p.\`account_id\`,
-            p.\`lastlogin\`, p.\`lastip\`
+            p.\`lastlogin\`, p.\`lastip\`, ${CONTA}
        FROM \`players_online\` o
        JOIN \`players\` p ON p.\`id\` = o.\`player_id\`
+       JOIN \`accounts\` a ON a.\`id\` = p.\`account_id\`
       ORDER BY p.\`level\` DESC`
   );
   return linhas;
@@ -55,9 +61,10 @@ async function buscarJogadores(db, termo, limite = 50) {
   const like = '%' + String(termo || '').slice(0, 40) + '%';
   const [linhas] = await db.query(
     `SELECT p.\`id\`, p.\`name\`, p.\`level\`, p.\`account_id\`, p.\`lastlogin\`,
-            p.\`balance\`, p.\`deletion\`,
+            p.\`balance\`, p.\`deletion\`, ${CONTA},
             (SELECT COUNT(*) FROM \`players_online\` o WHERE o.\`player_id\` = p.\`id\`) AS \`online\`
        FROM \`players\` p
+       JOIN \`accounts\` a ON a.\`id\` = p.\`account_id\`
       WHERE p.\`name\` LIKE ?
       ORDER BY p.\`level\` DESC
       LIMIT ?`,
