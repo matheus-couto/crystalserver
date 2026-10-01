@@ -127,10 +127,14 @@ journalctl -u crandoria-painel-agent -f
 docker compose -f docker-compose.yml -f docker-compose.prod.yml build painel
 docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d painel
 
-# recarregar o Caddy depois de mexer no Caddyfile
-# (up -d nao basta: o compose nao recria o container so porque o arquivo
-#  montado mudou)
-docker exec crystalserver-caddy-1 caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile
+# aplicar mudanca no Caddyfile: recriar o container (alguns segundos fora)
+# - `caddy reload` nao serve: o Caddyfile e montado como arquivo avulso, e
+#   quem troca o arquivo (scp, tar, sed -i) troca o inode; o container
+#   continua lendo o antigo. Foi assim que o limite de 600 MB do envio do
+#   mapa ficou sem efeito e o .otbm de 126 MB era recusado.
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --force-recreate caddy
+# conferir o que esta valendo:
+docker exec crystalserver-caddy-1 grep -n max_size /etc/caddy/Caddyfile
 ```
 
 ### Trocar a senha ou criar o segundo usuario
