@@ -321,7 +321,9 @@ def v_config_gravar(req):
     # historico e a poda de la enxergarem estes tambem.
     os.makedirs(CONFIG_BACKUP_DIR, exist_ok=True)
     os.chown(CONFIG_BACKUP_DIR, 0, gid)
-    os.chmod(CONFIG_BACKUP_DIR, 0o2770)
+    # Sem setgid: o RestrictSUIDSGID do unit recusa o bit com EPERM. Nem faz
+    # falta, o chown abaixo ja poe cada backup no grupo do painel.
+    os.chmod(CONFIG_BACKUP_DIR, 0o770)
     carimbo = time.strftime("%Y-%m-%dT%H-%M-%S-000Z", time.gmtime())
     backup = os.path.join(CONFIG_BACKUP_DIR, "config.lua." + carimbo)
     shutil.copy2(CONFIG_PATH, backup)
