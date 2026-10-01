@@ -476,6 +476,16 @@ app.get('/scripts', async (req, res, next) => {
       <table><thead><tr><th>Nome</th><th class="num">Tamanho</th><th>Alterado</th><th></th></tr></thead>
         <tbody>${linhas}</tbody></table>
 
+      <h2>Nova pasta</h2>
+      <form method="post" action="/scripts/pasta" class="linha">
+        <input type="hidden" name="_csrf" value="${v.e(req.csrf)}">
+        <input type="hidden" name="a" value="${v.e(area)}">
+        <input type="hidden" name="p" value="${v.e(atual)}">
+        <input name="nome" placeholder="nome da pasta" size="26" maxlength="64" required
+          pattern="[A-Za-z0-9_][A-Za-z0-9 _.\\-]*">
+        <button class="btn" type="submit">Criar em ${v.e('/' + (atual || ''))}</button>
+      </form>
+
       <h2>Enviar arquivo</h2>
       <form id="form-enviar" method="post" action="/scripts/enviar" enctype="multipart/form-data" class="linha">
         <input type="hidden" name="_csrf" value="${v.e(req.csrf)}">
@@ -620,6 +630,22 @@ app.get('/scripts/diff', async (req, res, next) => {
       <p><a class="btn cinza mini" href="${voltar}">Abrir no editor</a></p>
     `, avisoDaQuery(req));
   } catch (err) { next(err); }
+});
+
+app.post('/scripts/pasta', exigirCsrf, async (req, res, next) => {
+  const area = String(req.body.a || 'crandoria');
+  const pasta = String(req.body.p || '');
+  const nome = String(req.body.nome || '');
+  const voltar = `/scripts?a=${encodeURIComponent(area)}&p=${encodeURIComponent(pasta)}`;
+  try {
+    const r = await scripts.criarPasta(area, pasta, nome);
+    await auditar(req, 'pasta.criada', `${area}:${r.rel}`);
+    res.redirect(comAviso(`/scripts?a=${encodeURIComponent(area)}&p=${encodeURIComponent(r.rel)}`,
+      'ok', `Pasta ${nome.trim()} criada. Voce ja esta dentro dela.`));
+  } catch (err) {
+    if (err.message && !err.code) return res.redirect(comAviso(voltar, 'erro', 'Nao criei a pasta: ' + err.message));
+    next(err);
+  }
 });
 
 app.post('/scripts/salvar', exigirCsrf, async (req, res, next) => {

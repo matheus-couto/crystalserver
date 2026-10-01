@@ -313,6 +313,41 @@ async function receber(areaChave, rel, origem, tamanhoDeclarado = 0) {
   }
 }
 
+/**
+ * Cria uma pasta dentro de `rel`.
+ *
+ * O nome e um componente so - sem barra, sem `..`, sem ponto no inicio
+ * (pasta oculta nao aparece na listagem, entao ficaria invisivel no painel).
+ * O pai passa pelo mesmo resolver de sempre.
+ */
+async function criarPasta(areaChave, rel, nome) {
+  if (ehConfig(areaChave)) throw new Error('nao ha pastas nesta area');
+  nome = String(nome || '').trim();
+  if (!/^[A-Za-z0-9_][A-Za-z0-9 _.-]{0,63}$/.test(nome)) {
+    throw new Error('nome de pasta invalido: use letras, numeros, espaco, ponto, - e _');
+  }
+  const { real } = await resolver(areaChave, rel);
+  const st = await fs.stat(real);
+  if (!st.isDirectory()) throw new Error('nao e uma pasta');
+
+  const nova = path.join(real, nome);
+  try {
+    await fs.mkdir(nova);
+  } catch (err) {
+    if (err.code === 'EEXIST') throw new Error(`ja existe "${nome}" nesta pasta`);
+    if (err.code === 'EACCES' || err.code === 'EPERM') {
+      throw new Error('sem permissao de escrita nesta pasta. No servidor, rode: ' +
+        `chgrp -R painel ${RAIZ}/<area> && chmod -R g+rwX ${RAIZ}/<area>`);
+    }
+    throw err;
+  }
+  // Grupo com escrita e setgid, como o ajuste do README: assim o que for
+  // criado dentro dela tambem nasce gravavel pelo painel.
+  await fs.chmod(nova, 0o2775).catch(() => {});
+  const relNova = path.relative(path.resolve(RAIZ, areaPorChave(areaChave).rel), nova).split(path.sep).join('/');
+  return { rel: relNova };
+}
+
 /** Backups do arquivo, do mais novo para o mais velho. */
 async function historico(areaChave, rel) {
   const pasta = path.join(BACKUP_DIR, areaChave, path.dirname(rel));
@@ -489,6 +524,6 @@ function esquecerRecentes() {
 
 module.exports = {
   AREAS, EXT_EDITAVEIS, EXT_MAPA, MAX_BYTES, BACKUP_DIR, RAIZ,
-  listar, ler, gravar, receber, historico, validarLua, podarBackups, resolver,
+  listar, ler, gravar, receber, criarPasta, historico, validarLua, podarBackups, resolver,
   lerBackup, recentes, esquecerRecentes,
 };
