@@ -15,6 +15,10 @@ RestartSec=5
 User=root
 RuntimeDirectory=crandoria-painel
 RuntimeDirectoryMode=0750
+# Sem isto o systemd apaga e recria a pasta a cada restart do agente, e o
+# container do painel - que monta a pasta, nao o socket - fica preso a
+# pasta antiga, vazia: "agente fora do ar" ate recriar o container.
+RuntimeDirectoryPreserve=yes
 
 NoNewPrivileges=yes
 ProtectSystem=strict
