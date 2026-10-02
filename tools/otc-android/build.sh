@@ -2,7 +2,7 @@
 # Build do APK do OTClient (otc/) no WSL Ubuntu 24.04, seguindo otc/android/BUILDING.md,
 # so para arm64-v8a e armeabi-v7a (celulares). Rodar como root no WSL:
 #   wsl -d Ubuntu-24.04 -u root -- bash /mnt/d/crandoria/crystalserver/tools/otc-android/build.sh
-# Saida: D:andoriaCrandoriaOT-OTC.apk. A chave fica em D:andoriandroid-keystore
+# Saida: D:/crandoria/CrandoriaOT-OTC.apk. A chave fica em D:/crandoria/android-keystore
 # (fora do git): sem ela, um APK novo nao instala por cima do anterior.
 set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
