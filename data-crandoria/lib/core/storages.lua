@@ -344,6 +344,9 @@ Storage = {
 		-- Reserved storage 52396-52410 (TheOrderOfTheLion)
 		Drume = {
 			Commander = 52396, -- Global
+			Timer = 52397,
+			TotalLionCommanders = 52398, -- Global
+			TotalUsurperCommanders = 52399, -- Global
 		},
 	},
 	-- News quest development
@@ -1522,6 +1525,8 @@ Storage = {
 					Greeting = 40430,
 					MaridDoor = 40431,
 					EfreetDoor = 40432,
+					Marid = 40447,
+					Efreet = 40448,
 				},
 				RecievedLamp = 40433,
 				-- Blue djinn
