@@ -269,7 +269,18 @@ function WalkController:onGameStart()
     })
 
     modules.game_interface.getRootPanel().onFocusChange = stopSmartWalk
-    modules.game_joystick.addOnJoystickMoveListener(function(dir) g_game.walk(dir) end)
+    -- Crandoria: o joystick chama isto a cada 20 ms enquanto o dedo esta nele.
+    -- Direto no g_game.walk cada chamada virava um pacote (50/s) e o servidor
+    -- desconectava por passar de maxPacketsPerSecond (25). O walk() local, o
+    -- mesmo do teclado, so envia quando o personagem pode dar o proximo passo.
+    -- dir nil = soltou o joystick: descarta o passo que ficou guardado.
+    modules.game_joystick.addOnJoystickMoveListener(function(dir)
+        if not dir then
+            nextWalkDir = nil
+            return
+        end
+        walk(dir)
+    end)
 
     if not g_game.isOfficialTibia() then
         g_game.enableFeature(GameForceFirstAutoWalkStep)

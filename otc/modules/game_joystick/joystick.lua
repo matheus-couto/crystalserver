@@ -93,6 +93,10 @@ function onKeypadTouchRelease(widget, pos, button)
   firstStep = false
   executeWalk()
   removeEvent(keypadUpdateEvent)
+  -- Crandoria: avisa que soltou, para nao sobrar um passo guardado no game_walk.
+  if moveListener then
+    moveListener(nil)
+  end
 
   keypad.pointer:setMarginTop(0)
   keypad.pointer:setMarginLeft(0)
