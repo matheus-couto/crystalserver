@@ -38,6 +38,83 @@ local function cacaFixa(total, nome, chave, npc, extra)
 	end
 end
 
+-- Passe de Batalha. As missoes mudam todo mes, entao o texto nao e fixo: o
+-- monstro vem do raceId que o Mestre de Batalha grava em PasseDeBatalha.Hunt,
+-- o item e o boss de PasseDeBatalha.Item, e a contagem de HuntCount.
+local PASSE = Storage.Quest.Crandoria.PasseDeBatalha
+local PASSE_NPC = "Mestre de Batalha"
+-- Mesmos ids do battlePassBoss em npc/mestre_de_batalha.lua.
+local PASSE_BOSSES = { "Grand Master Oberon", "Drume", "Scarlett Etzel", "Jaul", "King Zelos", "Zarabastan" }
+
+-- raceId -> nome, montado uma vez na primeira consulta.
+local nomesPorRaca
+local function nomeDaRaca(raceId)
+	if not nomesPorRaca then
+		nomesPorRaca = {}
+		for _, mType in pairs(Game.getMonsterTypes()) do
+			local r = mType:raceId()
+			if r and r > 0 and not nomesPorRaca[r] then
+				nomesPorRaca[r] = mType:name()
+			end
+		end
+	end
+	return nomesPorRaca[raceId]
+end
+
+local function passeAtivo(player)
+	local ativado = player:getStorageValue(PASSE.TimerMensal)
+	if ativado <= 0 then
+		return false
+	end
+	local a, agora = os.date("*t", ativado), os.date("*t")
+	return a.year == agora.year and a.month == agora.month
+end
+
+-- Texto de uma etapa do passe; com o passe vencido, avisa em vez de mostrar
+-- uma missao que o NPC nao aceita mais.
+local function passe(texto)
+	return function(player)
+		if not passeAtivo(player) then
+			return "Seu Passe de Batalha nao esta ativo neste mes. Ative um novo passe para receber as missoes."
+		end
+		return type(texto) == "function" and texto(player) or texto
+	end
+end
+
+local function passeCaca(total)
+	return passe(function(player)
+		local nome = nomeDaRaca(player:getStorageValue(PASSE.Hunt)) or "monstros da missao"
+		local feitos = math.min(math.max(0, player:getStorageValue(PASSE.HuntCount)), total)
+		if feitos >= total then
+			return string.format("Voce derrotou %d %s. Volte ao %s para receber a recompensa.", total, nome, PASSE_NPC)
+		end
+		return string.format("Derrote %d %s. Progresso: %d/%d.", total, nome, feitos, total)
+	end)
+end
+
+local function passeItens(quantidade)
+	return passe(function(player)
+		local id = player:getStorageValue(PASSE.Item)
+		local itemType = id > 0 and ItemType(id)
+		local nome = itemType and itemType:getId() ~= 0 and itemType:getPluralName() or ""
+		if nome == "" then
+			nome = itemType and itemType:getName() or ""
+		end
+		if nome == "" then
+			nome = "itens pedidos"
+		end
+		return string.format("Leve %d %s ao %s.", quantidade, nome, PASSE_NPC)
+	end)
+end
+
+local function passeBoss(player)
+	local nome = PASSE_BOSSES[player:getStorageValue(PASSE.Item)] or "o boss do mes"
+	local feitos = math.min(math.max(0, player:getStorageValue(PASSE.Progresso) - 16), 5)
+	return string.format("Derrote %s 5 vezes. Progresso: %d/5.", nome, feitos)
+end
+
+local PASSE_FALE = passe("Fale com o " .. PASSE_NPC .. " para receber a proxima missao.")
+
 if not Quests then
 	Quests = {
 		[1] = {
@@ -9111,6 +9188,150 @@ if not Quests then
 						[1] = "Leve a Howard Rootberg 100 dragonfruits, 25 cobalt ridges e 10 pieces of wood, ou libere o acesso por 5000 Tibia Coins.",
 						[2] = "Pegue o bote passando pelo portao e encontre Elendor, no centro da Ilha Perdida de Astralis.",
 						[3] = "Elendor pode te levar ate a alavanca pelo tapete em troca de uma Sun Fruit.",
+					},
+				},
+			},
+		},
+		-- Recicla todo mes: o item do passe volta o Progresso para 1 e o
+		-- quest log recomeca junto. Etapas e totais como em mestre_de_batalha.lua.
+		[80] = {
+			name = "Passe de Batalha",
+			startStorageId = Storage.Quest.Crandoria.PasseDeBatalha.Progresso,
+			startStorageValue = 1,
+			missions = {
+				[1] = {
+					name = "Primeira caca",
+					storageId = Storage.Quest.Crandoria.PasseDeBatalha.Progresso,
+					missionId = 13179,
+					startValue = 1,
+					endValue = 3,
+					ignoreendvalue = true,
+					states = {
+						[1] = PASSE_FALE,
+						[2] = passeCaca(1000),
+						[3] = passe("Voce concluiu a primeira caca."),
+					},
+				},
+				[2] = {
+					name = "Itens de valor",
+					storageId = Storage.Quest.Crandoria.PasseDeBatalha.Progresso,
+					missionId = 13180,
+					startValue = 3,
+					endValue = 5,
+					ignoreendvalue = true,
+					states = {
+						[3] = PASSE_FALE,
+						[4] = passeItens(5),
+						[5] = passe("Voce entregou os itens de valor."),
+					},
+				},
+				[3] = {
+					name = "Segunda caca",
+					storageId = Storage.Quest.Crandoria.PasseDeBatalha.Progresso,
+					missionId = 13181,
+					startValue = 5,
+					endValue = 7,
+					ignoreendvalue = true,
+					states = {
+						[5] = PASSE_FALE,
+						[6] = passeCaca(1000),
+						[7] = passe("Voce concluiu a segunda caca."),
+					},
+				},
+				[4] = {
+					name = "As criaturas certas",
+					storageId = Storage.Quest.Crandoria.PasseDeBatalha.Progresso,
+					missionId = 13182,
+					startValue = 7,
+					endValue = 9,
+					ignoreendvalue = true,
+					states = {
+						[7] = PASSE_FALE,
+						[8] = passeItens(5),
+						[9] = passe("Voce entregou os itens pedidos."),
+					},
+				},
+				[5] = {
+					name = "Terceira caca",
+					storageId = Storage.Quest.Crandoria.PasseDeBatalha.Progresso,
+					missionId = 13183,
+					startValue = 9,
+					endValue = 11,
+					ignoreendvalue = true,
+					states = {
+						[9] = PASSE_FALE,
+						[10] = passeCaca(1000),
+						[11] = passe("Voce concluiu a terceira caca."),
+					},
+				},
+				[6] = {
+					name = "Itens raros",
+					storageId = Storage.Quest.Crandoria.PasseDeBatalha.Progresso,
+					missionId = 13184,
+					startValue = 11,
+					endValue = 13,
+					ignoreendvalue = true,
+					states = {
+						[11] = PASSE_FALE,
+						[12] = passeItens(3),
+						[13] = passe("Voce entregou os itens raros."),
+					},
+				},
+				[7] = {
+					name = "Quarta caca",
+					storageId = Storage.Quest.Crandoria.PasseDeBatalha.Progresso,
+					missionId = 13185,
+					startValue = 13,
+					endValue = 15,
+					ignoreendvalue = true,
+					states = {
+						[13] = PASSE_FALE,
+						[14] = passeCaca(1500),
+						[15] = passe("Voce concluiu a quarta caca."),
+					},
+				},
+				[8] = {
+					name = "O boss do mes",
+					storageId = Storage.Quest.Crandoria.PasseDeBatalha.Progresso,
+					missionId = 13186,
+					startValue = 15,
+					endValue = 22,
+					ignoreendvalue = true,
+					states = {
+						[15] = PASSE_FALE,
+						[16] = passe(passeBoss),
+						[17] = passe(passeBoss),
+						[18] = passe(passeBoss),
+						[19] = passe(passeBoss),
+						[20] = passe(passeBoss),
+						[21] = passe("Voce derrotou o boss 5 vezes. Volte ao " .. PASSE_NPC .. " para receber a recompensa."),
+						[22] = passe("Voce provou seu valor contra o boss do mes."),
+					},
+				},
+				[9] = {
+					name = "Quinta caca",
+					storageId = Storage.Quest.Crandoria.PasseDeBatalha.Progresso,
+					missionId = 13187,
+					startValue = 22,
+					endValue = 24,
+					ignoreendvalue = true,
+					states = {
+						[22] = PASSE_FALE,
+						[23] = passeCaca(2500),
+						[24] = passe("Voce concluiu a quinta caca."),
+					},
+				},
+				[10] = {
+					name = "A ultima missao",
+					storageId = Storage.Quest.Crandoria.PasseDeBatalha.Progresso,
+					missionId = 13188,
+					startValue = 24,
+					endValue = 26,
+					ignoreendvalue = true,
+					states = {
+						[24] = PASSE_FALE,
+						[25] = passe("Leve ao " .. PASSE_NPC .. " os tres itens da ultima missao. Se esquecer quais sao, pergunte a ele."),
+						[26] = passe("Voce concluiu todas as missoes do Passe de Batalha deste mes."),
 					},
 				},
 			},
