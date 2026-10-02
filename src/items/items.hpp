@@ -178,7 +178,9 @@ public:
 		return multiUse;
 	}
 	bool isQuiver() const {
-		return (type == ITEM_TYPE_QUIVER);
+		// Crandoria: o type vem da categoria de market do appearances.dat; quivers sem market
+		// (ex.: nao negociaveis) ficavam como container comum e aceitavam qualquer item.
+		return type == ITEM_TYPE_QUIVER || m_primaryType == "quivers";
 	}
 	bool isRing() const {
 		return (type == ITEM_TYPE_RING);

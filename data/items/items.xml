@@ -7514,6 +7514,9 @@
 		<attribute key="armor" value="4"/>
 		<attribute key="absorbpercentphysical" value="8"/>
 		<attribute key="absorbpercentfire" value="14"/>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="necklace" />
+		</attribute>
 	</item>
 	<item id="3103" article="a" name="cornucopia">
 		<attribute key="primarytype" value="musical instruments" />
@@ -10098,6 +10101,9 @@
 			<attribute key="skillboost shielding" value="3"/>
 			<attribute key="skillboost magic level" value="3"/>
 		</attribute>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="head" />
+		</attribute>
 	</item>
 	<item id="3396" article="a" name="dwarven helmet">
 		<attribute key="primarytype" value="helmets" />
@@ -11112,6 +11118,9 @@
 		<attribute key="description" value="Fornece regeneracao de mana e vida."/>
 		<attribute key="imbuementslot" value="1">
 			<attribute key="increase speed" value="3"/>
+		</attribute>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="feet" />
 		</attribute>
 	</item>
 	<item id="3551" name="sandals">
@@ -21434,6 +21443,9 @@
 			<attribute key="elemental protection energy" value="3"/>
 			<attribute key="elemental protection holy" value="3"/>
 		</attribute>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="armor" />
+		</attribute>
 	</item>
 	<item fromid="7994" toid="7995" article="a" name="toolbox">
 		<attribute key="primarytype" value="quest objects" />
@@ -21836,6 +21848,9 @@
 			<attribute key="elemental protection ice" value="3"/>
 			<attribute key="elemental protection energy" value="3"/>
 			<attribute key="elemental protection holy" value="3"/>
+		</attribute>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="armor" />
 		</attribute>
 	</item>
 	<item id="8048" article="a" name="girl's dress">
@@ -38704,6 +38719,9 @@
 		<attribute key="absorbpercentice" value="-10"/>
 		<attribute key="magicpoints" value="1"/>
 		<attribute key="weight" value="10"/>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="ring" />
+		</attribute>
 	</item>
 	<item id="18936" article="the" name="Vampire Count's medal">
 		<attribute key="description" value="The medal belonging to the Vampire Count. It shimmers softly" />
@@ -39663,6 +39681,9 @@
 			<attribute key="elemental protection ice" value="3"/>
 			<attribute key="elemental protection energy" value="3"/>
 			<attribute key="elemental protection holy" value="3"/>
+		</attribute>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="armor" />
 		</attribute>
 	</item>
 	<item id="19359" article="a" name="horn">
@@ -41310,6 +41331,9 @@
 		<attribute key="healthticks" value="6000"/>
 		<attribute key="healthgain" value="8"/>
 		<attribute key="weight" value="400"/>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="necklace" />
+		</attribute>
 	</item>
 	<item id="20343" name="RESERVED SPRITE" />
 	<item id="20344" article="a" name="hole">
@@ -52318,6 +52342,9 @@
 			<attribute key="skillboost distance" value="3"/>
 			<attribute key="skillboost magic level" value="2"/>
 		</attribute>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="head" />
+		</attribute>
 	</item>
 	<item id="27523" article="a" name="strange mallet">
 		<attribute key="primarytype" value="club weapons" />
@@ -55272,6 +55299,9 @@
 			<attribute key="elemental protection holy" value="3"/>
 			<attribute key="skillboost shielding" value="3"/>
 		</attribute>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="shield" />
+		</attribute>
 	</item>
 	<item id="28916" article="an" name="adamant shield">
 		<attribute key="description" value="Powerful and shining. The greatest of them all!"/>
@@ -55291,6 +55321,9 @@
 			<attribute key="elemental protection energy" value="3"/>
 			<attribute key="elemental protection holy" value="3"/>
 			<attribute key="skillboost shielding" value="3"/>
+		</attribute>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="shield" />
 		</attribute>
 	</item>
 	<item id="28917" article="an" name="adamant shield">
@@ -55314,6 +55347,9 @@
 			<attribute key="elemental protection energy" value="3"/>
 			<attribute key="elemental protection holy" value="3"/>
 			<attribute key="skillboost shielding" value="3"/>
+		</attribute>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="shield" />
 		</attribute>
 	</item>
 	<item id="28919" name="RESERVED SPRITE" />
@@ -57219,6 +57255,9 @@
 		<attribute key="absorbpercentdeath" value="3"/>
 		<attribute key="armor" value="3"/>
 		<attribute key="weight" value="250"/>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="ring" />
+		</attribute>
 	</item>
 	<item id="30280" article="a" name="percht queen's frozen heart">
 		<attribute key="weight" value="1700" />
@@ -60423,6 +60462,9 @@
 			<attribute key="skillboost shielding" value="3"/>
 			<attribute key="skillboost distance" value="3"/>
 			<attribute key="skillboost magic level" value="2"/>
+		</attribute>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="head" />
 		</attribute>
 	</item>
 	<item id="32101" article="a" name="traditional neckerchief">
@@ -69480,6 +69522,9 @@
 			<attribute key="elemental protection holy" value="3"/>
 			<attribute key="skillboost shielding" value="3"/>
 		</attribute>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="shield" />
+		</attribute>
 	</item>
 	<item id="37054" name="Bella Bonecrusher's doll">
 		<attribute key="description" value="In this doll lives the courage and legacy of Bella Bonecrusher. Awarded by Tibiagallery.com" />
@@ -70081,6 +70126,9 @@
 			<attribute key="elemental protection ice" value="3"/>
 			<attribute key="elemental protection energy" value="3"/>
 			<attribute key="elemental protection holy" value="3"/>
+		</attribute>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="head" />
 		</attribute>
 	</item>
 	<item id="37337" article="a" name="white skull">

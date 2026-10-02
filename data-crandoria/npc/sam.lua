@@ -263,5 +263,5 @@ end
 npcType.onCheckItem = function(npc, player, clientId, subType)
 end
 
-npcType:addDialogOptions("trade", "outfit", "backpack", "bye")
+npcType:addDialogOptions("trade", "bye")
 npcType:register(npcConfig)

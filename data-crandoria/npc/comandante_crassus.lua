@@ -149,18 +149,15 @@ local function creatureSayCallback(npc, creature, type, message)
                     end
                 elseif storage == 4 then
                     if player:getLevel() >= 16 then
-                        -- npcHandler:say("Como as amazonas nao foram um grande desafio para voce, vou te mandar em uma missao um pouco mais perigosa. Acima das amazonas vive uma comunidade de Cyclops. Essas criaturas estao se multiplicando muito rapido e precisamos de alguem \z
-                        -- para derrotar alguns deles e manter sua populacao sob controle. Mate alguns deles para mim e como prova do seu trabalho bem feito, me traga 5 cyclops toes. Ao trazer os itens te darei uma boa recompensa! Aceita o desafio?", npc, creature)
-                        -- npcHandler:setTopic(playerId, 3)
-                        npcHandler:say("Como as amazonas nao foram um grande desafio para voce, vou te mandar em uma missao um pouco mais perigosa. Proximo a ciadade de Elvenshire ha um povoado de elfos rebeldes e preciso da sua ajuda para conte-los. \z
-                        Como prova de que voce derrotou elfos o suficiente, traga-me 3 Heaven Blossoms. Aceita o desafio?", npc, creature)
+                        npcHandler:say("Como as amazonas nao foram um grande desafio para voce, vou te mandar em uma missao um pouco mais perigosa. Acima das amazonas vive uma comunidade de Cyclops. Essas criaturas estao se multiplicando muito rapido e precisamos de alguem \z
+                        para derrotar alguns deles e manter sua populacao sob controle. Mate alguns deles para mim e como prova do seu trabalho bem feito, me traga 5 cyclops toes. Ao trazer os itens te darei uma boa recompensa! Aceita o desafio?", npc, creature)
                         npcHandler:setTopic(playerId, 3)
                     else
                         npcHandler:say("Sinto muito, mas apenas jogadores de nivel 16 ou superior podem se alistar para a proxima missao.", npc, creature)
                         npcHandler:setTopic(playerId, 0)
                     end
                 elseif storage == 5 then
-                    if player:removeItem(5921, 3) then
+                    if player:removeItem(9657, 5) then
                         if knight or paladin or monk then
                             player:addExperience(250000, true)
                             player:addMoney(30000, true)

@@ -7189,7 +7189,7 @@ if not Quests then
 					},
 				},
 				[3] = {
-					name = "Os elfos rebeldes",
+					name = "Os ciclopes",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13003,
 					startValue = 4,
@@ -7197,8 +7197,8 @@ if not Quests then
 					ignoreendvalue = true,
 					states = {
 						[4] = "Alcance o nivel 16 e fale com o Comandante Crassus para receber a proxima missao.",
-						[5] = "Derrote os elfos rebeldes perto de Elvenshire e leve 3 heaven blossoms ao comandante crassus.",
-						[6] = "Voce conteve os elfos rebeldes.",
+						[5] = "Derrote ciclopes na regiao acima das amazonas e leve 5 cyclops toes ao Comandante Crassus.",
+						[6] = "Voce controlou a populacao de ciclopes.",
 					},
 				},
 				[4] = {

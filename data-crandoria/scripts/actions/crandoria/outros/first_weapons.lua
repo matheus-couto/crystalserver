@@ -1,32 +1,41 @@
 local chestFirstWeapon = Action()
 
+-- x do bau -> arma recebida
+local rewardByChestX = {
+    [4907] = 3289,
+    [4909] = 3344,
+    [4911] = 3295,
+    [4913] = 7430,
+    [4915] = 7438,
+    [4917] = 3073,
+    [4919] = 3065,
+}
+
 function chestFirstWeapon.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 
     if not player then
         return true
     end
 
-    local storage = player:getStorageValue(Storage.Quest.Crandoria.FirstWeapon.FirstWeaponReward)
-
-    if storage < 1 then
-        if item:getPosition().x == 4907 then
-            player:addItem(3289, 1) 
-        elseif item:getPosition().x == 4909 then
-            player:addItem(3344, 1) 
-        elseif item:getPosition().x == 4911 then
-            player:addItem(3295, 1) 
-        elseif item:getPosition().x == 4913 then
-            player:addItem(7430, 1) 
-        elseif item:getPosition().x == 4915 then
-            player:addItem(7438, 1) 
-        elseif item:getPosition().x == 4917 then
-            player:addItem(3073, 1) 
-        elseif item:getPosition().x == 4919 then
-            player:addItem(3065, 1) 
-        end
-        player:setStorageValue(Storage.Quest.Crandoria.FirstWeapon.FirstWeaponReward, 1)
+    if player:getStorageValue(Storage.Quest.Crandoria.FirstWeapon.FirstWeaponReward) >= 1 then
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "O bau esta vazio. Voce ja pegou o seu item.")
+        return true
     end
-	return true
+
+    local rewardId = rewardByChestX[item:getPosition().x]
+    if not rewardId then
+        return true
+    end
+
+    local reward = player:addItem(rewardId, 1)
+    if not reward then
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce nao tem espaco ou capacidade para carregar este item.")
+        return true
+    end
+
+    player:setStorageValue(Storage.Quest.Crandoria.FirstWeapon.FirstWeaponReward, 1)
+    player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce encontrou " .. ItemType(rewardId):getName() .. ".")
+    return true
 end
 
 chestFirstWeapon:aid(13223)

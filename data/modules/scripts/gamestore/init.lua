@@ -473,7 +473,7 @@ function parseBuyStoreOffer(playerId, msg)
 	-- Handled errors have a code index and unhandled errors do not
 	local pcallOk, pcallError = pcall(function()
 		if offer.type == GameStore.OfferTypes.OFFER_TYPE_ITEM or offer.type == GameStore.OfferTypes.OFFER_TYPE_ITEM_UNIQUE then
-			GameStore.processItemPurchase(player, offer.itemtype, offer.count or 1, offer.movable, offer.setOwner)
+			GameStore.processItemPurchase(player, offer.itemtype, offer.count or 1, offer.movable ~= false, offer.setOwner)
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_INSTANT_REWARD_ACCESS then
 			GameStore.processInstantRewardAccess(player, offer.count)
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_CHARMS then
@@ -485,7 +485,7 @@ function parseBuyStoreOffer(playerId, msg)
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_PREMIUM then
 			GameStore.processPremiumPurchase(player, offer.id)
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_STACKABLE then
-			GameStore.processStackablePurchase(player, offer.itemtype, offer.count, offer.name, offer.movable, offer.setOwner)
+			GameStore.processStackablePurchase(player, offer.itemtype, offer.count, offer.name, offer.movable ~= false, offer.setOwner)
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_HOUSE or offer.type == GameStore.OfferTypes.OFFER_TYPE_ITEM_BED then
 			GameStore.processHouseRelatedPurchase(player, offer)
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_OUTFIT or offer.type == GameStore.OfferTypes.OFFER_TYPE_OUTFIT_ADDON then
@@ -510,7 +510,7 @@ function parseBuyStoreOffer(playerId, msg)
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_TEMPLE then
 			GameStore.processTempleTeleportPurchase(player)
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_CHARGES then
-			GameStore.processChargesPurchase(player, offer.itemtype, offer.name, offer.charges, offer.movable, offer.setOwner)
+			GameStore.processChargesPurchase(player, offer.itemtype, offer.name, offer.charges, offer.movable ~= false, offer.setOwner)
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_HIRELING then
 			local hirelingName = msg:getString()
 			local sex = msg:getByte()
@@ -1701,7 +1701,7 @@ function GameStore.processHouseRelatedPurchase(player, offer)
 					decoKit:setCustomAttribute("unWrapId", itemId)
 					decoKit:setAttribute(ITEM_ATTRIBUTE_DATE, offer.count)
 
-					if not offer.movable then
+					if offer.movable == false then
 						decoKit:setAttribute(ITEM_ATTRIBUTE_STORE, systemTime())
 						decoKit:setAttribute(ITEM_ATTRIBUTE_OWNER, player:getGuid())
 					end
@@ -1713,7 +1713,7 @@ function GameStore.processHouseRelatedPurchase(player, offer)
 						decoKit:setAttribute(ITEM_ATTRIBUTE_DESCRIPTION, "You bought this item in the Store.\nUnwrap it in your own house to create a <" .. ItemType(itemId):getName() .. ">.")
 						decoKit:setCustomAttribute("unWrapId", itemId)
 
-						if not offer.movable then
+						if offer.movable == false then
 							decoKit:setAttribute(ITEM_ATTRIBUTE_STORE, systemTime())
 							decoKit:setAttribute(ITEM_ATTRIBUTE_OWNER, player:getGuid())
 						end
