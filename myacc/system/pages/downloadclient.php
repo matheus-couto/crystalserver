@@ -67,6 +67,32 @@ if (empty($getpage_download)) {
                                                         <small>Version <?= config('client') / 100 ?></small>
                                                     </a>
 <?php endif; ?>
+<?php if (!empty($config['otc_link'])): ?>
+                                                    <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #faf0d7;">
+                                                    <a href="<?= $config['otc_link'] ?>" target="_blank" rel="noopener">
+                                                        <img alt="<?= configLua('serverName') ?> OTClient"
+                                                             style="width: 90px; height: 90px; border: 0;"
+                                                             src="<?= $template_path ?>/images/download_windows.gif">
+                                                        <br>
+                                                        <span style="font-size: 12pt;">
+                                                        Download <?= configLua('serverName') ?> OTClient
+                                                        <br>
+                                                        <span style="font-size: 10pt;">Windows (OTC)</span></span>
+                                                    </a>
+<?php endif; ?>
+<?php if (!empty($config['mobile_link'])): ?>
+                                                    <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #faf0d7;">
+                                                    <a href="<?= $config['mobile_link'] ?>" target="_blank" rel="noopener">
+                                                        <img alt="<?= configLua('serverName') ?> Mobile"
+                                                             style="width: 90px; height: 90px; border: 0;"
+                                                             src="<?= $template_path ?>/images/download_windows.gif">
+                                                        <br>
+                                                        <span style="font-size: 12pt;">
+                                                        Download <?= configLua('serverName') ?> Mobile
+                                                        <br>
+                                                        <span style="font-size: 10pt;">Android</span></span>
+                                                    </a>
+<?php endif; ?>
                                                 </td>
                                             </tr>
                                             </tbody>

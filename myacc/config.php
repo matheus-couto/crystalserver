@@ -39,7 +39,7 @@ $config = array(
 
 	// what client version are you using on this OT?
 	// used for the Downloads page and some templates as well
-	'client' => 1524, // 1524 = client 15.24
+	'client' => 1525, // 1525 = client 15.25
 
 	'session_prefix' => 'myaac_', // must be unique for every site on your server
 	'friendly_urls' => false, // mod_rewrite is required for this, it makes links looks more elegant to eye, and also are SEO friendly (example: https://localhost/guilds/Testing instead of https://localhost?subtopic=guilds&name=Testing). Remember to rename .htaccess.dist to .htaccess
@@ -315,6 +315,8 @@ $config = array(
 	// status bar
 	'status_bar' => true,
 	'client_link' => 'https://github.com/zimbadev/gameclient/releases', // link to download tibia client
+	'otc_link' => 'https://drive.google.com/file/d/1nddKCNJZvdRUW7r5P01rH31TaTycrGk7/view?usp=drive_link', // link to download the OTClient (Crandoria)
+	'mobile_link' => 'https://drive.google.com/file/d/1H0NdO7J109hAN4HNXsF672gbxwK_s6xi/view?usp=drive_link', // link to download the mobile client (Crandoria)
 	'discord_link' => 'https://discord.com/invite/7AYJEHTghQ', // link to join discord channel
 	'whatsapp_link' => '5511912345678', // wa.me/5511912345678
 	'instagram_link' => 'profile', // www.instagram.com/profile
