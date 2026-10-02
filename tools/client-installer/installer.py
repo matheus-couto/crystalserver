@@ -11,6 +11,7 @@ A alternativa seria embutir por --add-data, mas ai o PyInstaller extrairia os
 368 MB para a pasta temporaria a cada execucao, antes mesmo da tela aparecer.
 """
 
+import json
 import os
 import subprocess
 import sys
@@ -21,6 +22,7 @@ from tkinter import filedialog, messagebox, ttk
 
 APP_NAME = "CrandoriaOT"
 EXE_NAME = "bin/client.exe"
+VARIANT_FILE = "installer.json"  # gravado pelo build.py; nao vai para a pasta instalada
 SITE = "https://crandoriaot.com.br"
 
 BG = "#141821"
@@ -41,6 +43,24 @@ def payload_path():
         return sys.executable
     here = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(here, "client-payload.zip")
+
+
+def load_variant():
+    """Nome e executavel vindos do installer.json do pacote, se houver.
+
+    O mesmo instalador serve o cliente oficial (bin/client.exe) e o OTClient
+    (otclient.exe na raiz). Sem o json, vale o cliente oficial. Nomes
+    diferentes importam: com o mesmo APP_NAME, instalar um sobrescreveria a
+    chave de desinstalacao e os atalhos do outro.
+    """
+    global APP_NAME, EXE_NAME
+    try:
+        with zipfile.ZipFile(payload_path()) as z:
+            cfg = json.loads(z.read(VARIANT_FILE).decode("utf-8"))
+    except Exception:
+        return
+    APP_NAME = cfg.get("app_name") or APP_NAME
+    EXE_NAME = cfg.get("exe") or EXE_NAME
 
 
 def default_target():
@@ -294,6 +314,8 @@ class Installer(tk.Tk):
                 total = sum(m.file_size for m in members) or 1
                 done = 0
                 for m in members:
+                    if m.filename == VARIANT_FILE:
+                        continue
                     z.extract(m, target)
                     done += m.file_size
                     pct = done * 100 / total
@@ -352,5 +374,6 @@ class Installer(tk.Tk):
 
 
 if __name__ == "__main__":
+    load_variant()
     enable_dpi_awareness()
     Installer().mainloop()
