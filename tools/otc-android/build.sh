@@ -24,12 +24,12 @@ declare -A HOSTCC=( [arm64-v8a]=gcc [armeabi-v7a]="gcc -m32" )
 
 etapa() { echo "== $(date +%T) $*"; }
 
-etapa "1/8 pacotes do sistema"
+etapa "1/9 pacotes do sistema"
 apt-get update -q >/dev/null
 apt-get install -y -q --no-install-recommends openjdk-17-jdk-headless zip unzip curl git rsync python3 \
 	gcc-multilib g++-multilib pkg-config autoconf automake libtool ninja-build cmake build-essential ca-certificates >/dev/null
 
-etapa "2/8 Android SDK + NDK $NDK_VER"
+etapa "2/9 Android SDK + NDK $NDK_VER"
 if [ ! -x "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ]; then
 	mkdir -p "$ANDROID_HOME/cmdline-tools"
 	curl -sL https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -o /tmp/cmdtools.zip
@@ -41,7 +41,7 @@ yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$ANDROID_H
 "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$ANDROID_HOME" \
 	"ndk;$NDK_VER" "platforms;android-36" "build-tools;35.0.0" "cmake;3.22.1" "platform-tools" >/dev/null
 
-etapa "3/8 vcpkg na baseline do otc"
+etapa "3/9 vcpkg na baseline do otc"
 BASE=$(grep '"builtin-baseline"' "$SRC_WIN/vcpkg.json" | grep -oE '[0-9a-f]{40}')
 if [ ! -x "$VCPKG_ROOT/vcpkg" ]; then
 	git clone -q https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
@@ -49,7 +49,7 @@ if [ ! -x "$VCPKG_ROOT/vcpkg" ]; then
 	"$VCPKG_ROOT/bootstrap-vcpkg.sh" -disableMetrics >/dev/null
 fi
 
-etapa "4/8 fonte para o disco do Linux"
+etapa "4/9 fonte para o disco do Linux"
 mkdir -p "$SRC"
 rsync -a --delete --exclude build/ --exclude '*.exe' --exclude '*.pdb' --exclude '*.log' \
 	--exclude android/app/build/ --exclude android/.gradle/ --exclude android/app/.cxx/ \
@@ -58,7 +58,7 @@ rsync -a --delete --exclude build/ --exclude '*.exe' --exclude '*.pdb' --exclude
 find "$SRC" -name '*.sh' -exec sed -i 's/\r$//' {} +
 sed -i 's/\r$//' "$SRC/android/gradlew"
 
-etapa "5/8 LuaJIT para $ABIS"
+etapa "5/9 LuaJIT para $ABIS"
 if [ ! -d "$SRC/luajit-src/src" ]; then
 	git clone -q https://github.com/LuaJIT/LuaJIT.git "$SRC/luajit-src"
 	git -C "$SRC/luajit-src" checkout -q d0e88930ddde28ff662503f9f20facf34f7265aa
@@ -80,7 +80,7 @@ for ABI in $ABIS; do
 done
 [ -f "$LIBS/include/luajit/lua.hpp" ] || printf 'extern "C" {\n#include "lua.h"\n#include "lualib.h"\n#include "lauxlib.h"\n}\n' > "$LIBS/include/luajit/lua.hpp"
 
-etapa "6/8 dependencias vcpkg para $ABIS (a primeira vez demora)"
+etapa "6/9 dependencias vcpkg para $ABIS (a primeira vez demora)"
 cd "$SRC"
 for ABI in $ABIS; do
 	"$VCPKG_ROOT/vcpkg" install --triplet "${TRIPLET[$ABI]}" --x-manifest-root=. --allow-unsupported > "/root/vcpkg-${TRIPLET[$ABI]}.log" 2>&1 \
@@ -88,13 +88,13 @@ for ABI in $ABIS; do
 	echo "   vcpkg ${TRIPLET[$ABI]} ok"
 done
 
-etapa "7/8 data.zip"
+etapa "7/9 data.zip"
 mkdir -p "$SRC/android/app/src/main/assets"
 rm -f "$SRC/android/app/src/main/assets/data.zip"
 cd "$SRC" && zip -qr android/app/src/main/assets/data.zip data mods modules init.lua otclientrc.lua config.ini cacert.pem
 ls -lh "$SRC/android/app/src/main/assets/data.zip" | awk '{print "   data.zip", $5}'
 
-etapa "8/8 chave de assinatura + gradle"
+etapa "8/9 chave de assinatura + gradle"
 mkdir -p "$KEYDIR"
 if [ ! -f "$KEYDIR/crandoria-otc.jks" ]; then
 	SENHA=$(head -c 24 /dev/urandom | base64 | tr -dc 'A-Za-z0-9' | head -c 24)
@@ -112,7 +112,21 @@ cd "$SRC/android"; chmod +x gradlew
 ./gradlew --no-daemon assembleRelease -Potclient.android.abis=arm64-v8a,armeabi-v7a > /root/gradle.log 2>&1 \
 	|| { grep -E "error:|FAILED|What went wrong" -A4 /root/gradle.log | head -40; tail -20 /root/gradle.log; exit 1; }
 
-APK=$(ls "$SRC"/android/app/build/outputs/apk/release/*.apk | head -1)
-cp "$APK" /mnt/d/crandoria/CrandoriaOT-OTC.apk
+etapa "9/9 troca o libotclient.so pelo do CI oficial (mesmo commit) e assina"
+# O libotclient.so compilado aqui fecha sozinho no Application::init (testado em
+# 02/10/2026 num Galaxy A14, Android 15); o do CI do mehah, do mesmo commit, funciona.
+# So arm64: e o que o CI oficial gera. Baixar com tools/otc-android/baixar-apk-oficial.sh.
+SHA=$(git -c safe.directory="*" -C "$SRC_WIN/.." log --grep="git-subtree-dir: otc" -1 --format=%B | grep -oE "git-subtree-split: [0-9a-f]{40}" | cut -d' ' -f2)
+OFICIAL=/mnt/d/crandoria/otc-oficial/otclient-android-$SHA.apk
+[ -f "$OFICIAL" ] || { echo "falta $OFICIAL - rode tools/otc-android/baixar-apk-oficial.sh no Git Bash"; exit 1; }
+BT=$ANDROID_HOME/build-tools/35.0.0
+W=/tmp/apk-final; rm -rf "$W"; mkdir -p "$W/up"; cd "$W"
+cp "$(ls "$SRC"/android/app/build/outputs/apk/release/*.apk | head -1)" base.apk
+zip -q -d base.apk 'lib/armeabi-v7a/*' 'lib/arm64-v8a/*' 'META-INF/*'
+unzip -qo "$OFICIAL" 'lib/arm64-v8a/*' -d up
+(cd up && zip -q -0 -r ../base.apk lib)
+"$BT/zipalign" -f -p 4 base.apk alinhado.apk
+"$BT/apksigner" sign --ks "$RELEASE_KEYSTORE" --ks-key-alias "$RELEASE_KEY_ALIAS" 	--ks-pass "pass:$RELEASE_KEYSTORE_PASSWORD" --key-pass "pass:$RELEASE_KEY_PASSWORD" 	--out /mnt/d/crandoria/CrandoriaOT-OTC.apk alinhado.apk
+"$BT/apksigner" verify /mnt/d/crandoria/CrandoriaOT-OTC.apk
 ls -lh /mnt/d/crandoria/CrandoriaOT-OTC.apk
 etapa PRONTO
