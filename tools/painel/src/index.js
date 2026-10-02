@@ -22,6 +22,7 @@ const auth = require('./auth');
 const agent = require('./agent');
 const scripts = require('./scripts');
 const diff = require('./diff');
+const zip = require('./zip');
 const q = require('./queries');
 const nomesItens = require('./itemnames');
 const v = require('./view');
@@ -449,7 +450,9 @@ app.get('/scripts', async (req, res, next) => {
 
     const abas = scripts.AREAS.map((a) =>
       `<a class="btn ${a.chave === area ? '' : 'cinza'} mini" href="/scripts?a=${a.chave}">${v.e(a.rotulo)}</a>`
-    ).join(' ') + ' <a class="btn cinza mini" href="/scripts/recentes">&#128337; Alterados recentemente</a>';
+    ).join(' ') + ' <a class="btn cinza mini" href="/scripts/recentes">&#128337; Alterados recentemente</a>'
+      + ' <a class="btn cinza mini" href="/scripts/baixar-tudo"'
+      + ' title="data e data-crandoria inteiras, sem mapas (.otbm), .rar e logs">&#11015; Baixar tudo (.zip)</a>';
 
     const linhas = [
       atual ? `<tr><td colspan="4"><a href="/scripts?a=${v.e(area)}&p=${encodeURIComponent(pai)}">&larr; voltar</a></td></tr>` : '',
@@ -509,6 +512,38 @@ function linkEditor(area, rel) {
   const nome = i >= 0 ? rel.slice(i + 1) : rel;
   return `/scripts?a=${encodeURIComponent(area)}&p=${encodeURIComponent(pasta)}&f=${encodeURIComponent(nome)}`;
 }
+
+// Um ZIP por vez: comprimir os ~55 MB divide os 2 vCPU com o servidor de
+// jogo, e dois cliques seguidos dobrariam isso a toa.
+let zipEmAndamento = false;
+
+app.get('/scripts/baixar-tudo', async (req, res, next) => {
+  if (zipEmAndamento) {
+    return res.redirect(comAviso('/scripts', 'erro', 'Ja tem um ZIP sendo gerado. Espere ele terminar.'));
+  }
+  zipEmAndamento = true;
+  try {
+    const arquivos = await scripts.arquivosParaZip();
+    const carimbo = new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' })
+      .replace(' ', '_').replace(/:/g, '-').slice(0, 16);
+    await auditar(req, 'scripts.baixados', 'data + data-crandoria', `${arquivos.length} arquivos`);
+    res.setHeader('Content-Type', 'application/zip');
+    res.setHeader('Content-Disposition', `attachment; filename="crandoria-scripts-${carimbo}.zip"`);
+    await zip.gerar(res, arquivos);
+    res.end();
+  } catch (err) {
+    // Depois do primeiro byte nao da mais para mostrar pagina de erro; o
+    // navegador acusa o download incompleto.
+    if (res.headersSent) {
+      console.error('zip de scripts:', err.message);
+      res.destroy();
+    } else {
+      next(err);
+    }
+  } finally {
+    zipEmAndamento = false;
+  }
+});
 
 app.get('/scripts/recentes', async (req, res, next) => {
   try {

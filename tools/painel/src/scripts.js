@@ -518,6 +518,42 @@ async function recentes({ dias = 7, busca = '', area = '', lote = null, limite =
   return { itens: soltos.slice(0, limite), total: soltos.length, lotes };
 }
 
+// Fora do ZIP de scripts: os mapas e pacotes (centenas de MB, e quem baixa
+// ja tem) e os logs do servidor, que sao registro e nao codigo.
+const FORA_DO_ZIP = new Set(['.otbm', '.rar']);
+
+/**
+ * Todos os arquivos das areas em disco, para o ZIP de "baixar tudo".
+ * `nome` e o caminho dentro do ZIP, comecando pela pasta da area.
+ */
+async function arquivosParaZip() {
+  const lista = [];
+  for (const area of AREAS) {
+    if (area.viaAgente) continue;
+    const base = path.resolve(RAIZ, area.rel);
+    const pilha = [''];
+    while (pilha.length) {
+      const rel = pilha.pop();
+      let entradas;
+      try {
+        entradas = await fs.readdir(path.join(base, rel), { withFileTypes: true });
+      } catch (_) {
+        continue;
+      }
+      for (const d of entradas) {
+        if (d.name.startsWith('.') || d.name.endsWith('.painel-tmp')) continue;
+        const r = rel ? rel + '/' + d.name : d.name;
+        // Sem seguir link simbolico, como na varredura dos recentes.
+        if (d.isDirectory()) { if (d.name !== 'logs') pilha.push(r); continue; }
+        if (!d.isFile() || FORA_DO_ZIP.has(path.extname(d.name).toLowerCase())) continue;
+        lista.push({ caminho: path.join(base, r), nome: area.rel + '/' + r });
+      }
+    }
+  }
+  lista.sort((a, b) => a.nome.localeCompare(b.nome));
+  return lista;
+}
+
 function esquecerRecentes() {
   cacheRecentes = { quando: 0, itens: null };
 }
@@ -525,5 +561,5 @@ function esquecerRecentes() {
 module.exports = {
   AREAS, EXT_EDITAVEIS, EXT_MAPA, MAX_BYTES, BACKUP_DIR, RAIZ,
   listar, ler, gravar, receber, criarPasta, historico, validarLua, podarBackups, resolver,
-  lerBackup, recentes, esquecerRecentes,
+  lerBackup, recentes, esquecerRecentes, arquivosParaZip,
 };
