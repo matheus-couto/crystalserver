@@ -497,7 +497,7 @@ QuestDoorAction = {
 		},
 	},
 	[Storage.Quest.U8_4.BloodBrothers.ArtheiDoor] = {
-		itemId = 8261,
+		itemId = 8259,
 		itemPos = {
 			{ x = 4539, y = 4279, z = 6 },
 		},

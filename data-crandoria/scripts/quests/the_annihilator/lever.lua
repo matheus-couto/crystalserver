@@ -21,6 +21,22 @@ local setting = {
     }
 }
 
+local function hasPlayerInArea(fromPosition, toPosition)
+    for x = fromPosition.x, toPosition.x do
+        for y = fromPosition.y, toPosition.y do
+            local pos = Position(x, y, fromPosition.z)
+            local tile = Tile(pos)
+            if tile then
+                local creature = tile:getTopCreature()
+                if creature and creature:isPlayer() then
+                    return true
+                end
+            end
+        end
+    end
+    return false
+end
+
 local lever = Action()
 
 function lever.onUse(player, item, fromPosition, target, toPosition, isHotkey)
@@ -43,7 +59,12 @@ function lever.onUse(player, item, fromPosition, target, toPosition, isHotkey)
         end
 
         -- Checks if there are still players inside the room, if so, return true
-        if Position.hasPlayer(setting.centerDemonRoomPosition, 4, 4) then
+        -- if Position.hasPlayer(setting.centerDemonRoomPosition, 4, 4) then
+        --     player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "A team is already inside the quest room.")
+        --     return true
+        -- end
+
+        if hasPlayerInArea(Position(5288, 5027, 8), Position(5309, 5038, 8)) then
             player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "A team is already inside the quest room.")
             return true
         end
@@ -67,11 +88,16 @@ function lever.onUse(player, item, fromPosition, target, toPosition, isHotkey)
         if setting.daily then
             player:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
         end
-        -- Not be able to push the lever back if someone is still inside the monsters room
-        if Position.hasPlayer(setting.centerDemonRoomPosition, 4, 4) then
+        -- -- Not be able to push the lever back if someone is still inside the monsters room
+        -- if Position.hasPlayer(setting.centerDemonRoomPosition, 4, 4) then
+        --     player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "A team is already inside the quest room.")
+        --     return true
+        -- end
+        if hasPlayerInArea(Position(5288, 5027, 8), Position(5309, 5038, 8)) then
             player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "A team is already inside the quest room.")
             return true
         end
+
         -- Removes all monsters so that the next team can enter
         if Position.removeMonster(setting.centerDemonRoomPosition, 4, 4) then
             return true

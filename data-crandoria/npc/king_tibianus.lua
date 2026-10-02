@@ -225,7 +225,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		elseif npcHandler:getTopic(playerId) == 16 then
 			npcHandler:say("Otimo! Meu pedido nao sera dificil para alguem tao nobre que foi mandado pelo proprio Comandante Crassus ate mim... tenho certeza disso! Bom, tudo o que eu quero é uma Bag You Covet! \z
 			Se voce me trouxer uma Bag You Covet eu saberei que voce tem seu valor e, a partir de entao, te darei meu perdao secreto. MAS ATENCAO! Esse perdao nao podera ser dado sempre e tera um custo em ouro! Aguardo pelo seu retorno!", npc, creature)
-			player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 173)
+			player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 173)
 			npcHandler:setTopic(playerId, 0)
 		elseif npcHandler:getTopic(playerId) == 17 then
 			if player:getItemCount(43895) >= 1 then
@@ -233,7 +233,7 @@ local function creatureSayCallback(npc, creature, type, message)
 				player:setStorageValue(Storage.Quest.Crandoria.Prison.AddTime, 0)
 				npcHandler:say("Otimo trabalho! Era tudo o que eu... O QUE? NAO VEIO A MINHA ESPADA? AAARGH... Enfim... Tudo certo. Agora voce podera pedir pelo meu perdao secreto uma vez por semana. \z
 				O valor do perdao secreto sera calculado de acordo com seu nivel e o seu tempo total na prisao e cobrado de voce em Gold Coins. Para isso, basta vir ate mim e me pedir por um {perdao}. Avisarei ao Comandante Crassus que voce cumpriu sua missao." , npc, creature)
-				player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 174)
+				player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 174)
 				npcHandler:setTopic(playerId, 0)
 			else
 				npcHandler:say("Voce nao possui a Bag You Covet. Nao retorne aqui sem o item necessario!", npc, creature)

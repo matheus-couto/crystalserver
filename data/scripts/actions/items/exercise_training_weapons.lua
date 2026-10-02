@@ -77,11 +77,11 @@ local function exerciseTrainingEvent(playerId, tilePosition, weaponId, dummyId)
 	end
 
 	local playerPosition = player:getPosition()
-	if not playerPosition:isProtectionZoneTile() then
-		player:sendTextMessage(MESSAGE_FAILURE, "You are no longer in a protection zone, the training has stopped.")
-		leaveExerciseTraining(playerId)
-		return false
-	end
+	-- if not playerPosition:isProtectionZoneTile() then
+	-- 	player:sendTextMessage(MESSAGE_FAILURE, "You are no longer in a protection zone, the training has stopped.")
+	-- 	leaveExerciseTraining(playerId)
+	-- 	return false
+	-- end
 
 	if player:getItemCount(weaponId) <= 0 then
 		player:sendTextMessage(MESSAGE_FAILURE, "You need the training weapon in the backpack, the training has stopped.")
@@ -197,10 +197,10 @@ function exerciseTraining.onUse(player, item, fromPosition, target, toPosition, 
 			return true
 		end
 
-		if not playerPos:isProtectionZoneTile() then
-			player:sendTextMessage(MESSAGE_FAILURE, "You need to be in a protection zone.")
-			return true
-		end
+		-- if not playerPos:isProtectionZoneTile() then
+		-- 	player:sendTextMessage(MESSAGE_FAILURE, "You need to be in a protection zone.")
+		-- 	return true
+		-- end
 
 		local playerHouse = player:getTile():getHouse()
 		local targetPos = target:getPosition()

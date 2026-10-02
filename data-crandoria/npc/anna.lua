@@ -128,9 +128,9 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U11_50.DangerousDepths.Access.LavaPumpWarzoneVI, 10)
 			player:setStorageValue(Storage.Quest.U11_50.DangerousDepths.Access.LavaPumpWarzoneV, 10)
 			player:setStorageValue(Storage.Quest.U11_50.DangerousDepths.Access.LavaPumpWarzoneIV, 30)
-			player:setStorageValue(Storage.Quest.U11_50.DangerousDepths.Dwarves.Status, 10)
-			player:setStorageValue(Storage.Quest.U11_50.DangerousDepths.Scouts.Status, 10)
-			player:setStorageValue(Storage.Quest.U11_50.DangerousDepths.Gnomes.Status, 10)	
+			-- player:setStorageValue(Storage.Quest.U11_50.DangerousDepths.Dwarves.Status, 10)
+			-- player:setStorageValue(Storage.Quest.U11_50.DangerousDepths.Scouts.Status, 10)
+			-- player:setStorageValue(Storage.Quest.U11_50.DangerousDepths.Gnomes.Status, 10)	
 
 			--In Service of Yalahar 
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline, 51)
@@ -162,15 +162,15 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U7_4.DjinnWar.Faction.MaridDoor, 1)
 			player:setStorageValue(Storage.Quest.U7_4.DjinnWar.Faction.EfreetDoor, 1)
 			-- Efreet
-			player:setStorageValue(Storage.Quest.U7_4.DjinnWar.EfreetFaction.Start, 1)
-			player:setStorageValue(Storage.Quest.U7_4.DjinnWar.EfreetFaction.Mission01, 3)
-			player:setStorageValue(Storage.Quest.U7_4.DjinnWar.EfreetFaction.Mission02, 3)
+			-- player:setStorageValue(Storage.Quest.U7_4.DjinnWar.EfreetFaction.Start, 1)
+			-- player:setStorageValue(Storage.Quest.U7_4.DjinnWar.EfreetFaction.Mission01, 3)
+			-- player:setStorageValue(Storage.Quest.U7_4.DjinnWar.EfreetFaction.Mission02, 3)
 			player:setStorageValue(Storage.Quest.U7_4.DjinnWar.EfreetFaction.Mission03, 3)
 			-- Marid
-			player:setStorageValue(Storage.Quest.U7_4.DjinnWar.MaridFaction.Start, 1)
-			player:setStorageValue(Storage.Quest.U7_4.DjinnWar.MaridFaction.Mission01, 2)
-			player:setStorageValue(Storage.Quest.U7_4.DjinnWar.MaridFaction.Mission02, 2)
-			player:setStorageValue(Storage.Quest.U7_4.DjinnWar.MaridFaction.RataMari, 2)
+			-- player:setStorageValue(Storage.Quest.U7_4.DjinnWar.MaridFaction.Start, 1)
+			-- player:setStorageValue(Storage.Quest.U7_4.DjinnWar.MaridFaction.Mission01, 2)
+			-- player:setStorageValue(Storage.Quest.U7_4.DjinnWar.MaridFaction.Mission02, 2)
+			-- player:setStorageValue(Storage.Quest.U7_4.DjinnWar.MaridFaction.RataMari, 2)
 			player:setStorageValue(Storage.Quest.U7_4.DjinnWar.MaridFaction.Mission03, 3)
 
 
@@ -207,9 +207,9 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U8_1.TibiaTales.ToAppeaseTheMightyQuest, 1)
 
 			-- Friends and Traders
-			player:setStorageValue(Storage.Quest.U7_8.FriendsandTraders.DefaultStart, 1)
-			player:setStorageValue(Storage.Quest.U7_8.FriendsandTraders.TheMermaidMarina, 2)
-			player:setStorageValue(Storage.Quest.U7_8.FriendsandTraders.TheBlessedStake, 12)				
+			player:setStorageValue(Storage.Quest.U7_8.FriendsAndTraders.DefaultStart, 1)
+			player:setStorageValue(Storage.Quest.U7_8.FriendsAndTraders.TheMermaidMarina, 2)
+			player:setStorageValue(Storage.Quest.U7_8.FriendsAndTraders.TheBlessedStake, 12)	
 
 			-- Wrath of the Emperor
 			player:setStorageValue(Storage.Quest.U8_6.WrathOfTheEmperor.Questline, 30)
@@ -240,11 +240,42 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U11_50.DangerousDepths.Scouts.Growth, 2)
 			player:setStorageValue(Storage.Quest.U11_50.DangerousDepths.Scouts.Diremaw, 2)
 
-			-- Threatened Dreams
-			player:setStorageValue(Storage.Quest.U11_40.ThreatenedDreams.Start, 1)
-			player:setStorageValue(Storage.Quest.U11_40.ThreatenedDreams.TroubledMission01, 4)
-			player:setStorageValue(Storage.Quest.U11_40.ThreatenedDreams.TroubledMission01, 17)		
-			player:setStorageValue(Storage.Quest.U11_40.ThreatenedDreams.TatteredSwanFeathers, 5)
+			-- -- Threatened Dreams
+			-- player:setStorageValue(Storage.Quest.U11_40.ThreatenedDreams.Start, 1)
+			-- player:setStorageValue(Storage.Quest.U11_40.ThreatenedDreams.TroubledMission01, 4)
+			-- player:setStorageValue(Storage.Quest.U11_40.ThreatenedDreams.TroubledMission01, 17)		
+			-- player:setStorageValue(Storage.Quest.U11_40.ThreatenedDreams.TatteredSwanFeathers, 5)
+
+			-- TEST SERVER --
+			local bagTest = player:addItem(2854, 1)
+			if bagTest then
+				bagTest:addItem(3550, 1)
+				bagTest:addItem(3043, 50)
+				bagTest:addItem(9099, 1)
+				bagTest:addItem(3550, 1)
+				bagTest:addItem(26186, 1)
+				bagTest:addItem(26186, 1)
+				bagTest:addItem(26186, 1)
+			end
+
+			-- MARK MAP --
+
+			local configMarks = {
+				{mark = "shop", position = Position(5029, 4993, 7), markId = MAPMARK_DOLLAR, description = "Shop"}, 
+				{mark = "depot", position = Position(4970, 5004, 7), markId = MAPMARK_LOCK, description = "Depot"},
+				{mark = "templo", position = Position(5000, 5000, 7), markId = MAPMARK_TEMPLE, description = "Templo"},
+				{mark = "promotion", position = Position(5016, 5017, 7), markId = MAPMARK_STAR, description = "Promotion"},
+				{mark = "municao", position = Position(4929, 4985, 7), markId = MAPMARK_BAG, description = "Municao"},
+				{mark = "potions", position = Position(4966, 4992, 7), markId = MAPMARK_BAG, description = "Potions"},
+				{mark = "food", position = Position(4950, 4993, 7), markId = MAPMARK_BAG, description = "Food"},
+				{mark = "barco", position = Position(4972, 5063, 7), markId = MAPMARK_FLAG, description = "Barco"},
+			}
+
+			local mark
+			for i = 1, #configMarks do
+				mark = configMarks[i]
+				player:addMapMark(mark.position, mark.markId, mark.description)
+			end
 
 			npcHandler:setTopic(playerId, 0)
 		end

@@ -1,0 +1,29 @@
+-- local teste = Action()
+
+-- function teste.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+
+--            Game.createMonster("Anvillux Warmaster", Position(4312, 4400, 7, true, true))
+--            Game.createMonster("Anvillux Gladiator", Position(4312, 4399, 7, true, true))
+--            Game.createMonster("Anvillux Gladiator", Position(4312, 4401, 7, true, true))
+--           Game.createMonster("Anvillux Gladiator", Position(4312, 4402, 7, true, true))
+--            Game.createMonster("Anvillux Warmaster", Position(4312, 4403, 7, true, true))
+--            Game.createMonster("Anvillux Marksman", Position(4310, 4400, 7, true, true))
+--            Game.createMonster("Anvillux Marksman", Position(4310, 4401, 7, true, true))
+--            Game.createMonster("Anvillux Marksman", Position(4310, 4402, 7, true, true))
+--            Game.createMonster("Anvillux Warlock", Position(4310, 4399, 7, true, true))
+--            Game.createMonster("Anvillux Warlock", Position(4310, 4403, 7, true, true))
+--            Game.createMonster("Chaos Warmaster", Position(4400, 4400, 7, true, true))
+--            Game.createMonster("Chaos Gladiator", Position(4400, 4399, 7, true, true))
+--            Game.createMonster("Chaos Gladiator", Position(4400, 4401, 7, true, true))
+--            Game.createMonster("Chaos Gladiator", Position(4400, 4402, 7, true, true))
+--            Game.createMonster("Chaos Warmaster", Position(4400, 4403, 7, true, true))
+--            Game.createMonster("Chaos Marksman", Position(4402, 4400, 7, true, true))
+--            Game.createMonster("Chaos Marksman", Position(4402, 4401, 7, true, true))
+--            Game.createMonster("Chaos Marksman", Position(4402, 4402, 7, true, true))
+--            Game.createMonster("Chaos Warlock", Position(4402, 4399, 7, true, true))
+--            Game.createMonster("Chaos Warlock", Position(4402, 4403, 7, true, true))
+--	return true
+-- end
+--
+-- teste:id(3554)
+-- teste:register()

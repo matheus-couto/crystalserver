@@ -114,7 +114,7 @@ function bauLendario.onUse(player, item, fromPosition, target, toPosition, isHot
             return false
         end
     else
-        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Apenas personagens com reputacao 'Lendario' podem abrir o bau.")
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Apenas personagens com reputacao 'Singular' podem abrir o bau.")
         fromPosition:sendMagicEffect(CONST_ME_POFF)
         return false
     end

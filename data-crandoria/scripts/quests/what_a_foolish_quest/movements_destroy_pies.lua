@@ -7,7 +7,7 @@ function destroyPies.onStepIn(creature, item, position, fromPosition)
 	end
 
 	if player:getStorageValue(Storage.Quest.U8_1.WhatAFoolishQuest.PieBoxTimer) > os.time() then
-		player:setStorageValue(Storage.Quest.U8_1.WhatAFoolishQuest.PieBoxTimer, 1)
+		player:getStorageValue(Storage.Quest.U8_1.WhatAFoolishQuest.PieBoxTimer, 1)
 	end
 
 	local pieBox = player:getItemById(7484, true)

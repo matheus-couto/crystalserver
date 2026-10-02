@@ -36,6 +36,9 @@ local itemsTable = {
 		{ itemName = "strong health potion", clientId = 236, buy = 115 },
 		{ itemName = "strong mana potion", clientId = 237, buy = 108 },
 		{ itemName = "ultimate health potion", clientId = 7643, buy = 379 },
+		{ itemName = "ultimate spirit potion", clientId = 23374, buy = 535 },
+		{ itemName = "ultimate mana potion", clientId = 23373, buy = 535 },
+		{ itemName = "supreme health potion", clientId = 23375, buy = 685 },
 		{ itemName = "vial", clientId = 2874, sell = 5 },
 	},
 	["runes"] = {
@@ -60,17 +63,23 @@ local itemsTable = {
 		{ itemName = "stalagmite rune", clientId = 3179, buy = 12 },
 		{ itemName = "sudden death rune", clientId = 3155, buy = 162 },
 		{ itemName = "ultimate healing rune", clientId = 3160, buy = 175 },
+		{ itemName = "stone shower rune", clientId = 3175, buy = 37 },
+		{ itemName = "thunderstorm rune", clientId = 3202, buy = 47 },
 	},
 	["wands"] = {
 		{ itemName = "moonlight rod", clientId = 3070, buy = 1000 },
+		{ itemName = "hailstorm rod", clientId = 3067, buy = 15000 },
 		{ itemName = "necrotic rod", clientId = 3069, buy = 5000 },
 		{ itemName = "snakebite rod", clientId = 3066, buy = 500 },
 		{ itemName = "springsprout rod", clientId = 8084, buy = 18000 },
+		{ itemName = "underworld rod", clientId = 8082, buy = 22000 },
 		{ itemName = "terra rod", clientId = 3065, buy = 10000 },
 		{ itemName = "wand of cosmic energy", clientId = 3073, buy = 10000 },
 		{ itemName = "wand of decay", clientId = 3072, buy = 5000 },
 		{ itemName = "wand of dragonbreath", clientId = 3075, buy = 1000 },
 		{ itemName = "wand of vortex", clientId = 3074, buy = 500 },
+		{ itemName = "wand of inferno", clientId = 3071, buy = 15000 },
+		{ itemName = "wand of voodoo", clientId = 8094, buy = 22000 },
 	},
 	["exercise weapons"] = {
 		{ itemName = "durable exercise rod", clientId = 35283, buy = 1250000, count = 1800 },
@@ -135,7 +144,6 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
-	local categoryTable = itemsTable[message:lower()]
 	local itemId = items[player:getVocation():getBaseId()]
 	if MsgContains(message, 'first rod') or MsgContains(message, 'first wand') then
 		if player:isMage() then
@@ -149,7 +157,7 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:say('Sorry, you aren\'t a druid either a sorcerer.', npc, creature)
 		end
 	elseif MsgContains(message, "primeiro dragao") then
-		if player:getStorageValue(Storage.Quest.U11_02.TheFirstDragon.Progresso) == 3 then
+		if player:getStorageValue(Storage.FirstDragon.Progresso) == 3 then
 			npcHandler:say("Voce esta maluco? Esta mesmo pensando em lutar contra o Primeiro Dragao das lendas? \z
 			Eu nao sei muito sobre ele e nao te diria nada se soubesse. Enfrentar o Primeiro Dragao... Ha! \z
 			Faz ideia do risco que isso pode trazer para Crandoria? Nao posso te ajudar.", npc, creature)

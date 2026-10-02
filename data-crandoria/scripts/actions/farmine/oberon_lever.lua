@@ -1,6 +1,6 @@
 	local setting = {
 	centerRoom = {x = 4830, y = 4479, z = 9},
-	storage = Storage.Quest.U11_80.TheSecretLibrary.FalconBastion.OberonCrandoriaTimer,
+	storage = Storage.Quest.U11_80.TheSecretLibrary.FalconBastion.ChestsTimer.OberonCrandoriaTimer,
 	Pillar1pos = {x = 4827, y = 4477, z = 9},
 	bossPosition = {x = 4830, y = 4478, z = 9},
 	kickPosition = {x = 4766, y = 4450, z = 9},
@@ -12,7 +12,7 @@ local oberonLever = Action()
 -- Start Script 
 function oberonLever.onUse(creature, item, fromPosition, target, toPosition, isHotkey)
 	if item.itemid == 2772 and item.actionid == 57605 then
-		if creature:getStorageValue(Storage.Quest.U11_80.TheSecretLibrary.FalconBastion.OberonCrandoriaTimer) > os.time() then
+		if creature:getStorageValue(Storage.Quest.U11_80.TheSecretLibrary.FalconBastion.ChestsTimer.OberonCrandoriaTimer) > os.time() then
 			creature:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Grand Master Oberon so pode ser enfrentado a cada 20 horas.")
 			creature:getPosition():sendMagicEffect(CONST_ME_POFF)
 			return false
@@ -65,7 +65,7 @@ function oberonLever.onUse(creature, item, fromPosition, target, toPosition, isH
 			player:teleportTo(Position(setting.playerTeleport), false)
 			doSendMagicEffect(player:getPosition(), CONST_ME_TELEPORT)
 			player:setStorageValue(Storage.Quest.U11_80.TheSecretLibrary.FalconBastion.OberonTimer, os.time() + 20 * 60)
-			player:setStorageValue(Storage.Quest.U11_80.TheSecretLibrary.FalconBastion.OberonCrandoriaTimer, os.time() + 20 * 60 * 60)
+			player:setStorageValue(Storage.Quest.U11_80.TheSecretLibrary.FalconBastion.ChestsTimer.OberonCrandoriaTimer, os.time() + 20 * 60 * 60)
 			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'You have 20 minute(s) to defeat the boss.')
 			addEvent(function(cid)
 				local playerToRemove = Player(cid)

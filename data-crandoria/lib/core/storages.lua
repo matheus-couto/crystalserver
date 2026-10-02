@@ -683,11 +683,11 @@ Storage = {
 				ItensDeQualidade = 12701,
 				ItemsTimer = 12702,
 				CountGondariel = 12703,
-				-- Teste PvP do Crassus (etapas 164-167)
-				PvpAlvos = 13424,
-				PvpAlvo1 = 13425,
-				PvpAlvo2 = 13426,
-				PvpMaosLimpas = 13427,
+				-- -- Teste PvP do Crassus (etapas 164-167)
+				-- PvpAlvos = 13424,
+				-- PvpAlvo1 = 13425,
+				-- PvpAlvo2 = 13426,
+				-- PvpMaosLimpas = 13427,
 				},
 			QuestTimers = { -- 12711 - 12725
 				Frigard = 12711,
@@ -1286,18 +1286,12 @@ Storage = {
 				Progresso = 13404,
 				RootkrakenTimer = 13405,
 			},
-			-- A Fada do Doce lia e gravava Candia.Progresso, mas a chave nunca
-			-- foi declarada: cada fala dela caia em "Storage key is nil" e a
-			-- quest de Candia nunca funcionou.
 			Candia = { -- 13407 - 13409
 				Progresso = 13407,
 			},
 			-- Chaves que os scripts ja usavam sem estarem declaradas; cada uso
 			-- caia em "Storage key is nil".
-			KassandraTimer = 13410, -- dicas da Kassandra, uma a cada 20 horas
-			-- Contagem de resets. Ainda nao existe sistema de reset: fica em -1
-			-- e o que exige reset (Thorwulf, Melchior, Victor, Mestre de Batalha)
-			-- continua fechado ate ele existir.
+			KassandraTimer = 13410, 
 			Reset = { -- 13411
 				Count = 13411,
 			},
@@ -1315,6 +1309,14 @@ Storage = {
 				Segundo = 13421,
 				Terceiro = 13422,
 				TimerTile = 13423,
+			},
+			RoostOfTheGraveborn = { -- 13424 - 13430
+				Progresso = 13424,
+				AdventurerGroupTimer = 13425,
+				EldritchDragonLordTimer = 13426,
+				IceHorrorTimer = 13427,
+				GravediggerTimer = 13428,
+				GravediggerWallCounter = 13429,
 			},
 		},
 		-- Start of quests per version

@@ -84,7 +84,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		if player:getStorageValue(Storage.Quest.Crandoria.NilluxQuest.Progresso) == 1 then
 			npcHandler:say("Ah.. o caro Ginger. Nao o vejo ha semanas! Mas ele sempre passa por aqui. Da ultima vez que o vi ele disse que buscava por um esconderijo. \z
 			Ele estava viajando e parecia sem dinheiro. Tentei ajuda-lo, mas ele disse que caminharia enquanto nao conseguisse pegar um barco ou um tapete.", npc, creature)
-			player:setStorageValue(Storage.Quest.Crandoria.NilluxQuest.Progresso, 2)
+			player:getStorageValue(Storage.Quest.Crandoria.NilluxQuest.Progresso, 2)
 			npcHandler:setTopic(playerId, 0)
 		end
 	elseif MsgContains(message, "primeiro dragao") then

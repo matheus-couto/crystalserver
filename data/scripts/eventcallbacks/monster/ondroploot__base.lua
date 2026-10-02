@@ -16,10 +16,12 @@ function callback.monsterOnDropLoot(monster, corpse)
 	end
 
 	-- CRANDORIA EDIT -- LUCK
-	local storageSorte = math.max(0, player:getStorageValue(Storage.Quest.Crandoria.ArvoreDeForca.LuckLevel))
-	if storageSorte > 0 then
-		factor = factor * (1 + (0.01 * storageSorte))
-		msgSuffix = msgSuffix .. string.format(" (bonus de Sorte: +%d%%)", storageSorte)
+	if player then
+		local storageSorte = math.max(0, player:getStorageValue(Storage.Quest.Crandoria.ArvoreDeForca.LuckLevel))
+		if storageSorte > 0 then
+			factor = factor * (1 + (0.01 * storageSorte))
+			msgSuffix = msgSuffix .. string.format(" (bonus de Sorte: +%d%%)", storageSorte)
+		end
 	end
 	-----------------------------
 

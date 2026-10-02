@@ -59,14 +59,14 @@ local function creatureSayCallback(npc, creature, type, message)
     local rep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
 
     if MsgContains(message, "treasure") or MsgContains(message, "tesouro") or MsgContains(message, "passage") or MsgContains(message, "sail") or MsgContains(message, "viagem") then
-        if storage < 1 then
-            npcHandler:say("Ofereco meus servicos de viagem a qualquer um que puder me ajudar a recuperar um tesouro perdido. \z
-            Ele se consiste em 1 Holy Falcon, 1 Holy Scarab e 50 Gold Tokens. Voce tem esses itens com voce?", npc, creature)
-            npcHandler:setTopic(playerId, 1)
-        else
+        -- if storage < 1 then
+        --     npcHandler:say("Ofereco meus servicos de viagem a qualquer um que puder me ajudar a recuperar um tesouro perdido. \z
+        --     Ele se consiste em 1 Holy Falcon, 1 Holy Scarab e 50 Gold Tokens. Voce tem esses itens com voce?", npc, creature)
+        --     npcHandler:setTopic(playerId, 1)
+        -- else
             npcHandler:say("Posso te levar para {Crandoria}, {Trivallis}, {Dracantus}, {Ravencrest}, {Gnomprona}, {Tartarus} ou {Krotkah}. Basta escolher o destino.", npc, creature)
             npcHandler:setTopic(playerId, 2)
-        end
+        -- end
     elseif MsgContains(message, "crandoria") then
         if npcHandler:getTopic(playerId) == 2 or storage > 0 then
             npcHandler:say("Serao 1000 Gold Coins para viajar ate Crandoria. Esta pronto para a viagem? (gratuito para Reconhecidos)", npc, creature)

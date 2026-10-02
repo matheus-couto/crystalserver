@@ -22,13 +22,15 @@ local config = {
         {itemId = 3381, count = {1, 1},    chance = 1200 }, -- crown armor
         {itemId = 3386, count = {1, 1},    chance = 500 }, -- dragon scale mail
         {itemId = 30059, count = {1, 1},    chance = 500 }, -- giant ruby
-        {itemId = 21145, count = {1, 1},    chance = 400 },  -- bottle of glooth
-        -- {itemId = 20138, count = {1, 1},    chance = 300 }, -- stamina refill 2h
+        {itemId = 14112, count = {1, 1},    chance = 250 },  -- Bar of Gold
+        {itemId = 20138, count = {1, 1},    chance = 100 }, -- stamina refill 2h
         {itemId = 9099, count = {1, 1},    chance = 550 },  -- candle
         {itemId = 8043, count = {1, 1},    chance = 1200 },  -- focus cape
         {itemId = 3382, count = {1, 1},    chance = 1200 },  -- Crown Legs
         {itemId = 14086, count = {1, 1},    chance = 1200 },  -- Calopteryx Cape
-        {itemId = 23677, count = {1, 1},    chance = 100 },  -- Chaotic jinx
+        {itemId = 22739, count = {1, 1},    chance = 50 },  -- Cobra You Desire
+        {itemId = 36827, count = {1, 1},    chance = 50 },  -- Lion You Desire
+        {itemId = 31633, count = {1, 1},    chance = 50 },  -- Falcon You Desire
         {itemId = 22706, count = {1, 1},    chance = 150 },  -- Special Casino Ticket
         {itemId = 14087, count = {1, 1},    chance = 1000 },  -- Grasshopper Legs
         {itemId = 3392, count = {1, 1},    chance = 1200 },  -- Royal Helmet
@@ -142,10 +144,10 @@ local function rewardPlayer(playerId, leverPosition)
     local item = Tile(config.roulettePositions[4]):getTopVisibleThing()
     
     if ItemType(item:getId()):getCharges() then
-        local addedItem = player:addItem(item:getId(), 1, true)
+        local addedItem = player:addItem(item:getId(), 1)
         addedItem:setAttribute("charges", item:getCharges())
     else
-        player:addItem(item:getId(), item:getCount(), true)
+        player:addItem(item:getId(), item:getCount())
     end
 
     player:setStorageValue(config.rouletteOptions.rouletteStorage, -1)

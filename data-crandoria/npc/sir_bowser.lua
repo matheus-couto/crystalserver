@@ -61,7 +61,7 @@ local function creatureSayCallback(npc, creature, type, message)
     if MsgContains(message, "osric") or MsgContains(message, "astralis coins") then
 		if player:getStorageValue(Storage.Quest.Crandoria.SkillsColeta.PlantasSelvagens) == 8 then
             npcHandler:say("O que? Ha ha ha! Nao acredite nesse inseto. Ele me devia apenas 5 Astralis Coins, e me pagou na semana passada! Ha ha ha ha!! Que rapaz maldito...", npc, creature)
-			player:setStorageValue(Storage.Quest.Crandoria.SkillsColeta.PlantasSelvagens, 9)
+			player:getStorageValue(Storage.Quest.Crandoria.SkillsColeta.PlantasSelvagens, 9)
 			npcHandler:setTopic(playerId, 0)
 		end
 	end

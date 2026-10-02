@@ -8441,7 +8441,7 @@
 		<attribute key="attack" value="25" />
 		<attribute key="weight" value="2000" />
 		<attribute key="script" value="moveevent;weapon">
-			<attribute key="breakChance" value="3" />
+			<attribute key="breakChance" value="0" />
 			<attribute key="weaponType" value="missile" />
 			<attribute key="slot" value="hand" />
 		</attribute>
@@ -15003,8 +15003,6 @@
 	<item id="5462" article="a" name="sugar cane">
 		<attribute key="primarytype" value="grass" />
 		<attribute key="description" value="It has just been harvested." />
-		<attribute key="duration" value="240" />
-		<attribute key="decayTo" value="5470" />
 	</item>
 	<item id="5463" article="a" name="sugar cane">
 		<attribute key="primarytype" value="grass" />
@@ -15031,8 +15029,6 @@
 	</item>
 	<item id="5470" article="a" name="sugar cane">
 		<attribute key="primarytype" value="grass" />
-		<attribute key="duration" value="240" />
-		<attribute key="decayTo" value="5465" />
 	</item>
 	<item fromid="5471" toid="5472" article="a" name="ball on chains" />
 	<item fromid="5473" toid="5474" article="an" name="iron maiden">
@@ -23478,9 +23474,10 @@
 	<item id="8777" article="a" name="Rerun's ring">
 		<attribute key="weight" value="90" />
 	</item>
-	<item id="8778" article="a" name="jester doll">
-		<attribute key="primarytype" value="dolls and bears" />
-		<attribute key="weight" value="1200" />
+	<item id="8778" article="a" name="addon doll">
+		<attribute key="description" value="Use o comando !addon para obter um addon da Store de ate 600 TC."/>
+		<attribute key="primarytype" value="dolls and bears"/>
+		<attribute key="weight" value="1200"/>
 	</item>
 	<item id="8779" article="the" name="head of a jester doll">
 		<attribute key="weight" value="400" />
@@ -24435,6 +24432,9 @@
 		<attribute key="showduration" value="1"/>
 		<attribute key="transformequipto" value="9098"/>
 		<attribute key="weight" value="200"/>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="ammo" />
+		</attribute>
 	</item>
 	<item id="9098" article="a" name="black candle">
 		<attribute key="showduration" value="1"/>
@@ -24447,6 +24447,9 @@
 		<attribute key="transformdeequipto" value="9099"/>
 		<attribute key="weight" value="200"/>
 		<attribute key="decayTo" value="0"/>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="ammo" />
+		</attribute>
 	</item>
 	<item id="9100" article="a" name="mystic flame">
 		<attribute key="primarytype" value="teleporters" />
@@ -45710,9 +45713,9 @@
 		<attribute key="description" value="It is made of dark oak and crested with a large golden F" />
 		<attribute key="weight" value="1400" />
 	</item>
-	<item id="22771" article="a" name="scroll of ascension">
-		<attribute key="description" value="It is inscribed with faintly glowing ink and sealed with the letter F" />
-		<attribute key="weight" value="800" />
+	<item id="22771" article="a" name="mount certificate">
+		<attribute key="description" value="Fornece uma montaria da Store de ate 600 Tibia Coins com o comando !mount."/>
+		<attribute key="weight" value="800"/>
 	</item>
 	<item id="22772" article="a" name="scroll of ascension">
 		<attribute key="description" value="It is inscribed with faintly glowing ink and sealed with the letter F" />

@@ -145,15 +145,15 @@ TeleportItemAction = {
 TeleportItemUnique = {
 	[15001] = {
 		itemId = 31673,
-		itemPos = { x = 33315, y = 32647, z = 6 },
-		destination = { x = 33384, y = 32627, z = 7 },
-		effect = CONST_ME_TELEPORT,
+		itemPos = {x = 5685, y = 4678, z = 6},
+		destination = {x = 5755, y = 4658, z = 7},
+		effect = CONST_ME_TELEPORT
 	},
 	[15002] = {
-		itemId = 1759,
-		itemPos = { x = 33383, y = 32626, z = 7 },
-		destination = { x = 33314, y = 32647, z = 6 },
-		effect = CONST_ME_TELEPORT,
+		itemId = 4997,
+		itemPos = {x = 5754, y = 4657, z = 7},
+		destination = {x = 5684, y = 4677, z = 6},
+		effect = CONST_ME_TELEPORT
 	},
 	[15003] = {
 		itemId = 5679,
@@ -161,11 +161,78 @@ TeleportItemUnique = {
 		destination = { x = 33916, y = 31466, z = 8 },
 		effect = CONST_ME_TELEPORT,
 	},
-	-- Faceless Bane entrance
+	-- CRANDORIA
+	-- ROTTEN BLOOD QUEST
 	[15004] = {
-		itemId = 29954,
-		itemPos = { x = 33619, y = 32518, z = 15 },
-		destination = { x = 33640, y = 32561, z = 13 },
-		effect = CONST_ME_TELEPORT,
+		itemId = 33017,
+		itemPos = {x = 5938, y = 5020, z = 14},
+		destination = {x = 5955, y = 5122, z = 13},
+		effect = CONST_ME_TELEPORT
 	},
+	[15006] = {
+		itemId = 33017,
+		itemPos = {x = 5955, y = 5121, z = 13},
+		destination = {x = 5938, y = 5022, z = 14},
+		effect = CONST_ME_TELEPORT
+	},
+	[15007] = {
+		itemId = 33017,
+		itemPos = {x = 5939, y = 5051, z = 14},
+		destination = {x = 5811, y = 5248, z = 13},
+		effect = CONST_ME_TELEPORT
+	},
+	[15008] = {
+		itemId = 33017,
+		itemPos = {x = 5811, y = 5247, z = 13},
+		destination = {x = 5939, y = 5050, z = 14},
+		effect = CONST_ME_TELEPORT
+	},
+	[15009] = {
+		itemId = 33017,
+		itemPos = {x = 5966, y = 5020, z = 14},
+		destination = {x = 5861, y = 5127, z = 13},
+		effect = CONST_ME_TELEPORT
+	},
+	[15010] = {
+		itemId = 33017,
+		itemPos = {x = 5861, y = 5126, z = 13},
+		destination = {x = 5966, y = 5021, z = 14},
+		effect = CONST_ME_TELEPORT
+	},
+	[15011] = {
+		itemId = 33017,
+		itemPos = {x = 5963, y = 5052, z = 15},
+		destination = {x = 5730, y = 5169, z = 14},
+		effect = CONST_ME_TELEPORT
+	},
+	[15012] = {
+		itemId = 33017,
+		itemPos = {x = 5730, y = 5168, z = 14},
+		destination = {x = 5963, y = 5051, z = 15},
+		effect = CONST_ME_TELEPORT
+	},
+	[15013] = {
+		itemId = 33017,
+		itemPos = {x = 5904, y = 5314, z = 15},
+		destination = {x = 5773, y = 5248, z = 15},
+		effect = CONST_ME_TELEPORT
+	},
+	[15014] = {
+		itemId = 33017,
+		itemPos = {x = 5613, y = 5113, z = 15},
+		destination = {x = 5773, y = 5282, z = 15},
+		effect = CONST_ME_TELEPORT
+	},
+	[15015] = {
+		itemId = 33017,
+		itemPos = {x = 6018, y = 5164, z = 15},
+		destination = {x = 5667, y = 5280, z = 15},
+		effect = CONST_ME_TELEPORT
+	},
+	[15016] = {
+		itemId = 33017,
+		itemPos = {x = 5825, y = 5165, z = 15},
+		destination = {x = 5668, y = 5248, z = 15},
+		effect = CONST_ME_TELEPORT
+	}
 }

@@ -121,7 +121,7 @@ local function creatureSayCallback(npc, creature, type, message)
             Mas preste atencao! As alavancas devem ser utilizadas na ordem correta, seguindo um sentido anti horario. Como minha memoria ja nao e a mesma, ha placas ao lado de cada uma das alavancas identificando sua ordem. Basta segui-las. \z
             Volte quando tiver ativado todas as alavancas!", npc, creature)
             player:setStorageValue(Storage.Quest.Crandoria.BloodPassageQuest.Levers, 1)
-            player:setStorageValue(Storage.Quest.Crandoria.BloodPassageQuest.SecondTask, 0)
+            player:getStorageValue(Storage.Quest.Crandoria.BloodPassageQuest.SecondTask, 0)
             npcHandler:setTopic(playerId, 0)
         elseif npcHandler:getTopic(playerId) == 2 then
             npcHandler:say("Otimo. Me escute bem. Passando pelo caminho de sangue voce chegara a escadas de pedra. Descendo essas escadas voce vai se deparar com monstros terriveis e demonios infernais. No fundo do lugar ha uma fissura no solo \z

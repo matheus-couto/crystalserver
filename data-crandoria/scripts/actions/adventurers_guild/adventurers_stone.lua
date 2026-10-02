@@ -22,7 +22,7 @@ function adventurersStone.onUse(player, item, fromPosition, target, toPosition, 
 	local playerPos, isInTemple, temple, townId = player:getPosition(), false
 	for i = 1, #setting do
 		temple = setting[i]
-		if isInRange(playerPos, temple.fromPos, temple.toPos) then
+		if playerPos:isInRange(temple.fromPos, temple.toPos) then
 			if Tile(playerPos):hasFlag(TILESTATE_PROTECTIONZONE) then
 				isInTemple, townId = true, temple.townId
 				break
@@ -35,7 +35,7 @@ function adventurersStone.onUse(player, item, fromPosition, target, toPosition, 
 		return true
 	end
 
-	player:setStorageValue(Storage.AdventurersGuild.Stone, townId)
+	player:setStorageValue(Storage.Quest.U9_80.AdventurersGuild.Stone, townId)
 	playerPos:sendMagicEffect(CONST_ME_TELEPORT)
 
 	local destination = Position(5040, 5129, 7)

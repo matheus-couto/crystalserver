@@ -20,7 +20,8 @@ local config = {
     prizePool = {
         {itemId = 14112, count = {1, 1},   chance = 2775}, -- {itemId = itemid, count = {min, max}, chance = chance/10000} (crystal coins)
         {itemId = 8153, count = {1, 1},    chance = 100 }, -- VIP
-        {itemId = 35909, count = {1, 1},    chance = 50 }, -- Chaotic luck
+        -- {itemId = 35909, count = {1, 1},    chance = 50 }, -- Chaotic luck
+        {itemId = 52759, count = {1, 1},    chance = 50 }, -- Stag You Desire
         {itemId = 3024, count = {1, 1},    chance = 200 }, -- Holy Falcon
         {itemId = 3366, count = {1, 1},    chance = 1250 }, -- MPA
         {itemId = 11468, count = {1, 1},    chance = 50 }, -- blessed symbol

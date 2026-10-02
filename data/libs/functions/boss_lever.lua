@@ -428,7 +428,7 @@ function CreateDefaultLeverBoss(player, config)
     lever:checkPositions()
     if lever:checkConditions() then
         spec:removeMonsters()
-		for _, monster in pairs(self.monsters) do
+		for _, monster in pairs(config.monsters or {}) do
 			Game.createMonster(monster.name, monster.pos, true, true)
 		end
         local boss = Game.createMonster(config.boss.name, config.boss.position, true, true)

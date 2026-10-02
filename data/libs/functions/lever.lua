@@ -198,6 +198,27 @@ function Lever.setCooldownAllPlayers(self, bossName, value)
 	end
 end
 
+-- CRANDORIA
+---@generic Storage
+---@param key Storage
+---@param value number
+---@return nil
+function Lever.setStorageAllPlayers(self, key, value) -- Will set storage on all players
+    local info = self:getInfoPositions()
+    if not info then
+        error("Necessary information from players")
+        return false
+    end
+
+    for i, v in pairs(info) do
+        local player = v.creature
+        if player then
+            player:setStorageValue(key, value)
+            player:sendBosstiaryCooldownTimer()
+        end
+    end
+end
+
 function Lever.canUseLever(self, player, bossName, timeToFightAgain)
 	local info = self:getInfoPositions()
 	for _, v in pairs(info) do

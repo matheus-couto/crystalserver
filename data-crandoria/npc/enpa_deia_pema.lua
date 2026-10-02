@@ -66,6 +66,7 @@ end
 local function creatureSayCallback(npc, creature, type, message)
 	local player = Player(creature)
 	local playerId = player:getId()
+	local kv = player:questKV(MONK_QUEST)
 
 	-- local storage = Storage.Quest.U15_00.TheWayOfTheMonk.Questline
 
