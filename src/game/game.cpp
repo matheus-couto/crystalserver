@@ -7770,8 +7770,11 @@ int32_t Game::applyHealthChange(const CombatDamage &damage, const std::shared_pt
 		// Vocation Adjustment: Mana Buffer (Sorcerer + Druid). If incoming damage would exceed the
 		// current HP, the overkill is drained from mana x8 (plus 25% of max mana at most once per 2s)
 		// and the player survives at 1 HP. If the mana cannot cover the cost, the player dies normally.
+		// Crandoria: desligado. Valia para todo sorcerer/druid de qualquer level, sem perk da Wheel,
+		// e no jogo parecia um utamo vita automatico na hora de morrer.
+		constexpr bool manaBufferEnabled = false;
 		const auto &targetVocation = targetPlayer->getVocation();
-		if (targetVocation && (targetVocation->getBaseId() == VOCATION_SORCERER || targetVocation->getBaseId() == VOCATION_DRUID)
+		if (manaBufferEnabled && targetVocation && (targetVocation->getBaseId() == VOCATION_SORCERER || targetVocation->getBaseId() == VOCATION_DRUID)
 		    && (damage.primary.value + damage.secondary.value) >= targetHealth) {
 			const int32_t overkill = (damage.primary.value + damage.secondary.value) - targetHealth + 1;
 			const bool taxReady = targetPlayer->getManaBufferTaxTime() <= OTSYS_TIME();
