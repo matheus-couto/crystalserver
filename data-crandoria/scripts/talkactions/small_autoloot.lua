@@ -114,6 +114,25 @@ local function hasPlayerAutolootItem(player, itemId)
     return itemSet[itemId] == true
 end
 
+-- A loot pouch (id 23721) fica no store inbox, que o item:moveTo(player) nao percorre
+-- (so olha os slots do inventario), entao os itens iam sempre para a mochila.
+local function getLootPouch(player)
+    local inbox = player:getStoreInbox()
+    if inbox then
+        for _, pouch in ipairs(inbox:getItems() or {}) do
+            if pouch:getId() == ITEM_GOLD_POUCH and pouch:isContainer() then
+                return pouch
+            end
+        end
+    end
+
+    local pouch = player:getItemById(ITEM_GOLD_POUCH, true)
+    if pouch and pouch:isContainer() then
+        return pouch
+    end
+    return nil
+end
+
 -- CORRIGIDO: EventCallback() sem argumento estava lançando "Invalid callback
 -- name" direto no construtor. Igual aos outros construtores de evento do seu
 -- servidor (CreatureEvent, GlobalEvent, etc.), esse também espera um nome.
@@ -142,9 +161,11 @@ local function doAutoloot(playerId, corpsePos)
         return
     end
 
+    local pouch = getLootPouch(player)
     for _, item in ipairs(corpse:getItems()) do
         if hasPlayerAutolootItem(player, item:getId()) then
-            if not item:moveTo(player) then
+            -- Vai para a loot pouch; se nao houver (ou falhar), cai na mochila como antes.
+            if not (pouch and item:moveTo(pouch)) and not item:moveTo(player) then
                 player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have no capacity.")
                 return
             end
