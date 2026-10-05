@@ -131,6 +131,14 @@ public:
 	[[nodiscard]] std::vector<ScriptBinding> getScriptBindings(const std::shared_ptr<Item> &item) const;
 
 	void clear();
+	/**
+	 * Crandoria: events loaded from one script file (datapack-relative path, as
+	 * ScriptBindings::trimPath() writes it). With @p undo they are removed and the
+	 * way to put them back is recorded; with nullptr they are only counted.
+	 * Used by ScriptReload::reloadFile() to reload a single file in place.
+	 */
+	size_t removeScriptFile(const std::string &file, ScriptReloadUndo* undo);
+
 
 private:
 	bool registerEvent(const std::shared_ptr<MoveEvent> &moveEvent, int32_t id, std::map<int32_t, MoveEventList> &moveListMap) const;

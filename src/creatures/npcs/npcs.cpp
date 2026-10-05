@@ -152,3 +152,35 @@ std::shared_ptr<NpcType> Npcs::getNpcType(const std::string &name, bool create /
 
 	return create ? npcs[key] = std::make_shared<NpcType>(name) : nullptr;
 }
+
+size_t Npcs::removeScriptFile(const std::string &file, ScriptReloadUndo* undo) {
+	size_t found = 0;
+	for (const auto &[name, npcType] : npcs) {
+		auto &info = npcType->info;
+		if (!info.scriptInterface) {
+			continue;
+		}
+		bool fromFile = false;
+		for (const auto id : { info.creatureAppearEvent, info.creatureDisappearEvent, info.creatureMoveEvent, info.creatureSayEvent, info.thinkEvent, info.playerCloseChannel, info.playerBuyEvent, info.playerSellEvent, info.playerLookEvent }) {
+			if (id <= 0) {
+				continue;
+			}
+			const auto source = ScriptBindings::trimPath(info.scriptInterface->getFileById(id));
+			if (source.size() > file.size() && source.compare(0, file.size(), file) == 0 && source[file.size()] == ':') {
+				fromFile = true;
+				break;
+			}
+		}
+		if (!fromFile) {
+			continue;
+		}
+		++found;
+		if (undo) {
+			// NPCs on the map point to this type: keep the object, reset what the
+			// file fills in, so loading it again does not stack the shop twice.
+			undo->emplace_back([npcType, previous = info] { npcType->info = previous; });
+			info = decltype(npcType->info) {};
+		}
+	}
+	return found;
+}

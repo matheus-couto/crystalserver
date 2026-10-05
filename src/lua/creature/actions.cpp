@@ -728,3 +728,27 @@ bool Action::executeUse(const std::shared_ptr<Player> &player, const std::shared
 	LuaScriptInterface::pushBoolean(L, isHotkey);
 	return getScriptInterface()->callFunction(6);
 }
+
+size_t Actions::removeScriptFile(const std::string &file, ScriptReloadUndo* undo) {
+	std::set<const Action*> found;
+	const auto sweep = [&](auto &map) {
+		for (auto it = map.begin(); it != map.end();) {
+			if (!ScriptBindings::fromFile(it->second, file)) {
+				++it;
+				continue;
+			}
+			found.insert(it->second.get());
+			if (!undo) {
+				++it;
+				continue;
+			}
+			undo->emplace_back([&map, key = it->first, action = it->second] { map.try_emplace(key, action); });
+			it = map.erase(it);
+		}
+	};
+	sweep(useItemMap);
+	sweep(uniqueItemMap);
+	sweep(actionItemMap);
+	sweep(actionPositionMap);
+	return found.size();
+}

@@ -161,3 +161,20 @@ void TalkAction::setGroupType(uint8_t newGroupType) {
 const uint8_t &TalkAction::getGroupType() const {
 	return m_groupType;
 }
+
+size_t TalkActions::removeScriptFile(const std::string &file, ScriptReloadUndo* undo) {
+	std::vector<std::string> words;
+	for (const auto &[word, talkAction] : talkActions) {
+		if (ScriptBindings::fromFile(talkAction, file)) {
+			words.emplace_back(word);
+		}
+	}
+	if (undo) {
+		for (const auto &word : words) {
+			const auto talkAction = talkActions[word];
+			undo->emplace_back([this, word, talkAction] { talkActions.try_emplace(word, talkAction); });
+			talkActions.erase(word);
+		}
+	}
+	return words.size();
+}

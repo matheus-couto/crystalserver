@@ -984,3 +984,33 @@ void MoveEvent::addVocEquipMap(const std::string &vocName) {
 	const uint16_t vocationId = g_vocations().getVocationId(vocName);
 	vocEquipMap[vocationId] = true;
 }
+
+size_t MoveEvents::removeScriptFile(const std::string &file, ScriptReloadUndo* undo) {
+	std::set<const MoveEvent*> found;
+	const auto sweep = [&](auto &map) {
+		for (auto &entry : map) {
+			const auto key = entry.first;
+			for (int type = 0; type < MOVE_EVENT_LAST; ++type) {
+				auto &list = entry.second.moveEvent[type];
+				for (auto it = list.begin(); it != list.end();) {
+					if (!ScriptBindings::fromFile(*it, file)) {
+						++it;
+						continue;
+					}
+					found.insert(it->get());
+					if (!undo) {
+						++it;
+						continue;
+					}
+					undo->emplace_back([&map, key, type, moveEvent = *it] { map[key].moveEvent[type].push_back(moveEvent); });
+					it = list.erase(it);
+				}
+			}
+		}
+	};
+	sweep(itemIdMap);
+	sweep(actionIdMap);
+	sweep(uniqueIdMap);
+	sweep(positionsMap);
+	return found.size();
+}

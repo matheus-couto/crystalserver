@@ -192,6 +192,14 @@ public:
 
 	// Clear maps for reloading
 	void clear();
+	/**
+	 * Crandoria: events loaded from one script file (datapack-relative path, as
+	 * ScriptBindings::trimPath() writes it). With @p undo they are removed and the
+	 * way to put them back is recorded; with nullptr they are only counted.
+	 * Used by ScriptReload::reloadFile() to reload a single file in place.
+	 */
+	size_t removeScriptFile(const std::string &file, ScriptReloadUndo* undo);
+
 
 private:
 	bool hasPosition(const Position &position) const {

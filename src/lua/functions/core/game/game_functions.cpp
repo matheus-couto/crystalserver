@@ -37,6 +37,7 @@
 #include "lua/functions/creatures/npc/npc_type_functions.hpp"
 #include "lua/functions/events/event_callback_functions.hpp"
 #include "lua/scripts/lua_environment.hpp"
+#include "lua/scripts/script_reload.hpp"
 #include "map/spectators.hpp"
 #include "lua/functions/lua_functions_loader.hpp"
 
@@ -89,6 +90,7 @@ void GameFunctions::init(lua_State* L) {
 	Lua::registerMethod(L, "Game", "getClientVersion", GameFunctions::luaGameGetClientVersion);
 
 	Lua::registerMethod(L, "Game", "reload", GameFunctions::luaGameReload);
+	Lua::registerMethod(L, "Game", "reloadScriptFile", GameFunctions::luaGameReloadScriptFile);
 
 	Lua::registerMethod(L, "Game", "hasDistanceEffect", GameFunctions::luaGameHasDistanceEffect);
 	Lua::registerMethod(L, "Game", "hasEffect", GameFunctions::luaGameHasEffect);
@@ -789,6 +791,15 @@ int GameFunctions::luaGameGetClientVersion(lua_State* L) {
 	const std::string version = fmt::format("{}.{}", CLIENT_VERSION_UPPER, CLIENT_VERSION_LOWER);
 	Lua::setField(L, "string", version);
 	return 1;
+}
+
+int GameFunctions::luaGameReloadScriptFile(lua_State* L) {
+	// Game.reloadScriptFile(path) -> ok, message
+	// Crandoria: reloads one script file in place; see lua/scripts/script_reload.hpp.
+	const auto result = ScriptReload::reloadFile(Lua::getString(L, 1));
+	Lua::pushBoolean(L, result.ok);
+	Lua::pushString(L, result.message);
+	return 2;
 }
 
 int GameFunctions::luaGameReload(lua_State* L) {

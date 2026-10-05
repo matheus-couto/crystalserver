@@ -92,6 +92,21 @@ local function online(payload)
 end
 
 local HANDLERS = {
+	-- Recarrega um unico arquivo de script com o servidor rodando
+	-- (Game.reloadScriptFile, src/lua/scripts/script_reload.cpp). Se o arquivo
+	-- falhar ao carregar, o servidor mantem a versao anterior.
+	reload = function(payload)
+		local arquivo = campo(payload, "arquivo")
+		if not arquivo or arquivo == "" then
+			return false, "sem arquivo"
+		end
+		if not Game.reloadScriptFile then
+			return false, "este binario do servidor ainda nao tem o reload por arquivo"
+		end
+		local ok, mensagem = Game.reloadScriptFile(arquivo)
+		return ok, mensagem
+	end,
+
 	-- Gold no banco do personagem (o mesmo saldo do bank do NPC).
 	gold = function(payload)
 		local player, erro = online(payload)

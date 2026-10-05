@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include "lua/scripts/script_binding.hpp"
+
 #include "creatures/creatures_definitions.hpp"
 #include "utils/utils_definitions.hpp"
 
@@ -136,6 +138,14 @@ public:
 	// Reset npcs informations on reload
 	bool load(bool loadLibs = true, bool loadNpcs = true, bool reloading = false) const;
 	bool reload();
+	/**
+	 * Crandoria: events loaded from one script file (datapack-relative path, as
+	 * ScriptBindings::trimPath() writes it). With @p undo they are removed and the
+	 * way to put them back is recorded; with nullptr they are only counted.
+	 * Used by ScriptReload::reloadFile() to reload a single file in place.
+	 */
+	size_t removeScriptFile(const std::string &file, ScriptReloadUndo* undo);
+
 
 private:
 	std::unique_ptr<LuaScriptInterface> scriptInterface;

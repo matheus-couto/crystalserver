@@ -405,6 +405,15 @@ app.get('/scripts', async (req, res, next) => {
       const caminho = rel ? rel + '/' + arquivo : arquivo;
       const { texto, mtime } = await scripts.ler(area, caminho);
       const hist = await scripts.historico(area, caminho);
+      const noServidor = arquivoNoServidor(area, caminho);
+      const recarregavel = podeRecarregar(noServidor);
+      let ultimoReload = null;
+      if (recarregavel) {
+        [[ultimoReload]] = await db.query(
+          'SELECT `status`,`result`,`created_by`,`created_at`,`executed_at` FROM `panel_commands` '
+          + 'WHERE `kind` = ? AND `payload` = ? ORDER BY `id` DESC LIMIT 1',
+          ['reload', JSON.stringify({ arquivo: noServidor })]);
+      }
 
       const linkDiff = (nome) => `/scripts/diff?a=${encodeURIComponent(area)}&p=${encodeURIComponent(rel)}`
         + `&f=${encodeURIComponent(arquivo)}&v=${encodeURIComponent(nome)}`;
@@ -438,6 +447,21 @@ app.get('/scripts', async (req, res, next) => {
             <span class="dica">Ctrl+S salva · Ctrl+F busca · Tab indenta</span>
           </div>
         </form>
+        ${recarregavel ? `<h2>Recarregar no jogo</h2>
+        <p class="sub">Aplica a versao <b>salva</b> deste arquivo no servidor rodando, sem reiniciar. So este arquivo e
+          recarregado; se ele der erro ao carregar, o servidor continua com a versao anterior.</p>
+        <form method="post" action="/scripts/recarregar" class="linha">
+          <input type="hidden" name="_csrf" value="${v.e(req.csrf)}">
+          <input type="hidden" name="a" value="${v.e(area)}">
+          <input type="hidden" name="p" value="${v.e(rel)}">
+          <input type="hidden" name="f" value="${v.e(arquivo)}">
+          <button class="btn" type="submit">Recarregar no jogo</button>
+          ${ultimoReload ? `<span>Ultimo: <span class="pill ${ultimoReload.status === 'DONE' ? 'ok'
+            : ultimoReload.status === 'FAILED' ? 'erro' : 'alerta'}">${ultimoReload.status === 'PENDING'
+            ? 'aguardando o jogo - recarregue a pagina' : v.e(ultimoReload.status)}</span>
+            ${v.dataHora(ultimoReload.created_at)} por ${v.e(ultimoReload.created_by)}</span>` : ''}
+        </form>
+        ${ultimoReload && ultimoReload.result ? `<pre class="log" style="max-height:180px">${v.e(ultimoReload.result)}</pre>` : ''}` : ''}
         <h2>Versoes anteriores</h2>
         <table><thead><tr><th>Guardada em</th><th class="num">Tamanho</th><th></th></tr></thead>
           <tbody>${linhasHist}</tbody></table>
@@ -682,6 +706,46 @@ app.post('/scripts/pasta', exigirCsrf, async (req, res, next) => {
     if (err.message && !err.code) return res.redirect(comAviso(voltar, 'erro', 'Nao criei a pasta: ' + err.message));
     next(err);
   }
+});
+
+// Reload de um arquivo so, no jogo (Game.reloadScriptFile, src/lua/scripts/script_reload.cpp).
+// As mesmas regras do servidor, para o botao so aparecer onde funciona.
+function arquivoNoServidor(area, caminho) {
+  if (area === 'crandoria') return 'data-crandoria/' + caminho;
+  if (area === 'core') return 'data/' + caminho;
+  return null;
+}
+
+function podeRecarregar(arquivo) {
+  if (!arquivo || !arquivo.endsWith('.lua') || arquivo.includes('..')) return false;
+  if (arquivo.includes('/eventcallbacks/') || arquivo.endsWith('/globalevent_panel_commands.lua')) return false;
+  return ['data-crandoria/scripts/', 'data/scripts/', 'data-crandoria/npc/', 'data-crandoria/lib/',
+    'data/libs/', 'data/npclib/'].some((p) => arquivo.startsWith(p));
+}
+
+app.post('/scripts/recarregar', exigirCsrf, async (req, res, next) => {
+  try {
+    const { a, p, f } = req.body;
+    const caminho = p ? p + '/' + f : f;
+    const destino = `/scripts?a=${encodeURIComponent(a)}&p=${encodeURIComponent(p || '')}&f=${encodeURIComponent(f)}`;
+    const arquivo = arquivoNoServidor(a, caminho);
+    if (!podeRecarregar(arquivo)) {
+      return res.redirect(comAviso(destino, 'erro', 'Este arquivo nao pode ser recarregado no jogo; precisa de restart.'));
+    }
+    // Mesmo filtro do salvar: um erro de sintaxe nem chega ao servidor.
+    const { texto } = await scripts.ler(a, caminho);
+    const lua = await scripts.validarLua(texto);
+    if (!lua.ok) {
+      return res.redirect(comAviso(destino, 'erro', 'Nao recarreguei: o arquivo salvo tem erro de sintaxe. ' + lua.erro));
+    }
+    const payload = JSON.stringify({ arquivo });
+    await db.query(
+      'INSERT INTO `panel_commands` (`kind`,`payload`,`created_by`,`created_at`) VALUES (?,?,?,?)',
+      ['reload', payload, req.usuario.username, Date.now()]
+    );
+    await auditar(req, 'script.recarregado', `${a}:${caminho}`);
+    res.redirect(comAviso(destino, 'ok', 'Enviado para o jogo. O resultado aparece em "Recarregar no jogo" em ate 5 segundos - recarregue a pagina.'));
+  } catch (err) { next(err); }
 });
 
 app.post('/scripts/salvar', exigirCsrf, async (req, res, next) => {

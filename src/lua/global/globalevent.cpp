@@ -310,3 +310,33 @@ bool GlobalEvent::executeEvent() const {
 
 	return getScriptInterface()->callFunction(params);
 }
+
+size_t GlobalEvents::removeScriptFile(const std::string &file, ScriptReloadUndo* undo) {
+	size_t found = 0;
+	for (auto* map : { &thinkMap, &serverMap, &timerMap }) {
+		for (auto it = map->begin(); it != map->end();) {
+			if (!ScriptBindings::fromFile(it->second, file)) {
+				++it;
+				continue;
+			}
+			++found;
+			if (!undo) {
+				++it;
+				continue;
+			}
+			undo->emplace_back([map, name = it->first, event = it->second] { map->try_emplace(name, event); });
+			it = map->erase(it);
+		}
+	}
+	return found;
+}
+
+std::vector<std::shared_ptr<GlobalEvent>> GlobalEvents::startupEventsFromFile(const std::string &file) const {
+	std::vector<std::shared_ptr<GlobalEvent>> events;
+	for (const auto &[name, event] : serverMap) {
+		if (event->getEventType() == GLOBALEVENT_STARTUP && ScriptBindings::fromFile(event, file)) {
+			events.emplace_back(event);
+		}
+	}
+	return events;
+}

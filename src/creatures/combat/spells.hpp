@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include "lua/scripts/script_binding.hpp"
+
 #include "lua/creature/actions.hpp"
 #include "creatures/players/wheel/wheel_definitions.hpp"
 #include <parallel_hashmap/phmap.h>
@@ -67,6 +69,14 @@ public:
 	void setInstantSpell(const std::string &word, const std::shared_ptr<InstantSpell> &instant);
 
 	void clear();
+	/**
+	 * Crandoria: events loaded from one script file (datapack-relative path, as
+	 * ScriptBindings::trimPath() writes it). With @p undo they are removed and the
+	 * way to put them back is recorded; with nullptr they are only counted.
+	 * Used by ScriptReload::reloadFile() to reload a single file in place.
+	 */
+	size_t removeScriptFile(const std::string &file, ScriptReloadUndo* undo);
+
 	bool registerInstantLuaEvent(const std::shared_ptr<InstantSpell> &instant);
 	bool registerRuneLuaEvent(const std::shared_ptr<RuneSpell> &rune);
 

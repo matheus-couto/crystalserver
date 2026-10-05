@@ -1619,3 +1619,32 @@ void RuneSpell::setCharges(uint32_t c) {
 	}
 	charges = c;
 }
+
+size_t Spells::removeScriptFile(const std::string &file, ScriptReloadUndo* undo) {
+	std::vector<std::string> words;
+	for (const auto &[word, spell] : instants) {
+		if (ScriptBindings::fromFile(spell, file)) {
+			words.emplace_back(word);
+		}
+	}
+	std::vector<uint16_t> runeIds;
+	for (const auto &[id, rune] : runes) {
+		// RuneSpell is both an Action and a Spell; the cast callback is the Spell one.
+		if (ScriptBindings::fromFile(std::static_pointer_cast<Spell>(rune), file)) {
+			runeIds.emplace_back(id);
+		}
+	}
+	if (undo) {
+		for (const auto &word : words) {
+			const auto spell = instants[word];
+			undo->emplace_back([this, word, spell] { instants.try_emplace(word, spell); });
+			instants.erase(word);
+		}
+		for (const auto id : runeIds) {
+			const auto rune = runes[id];
+			undo->emplace_back([this, id, rune] { runes.try_emplace(id, rune); });
+			runes.erase(id);
+		}
+	}
+	return words.size() + runeIds.size();
+}

@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include "lua/scripts/script_binding.hpp"
+
 #include "account/account.hpp"
 #include "utils/utils_definitions.hpp"
 #include "declarations.hpp"
@@ -105,6 +107,14 @@ public:
 
 	bool registerLuaEvent(const TalkAction_ptr &talkAction);
 	void clear();
+	/**
+	 * Crandoria: events loaded from one script file (datapack-relative path, as
+	 * ScriptBindings::trimPath() writes it). With @p undo they are removed and the
+	 * way to put them back is recorded; with nullptr they are only counted.
+	 * Used by ScriptReload::reloadFile() to reload a single file in place.
+	 */
+	size_t removeScriptFile(const std::string &file, ScriptReloadUndo* undo);
+
 
 	const phmap::flat_hash_map<std::string, std::shared_ptr<TalkAction>> &getTalkActionsMap() const {
 		return talkActions;

@@ -19,9 +19,11 @@
 
 #include "lua/scripts/luascript.hpp"
 
+#include <functional>
 #include <memory>
 #include <string>
 #include <string_view>
+#include <vector>
 
 /**
  * @brief One Lua script hooked to an item, and how it got hooked.
@@ -73,4 +75,22 @@ namespace ScriptBindings {
 
 		return trimPath(scriptInterface->getFileById(event->getScriptId()));
 	}
+
+	/**
+	 * @brief Whether an event was loaded from @p file (datapack-relative, as
+	 * trimPath() writes it). Used to reload a single script file.
+	 */
+	template <typename Event>
+	bool fromFile(const std::shared_ptr<Event> &event, const std::string &file) {
+		const auto source = fileOf(event);
+		return source.size() > file.size() && source.compare(0, file.size(), file) == 0 && source[file.size()] == ':';
+	}
 } // namespace ScriptBindings
+
+/**
+ * Crandoria: undo steps collected while a single script file is reloaded
+ * (lua/scripts/script_reload.cpp). Each manager that removes the events of the
+ * file records how to put them back, so a script that fails to load leaves the
+ * server exactly as it was.
+ */
+using ScriptReloadUndo = std::vector<std::function<void()>>;

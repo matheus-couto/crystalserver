@@ -550,3 +550,23 @@ void CreatureEvent::executeExtendedOpcode(const std::shared_ptr<Player> &player,
 
 	getScriptInterface()->callVoidFunction(3);
 }
+
+size_t CreatureEvents::removeScriptFile(const std::string &file, ScriptReloadUndo* undo) {
+	size_t found = 0;
+	for (const auto &[name, event] : creatureEvents) {
+		if (!event->isLoaded() || !ScriptBindings::fromFile(event, file)) {
+			continue;
+		}
+		++found;
+		if (undo) {
+			// Players and monster types hold this object, so it stays in the map:
+			// it is only unloaded, and register() reuses it through copyEvent().
+			undo->emplace_back([event, scriptId = event->getScriptId()] {
+				event->setScriptId(scriptId);
+				event->setLoaded(true);
+			});
+			event->clearEvent();
+		}
+	}
+	return found;
+}

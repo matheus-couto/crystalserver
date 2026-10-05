@@ -72,7 +72,10 @@ int32_t LuaScriptInterface::loadFile(const std::string &file, const std::string 
 	// execute it
 	ret = protectedCall(luaState, 0, 0);
 	if (ret != 0) {
-		reportError(nullptr, popString(luaState));
+		// Crandoria: keep runtime errors too, so a single-file reload
+		// (script_reload.cpp) can tell the panel why the script failed.
+		lastLuaError = popString(luaState);
+		reportError(nullptr, lastLuaError);
 		resetScriptEnv();
 		return -1;
 	}
