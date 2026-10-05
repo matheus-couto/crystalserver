@@ -4,8 +4,14 @@
 local lumberjack = Action()
 
 function lumberjack.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    -- Usado em "nada", o target chega como uma tabela simples {uid = 0,
+    -- itemid = 0, ...}, sem metodos, e o target:getPosition() quebrava aqui.
+    -- So arvores interessam; a posicao clicada (toPosition) e a mesma do item.
+    if type(target) ~= "userdata" then
+        return false
+    end
 
-    local pos = target:getPosition()
+    local pos = toPosition
     local x = pos.x
     local y = pos.y
 
@@ -156,23 +162,23 @@ function lumberjack.onUse(player, item, fromPosition, target, toPosition, isHotk
                             updateLumberjackSkill(player, skillLumberjackCount, skillLumberjackLevel, skillLumberjackNext)
                         end
 
-                        if chance > 40 and chance <= 60 then
+                        if chance <= 60 then
                             player:addItem(3127, 1)
                             player:sendTextMessage(MESSAGE_EVENT_DEFAULT, "Voce recebeu algum produto da arvore.")
                             return true
-                        elseif chance > 60 and chance <= 75 then
+                        elseif chance > 60 and chance <= 80 then
                             player:addItem(3129, 1)
                             player:sendTextMessage(MESSAGE_EVENT_DEFAULT, "Voce recebeu algum produto da arvore.")
                             return true
-                        elseif chance > 75 and chance <= 85 then
+                        elseif chance > 80 and chance <= 92 then
                             player:addItem(3130, 1)
                             player:sendTextMessage(MESSAGE_EVENT_DEFAULT, "Voce recebeu algum produto da arvore.")
                             return true
-                        elseif chance > 85 and chance <= 92 then
+                        elseif chance > 92 and chance <= 96 then
                             player:addItem(36722, 1)
                             player:sendTextMessage(MESSAGE_EVENT_DEFAULT, "Voce recebeu algum produto da arvore.")
                             return true
-                        elseif chance > 92 and chance <= 98 then
+                        elseif chance > 96 and chance <= 98 then
                             player:addItem(31982, 1)
                             player:sendTextMessage(MESSAGE_EVENT_DEFAULT, "Voce recebeu algum produto da arvore.")
                             return true

@@ -674,8 +674,11 @@ local fishingAction = Action()
 
 
 function fishingAction.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-    if not target then
-        return
+    -- Usado em "nada", o target chega como uma tabela simples {uid = 0,
+    -- itemid = 0, ...}, sem metodos: o "if not target" nao pegava e o
+    -- target:getId() abaixo quebrava. So objetos do jogo seguem.
+    if type(target) ~= "userdata" then
+        return false
     end
 
     local playerId = player:getId()
