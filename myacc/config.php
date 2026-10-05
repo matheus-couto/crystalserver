@@ -316,7 +316,7 @@ $config = array(
 	'status_bar' => true,
 	'client_link' => 'https://github.com/zimbadev/gameclient/releases', // link to download tibia client
 	'otc_link' => 'https://drive.google.com/file/d/1nddKCNJZvdRUW7r5P01rH31TaTycrGk7/view?usp=drive_link', // link to download the OTClient (Crandoria)
-	'mobile_link' => 'https://drive.google.com/file/d/1H0NdO7J109hAN4HNXsF672gbxwK_s6xi/view?usp=drive_link', // link to download the mobile client (Crandoria)
+	'mobile_link' => 'https://drive.google.com/file/d/1YPasGR0Eu6AOIi3nhvIpljPpczYbp7wF/view', // link to download the mobile client (Crandoria)
 	'discord_link' => 'https://discord.com/invite/7AYJEHTghQ', // link to join discord channel
 	'whatsapp_link' => '5511912345678', // wa.me/5511912345678
 	'instagram_link' => 'profile', // www.instagram.com/profile
