@@ -62,8 +62,107 @@ end
 
 local MAX_COINS = 1000000
 local MAX_DIAS_VIP = 365
+-- Mesmos limites do painel (tools/painel/src/personagem.js).
+local MAX_GOLD = 100000000
+local MAX_LEVELS = 1000
+local MAX_SKILLS = 200
+
+local SKILLS = {
+	fist = SKILL_FIST,
+	club = SKILL_CLUB,
+	sword = SKILL_SWORD,
+	axe = SKILL_AXE,
+	distance = SKILL_DISTANCE,
+	shielding = SKILL_SHIELD,
+	fishing = SKILL_FISHING,
+}
+
+--- O personagem online pelo nome. Gold, level e skill sao do personagem, e
+--- so chegam aqui com ele online: offline o painel grava direto no banco.
+local function online(payload)
+	local nome = campo(payload, "player")
+	if not nome or nome == "" then
+		return nil, "sem nome de personagem"
+	end
+	local player = Player(nome)
+	if not player then
+		return nil, "nao esta online - aplique de novo pelo painel, que grava direto no banco"
+	end
+	return player
+end
 
 local HANDLERS = {
+	-- Gold no banco do personagem (o mesmo saldo do bank do NPC).
+	gold = function(payload)
+		local player, erro = online(payload)
+		if not player then
+			return false, erro
+		end
+		local qtd = inteiro(payload, "quantidade", MAX_GOLD)
+		if not qtd then
+			return false, "quantidade invalida"
+		end
+		player:setBankBalance(player:getBankBalance() + qtd)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("Voce recebeu %d gold no banco.", qtd))
+		return true, string.format("+%d gold no banco de %s (agora %d)", qtd, player:getName(), player:getBankBalance())
+	end,
+
+	-- Como o /addskill: experiencia ate o level novo, entao vida, mana e
+	-- capacidade sobem como num level up normal.
+	level = function(payload)
+		local player, erro = online(payload)
+		if not player then
+			return false, erro
+		end
+		local qtd = inteiro(payload, "quantidade", MAX_LEVELS)
+		if not qtd then
+			return false, "quantidade invalida"
+		end
+		local antes = player:getLevel()
+		local falta = Game.getExperienceForLevel(antes + qtd) - player:getExperience()
+		if falta > 0 then
+			player:addExperience(falta, false)
+		end
+		return true, string.format("%s: level %d -> %d", player:getName(), antes, player:getLevel())
+	end,
+
+	-- Completa o progresso de cada nivel, sem o multiplicador de rate do
+	-- servidor (ultimo argumento true), como o /addskill.
+	skill = function(payload)
+		local player, erro = online(payload)
+		if not player then
+			return false, erro
+		end
+		local qtd = inteiro(payload, "quantidade", MAX_SKILLS)
+		local nome = campo(payload, "skill")
+		if not qtd then
+			return false, "quantidade invalida"
+		end
+		local vocacao = player:getVocation()
+		if nome == "magic" then
+			local antes = player:getBaseMagicLevel()
+			for _ = 1, qtd do
+				local falta = vocacao:getRequiredManaSpent(player:getBaseMagicLevel() + 1) - player:getManaSpent()
+				if falta > 0 then
+					player:addManaSpent(falta, true)
+				end
+			end
+			return true, string.format("%s: magic level %d -> %d", player:getName(), antes, player:getBaseMagicLevel())
+		end
+		local id = SKILLS[nome or ""]
+		if not id then
+			return false, "skill invalida: " .. tostring(nome)
+		end
+		local antes = player:getSkillLevel(id)
+		for _ = 1, qtd do
+			local falta = vocacao:getRequiredSkillTries(id, player:getSkillLevel(id) + 1) - player:getSkillTries(id)
+			if falta > 0 then
+				player:addSkillTries(id, falta, true)
+			end
+		end
+		return true, string.format("%s: %s %d -> %d", player:getName(), nome, antes, player:getSkillLevel(id))
+	end,
+
 	-- Tibia Coins. "transferivel" e o mesmo tipo que a doacao entrega.
 	coins = function(payload)
 		local accountId = inteiro(payload, "conta", 2 ^ 31)

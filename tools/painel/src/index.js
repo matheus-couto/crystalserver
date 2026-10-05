@@ -25,6 +25,7 @@ const diff = require('./diff');
 const zip = require('./zip');
 const q = require('./queries');
 const nomesItens = require('./itemnames');
+const personagem = require('./personagem');
 const v = require('./view');
 
 const PORTA = Number(process.env.PORT || 3100);
@@ -1047,12 +1048,13 @@ app.get('/jogadores', async (req, res, next) => {
       <td>${v.e(p.name)}${p.online ? ' <span class="pill ok">online</span>' : ''}
         ${p.deletion ? ' <span class="pill frio">removido</span>' : ''}</td>
       <td class="num">${v.numero(p.level)}</td>
+      <td class="num">${v.numero(p.balance)}</td>
       <td class="num">${v.e(p.account_id)}</td>
       <td>${v.dataHora(p.lastlogin)}</td>
       <td class="num">${v.numero(p.coins_transferable)}${Number(p.coins) ? ` <span style="color:var(--fraco)">+ ${v.numero(p.coins)}</span>` : ''}</td>
       <td>${Number(p.lastday) * 1000 > Date.now() ? v.dataHora(Number(p.lastday) * 1000) : '<span style="color:var(--fraco)">—</span>'}</td>
       <td><a class="btn mini cinza" href="/itens?jogador=${v.e(p.id)}">Itens</a>
-        <a class="btn mini cinza" href="/jogadores?q=${encodeURIComponent(termo)}&creditar=${encodeURIComponent(p.name)}#creditar">Coins/VIP</a>
+        <a class="btn mini cinza" href="/jogadores?q=${encodeURIComponent(termo)}&creditar=${encodeURIComponent(p.name)}#creditar">Adicionar</a>
         ${v.formBotao('/jogadores/comando',
           { _csrf: req.csrf, kind: 'kick', player: p.name }, 'Kickar',
           { classe: 'btn mini cinza', confirmar: `Desconectar ${p.name}?` })}
@@ -1060,7 +1062,7 @@ app.get('/jogadores', async (req, res, next) => {
           { _csrf: req.csrf, kind: 'save', player: p.name }, 'Salvar',
           { classe: 'btn mini cinza' })}
       </td></tr>`).join('')
-      : '<tr><td colspan="7" style="color:var(--fraco)">Nada encontrado.</td></tr>';
+      : '<tr><td colspan="8" style="color:var(--fraco)">Nada encontrado.</td></tr>';
     const creditar = String(req.query.creditar || '').slice(0, 64);
 
     const [fila] = await db.query(
@@ -1084,25 +1086,36 @@ app.get('/jogadores', async (req, res, next) => {
         <button class="btn" type="submit">Buscar</button>
         <a class="btn cinza" href="/jogadores">So online</a>
       </form>
-      <table><thead><tr><th>Personagem</th><th class="num">Level</th><th class="num">Conta</th>
+      <table><thead><tr><th>Personagem</th><th class="num">Level</th><th class="num">Gold (banco)</th><th class="num">Conta</th>
         <th>Ultimo login</th><th class="num" title="transferiveis + normais">Coins</th><th>VIP ate</th>
         <th>Acoes</th></tr></thead><tbody>${linhas}</tbody></table>
 
-      <h2 id="creditar">Coins e dias VIP</h2>
+      <h2 id="creditar">Adicionar ao personagem</h2>
       <form method="post" action="/jogadores/comando" class="linha">
         <input type="hidden" name="_csrf" value="${v.e(req.csrf)}">
         <input name="player" value="${v.e(creditar)}" placeholder="nome do personagem" size="24" required>
         <select name="kind">
-          <option value="coins:transferivel">Tibia Coins transferiveis</option>
-          <option value="coins:normal">Tibia Coins normais</option>
-          <option value="vip">Dias VIP</option>
+          <optgroup label="Conta">
+            <option value="coins:transferivel">Tibia Coins transferiveis</option>
+            <option value="coins:normal">Tibia Coins normais</option>
+            <option value="vip">Dias VIP</option>
+          </optgroup>
+          <optgroup label="Personagem">
+            <option value="gold">Gold no banco</option>
+            <option value="level">Levels</option>
+            ${Object.entries(personagem.SKILLS).map(([k, s]) =>
+              `<option value="skill:${k}">Skill: ${v.e(s[2])}</option>`).join('')}
+          </optgroup>
         </select>
-        <input name="quantidade" type="number" min="1" max="${MAX_COINS}" placeholder="quantidade" required style="width:120px">
+        <input name="quantidade" type="number" min="1" max="${personagem.LIMITES.gold}" placeholder="quantidade" required style="width:140px">
         <button class="btn" type="submit">Adicionar</button>
       </form>
-      <p class="sub">Vai para a conta do personagem. Online, recebe na hora com aviso no jogo;
-        offline, entra no banco e ele ja encontra ao logar. Transferiveis sao as mesmas da doacao.
-        Limites: ${v.numero(MAX_COINS)} coins e ${MAX_DIAS_VIP} dias por vez.</p>
+      <p class="sub"><b>Conta</b> (coins, VIP): online recebe na hora com aviso no jogo; offline entra no banco.
+        Transferiveis sao as mesmas da doacao.<br>
+        <b>Personagem</b> (gold, level, skill): offline grava direto no banco e vale no proximo login;
+        online vai para o jogo aplicar. Level sobe vida, mana e capacidade como um level up normal.<br>
+        Limites por vez: ${v.numero(MAX_COINS)} coins, ${MAX_DIAS_VIP} dias, ${v.numero(personagem.LIMITES.gold)} gold,
+        ${personagem.LIMITES.level} levels, ${personagem.LIMITES.skill} niveis de skill.</p>
 
       <h2>Anuncio para todos</h2>
       <form method="post" action="/jogadores/comando" class="linha">
@@ -1142,6 +1155,29 @@ app.post('/jogadores/comando', exigirCsrf, async (req, res, next) => {
         ? { player: p.name, conta: String(p.account_id), dias: String(qtd) }
         : { player: p.name, conta: String(p.account_id), quantidade: String(qtd), tipo: kind.slice(6) });
       kind = kind === 'vip' ? 'vip' : 'coins';
+    } else if (kind === 'gold' || kind === 'level' || kind.startsWith('skill:')) {
+      // Do personagem. Offline: direto no banco, vale na hora. Online: o
+      // servidor gravaria a memoria por cima no logout, entao vai para o jogo.
+      const tipo = kind.startsWith('skill:') ? 'skill' : kind;
+      const skill = tipo === 'skill' ? kind.slice(6) : null;
+      const nome = String(req.body.player || '').trim().slice(0, 64);
+      const qtd = Number(req.body.quantidade);
+      const max = personagem.LIMITES[tipo];
+      const voltar = '/jogadores?creditar=' + encodeURIComponent(nome) + '#creditar';
+      if (skill && !personagem.SKILLS[skill]) return res.redirect(comAviso(voltar, 'erro', 'Skill invalida.'));
+      if (!Number.isInteger(qtd) || qtd < 1 || qtd > max) {
+        return res.redirect(comAviso(voltar, 'erro', `Quantidade invalida (de 1 a ${max}).`));
+      }
+      const [[p]] = await db.query('SELECT `id`,`name` FROM `players` WHERE `name` = ?', [nome]);
+      if (!p) return res.redirect(comAviso(voltar, 'erro', `Personagem "${nome}" nao existe.`));
+
+      const r = await personagem.aplicarOffline(db, p.id, tipo, skill, qtd);
+      if (r.ok) {
+        await auditar(req, 'personagem.' + tipo, p.name, `${skill ? skill + ' ' : ''}+${qtd}: ${r.resumo}`);
+        return res.redirect(comAviso(voltar, 'ok', 'Aplicado no banco (personagem offline): ' + r.resumo + '.'));
+      }
+      kind = tipo;
+      payload = JSON.stringify({ player: p.name, quantidade: String(qtd), ...(skill ? { skill } : {}) });
     } else if (['kick', 'save', 'broadcast'].includes(kind)) {
       payload = JSON.stringify(kind === 'broadcast'
         ? { texto: String(req.body.texto || '').slice(0, 200) }
@@ -1155,6 +1191,11 @@ app.post('/jogadores/comando', exigirCsrf, async (req, res, next) => {
       [kind, payload, req.usuario.username, Date.now()]
     );
     await auditar(req, 'comando.' + kind, payload);
+    if (kind === 'gold' || kind === 'level' || kind === 'skill') {
+      return res.redirect(comAviso('/jogadores', 'ok', 'Personagem online: enviado para o jogo aplicar em ate 5 segundos. '
+        + 'Se a fila mostrar "tipo desconhecido", o script do jogo ainda nao foi recarregado (o restart diario das 00:05 '
+        + 'faz isso) - peca para o jogador deslogar e aplique de novo, que vai direto no banco.'));
+    }
     res.redirect(comAviso('/jogadores', 'ok', 'Comando enfileirado; executa em ate 5 segundos.'));
   } catch (err) { next(err); }
 });

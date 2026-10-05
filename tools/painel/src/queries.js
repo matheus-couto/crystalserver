@@ -48,7 +48,7 @@ const CONTA = 'a.`coins`, a.`coins_transferable`, a.`lastday`';
 async function jogadoresOnline(db) {
   const [linhas] = await db.query(
     `SELECT p.\`id\`, p.\`name\`, p.\`level\`, p.\`vocation\`, p.\`account_id\`,
-            p.\`lastlogin\`, p.\`lastip\`, ${CONTA}
+            p.\`lastlogin\`, p.\`lastip\`, p.\`balance\`, ${CONTA}
        FROM \`players_online\` o
        JOIN \`players\` p ON p.\`id\` = o.\`player_id\`
        JOIN \`accounts\` a ON a.\`id\` = p.\`account_id\`

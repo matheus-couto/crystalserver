@@ -122,6 +122,37 @@ border-radius:10px;padding:28px}
 .login input{width:100%;margin-bottom:10px}
 .login .btn{width:100%}
 .crumbs{color:var(--fraco);font-size:13px;margin-bottom:12px}
+
+/* Celular. So CSS: a politica de seguranca da pagina nao aceita script
+   inline, e as paginas ja vem prontas do servidor. */
+@media (max-width:760px){
+header{padding:0 12px;gap:0 12px}
+header .marca{padding:10px 0}
+/* menu vira uma faixa de abas com rolagem lateral, em vez de quebrar em 3 linhas */
+header nav{order:3;width:calc(100% + 24px);margin:0 -12px;padding:0 6px;flex-wrap:nowrap;
+overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+header nav::-webkit-scrollbar{display:none}
+header nav a{padding:10px;white-space:nowrap}
+main{padding:14px 12px 40px}
+h1{font-size:18px}
+/* tabela rola de lado em vez de esmagar as colunas */
+table:not(.diff){display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+th,td{padding:8px 10px}
+table:not(.diff) td{white-space:nowrap}
+.grade{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+.card .val{font-size:19px}
+/* formularios em coluna; o !important vence os width/size inline dos campos */
+.linha{align-items:stretch}
+.linha>input:not([type=hidden]),.linha>select,.linha>textarea{flex:1 1 100%;min-width:0;width:100%!important}
+.linha>.btn,.linha>button{flex:1 1 auto;text-align:center}
+/* 16px evita o zoom automatico do iPhone ao tocar no campo */
+input,select,textarea{font-size:16px}
+.btn{padding:10px 16px}
+.btn.mini{padding:7px 12px}
+textarea{min-height:300px}
+pre.log{max-height:60vh;font-size:11px}
+.login{margin:6vh 16px}
+}
 `;
 
 /**

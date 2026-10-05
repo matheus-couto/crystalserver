@@ -74,3 +74,11 @@
 }
 .barra-editor .dica { color: var(--fraco); font-size: 12px; }
 #pos-editor { color: var(--fraco); font-size: 12px; font-variant-numeric: tabular-nums; }
+
+/* Celular: atalhos de teclado nao valem no toque, e o editor nao precisa
+   de 62% da tela quando o teclado virtual ja ocupa metade. */
+@media (max-width: 760px) {
+  .CodeMirror { height: 55vh; min-height: 260px; font-size: 12px; }
+  .barra-editor .dica, #pos-editor { display: none; }
+  .barra-editor .btn { flex: 1 1 auto; text-align: center; }
+}
