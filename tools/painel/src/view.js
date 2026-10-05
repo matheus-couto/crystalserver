@@ -190,6 +190,7 @@ const MENU = [
   ['/itens', 'Itens'],
   ['/donates', 'Doacoes'],
   ['/jogadores', 'Jogadores'],
+  ['/erros', 'Erros'],
   ['/backup', 'Backup'],
   ['/auditoria', 'Auditoria'],
 ];

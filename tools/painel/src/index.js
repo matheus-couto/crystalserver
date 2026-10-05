@@ -26,6 +26,7 @@ const zip = require('./zip');
 const q = require('./queries');
 const nomesItens = require('./itemnames');
 const personagem = require('./personagem');
+const erros = require('./erros');
 const v = require('./view');
 
 const PORTA = Number(process.env.PORT || 3100);
@@ -208,9 +209,11 @@ app.use(exigirLogin);
 
 app.get('/', async (req, res, next) => {
   try {
-    const [status, host, stats, resumo, donates, online] = await Promise.all([
+    const [status, host, stats, resumo, donates, online, errosDia] = await Promise.all([
       agent.status(), agent.host(), agent.stats(),
       q.resumoServidor(db), q.resumoDonates(db).catch(() => null), q.jogadoresOnline(db),
+      db.query("SELECT COUNT(*) AS `n` FROM `panel_errors` WHERE `resolvido_em` = 0 AND `tipo` <> 'aviso' AND `ultima` >= ?",
+        [Date.now() - 86400000]).then(([[r]]) => r).catch(() => null),
     ]);
 
     const servidor = (status.containers || []).find((c) => c.servico === 'server');
@@ -235,6 +238,8 @@ app.get('/', async (req, res, next) => {
           : '',
         h.carga ? v.barra(v.cargaPct(h.carga[0], h.cpus), 90) : ''),
       v.cartao('Uptime da maquina', v.duracao(h.uptime_s), ''),
+      errosDia ? v.cartao('Erros nas ultimas 24h',
+        `<a href="/erros">${v.numero(errosDia.n)}</a>`, 'diferentes, em aberto - clique para ver') : '',
     ].join('');
 
     const linhasStats = (stats.containers || []).map((c) => `<tr>
@@ -1381,7 +1386,106 @@ app.use((err, req, res, _next) => {
   }));
 });
 
+// ------------------------------------------------------------------ erros
+
+/** Link do editor para um arquivo do servidor, se ele estiver numa area do painel. */
+function linkDoArquivo(arquivo) {
+  const m = /^(data-crandoria|data)\/(.+)\/([^/]+\.lua)$/.exec(arquivo || '');
+  if (!m) return null;
+  const area = m[1] === 'data' ? 'core' : 'crandoria';
+  return `/scripts?a=${area}&p=${encodeURIComponent(m[2])}&f=${encodeURIComponent(m[3])}`;
+}
+
+app.get('/erros', async (req, res, next) => {
+  try {
+    const busca = String(req.query.q || '').slice(0, 100);
+    const avisos = req.query.avisos === '1';
+    const resolvidos = req.query.resolvidos === '1';
+    const cond = [];
+    const args = [];
+    if (!avisos) cond.push("`tipo` <> 'aviso'");
+    if (!resolvidos) cond.push('`resolvido_em` = 0');
+    if (busca) {
+      cond.push('(`script` LIKE ? OR `mensagem` LIKE ?)');
+      args.push(`%${busca}%`, `%${busca}%`);
+    }
+    const [lista] = await db.query(
+      `SELECT * FROM \`panel_errors\` ${cond.length ? 'WHERE ' + cond.join(' AND ') : ''}
+        ORDER BY (\`resolvido_em\` > 0), \`ultima\` DESC LIMIT 300`, args).catch(() => [[]]);
+    const [[marca]] = await db.query('SELECT `valor` FROM `panel_errors_estado` WHERE `chave` = ?', ['log_ate'])
+      .catch(() => [[null]]);
+
+    const pillTipo = {
+      lua: '<span class="pill erro">Lua</span>',
+      erro: '<span class="pill erro">erro</span>',
+      aviso: '<span class="pill alerta">aviso</span>',
+    };
+    const linhas = lista.length ? lista.map((e) => {
+      const link = linkDoArquivo(e.script);
+      const onde = e.script
+        ? (link ? `<a href="${link}">${v.e(e.script)}</a>` : v.e(e.script))
+        : '<span style="color:var(--fraco)">—</span>';
+      return `<tr${e.resolvido_em ? ' style="opacity:.55"' : ''}>
+        <td>${v.dataHora(Number(e.ultima))}</td>
+        <td class="num"><b>${v.numero(e.contagem)}</b></td>
+        <td>${pillTipo[e.tipo] || v.e(e.tipo)}${e.resolvido_em ? ' <span class="pill ok">resolvido</span>' : ''}</td>
+        <td class="mono" style="white-space:normal;max-width:300px;word-break:break-all">${onde}</td>
+        <td style="white-space:normal;min-width:260px">
+          <details><summary>${v.e(e.mensagem.slice(0, 180))}</summary>
+            <p class="sub" style="margin:8px 0 4px">Primeira vez: ${v.dataHora(Number(e.primeira))}.
+              Ultima ocorrencia completa:</p>
+            <pre class="log" style="max-height:320px">${v.e(e.exemplo)}</pre></details></td>
+        <td>${e.resolvido_em ? '' : v.formBotao('/erros/resolver', { _csrf: req.csrf, id: e.id }, 'Resolvido',
+          { classe: 'btn mini cinza' })}</td></tr>`;
+    }).join('') : '<tr><td colspan="6" style="color:var(--fraco)">Nenhum erro com esses filtros.</td></tr>';
+
+    const atualizar = `/erros?q=${encodeURIComponent(busca)}&avisos=${avisos ? 1 : 0}&resolvidos=${resolvidos ? 1 : 0}`;
+    render(req, res, 'Erros', '/erros', `
+      <h1>Erros do servidor</h1>
+      <p class="sub">Cada erro aparece uma vez, com quantas vezes aconteceu. O painel le o log do servidor a cada
+        minuto${marca ? ` (lido ate ${v.dataHora(Number(marca.valor) * 1000)})` : ''}. Marcar como resolvido tira o
+        erro da lista; se ele acontecer de novo, volta sozinho.</p>
+      <form method="get" action="/erros" class="linha">
+        <input type="search" name="q" value="${v.e(busca)}" placeholder="filtrar por arquivo ou mensagem" size="34">
+        <select name="avisos"><option value="0">so erros</option><option value="1"${avisos ? ' selected' : ''}>erros e avisos</option></select>
+        <select name="resolvidos"><option value="0">em aberto</option><option value="1"${resolvidos ? ' selected' : ''}>incluir resolvidos</option></select>
+        <button class="btn mini" type="submit">Filtrar</button>
+      </form>
+      <form method="post" action="/erros/coletar" class="linha">
+        <input type="hidden" name="_csrf" value="${v.e(req.csrf)}">
+        <button class="btn mini cinza" type="submit">Ler o log agora</button>
+        <a class="btn mini cinza" href="${atualizar}">Atualizar</a>
+      </form>
+      <table><thead><tr><th>Ultima vez</th><th class="num">Vezes</th><th>Tipo</th><th>Arquivo</th>
+        <th>Erro (clique para ver tudo)</th><th></th></tr></thead><tbody>${linhas}</tbody></table>
+    `, avisoDaQuery(req));
+  } catch (err) { next(err); }
+});
+
+app.post('/erros/resolver', exigirCsrf, async (req, res, next) => {
+  try {
+    const id = Number(req.body.id);
+    if (Number.isInteger(id)) {
+      await db.query('UPDATE `panel_errors` SET `resolvido_em` = ?, `resolvido_por` = ? WHERE `id` = ?',
+        [Date.now(), req.usuario.username, id]);
+      await auditar(req, 'erro.resolvido', String(id));
+    }
+    res.redirect('/erros');
+  } catch (err) { next(err); }
+});
+
+app.post('/erros/coletar', exigirCsrf, async (req, res, next) => {
+  try {
+    const r = await erros.coletar(db);
+    res.redirect(comAviso('/erros', r.ok ? 'ok' : 'erro', r.ok
+      ? `Log lido: ${r.ocorrencias} ocorrencia(s) nova(s) de ${r.erros} erro(s) diferente(s).`
+      : 'Nao li o log: ' + r.erro));
+  } catch (err) { next(err); }
+});
+
 // ------------------------------------------------------------------ start
+
+erros.iniciar(db);
 
 // Faxina periodica: sessao vencida, tentativa velha e backup de script antigo.
 setInterval(() => {

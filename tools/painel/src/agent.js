@@ -59,6 +59,7 @@ module.exports = {
   stats: () => chamar('stats', {}, 40000),
   host: () => chamar('host'),
   logs: (servico, linhas) => chamar('logs', { servico, linhas }),
+  logsPeriodo: (servico, desde, ate) => chamar('logs_periodo', { servico, desde, ate }, 120000),
   restart: (servico) => chamar('restart', { servico }),
   stop: (servico) => chamar('stop', { servico }),
   start: (servico) => chamar('start', { servico }),

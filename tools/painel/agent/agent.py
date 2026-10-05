@@ -183,6 +183,23 @@ def v_logs(req):
     return {"ok": code == 0, "texto": limpar_ansi(texto)[-600000:]}
 
 
+def v_logs_periodo(req):
+    """Log de um intervalo [desde, ate) em segundos unix, com o horario de cada
+    linha (--timestamps). E o que a pagina de erros do painel le a cada minuto:
+    so o trecho novo, em vez das ultimas N linhas, para nao perder nem contar
+    duas vezes um erro quando o log anda rapido."""
+    servico = check_service(req.get("servico", "server"))
+    desde, ate = req.get("desde"), req.get("ate")
+    agora = int(time.time())
+    if not isinstance(desde, int) or not isinstance(ate, int) or not (agora - 31 * 86400 <= desde < ate <= agora + 60):
+        raise ValueError("intervalo invalido")
+
+    code, out, err = compose("logs", "--no-color", "--timestamps", "--since", str(desde),
+                             "--until", str(ate), servico)
+    texto = (out or "") + (err or "") if code == 0 else (err or out or "")
+    return {"ok": code == 0, "texto": limpar_ansi(texto)[-8000000:]}
+
+
 def v_restart(req):
     servico = check_service(req.get("servico", "server"))
     code, out, err = compose("restart", servico)
@@ -357,6 +374,7 @@ VERBOS = {
     "stats": v_stats,
     "host": v_host,
     "logs": v_logs,
+    "logs_periodo": v_logs_periodo,
     "restart": v_restart,
     "stop": v_stop,
     "start": v_start,
