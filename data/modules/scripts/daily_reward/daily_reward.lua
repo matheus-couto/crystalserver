@@ -207,6 +207,13 @@ end
 
 -- Core functions
 DailyReward.insertHistory = function(playerId, dayStreak, description)
+	-- Crandoria: a coluna e VARCHAR(255) e a descricao lista todos os itens
+	-- escolhidos; com muitos, o INSERT falhava ("Data too long") e o registro se
+	-- perdia. Corta mantendo o comeco, que diz qual recompensa foi.
+	description = tostring(description or "")
+	if #description > 255 then
+		description = description:sub(1, 252) .. "..."
+	end
 	return db.query(string.format("INSERT INTO `daily_reward_history`(`player_id`, `daystreak`, `timestamp`, `description`) VALUES (%s, %s, %s, %s)", playerId, dayStreak, os.time(), db.escapeString(description)))
 end
 

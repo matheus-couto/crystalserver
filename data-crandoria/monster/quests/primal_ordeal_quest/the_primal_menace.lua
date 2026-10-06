@@ -276,7 +276,14 @@ local function spawnMonster(monsterId, spawnPosition)
 	end
 
 	local randomMonsterIndex = math.random(#thePrimalMenaceConfig.MonsterConfig.MonsterPool)
-	local primalMonster = Game.createMonster(thePrimalMenaceConfig.MonsterConfig.MonsterPool[randomMonsterIndex], spawnPosition)
+	local nome = thePrimalMenaceConfig.MonsterConfig.MonsterPool[randomMonsterIndex]
+	local primalMonster = Game.createMonster(nome, spawnPosition)
+	if not primalMonster then
+		-- Crandoria: os tipos "(Primal)" nao existem aqui nem no Canary, e o boss
+		-- nao invocava nada ("Cannot create primal monster"). Sem eles, usa o
+		-- monstro base; se um dia forem criados, passam a valer sozinhos.
+		primalMonster = Game.createMonster((nome:gsub(" %(Primal%)$", "")), spawnPosition)
+	end
 	if not primalMonster then
 		logger.error("Cannot create primal monster {}", thePrimalMenaceConfig.MonsterConfig.MonsterPool[randomMonsterIndex])
 		return

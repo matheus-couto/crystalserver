@@ -3658,6 +3658,17 @@ Storage = {
 						OberonCrandoriaTimer = 46029,
 					},
 				},
+				-- Mini-bosses do Falcon Bastion e o acesso as portas que eles liberam
+				-- (creaturescripts_falcon_minibosses.lua). Faltavam aqui e o script dava
+				-- "attempt to index field MiniBosses" a cada morte desses bosses.
+				MiniBosses = {
+					GrandCommanderSoeren = 46101,
+					PreceptorLazare = 46102,
+					GrandChaplainGaunder = 46103,
+					GrandCanonDominus = 46104,
+				},
+				LowerBastionAccess = 46105,
+				UndergroundBastionAccess = 46106,
 				Darashia = {
 					Questline = 46030,
 					PuzzleSqm = 46031,
