@@ -98,7 +98,10 @@ bool House::tryTransferOwnership(const std::shared_ptr<Player> &player, bool ser
 }
 
 void House::setOwner(uint32_t guid, bool updateDatabase /* = true*/, const std::shared_ptr<Player> &player /* = nullptr*/) {
-	const auto worldId = g_game().worlds().getCurrentWorld()->id;
+	// Crandoria: o id do mundo e uint8_t, e o ostream o escrevia como caractere
+	// (o byte 0x01 no lugar do numero 1): o UPDATE falhava com erro de sintaxe e o dono da casa
+	// nao era gravado.
+	const auto worldId = static_cast<int>(g_game().worlds().getCurrentWorld()->id);
 
 	if (updateDatabase && owner != guid) {
 		Database &db = Database::getInstance();
