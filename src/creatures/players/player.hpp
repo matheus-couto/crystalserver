@@ -1252,6 +1252,12 @@ public:
 	void pushEvent(bool b);
 
 	bool walkExhausted() const;
+	/**
+	 * Crandoria: whether the paralyze walk exhaust blocks using this item. Potions
+	 * and healing/support runes are blocked; attack runes are not, so a paralyzed
+	 * player can still fight back.
+	 */
+	bool paralyzeBlocksUse(const ItemType &it) const;
 
 	void setWalkExhaust(int64_t value);
 

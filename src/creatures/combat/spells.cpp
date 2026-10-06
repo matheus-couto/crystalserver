@@ -85,6 +85,13 @@ TalkActionResult_t Spells::playerSaySpell(const std::shared_ptr<Player> &player,
 		return TALKACTION_CONTINUE;
 	}
 
+	// Crandoria: logo apos um passo paralisado (walkExhausted), so magias de
+	// ataque passam. Cura e suporte continuam bloqueadas, como antes.
+	if (player->walkExhausted() && instantSpell->getGroup() != SPELLGROUP_ATTACK) {
+		player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
+		return TALKACTION_FAILED;
+	}
+
 	if (instantSpell->getName() == "Find Person" && !player->canExiva(param)) {
 		player->sendTextMessage(MESSAGE_TRADE, "The character you are trying to find with Exiva is currently protected from your spell.");
 		return TALKACTION_FAILED;

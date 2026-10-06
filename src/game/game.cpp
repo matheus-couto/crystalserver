@@ -4093,11 +4093,10 @@ void Game::playerUseItemEx(uint32_t playerId, const Position &fromPos, uint8_t f
 	}
 
 	const ItemType &it = Item::items[item->getID()];
-	if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-		if (player->walkExhausted()) {
-			player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
-			return;
-		}
+	// Crandoria: paralisado, so runas de ataque passam (ver Player::paralyzeBlocksUse).
+	if (player->paralyzeBlocksUse(it)) {
+		player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
+		return;
 	}
 
 	if (ret != RETURNVALUE_NOERROR) {
@@ -4229,11 +4228,10 @@ void Game::playerUseItem(uint32_t playerId, const Position &pos, uint8_t stackPo
 	}
 
 	const ItemType &it = Item::items[item->getID()];
-	if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-		if (player->walkExhausted()) {
-			player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
-			return;
-		}
+	// Crandoria: paralisado, so runas de ataque passam (ver Player::paralyzeBlocksUse).
+	if (player->paralyzeBlocksUse(it)) {
+		player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
+		return;
 	}
 
 	ReturnValue ret = g_actions().canUse(player, pos);
@@ -4356,11 +4354,10 @@ void Game::playerUseWithCreature(uint32_t playerId, const Position &fromPos, uin
 	}
 
 	const ItemType &it = Item::items[item->getID()];
-	if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-		if (player->walkExhausted()) {
-			player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
-			return;
-		}
+	// Crandoria: paralisado, so runas de ataque passam (ver Player::paralyzeBlocksUse).
+	if (player->paralyzeBlocksUse(it)) {
+		player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
+		return;
 	}
 
 	const std::shared_ptr<Monster> monster = creature->getMonster();
@@ -6810,10 +6807,9 @@ void Game::playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type, c
 }
 
 bool Game::playerSaySpell(const std::shared_ptr<Player> &player, SpeakClasses type, const std::string &text, uint16_t channelId) {
-	if (player->walkExhausted()) {
-		return true;
-	}
-
+	// Crandoria: o bloqueio do paralyze (walkExhausted) saiu daqui - ele engolia
+	// qualquer fala, inclusive chat e magia de ataque. Agora e decidido em
+	// Spells::playerSaySpell, pelo grupo da magia.
 	std::string words = text;
 	const std::string &lowerWords = asLowerCaseString(words);
 

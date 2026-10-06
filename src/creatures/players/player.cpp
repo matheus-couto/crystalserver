@@ -2973,8 +2973,10 @@ bool Player::closeShopWindow() {
 
 void Player::onWalk(Direction &dir) {
 	if (hasCondition(CONDITION_PARALYZE)) {
+		// Crandoria: so o exhaust que bloqueia cura (walkExhausted). O
+		// setNextAction que havia aqui adiava o golpe automatico e qualquer uso
+		// de item, e paralisado o jogador tem que poder atacar.
 		uint32_t delay = g_configManager().getNumber(PARALYZE_DELAY_INTERVAL);
-		setNextAction(OTSYS_TIME() + delay);
 		lastWalking = OTSYS_TIME() + delay;
 		return;
 	}
@@ -3194,6 +3196,20 @@ bool Player::walkExhausted() const {
 	}
 
 	return false;
+}
+
+bool Player::paralyzeBlocksUse(const ItemType &it) const {
+	if (!walkExhausted()) {
+		return false;
+	}
+	if (it.type == ITEM_TYPE_POTION) {
+		return true;
+	}
+	if (!it.isRune()) {
+		return false;
+	}
+	const auto &rune = g_spells().getRuneSpell(it.id);
+	return !rune || rune->getGroup() != SPELLGROUP_ATTACK;
 }
 
 void Player::setWalkExhaust(int64_t value) {

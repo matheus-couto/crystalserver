@@ -553,11 +553,10 @@ ReturnValue Actions::internalUseItem(const std::shared_ptr<Player> &player, cons
 
 bool Actions::useItem(const std::shared_ptr<Player> &player, const Position &pos, uint8_t index, const std::shared_ptr<Item> &item, bool isHotkey) {
 	const ItemType &it = Item::items[item->getID()];
-	if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-		if (player->walkExhausted()) {
-			player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
-			return false;
-		}
+	// Crandoria: paralisado, so runas de ataque passam (ver Player::paralyzeBlocksUse).
+	if (player->paralyzeBlocksUse(it)) {
+		player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
+		return false;
 	}
 	if (isHotkey) {
 		const uint16_t subType = item->getSubType();
@@ -585,11 +584,10 @@ bool Actions::useItem(const std::shared_ptr<Player> &player, const Position &pos
 
 bool Actions::useItemEx(const std::shared_ptr<Player> &player, const Position &fromPos, const Position &toPos, uint8_t toStackPos, const std::shared_ptr<Item> &item, bool isHotkey, const std::shared_ptr<Creature> &creature /* = nullptr*/) {
 	const ItemType &it = Item::items[item->getID()];
-	if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-		if (player->walkExhausted()) {
-			player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
-			return false;
-		}
+	// Crandoria: paralisado, so runas de ataque passam (ver Player::paralyzeBlocksUse).
+	if (player->paralyzeBlocksUse(it)) {
+		player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
+		return false;
 	}
 
 	const std::shared_ptr<Action> action = getAction(item);
