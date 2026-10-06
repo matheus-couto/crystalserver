@@ -149,7 +149,7 @@ local function creatureSayCallback(npc, creature, type, message)
         if npcHandler:getTopic(playerId) == 1 then
             npcHandler:say("Hum... Apesar da minha experiencia nao sei dizer se seu animo seria bom ou ruim nessa missao... \z
 			Talvez possamos fazer um teste da sua forca antes de comecarmos, apenas para ver se voce pode encarar o desafio. \z
-			Facamos o seguinte: Derrote 200 dragoes na ilha. Crimson, Verdant, Blizzard ou Haunted, nao importa. Derrote 500 e retorne a mim.", npc, creature)
+			Facamos o seguinte: Derrote 200 dragoes na ilha. Crimson, Verdant, Blizzard ou Haunted, nao importa. Derrote os 200 e retorne a mim.", npc, creature)
             player:setStorageValue(Storage.Quest.U11_02.TheFirstDragon.Progresso, 1)
 			player:setStorageValue(Storage.Quest.U11_02.TheFirstDragon.DragonCounter, 0)
             npcHandler:setTopic(playerId, 0)

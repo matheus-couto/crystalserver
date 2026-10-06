@@ -192,7 +192,7 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.Crandoria.DrystanQuest.Timer, os.time())
 			npcHandler:setTopic(playerId, 0)
 		elseif npcHandler:getTopic(playerId) == 2 then
-			if player:getItemCount(11682) >= 6 and player:getItemCount(11460) >= 10 then
+			if player:getItemCount(11682) >= 6 and player:getItemCount(11459) >= 10 then -- 11459 = pineapple (conferia 11460, aubergine)
 				player:removeItem(11682, 6)
 				player:removeItem(11459, 10)
 				player:setStorageValue(Storage.Quest.Crandoria.DrystanQuest.Progresso, 4)

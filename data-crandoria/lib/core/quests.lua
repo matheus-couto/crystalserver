@@ -5372,14 +5372,19 @@ if not Quests then
 			startStorageValue = 1,
 			missions = {
 				[1] = {
+					-- CRANDORIA EDIT: a etapa vem do Progresso, que nao volta para 0 como o
+					-- contador (o Drako zera o contador ao entregar). Pelo contador, quem
+					-- passava de 200 sumia do quest log, e quem entregava voltava a 0/200.
 					name = "Power",
-					storageId = Storage.Quest.U11_02.TheFirstDragon.DragonCounter,
+					storageId = Storage.Quest.U11_02.TheFirstDragon.Progresso,
 					missionId = 10368,
-					startValue = 0,
-					endValue = 200,
-					description = function(player)
-						return ("You already hunted %d/200 dragons."):format(player:getStorageValue(Storage.Quest.U11_02.TheFirstDragon.DragonCounter))
-					end,
+					startValue = 1,
+					endValue = 2,
+					ignoreendvalue = true,
+					states = {
+						[1] = cacaFixa(200, "dragoes da ilha (Crimson, Verdant, Blizzard ou Haunted)", Storage.Quest.U11_02.TheFirstDragon.DragonCounter, "Drako"),
+						[2] = "Voce derrotou os 200 dragoes da ilha para o Drako.",
+					},
 				},
 				[2] = {
 					name = "Treasure",
@@ -9027,7 +9032,7 @@ if not Quests then
 					endValue = 2,
 					ignoreendvalue = true,
 					states = {
-						[1] = "Derrote 200 Veteran Adventurers em Dracantus e volte a Drystan Wildweed.",
+						[1] = cacaFixa(200, "Veteran Adventurers em Dracantus", Storage.Quest.Crandoria.DrystanQuest.KillCount, "Drystan Wildweed"),
 						[2] = "Voce afastou os Veteran Adventurers.",
 					},
 				},
@@ -9041,7 +9046,38 @@ if not Quests then
 					states = {
 						[2] = "Fale com Drystan.",
 						[3] = "Leve 6 dragonfruits e 10 pineapples a Drystan.",
-						[4] = "Drystan agora oferece uma task semanal: 1000 dragoes em ate 12 horas, para quem tem o titulo Ilustre de reputacao.",
+						[4] = "Voce entregou os frutos a Drystan.",
+					},
+				},
+				[3] = {
+					-- A task se repete: o Progresso alterna entre 4 (disponivel ou em
+					-- espera) e 5 (em andamento), e o contador e o prazo mudam a cada vez.
+					name = "Task de dragoes",
+					storageId = Storage.Quest.Crandoria.DrystanQuest.Progresso,
+					missionId = 13189,
+					startValue = 4,
+					endValue = 5,
+					ignoreendvalue = true,
+					states = {
+						[4] = function(player)
+							local espera = player:getStorageValue(Storage.Quest.Crandoria.DrystanQuest.Timer) - os.time()
+							if espera > 0 then
+								return string.format("Task semanal concluida. A proxima libera em %s.", Game.getTimeInWords(espera))
+							end
+							return "Drystan oferece uma task semanal de 1000 dragoes com tempo limite, para quem tem o titulo Ilustre de reputacao. Pergunte a ele sobre a missao."
+						end,
+						[5] = function(player)
+							local drystan = Storage.Quest.Crandoria.DrystanQuest
+							local feitos = math.min(math.max(0, player:getStorageValue(drystan.KillCount)), 1000)
+							local resta = player:getStorageValue(drystan.Timer) + 6 * 60 * 60 - os.time()
+							if feitos >= 1000 then
+								return "Voce derrotou os 1000 dragoes. Volte a Drystan Wildweed."
+							end
+							if resta <= 0 then
+								return string.format("O prazo acabou com %d/1000 dragoes. Fale com Drystan Wildweed.", feitos)
+							end
+							return string.format("Derrote 1000 dragoes da ilha e volte a Drystan Wildweed. Progresso: %d/1000. Tempo restante: %s.", feitos, Game.getTimeInWords(resta))
+						end,
 					},
 				},
 			},

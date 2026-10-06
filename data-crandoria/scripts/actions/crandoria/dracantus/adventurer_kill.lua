@@ -1,34 +1,37 @@
+-- Morte de Veteran Adventurer (registrado em monster.events do veteran_adventurer):
+-- cria um Dragonling no lugar e conta para a primeira missao do Drystan Wildweed.
+--
+-- A versao anterior usava `player` e `count` sem nunca defini-los: dava erro em
+-- toda morte (adventurer_kill.lua:12) e nenhum kill era contado.
+local KILLS = 200
+local DRYSTAN = Storage.Quest.Crandoria.DrystanQuest
+
 local adventurerKill = CreatureEvent("adventurerKill")
 
-function adventurerKill.onDeath(creature, corpse, killer, mostDamage, unjustified, mostDamage_unjustified)
-	if not creature or not creature:getMonster() then
-		return
+function adventurerKill.onDeath(creature, corpse, killer, mostDamageKiller)
+	local monster = creature and creature:getMonster()
+	if not monster or monster:getMaster() then
+		return true
 	end
-	local damageMap = creature:getMonster():getDamageMap()
 
-	local pos = corpse:getPosition()
-	Game.createMonster("Dragonling", pos)
+	Game.createMonster("Dragonling", creature:getPosition())
 
-	local storage = player:getStorageValue(Storage.Quest.Crandoria.DrystanQuest.Progresso)
-
-	if storage == 1 then
-		if count < 199 then
-			local current = storage + 1
-			player:setStorageValue(Storage.Quest.Crandoria.DrystanQuest.KillCount, current)
-			player:sendTextMessage(
-			MESSAGE_STATUS_SMALL,
-			string.format("[Veteran Adventurer] %d/200", current)
-			)
-			return true
-		else
-			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "[Veteran Adventurer] Finalizada")
-			player:setStorageValue(Storage.Quest.Crandoria.DrystanQuest.KillCount, 200)
-			return true
+	-- Conta para todos que causaram dano, como o contador das tasks.
+	for playerId in pairs(monster:getDamageMap()) do
+		local player = Player(playerId)
+		if player and player:getStorageValue(DRYSTAN.Progresso) == 1 then
+			local count = math.max(0, player:getStorageValue(DRYSTAN.KillCount))
+			if count < KILLS then
+				count = count + 1
+				player:setStorageValue(DRYSTAN.KillCount, count)
+				if count >= KILLS then
+					player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("[Veteran Adventurer] %d/%d - volte a Drystan Wildweed.", count, KILLS))
+				else
+					player:sendTextMessage(MESSAGE_STATUS_SMALL, string.format("[Veteran Adventurer] %d/%d", count, KILLS))
+				end
+			end
 		end
 	end
-
-
-
 	return true
 end
 
