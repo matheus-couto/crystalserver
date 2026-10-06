@@ -222,7 +222,7 @@ local function creatureSayCallback(npc, creature, type, message)
 end
 
 
-npcHandler:setMessage(MESSAGE_GREET, "Meu {pai} esta fazendo muita falta...")
+npcHandler:setMessage(MESSAGE_GREET, "Uma {missao} a mais, uma missao a menos... Que diferenca faz?")
 npcHandler:setMessage(MESSAGE_FAREWELL, "Ate mais!")
 npcHandler:setMessage(MESSAGE_WALKAWAY, "Ate mais.")
 

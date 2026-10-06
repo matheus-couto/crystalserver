@@ -9,7 +9,7 @@ local config = {
 	[VOCATION.ID.SORCERER] = {
 		items = {
 			{ 3059, 1 }, -- spellbook
-			{ 3074, 1 }, -- wand of vortex
+			{ 21348, 1 }, -- wand of vortex
 			{ 7991, 1 }, -- magician's robe
 			{ 7992, 1 }, -- mage hat
 			{ 3362, 1 }, -- studded legs
@@ -27,7 +27,7 @@ local config = {
 	[VOCATION.ID.DRUID] = {
 		items = {
 			{ 3059, 1 }, -- spellbook
-			{ 3066, 1 }, -- snakebite rod
+			{ 21350, 1 }, -- snakebite rod
 			{ 7991, 1 }, -- magician's robe
 			{ 7992, 1 }, -- mage hat
 			{ 3362, 1 }, -- studded legs

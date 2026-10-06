@@ -188,6 +188,10 @@ Storage = {
 		AmenefTimer = 55046,
 		CatacombDoors = 55047,
 	},
+	QuestChests = {
+		BlackKnightTreeKey = 51741,
+		WhisperMoss = 51742,
+	},
 	DeeplingBosses = {
 		-- Reserved storage from 50075 - 50079
 		Jaul = 50075,

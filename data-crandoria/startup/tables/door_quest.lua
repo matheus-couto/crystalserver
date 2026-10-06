@@ -467,9 +467,9 @@ QuestDoorAction = {
 	[Storage.Quest.U8_4.InServiceOfYalahar.DoorToReward] = {
 		itemId = false,
 		itemPos = {
-			{ x = 32780, y = 31205, z = 7 },
-			{ x = 32780, y = 31208, z = 7 },
-		},
+			{x = 4909, y = 4643, z = 9},
+			{x = 32780, y = 31208, z = 7}
+		}
 	},
 	-- Blood Brothers Quest
 	[Storage.Quest.U8_4.BloodBrothers.BloodCrystalDoor] = {

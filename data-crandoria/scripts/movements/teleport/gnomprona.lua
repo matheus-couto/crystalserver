@@ -1,10 +1,10 @@
 local teleports = {
-	{ position = Position(33660, 32895, 14), destination = Position(33669, 32933, 15) },
-	{ position = Position(33671, 32933, 15), destination = Position(33660, 32897, 14) },
-	{ position = Position(33658, 32919, 15), destination = Position(33669, 32933, 15) },
-	{ position = Position(33714, 32797, 14), destination = Position(33556, 32754, 14), access = Storage.Quest.U12_90.PrimalOrdeal.Bosses.MagmaBubbleKilled },
-	{ position = Position(33558, 32754, 14), destination = Position(33714, 32799, 14) },
-	{ position = Position(33567, 32758, 15), destination = Position(33555, 32752, 14) },
+	{position = Position(5785, 4867, 15), destination = Position(5796, 4879, 15)},
+	{position = Position(5692, 4703, 15), destination = Position(5683, 4700, 14)},
+	{position = Position(5784, 4845, 14), destination = Position(5796, 4879, 15)},
+	{position = Position(5842, 4745, 14), destination = Position(5684, 4698, 14), access = Storage.Quest.U12_90.PrimalOrdeal.Bosses.MagmaBubbleKilled},
+	{position = Position(5684, 4697, 14), destination = Position(5842, 4746, 14)},
+	{position = Position(5798, 4881, 15), destination = Position(5787, 4844, 14)},
 }
 
 local gnomprona = MoveEvent()
@@ -23,9 +23,7 @@ function gnomprona.onStepIn(creature, item, position, fromPosition)
 						player:teleportTo(teleports[c].destination)
 						player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
 					else
-						player:getPosition():sendMagicEffect(CONST_ME_POFF)
 						player:teleportTo(fromPosition)
-						player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You don't have access to this teleport yet.")
 					end
 				else
 					player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)

@@ -178,23 +178,14 @@ local function creatureSayCallback(npc, creature, type, message)
 	end
 end
 
-keywordHandler:addKeyword(
-	{"shop"},
-	StdModule.say,
-	{
-		npcHandler = npcHandler,
-		text = "I sell potions and fluids. If you'd like to see my offers, ask me for a {trade}."
-	}
-)
-
-npcHandler:setMessage(MESSAGE_GREET, "Hello |PLAYERNAME|, welcome to the fluid and potion {shop} of Edron.")
-npcHandler:setMessage(MESSAGE_FAREWELL, "Good bye, |PLAYERNAME|, please come back soon.")
-npcHandler:setMessage(MESSAGE_WALKAWAY, "Good bye, |PLAYERNAME|, please come back soon.")
-npcHandler:setMessage(
-	MESSAGE_SENDTRADE,
-	"Of course, just browse through my wares. By the way, if you'd like to join our bonus \
-	system for depositing flasks and vial, you have to tell me about that {deposit}."
-)
+npcHandler:setMessage(MESSAGE_GREET, "Ola |PLAYERNAME|, bem vindo a loja de fluidos e pocoes de Magincia.")
+npcHandler:setMessage(MESSAGE_FAREWELL, "Adeus, |PLAYERNAME|, volte sempre.")
+npcHandler:setMessage(MESSAGE_WALKAWAY, "Adeus, |PLAYERNAME|, volte sempre.")
+-- npcHandler:setMessage(
+-- 	MESSAGE_SENDTRADE,
+-- 	"Of course, just browse through my wares. By the way, if you'd like to join our bonus \
+-- 	system for depositing flasks and vial, you have to tell me about that {deposit}."
+-- )
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
@@ -233,6 +224,6 @@ end
 npcType.onCheckItem = function(npc, player, clientId, subType)
 end
 
-npcType:addDialogOptions("trade", "missao", "bye")
+npcType:addDialogOptions("trade", "bye")
 
 npcType:register(npcConfig)

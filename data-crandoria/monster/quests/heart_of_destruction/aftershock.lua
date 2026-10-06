@@ -63,10 +63,10 @@ monster.flags = {
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
-monster.events = {
-	"ShocksDeath",
-	"AftershockTransform",
-}
+-- monster.events = {
+-- 	"ShocksDeath",
+-- 	"AftershockTransform",
+-- }
 
 monster.light = {
 	level = 0,

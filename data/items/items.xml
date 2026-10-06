@@ -1084,18 +1084,13 @@
 		<attribute key="maxtextlen" value="1023" />
 		<attribute key="weight" value="200" />
 	</item>
-	<item id="637" article="a" name="document">
-		<attribute key="primarytype" value="documents and papers" />
-		<attribute key="writeable" value="1" />
+	<item id="637" article="a" name="casino ticket">
+		<attribute key="description" value="Use para girar a roleta sobre o Templo de Crandoria" />
 		<attribute key="weight" value="150" />
-		<attribute key="maxtextlen" value="511" />
 	</item>
 	<item id="638" article="a" name="document">
-		<attribute key="primarytype" value="documents and papers" />
-		<attribute key="writeable" value="1" />
-		<attribute key="writeonceitemid" value="637" />
-		<attribute key="maxtextlen" value="511" />
-		<attribute key="weight" value="150" />
+		<attribute key="primarytype" value="documents and papers"/>
+		<attribute key="weight" value="150"/>
 	</item>
 	<item id="639" article="a" name="scroll">
 		<attribute key="primarytype" value="documents and papers" />
@@ -12307,9 +12302,9 @@
 	</item>
 	<item id="4059" article="a" name="wooden horse" />
 	<item id="4060" article="a" name="statue" />
-	<item id="4061" article="a" name="stone of wisdom">
-		<attribute key="description" value="This rare artefact is a mere relic nowadays" />
-		<attribute key="weight" value="999" />
+	<item id="4061" article="a" name="eldritch fragment">
+		<attribute key="description" value="Usado para craft de itens" />
+		<attribute key="weight" value="500" />
 	</item>
 	<item id="4062" article="a" name="dead dragon">
 		<attribute key="fluidsource" value="blood" />
@@ -31249,10 +31244,10 @@
 		<attribute key="description" value="This hat was handcrafted by Uman the Wise and cursed by Zathroth the Destroyer. It is awarded by TibiaWiki.com.br" />
 		<attribute key="weight" value="805" />
 	</item>
-	<item fromid="12811" toid="12812" article="an" name="imortus">
-		<attribute key="primarytype" value="fansite items" />
-		<attribute key="description" value="It knows all secrets of all numbers. It was awarded by the Exhiti.com" />
-		<attribute key="weight" value="4690" />
+	<item id="12811" article="a" name="chaotic gamble">
+		<attribute key="primarytype" value="fansite items"/>
+		<attribute key="description" value="abra para obter um item Cobra, Lion, Falcon, Stag, Norcferactu ou Inferniarch"/>
+		<attribute key="weight" value="4690"/>
 	</item>
 	<item fromid="12813" toid="12814" name="old radio">
 		<attribute key="primarytype" value="fansite items" />
@@ -45329,9 +45324,9 @@
 		<attribute key="description" value="It seems to be hundreds of years old" />
 		<attribute key="weight" value="330" />
 	</item>
-	<item id="22706" article="a" name="rolled-up parchment">
-		<attribute key="description" value="This parchment has been rolled-up and sealed" />
-		<attribute key="weight" value="20" />
+	<item id="22706" article="a" name="special casino ticket">
+		<attribute key="description" value="Usado na Roleta Especial na Ilha do Casino"/>
+		<attribute key="weight" value="20"/>
 	</item>
 	<item id="22707" article="an" name="Opticompass sphere">
 		<attribute key="primarytype" value="quest items" />
@@ -45383,7 +45378,7 @@
 		<attribute key="primarytype" value="valuables" />
 		<attribute key="weight" value="20" />
 	</item>
-	<item id="22724" article="a" name="titanium token" plural="titanium tokens">
+	<item id="22724" article="a" name="astralis coin" plural="astralis coins">
 		<attribute key="primarytype" value="valuables" />
 		<attribute key="weight" value="20" />
 	</item>
@@ -47101,10 +47096,10 @@
 		<attribute key="description" value="Souvenir from Thais Museum" />
 		<attribute key="weight" value="5" />
 	</item>
-	<item id="23677" article="a" name="music box">
-		<attribute key="primarytype" value="taming items" />
-		<attribute key="description" value="Souvenir from Thais Museum" />
-		<attribute key="weight" value="200" />
+	<item id="23677" article="a" name="chaotic jinx">
+		<attribute key="primarytype" value="taming items"/>
+		<attribute key="description" value="Abra para receber uma bag Cobra, Lion, Falcon ou Stag"/>
+		<attribute key="weight" value="200"/>
 	</item>
 	<item id="23678" article="an" name="encyclopedia">
 		<attribute key="description" value="Souvenir from Thais Museum" />
@@ -62314,9 +62309,9 @@
 		<attribute key="decayTo" value="32709" />
 		<attribute key="containersize" value="20" />
 	</item>
-	<item id="32711" article="a" name="luminescent crystal pickaxe">
-		<attribute key="primarytype" value="tools" />
-		<attribute key="weight" value="135" />
+	<item id="32711" article="a" name="crystal pickaxe">
+		<attribute key="primarytype" value="tools"/>
+		<attribute key="weight" value="135"/>
 	</item>
 	<item fromid="32712" toid="32723" name="unknown" />
 	<item id="32724" article="a" name="spectral gold nugget">
@@ -63364,9 +63359,10 @@
 	</item>
 	<item id="33785" article="a" name="broken mirror" />
 	<item fromid="33788" toid="33789" article="a" name="wall" />
-	<item id="33790" article="a" name="inactive vortex">
-		<attribute key="duration" value="10" />
-		<attribute key="decayTo" value="33791" />
+	<item id="33790" article="a" name="large crystal teleporter">
+		<attribute key="primarytype" value="teleporters"/>
+		<attribute key="type" value="teleport"/>
+		<attribute key="effect" value="teleport"/>
 	</item>
 	<item id="33791" article="a" name="active spirit vortex" />
 	<item id="33792" article="a" name="condensed remorse" />
@@ -67052,10 +67048,9 @@
 			<attribute key="slot" value="ammo" />
 		</attribute>
 	</item>
-	<item id="35909" name="chaos critical dice">
-		<attribute key="primarytype" value="fansite items" />
-		<attribute key="description" value="The one prepared to handle this mortal instrument has the power to alter the equilibrium established by the Gods. Choose a target and roll the dice. Awarded by ManjaTibia.com.br" />
-		<attribute key="weight" value="40" />
+	<item id="35909" name="chaotic luck">
+		<attribute key="description" value="Abra para receber um item Norcferactu, Inferniarch, Eldritch, Dragon, Soul, Primal ou Sanguine."/>
+		<attribute key="weight" value="400"/>
 	</item>
 	<item id="35910" name="chaos critical dice">
 		<attribute key="primarytype" value="fansite items" />
@@ -71676,9 +71671,9 @@
 		<attribute key="primarytype" value="valuables" />
 		<attribute key="weight" value="175" />
 	</item>
-	<item id="39039" article="a" name="cerulean abyss">
-		<attribute key="primarytype" value="valuables" />
-		<attribute key="weight" value="175" />
+	<item id="39039" article="a" name="spectral gem">
+		<attribute key="primarytype" value="valuables"/>
+		<attribute key="weight" value="175"/>
 	</item>
 	<item id="39040" article="a" name="fiery tear">
 		<attribute key="primarytype" value="valuables" />
@@ -86404,7 +86399,8 @@
 	<item id="51512" name="saturated painted bandages">
 		<attribute key="weight" value="60" />
 	</item>
-	<item id="51526" name="special bat coffin">
+	<item id="51526" name="norcferatu coffin">
+		<attribute key="description" value="Abra para obter um item do set Norcferatu." />
 		<attribute key="weight" value="630" />
 	</item>
 	<item id="51527" name="special bat coffin">

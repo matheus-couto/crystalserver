@@ -9,7 +9,7 @@ local config = {
 		Position(4934, 4581, 13),
 		Position(4943, 4581, 13),
 		Position(4934, 4587, 13),
-		Position(33364, 4587, 13)
+		Position(4943, 4587, 13)
 	},
 	startAreaPosition = Position(4936, 4582, 12),
 	arenaPosition = Position(4941, 4587, 13)
@@ -24,7 +24,7 @@ function wrathEmperorMiss11Payback.onUse(player, item, fromPosition, target, toP
 	end
 
 	Game.setStorageValue(Storage.Quest.U8_6.WrathOfTheEmperor.Mission11, 1)
-	addEvent(Game.setStorageValue, 10 * 60000, Storage.WrathoftheEmperor.Mission11, 0)
+	addEvent(Game.setStorageValue, 10 * 60000, Storage.Quest.U8_6.WrathOfTheEmperor.Mission11, 0)
 
 	local monsters = Game.getSpectators(config.arenaPosition, false, false, 10, 10, 10, 10)
 	local spectator

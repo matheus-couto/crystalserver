@@ -84,7 +84,7 @@ local items = {
 	[24] = { name = "Lucky Clover Amulet", id = 37059 },
 	[25] = { name = "Mathmaster Shield", id = 25982 },
 	[26] = { name = "Medusa Skull", id = 23680 },
-	[27] = { name = "Music Box", id = 23677 },
+	-- [27] = { name = "Music Box", id = 23677 },
 	[28] = { name = "Noble Sword", id = 22028 },
 	[29] = { name = "Norseman Doll", id = 19150 },
 	[30] = { name = "Old Radio", id = 28894 },

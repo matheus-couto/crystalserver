@@ -3,6 +3,9 @@
 	<npc centerx="4552" centery="5431" centerz="0" radius="1">
 		<npc name="Rock In A Viridian Place" x="0" y="0" z="0" spawntime="60" />
 	</npc>
+	<npc centerx="6053" centery="5272" centerz="1" radius="1">
+		<npc name="S'Zallar M'Andar" x="0" y="0" z="1" spawntime="60" />
+	</npc>
 	<npc centerx="4551" centery="5431" centerz="1" radius="1">
 		<npc name="Orlando" x="0" y="0" z="1" spawntime="60" />
 	</npc>
@@ -572,6 +575,15 @@
 		<npc name="Oressa" x="0" y="0" z="6" spawntime="60" />
 	</npc>
 	<npc centerx="5013" centery="5270" centerz="6" radius="1">
+		<npc name="Quentin" x="0" y="0" z="6" spawntime="60" />
+	</npc>
+	<npc centerx="4075" centery="5291" centerz="6" radius="1">
+		<npc name="Tom Imbuer" x="0" y="0" z="6" spawntime="60" />
+	</npc>
+	<npc centerx="4069" centery="5293" centerz="6" radius="1">
+		<npc name="Comandante Crassus" x="0" y="0" z="6" spawntime="60" />
+	</npc>
+	<npc centerx="4069" centery="5302" centerz="6" radius="1">
 		<npc name="Quentin" x="0" y="0" z="6" spawntime="60" />
 	</npc>
 	<npc centerx="5027" centery="5349" centerz="6" radius="1">
@@ -1771,6 +1783,9 @@
 	<npc centerx="5595" centery="4831" centerz="9" radius="1">
 		<npc name="Navigator" x="0" y="0" z="9" spawntime="60" />
 	</npc>
+	<npc centerx="4428" centery="4892" centerz="9" radius="1">
+		<npc name="Dragon Ancestor Spirit" x="0" y="0" z="9" spawntime="60" />
+	</npc>
 	<npc centerx="4948" centery="4973" centerz="9" radius="1">
 		<npc name="Pig, o Ardiloso" x="0" y="0" z="9" spawntime="60" />
 	</npc>
@@ -1927,6 +1942,9 @@
 	<npc centerx="5664" centery="4820" centerz="14" radius="1">
 		<npc name="Gnomadness" x="0" y="0" z="14" spawntime="60" />
 	</npc>
+	<npc centerx="5916" centery="5026" centerz="14" radius="1">
+		<npc name="Bloodshade Sacrifice" x="0" y="0" z="14" spawntime="60" />
+	</npc>
 	<npc centerx="5916" centery="5051" centerz="14" radius="1">
 		<npc name="Altar" x="0" y="0" z="14" spawntime="60" />
 	</npc>
@@ -1935,6 +1953,9 @@
 	</npc>
 	<npc centerx="33388" centery="31411" centerz="14" radius="1">
 		<npc name="Heavenly Messenger" x="0" y="0" z="14" spawntime="60" />
+	</npc>
+	<npc centerx="34070" centery="31985" centerz="14" radius="1">
+		<npc name="Bloodshade Rotten" x="0" y="0" z="14" spawntime="60" />
 	</npc>
 	<npc centerx="33836" centery="32125" centerz="14" radius="1">
 		<npc name="Lardoc Bashsmite" x="0" y="0" z="14" spawntime="60" />
@@ -1966,11 +1987,8 @@
 	<npc centerx="5074" centery="4598" centerz="15" radius="1">
 		<npc name="The Lost Priestess" x="0" y="0" z="15" spawntime="60" direction="2" />
 	</npc>
-	<npc centerx="4943" centery="5028" centerz="15" radius="1">
-		<npc name="Sisthus" x="0" y="0" z="15" spawntime="60" />
-	</npc>
-	<npc centerx="4979" centery="5028" centerz="15" radius="1">
-		<npc name="Sisthus" x="0" y="0" z="15" spawntime="60" />
+	<npc centerx="4913" centery="5025" centerz="15" radius="1">
+		<npc name="Xodet" x="0" y="0" z="15" spawntime="60" />
 	</npc>
 	<npc centerx="4460" centery="5468" centerz="15" radius="1">
 		<npc name="Espirito de Suon" x="0" y="0" z="15" spawntime="60" />

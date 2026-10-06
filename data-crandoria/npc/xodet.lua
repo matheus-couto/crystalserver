@@ -40,6 +40,8 @@ local itemsTable = {
 		{ itemName = "ultimate mana potion", clientId = 23373, buy = 535 },
 		{ itemName = "supreme health potion", clientId = 23375, buy = 685 },
 		{ itemName = "vial", clientId = 2874, sell = 5 },
+		{ itemName = "distilled superior mana potion", clientId = 53163, buy = 381 },
+		{ itemName = "distilled ultimate mana potion", clientId = 53164, buy = 732 },
 	},
 	["runes"] = {
 		{ itemName = "avalanche rune", clientId = 3161, buy = 64 },

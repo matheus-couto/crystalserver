@@ -74,9 +74,9 @@ local function creatureSayCallback(npc, creature, type, message)
 				Talvez sua jornada possa mudar para sempre seu destino, te levando a uma busca por um valioso {artefato} vivo...", npc, creature)
 				npcHandler:setTopic(playerId, 0)
 			end
-				elseif storage == 1 then
-			if storageCount < 500 then
-				npcHandler:say("Voce ainda nao derrotou os 500 dragoes da ilha.", npc, creature)
+		elseif storage == 1 then
+			if storageCount < 200 then
+				npcHandler:say("Voce ainda nao derrotou os 200 dragoes da ilha.", npc, creature)
 				npcHandler:setTopic(playerId, 0)
 			else
 				npcHandler:say("Muito bem, meu jovem! Voce pode ser mais forte do que parece. Isso sera otimo para nossos proximos passos. \z
@@ -88,8 +88,8 @@ local function creatureSayCallback(npc, creature, type, message)
 				npcHandler:setTopic(playerId, 0)
 			end
 		elseif storage == 1 then
-			if storageCount < 500 then
-				npcHandler:say("Voce ainda nao derrotou os 500 dragoes da ilha.", npc, creature)
+			if storageCount < 200 then
+				npcHandler:say("Voce ainda nao derrotou os 200 dragoes da ilha.", npc, creature)
 				npcHandler:setTopic(playerId, 0)
 			else
 				npcHandler:say("Muito bem, meu jovem! Voce pode ser mais forte do que parece. Isso sera otimo para nossos proximos passos. \z
@@ -149,7 +149,7 @@ local function creatureSayCallback(npc, creature, type, message)
         if npcHandler:getTopic(playerId) == 1 then
             npcHandler:say("Hum... Apesar da minha experiencia nao sei dizer se seu animo seria bom ou ruim nessa missao... \z
 			Talvez possamos fazer um teste da sua forca antes de comecarmos, apenas para ver se voce pode encarar o desafio. \z
-			Facamos o seguinte: Derrote 500 dragoes na ilha. Crimson, Verdant, Blizzard ou Haunted, nao importa. Derrote 500 e retorne a mim.", npc, creature)
+			Facamos o seguinte: Derrote 200 dragoes na ilha. Crimson, Verdant, Blizzard ou Haunted, nao importa. Derrote 500 e retorne a mim.", npc, creature)
             player:setStorageValue(Storage.Quest.U11_02.TheFirstDragon.Progresso, 1)
 			player:setStorageValue(Storage.Quest.U11_02.TheFirstDragon.DragonCounter, 0)
             npcHandler:setTopic(playerId, 0)

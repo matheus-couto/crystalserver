@@ -1,5 +1,54 @@
 -- crandoria edit --
 
+local scissorsfun = Action()
+function scissorsfun.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    if not player then
+        return true
+    end
+
+    if not target or not target:isNpc() then
+        return true
+    end
+
+    local storage = player:getStorageValue(Storage.Quest.Crandoria.IntoTheShaodws.Scissors)
+    local timer = player:getStorageValue(Storage.Quest.Crandoria.IntoTheShaodws.RouboTimer)
+    local timeNow = os.time()
+
+    if target:getName() == "Lord Holtten" then
+        if storage >= 2 then
+            if timer <= timeNow then
+                local chance = math.random(1, 3)
+                if chance == 1 then
+                    local coins = math.random(5, 15)
+                    player:addTransferableCoins(coins)
+                    player:say('click!', TALKTYPE_MONSTER_SAY)
+                    player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce roubou algumas Tibia Coins de Lord Holtten, fazendo-o fugir assustado.")
+                else
+                    player:say('miss', TALKTYPE_MONSTER_SAY)
+                    player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce tentou roubar do Lord Holtten, mas ele percebeu e fugiu rapidamente.")
+                end
+                player:setStorageValue(Storage.Quest.Crandoria.IntoTheShaodws.RouboTimer, timeNow + 7 * 24 * 60 * 60)
+                toPosition:sendMagicEffect(CONST_ME_POFF)
+                target:remove()
+                return true
+            else
+                player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce so pode tentar roubar uma vez a cada 7 dias.")
+                return true
+            end
+        else
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce nao sabe como usar este item.")
+            return true
+        end
+    else
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Nao ha nada a ser roubado aqui.")
+        return true
+    end
+	return true
+end
+
+scissorsfun:id(31327)
+scissorsfun:register()
+
 -- local config = {
 -- 	[30426] = {
 -- 		itemId = 30426,

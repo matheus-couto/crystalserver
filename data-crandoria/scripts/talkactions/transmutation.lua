@@ -39,7 +39,6 @@ local transmutationClasses = {
         ["falcon longsword"] = 28723,
         ["falcon mace"] = 28725,
         ["falcon sai"] = 50161,
-        ["falcon circlet"] = 52783,
     },
 
     Stag = {

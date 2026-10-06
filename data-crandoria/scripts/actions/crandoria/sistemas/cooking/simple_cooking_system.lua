@@ -291,11 +291,11 @@ local config = {
 	
 	local simpleCraftingSystem = Action()
 	function simpleCraftingSystem.onUse(player, item, fromPosition, itemEx, toPosition, isHotkey)
-		if player:getStorageValue(Storage.Quest.Crandoria.SkillsColeta.CultivoLevel) >= 50 then
+		if player:getStorageValue(Storage.Quest.Crandoria.SkillsColeta.CultivoLevel) >= 25 then
 			player:sendMainCraftWindow(config)
 			return true
 		else
-			player:sendTextMessage(MESSAGE_EVENT_DEFAULT, "Apenas jogadores com skill 50 ou superior em Cultivo podem utilizar o Sistema de Cooking.")
+			player:sendTextMessage(MESSAGE_EVENT_DEFAULT, "Apenas jogadores com skill 25 ou superior em Cultivo podem utilizar o Sistema de Cooking.")
             return true
 		end
 	end
