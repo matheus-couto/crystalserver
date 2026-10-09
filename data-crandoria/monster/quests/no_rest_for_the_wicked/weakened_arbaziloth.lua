@@ -128,12 +128,12 @@ monster.loot = {
 	{ id = 3366, chance = 10000, maxCount = 1 }, -- magic plate armor
 	{ id = 50061, chance = 700, maxCount = 1 }, -- demon skull
 	{ id = 50064, chance = 700, maxCount = 1 }, -- demon in a green box
-	-- { id = 49531, chance = 400, maxCount = 1 }, -- maliceforged helmet
-	-- { id = 49532, chance = 400, maxCount = 1 }, -- hellstalker visor
-	-- { id = 49533, chance = 400, maxCount = 1 }, -- dreadfire headpiece
-	-- { id = 49534, chance = 400, maxCount = 1 }, -- demonfang mask
-	-- { id = 50189, chance = 800, maxCount = 1 }, -- demon mengu
-	{ id = 50067, chance = 300, maxCount = 1 },
+	{ id = 49531, chance = 400, maxCount = 1 }, -- maliceforged helmet
+	{ id = 49532, chance = 400, maxCount = 1 }, -- hellstalker visor
+	{ id = 49533, chance = 400, maxCount = 1 }, -- dreadfire headpiece
+	{ id = 49534, chance = 400, maxCount = 1 }, -- demonfang mask
+	{ id = 50189, chance = 800, maxCount = 1 }, -- demon mengu
+	-- { id = 50067, chance = 300, maxCount = 1 },
 }
 
 monster.attacks = {

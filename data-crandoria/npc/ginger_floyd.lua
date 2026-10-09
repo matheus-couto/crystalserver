@@ -61,7 +61,7 @@ local function creatureSayCallback(npc, creature, type, message)
 
     if MsgContains(message, "nillux") then
         if storage == 6 then
-            npcHandler:say("Ah! Mais um curioso... Escute, vou dizer a mesma coisa que eu digo a todo mundo. Primeiramente, essa pocao possui duracao de apenas 15 dias. \z
+            npcHandler:say("Ah! Mais um curioso... Escute, vou dizer a mesma coisa que eu digo a todo mundo. Primeiramente, essa pocao possui duracao de apenas 7 dias. \z
             Outra coisa: Voce quer uma pocao? Tera que pagar por ela. E nao sera barato! Eu sei o valor do meu trabalho como melhor alquimista do Novo Continente. \z
             Alem disso, voce tera que trazer todos os ingredientes. Nao tem conversa, esse sera o combinado. Entendido?", npc, creature)
             npcHandler:setTopic(playerId, 1)

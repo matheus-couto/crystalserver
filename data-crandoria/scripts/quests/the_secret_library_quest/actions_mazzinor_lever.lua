@@ -18,7 +18,7 @@ local config = {
 		to = Position(5391, 5399, 14)
 	},
 	exit = Position(5380, 5438, 14),
-	storage = Storage.Quest.U11_80.TheSecretLibrary.MazzinorTimer
+	storage = Storage.Quest.U11_80.TheSecretLibrary.Library.MazzinorTimer
 }
 
 local mazzinorLever = Action()

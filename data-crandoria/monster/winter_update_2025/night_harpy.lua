@@ -89,6 +89,7 @@ monster.loot = {
 	{ name = "giant emerald", chance = 80 },
 	{ name = "giant ruby", chance = 80 },
 	{ name = "giant topaz", chance = 80 },
+	{ id = 52632, chance = 20000, maxCount = 1},
 }
 
 monster.attacks = {

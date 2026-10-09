@@ -115,6 +115,7 @@ monster.loot = {
 	{ name = "gnome sword", chance = 4170 },
 	{ name = "gnome armor", chance = 3390 },
 	{ name = "gnomish footwraps", chance = 3390 },
+	{ id = 27524, chance = 2000 },
 }
 
 monster.attacks = {

@@ -8,7 +8,8 @@ local transmutationClasses = {
         ["cobra hood"] = 30397,
         ["cobra sword"] = 30398,
         ["cobra wand"] = 30399,
-        ["cobra rod"] = 30400
+        ["cobra rod"] = 30400,
+        ["cobra bo"] = 50167
     },
 
 
@@ -201,6 +202,14 @@ function transmutation.onSay(player, words, param)
         )
 
         return false
+    end
+
+    local storage = player:getStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso)
+    if storage < 11 then
+        player:sendTextMessage(
+            MESSAGE_EVENT_ADVANCE,
+            "Voce ainda nao aprendeu essa habilidade."
+        )
     end
 
 

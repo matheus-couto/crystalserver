@@ -64,9 +64,9 @@ monster.light = {
 monster.summon = {
 	maxSummons = 5,
 	summons = {
-		{ name = "hardened usurper archer", chance = 0, interval = 600000, count = 2 },
-		{ name = "hardened usurper warlock", chance = 0, interval = 600000, count = 2 },
-		{ name = "hardened usurper knight", chance = 0, interval = 600000, count = 2 },
+		{ name = "hardened usurper archer", chance = 100, interval = 600000, count = 2 },
+		{ name = "hardened usurper warlock", chance = 100, interval = 600000, count = 2 },
+		{ name = "hardened usurper knight", chance = 100, interval = 600000, count = 2 },
 	},
 }
 

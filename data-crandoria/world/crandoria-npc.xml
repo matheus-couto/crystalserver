@@ -685,12 +685,6 @@
 	<npc centerx="5097" centery="4408" centerz="7" radius="1">
 		<npc name="The Former Queen" x="0" y="1" z="7" spawntime="60" direction="2" />
 	</npc>
-	<npc centerx="3981" centery="4427" centerz="7" radius="1">
-		<npc name="Judith Oakson" x="0" y="0" z="7" spawntime="60" />
-	</npc>
-	<npc centerx="3992" centery="4433" centerz="7" radius="1">
-		<npc name="Emilio McRonald" x="0" y="0" z="7" spawntime="60" />
-	</npc>
 	<npc centerx="4874" centery="4453" centerz="7" radius="1">
 		<npc name="Tonar" x="0" y="0" z="7" spawntime="60" direction="2" />
 	</npc>
@@ -1162,6 +1156,9 @@
 	<npc centerx="5890" centery="5058" centerz="7" radius="1">
 		<npc name="Siestaar" x="0" y="0" z="7" spawntime="60" />
 	</npc>
+	<npc centerx="5237" centery="5064" centerz="7" radius="1">
+		<npc name="Captain Fearless" x="0" y="0" z="7" spawntime="60" />
+	</npc>
 	<npc centerx="4894" centery="5065" centerz="7" radius="1">
 		<npc name="Walter Cassino" x="0" y="0" z="7" spawntime="60" />
 	</npc>
@@ -1227,6 +1224,9 @@
 	</npc>
 	<npc centerx="5520" centery="5125" centerz="7" radius="1">
 		<npc name="Hardek" x="0" y="0" z="7" spawntime="60" direction="1" />
+	</npc>
+	<npc centerx="5236" centery="5126" centerz="7" radius="1">
+		<npc name="Captain Fearless" x="0" y="0" z="7" spawntime="60" />
 	</npc>
 	<npc centerx="5556" centery="5126" centerz="7" radius="1">
 		<npc name="Hugo" x="0" y="0" z="7" spawntime="60" />

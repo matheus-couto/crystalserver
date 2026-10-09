@@ -2,7 +2,7 @@
 
 local config = {
 	[1] = {
-		teleportPosition = { x = 33167, y = 31977, z = 8 },
+		teleportPosition = { x = 4785, y = 4645, z = 9 },
 		bossName = "Bloodback",
 		timeToFightAgain = 20, -- In hour
 		timeToDefeat = 10, -- In minutes

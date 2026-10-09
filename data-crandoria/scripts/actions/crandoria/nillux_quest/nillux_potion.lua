@@ -5,8 +5,8 @@ function nilluxPotion.onUse(player, item, fromPosition, target, toPosition, isHo
         return true
     end
 
-	player:setStorageValue(Storage.Quest.Crandoria.NilluxQuest.TimerEffect, os.time() + 15 * 24 * 60 * 60)
-	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce consumiu uma pocao Nillux e recebeu acesso a todos os teleports da TP room e aos World Teleports livremente por 15 dias.")
+	player:setStorageValue(Storage.Quest.Crandoria.NilluxQuest.TimerEffect, os.time() + 7 * 24 * 60 * 60)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce consumiu uma pocao Nillux e recebeu acesso a todos os teleports da TP room e aos World Teleports livremente por 7 dias.")
 	item:remove()
 	return true
 

@@ -127,17 +127,17 @@ monster.loot = {
 	{ id = 30059, chance = 10000, maxCount = 1 }, -- giant ruby
 	{ id = 3364, chance = 10000, maxCount = 1 }, -- golden legs
 	{ id = 3366, chance = 10000, maxCount = 1 }, -- magic plate armor
-	-- { id = 50060, chance = 250, maxCount = 1 }, -- demon claws
-	-- { id = 49522, chance = 250, maxCount = 1 }, -- inferniarch arbalest
-	-- { id = 49523, chance = 250, maxCount = 1 }, -- inferniarch battleaxe
-	-- { id = 49520, chance = 250, maxCount = 1 }, -- inferniarch bow
-	-- { id = 49524, chance = 250, maxCount = 1 }, -- inferniarch greataxe
-	-- { id = 49525, chance = 250, maxCount = 1 }, -- inferniarch flail
-	-- { id = 49526, chance = 250, maxCount = 1 }, -- inferniarch warhammer
-	-- { id = 49528, chance = 250, maxCount = 1 }, -- inferniarch wand
-	-- { id = 49529, chance = 250, maxCount = 1 }, -- inferniarch rod
-	-- { id = 49530, chance = 250, maxCount = 1 }, -- inferniarch slayer
-	{ id = 50067, chance = 300, maxCount = 1 },
+	{ id = 50060, chance = 250, maxCount = 1 }, -- demon claws
+	{ id = 49522, chance = 250, maxCount = 1 }, -- inferniarch arbalest
+	{ id = 49523, chance = 250, maxCount = 1 }, -- inferniarch battleaxe
+	{ id = 49520, chance = 250, maxCount = 1 }, -- inferniarch bow
+	{ id = 49524, chance = 250, maxCount = 1 }, -- inferniarch greataxe
+	{ id = 49525, chance = 250, maxCount = 1 }, -- inferniarch flail
+	{ id = 49526, chance = 250, maxCount = 1 }, -- inferniarch warhammer
+	{ id = 49528, chance = 250, maxCount = 1 }, -- inferniarch wand
+	{ id = 49529, chance = 250, maxCount = 1 }, -- inferniarch rod
+	{ id = 49530, chance = 250, maxCount = 1 }, -- inferniarch slayer
+	-- { id = 50067, chance = 1000, maxCount = 1 },
 
 }
 

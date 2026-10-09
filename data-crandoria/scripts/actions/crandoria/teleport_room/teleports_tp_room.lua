@@ -85,6 +85,7 @@ function teleport.onStepIn(creature, item, position, fromPosition)
 
     local timeNow = os.time()
     local passe = player:getStorageValue(Storage.Quest.Crandoria.TeleportRoom.Passe)
+    local nillux = player:getStorageValue(Storage.Quest.Crandoria.NilluxQuest.TimerEffect)
 
 
     if item.itemid == 1959 then
@@ -93,7 +94,7 @@ function teleport.onStepIn(creature, item, position, fromPosition)
             player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Teleport liberado por possuir nivel 25 ou inferior.")
             return true
         else
-            if passe > timeNow then
+            if passe > timeNow or nillux > timeNow then
                 player:teleportTo(teleportData.destination)
                 return true
             else
@@ -154,7 +155,7 @@ local teleportsBoss = {
     [Position(4902, 5031, 15)] = {itemId = 22721, count = 3, storage = Storage.Quest.Crandoria.TheRiseOfPodzilla.RootkrakenTimer, destination = Position(6192, 4459, 8)}, -- THE ROOTKRAKEN
     [Position(4904, 5031, 15)] = {itemId = 22721, count = 3, storage = Storage.Quest.U7_9.DreamersChallenge.TimerLever, destination = Position(32204, 32036, 13)}, -- DREAM COURTS
     [Position(4906, 5031, 15)] = {itemId = 22721, count = 3, storage = Storage.Kilmaresh.UrmahlulluTimer, destination = Position(5872, 4470, 8)}, -- URMAHLULU
-    [Position(4908, 5031, 15)] = {itemId = 22721, count = 3, storage = Storage.Quest.U12_40.SoulWar.GoshnarMegalomaniaTimer, destination = Position(33621, 31430, 10)}, -- SOULWAR
+    [Position(4908, 5031, 15)] = {itemId = 22721, count = 3, storage = Storage.Quest.U12_40.SoulWar.QuestReward, destination = Position(33621, 31430, 10)}, -- SOULWAR
     [Position(4910, 5031, 15)] = {itemId = 22721, count = 3, storage = Storage.Quest.Crandoria.WarlocksConspiracy.ZarabastanTimer, destination = Position(4540, 5095, 14)}, -- ZARABASTAN
 
     ---- BAIXO

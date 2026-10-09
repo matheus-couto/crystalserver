@@ -18,7 +18,7 @@ local config = {
 		to = Position(5353, 5396, 14)
 	},
 	exit = Position(5406, 5414, 14),
-	storage = Storage.Quest.U11_80.TheSecretLibrary.GorzindelTimer
+	storage = Storage.Quest.U11_80.TheSecretLibrary.Library.GorzindelTimer
 }
 
 local gorzindelLever = Action()

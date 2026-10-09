@@ -92,7 +92,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		end
 	elseif MsgContains(message, "yes") or MsgContains(message, "sim") then
 		if npcHandler:getTopic(playerId) == 1 then
-			if player:getItemCount(11682) >= 10 and player:getItemCount(11460) >= 25 then
+			if player:getItemCount(11682) >= 10 and player:getItemCount(11459) >= 25 then
 				player:removeItem(11682, 10)
 				player:removeItem(11459, 25)
 				npcHandler:say("Otimo! Realmente muito bom. Aqui esta, enregue essa pena magica para Spectulus juntamente ao documento que voce possui e ele sabera que tem minha aprovacao. \z

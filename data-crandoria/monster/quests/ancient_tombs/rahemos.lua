@@ -92,6 +92,7 @@ monster.loot = {
 	{ name = "twin axe", chance = 200 },
 	{ name = "magician hat", chance = 300 },
 	{ id = 238, chance = 7000 }, -- great mana potion
+	{ id = 10290, chance = 100 },
 }
 
 monster.attacks = {

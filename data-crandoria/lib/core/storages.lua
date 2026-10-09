@@ -187,6 +187,7 @@ Storage = {
 		SisterHetaiTimer = 55045,
 		AmenefTimer = 55046,
 		CatacombDoors = 55047,
+		UrmahlulluTimer = 55048,
 	},
 	QuestChests = {
 		BlackKnightTreeKey = 51741,
@@ -410,16 +411,17 @@ Storage = {
 				Treasure = 12413,
 				},
 			NaturalTroubles = { -- 12417 - 12419
-				GaiaTimer = 12417
+				GaiaTimer = 12417,
 				},
 			TheCanyonChallenge = { -- 12420 - 12422
-				GoriathTimer = 12420
+				GoriathTimer = 12420,
 				},
 			BreakingTheIce = { -- 12423 - 12425
-				ReiGeladoTimer = 12423
+				ReiGeladoTimer = 12423,
 				},
 			BossRoom = { -- 12426 - 12428
-				MiniBossRoomTimer = 12426
+				MiniBossRoomTimer = 12426,
+				Outfit = 12427,
 				},
 			DemonSlayer = { -- 12429 - 12440
 				DemonHelmetPass = 12429,
@@ -1325,6 +1327,10 @@ Storage = {
 				GravediggerTimer = 13428,
 				GravediggerWallCounter = 13429,
 			},
+			Morgathla = { -- 13431 - 13433
+				Health = 13431,
+				HealthChange = 13432,
+			}
 		},
 		-- Start of quests per version
 		-- Use the reserved storage keys accordingly
@@ -1529,8 +1535,6 @@ Storage = {
 					Greeting = 40430,
 					MaridDoor = 40431,
 					EfreetDoor = 40432,
-					Marid = 40447,
-					Efreet = 40448,
 				},
 				RecievedLamp = 40433,
 				-- Blue djinn
@@ -1775,6 +1779,7 @@ Storage = {
 				ChestBook = 41009,
 				ChestsWine = 41010,
 				Chests3SmallDiamond = 41011,
+				TimerLever = 41012,
 			},
 			NightmareOutfits = {
 				Outfits = 41012,
@@ -2859,6 +2864,9 @@ Storage = {
 					Health = 43902,
 				},
 				Mouthpiece = 43903,
+				BossWarzone1 = 43904,
+				BossWarzone2 = 43905,
+				BossWarzone3 = 43906,
 			},
 			DevovorgasEssenceMiniWorldChange = {},
 			SpiderNestMiniWorldChange = {},
@@ -3265,7 +3273,9 @@ Storage = {
 			Krailos = {},
 		},
 		U10_94 = { -- update 10.94 - Reserved Storages 45351 - 45450
-			HeartOfDestruction = {},
+			HeartOfDestruction = {
+				WorldDevourerTimer = 49351,
+			},
 		},
 		U11_02 = { -- update 11.02 - Reserved Storages 45451 - 45650
 			FestiveOutfits = {
@@ -3745,11 +3755,12 @@ Storage = {
 					GhuloshTimer = 46094,
 					GorzindelTimer = 46095,
 					Ghulosh = 46096,
+					ScourgeOfOblivionTimer = 49097
 				},
 			},
 			BattleMageOutfits = {
-				Addon1 = 46097,
-				Addon2 = 46098,
+				Addon1 = 46098,
+				Addon2 = 46099,
 			},
 			DiscovererOutfits = {},
 			MeasuringTibia = {},
@@ -3920,9 +3931,14 @@ Storage = {
 				UnwelcomeKilled = 47016,
 				PaleWormEntrance = 47017,
 				PaleWormKilled = 47019,
+				PaleWormTimer = 47020,
+				FearFeasterTimer = 47021,
+				DreadMaidenTimer = 47022,
+				UnwelcomeTimer = 47023,
+				BrainHeadTimer = 47024,
 			},
 			PoltergeistOutfits = {
-				Received = 47020,
+				Received = 47100,
 			},
 		},
 		U12_40 = { -- update 12.40 - Reserved Storages 47201 - 47500
@@ -3958,6 +3974,17 @@ Storage = {
 				QuestReward = 47223,
 				OutfitReward = 47224,
 				MountReward = 47225,
+				GoshnarHatredTimer = 47226,
+				GoshnarMaliceTimer = 47227,
+				GoshnarGreedTimer = 47228,
+				GoshnarCrueltyTimer = 47229,
+				GoshnarSpiteTimer = 47230,
+				GoshnarMegalomaniaTimer = 47231,
+				FlameTimer = 47232,
+				SpellCruelty = 47233,
+				TimerDeathHatred = 47234,
+				TormentCount = 47235,
+				BagKillCount = 47236,
 			},
 		},
 		U12_60 = { -- update 12.60 - Reserved Storages 47501 - 47600
@@ -3973,6 +4000,7 @@ Storage = {
 				BathTub = 47517,
 				RatmiralKilled = 47518,
 				WaterIcon = 47519,
+				RatmiralTimer = 47520,
 			},
 			RascoohanOutfits = {},
 		},
@@ -4000,6 +4028,7 @@ Storage = {
 				Bosses = {
 					MagmaBubbleKilled = 47853,
 					ThePrimalMenaceKilled = 47855,
+					MagmaBubbleTimer = 47856,
 				},
 			},
 			WithinTheTides = {
@@ -4277,6 +4306,18 @@ GlobalStorage = {
 				Crultor = 69199,
 				Despor = 69200,
 			},
+		},
+		MinibossArena = { -- 69201 - 69203
+			PlayerCount = 69201,
+			ArenaTimer = 69202,
+		},
+		AzzilonMiniBosses = { -- 69204 - 69206
+			AltarTimer = 69204,
+			EyeCount = 69205,
+			TwisterrorTimer = 69206,
+			StaffCount = 69207,
+			MalvarothTimer = 69208,
+			ScytheCount = 69209,
 		},
 	},
 		Feroxa = {

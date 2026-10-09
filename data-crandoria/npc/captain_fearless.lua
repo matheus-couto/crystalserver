@@ -7,8 +7,8 @@ npcConfig.description = internalNpcName
 
 npcConfig.health = 100
 npcConfig.maxHealth = npcConfig.health
-npcConfig.walkInterval = 2000
-npcConfig.walkRadius = 2
+npcConfig.walkInterval = 0
+npcConfig.walkRadius = 0
 
 npcConfig.outfit = {
 	lookType = 129,
@@ -26,7 +26,6 @@ npcConfig.flags = {
 npcConfig.voices = {
 	interval = 15000,
 	chance = 50,
-	{ text = "Passages to Thais, Carlin, Ab'Dendriel, Krailos, Port Hope, Edron, Darashia, Liberty Bay, Svargrond, Gray Island, Yalahar and Ankrahmun." },
 }
 
 local keywordHandler = KeywordHandler:new()
@@ -56,61 +55,73 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 
--- Travel
-local function addTravelKeyword(keyword, cost, destination, condition)
-	if condition then
-		keywordHandler:addKeyword({ keyword }, StdModule.say, { npcHandler = npcHandler, text = "I'm sorry but I don't sail there." }, condition)
-	end
+local function creatureSayCallback(npc, creature, type, message)
+    local player = Player(creature)
+    local playerId = player:getId()
 
-	local travelKeyword = keywordHandler:addKeyword({ keyword }, StdModule.say, { npcHandler = npcHandler, text = "Do you seek a passage to " .. keyword:titleCase() .. " for |TRAVELCOST|?", cost = cost, discount = "postman" })
-	travelKeyword:addChildKeyword({ "yes" }, StdModule.travel, { npcHandler = npcHandler, premium = false, cost = cost, discount = "postman", destination = destination })
-	travelKeyword:addChildKeyword({ "no" }, StdModule.say, { npcHandler = npcHandler, text = "We would like to serve you some time.", reset = true })
+    if not npcHandler:checkInteraction(npc, creature) then
+        return false
+    end
+    
+    local storage = player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso)
+	local rep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+	local pos = player:getPosition()
+
+    if MsgContains(message, "passage") then
+		if pos.y < 5068 then
+			if storage < 22 then
+				npcHandler:say("Eu sinto muito, |PLAYERNAME|, mas voce precisara da autorizacao do Comandante Crassus para ir ate la. \z
+				Conclua algumas de suas missoes e com certeza ele colocara seu nome na lista!", npc, creature)
+				npcHandler:setTopic(playerId, 0)   
+			else
+				if storage == 22 then
+					npcHandler:say("Ah, voce foi mandado pelo Comandante Crassus, estou certo? Muito bem, te levarei ate a ilha a pedido dele. Deseja mesmo ir?", npc, creature)
+					npcHandler:setTopic(playerId, 4) 
+				else
+					if rep < 100 then
+						npcHandler:say("Todos aqueles com reputacao Respeitavel ou superior podem ir ate a ilha de volta, mas para voce... bom, digamos que serao 3 Online Tokens. \z
+						Quer mesmo ir?", npc, creature)
+						npcHandler:setTopic(playerId, 1)   
+					else
+						npcHandler:say("Ah! Vejo que voce possui muita reputacao por aqui. Deseja ir gratuitamente ate a Arena dos Minibosses?", npc, creature)
+						npcHandler:setTopic(playerId, 2) 
+					end
+				end
+			end    
+		else
+			npcHandler:say("Deseja retornar para Crandoria?", npc, creature)
+			npcHandler:setTopic(playerId, 3) 
+		end 
+    elseif (MsgContains(message, "yes") or MsgContains(message, "sim")) then
+        if npcHandler:getTopic(playerId) == 1 then
+			if player:removeItem(22723, 3) then
+				player:teleportTo(Position(5235, 5128, 7))
+				npcHandler:say("Ta na hora!", npc, creature)
+				npcHandler:setTopic(playerId, 0)  
+			else
+				npcHandler:say("Confira os bolsos. Acho que voce nao esta com os Online Tokens.", npc, creature)
+				npcHandler:setTopic(playerId, 0) 
+			end
+		elseif npcHandler:getTopic(playerId) == 2 or npcHandler:getTopic(playerId) == 4 then
+			player:teleportTo(Position(5235, 5128, 7))
+			npcHandler:say("Ta na hora!", npc, creature)
+			npcHandler:setTopic(playerId, 0)
+		elseif npcHandler:getTopic(playerId) == 3 then
+			player:teleportTo(Position(5235, 5065, 7))
+			npcHandler:say("De volta para minha terra.", npc, creature)
+			npcHandler:setTopic(playerId, 0)
+		end
+    elseif (MsgContains(message, "nao") or MsgContains(message, "no")) then
+        npcHandler:say("Ok.", npc, creature)
+        npcHandler:setTopic(playerId, 0)
+    end
 end
 
-addTravelKeyword("thais", 170, Position(32310, 32210, 6))
-addTravelKeyword("krailos", 185, Position(33493, 31712, 6)) -- {x = 33493, y = 31712, z = 6}
-addTravelKeyword("carlin", 130, Position(32387, 31820, 6))
-addTravelKeyword("gray island", 150, Position(33196, 31984, 7))
-addTravelKeyword("ab'dendriel", 90, Position(32734, 31668, 6))
-addTravelKeyword("edron", 40, Position(33173, 31764, 6))
-addTravelKeyword("port hope", 160, Position(32527, 32784, 6))
-addTravelKeyword("svargrond", 150, Position(32341, 31108, 6))
-addTravelKeyword("liberty bay", 180, Position(32285, 32892, 6))
-addTravelKeyword("yalahar", 185, Position(32816, 31272, 6), function(player)
-	return player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.SearoutesAroundYalahar.Venore) ~= 1 and player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.SearoutesAroundYalahar.TownsCounter) < 5
-end)
-addTravelKeyword("ankrahmun", 150, Position(33092, 32883, 6))
-addTravelKeyword("issavi", 130, Position(33900, 31463, 6))
+npcHandler:setMessage(MESSAGE_GREET, "Ola, |PLAYERNAME|. Fale comigo se precisar de uma {passagem} a Arena de Minibosses ou de volta para Crandoria.")
+npcHandler:setMessage(MESSAGE_FAREWELL, "Ate mais.")
+npcHandler:setMessage(MESSAGE_WALKAWAY, "Adeus.")
 
--- Darashia
-local travelNode = keywordHandler:addKeyword({ "darashia" }, StdModule.say, { npcHandler = npcHandler, text = "Do you seek a passage to Darashia for |TRAVELCOST|?", cost = 60, discount = "postman" })
-local childTravelNode = travelNode:addChildKeyword({ "yes" }, StdModule.say, { npcHandler = npcHandler, text = "I warn you! This route is haunted by a ghostship. Do you really want to go there?" })
-childTravelNode:addChildKeyword({ "yes" }, StdModule.travel, {
-	npcHandler = npcHandler,
-	premium = false,
-	cost = 60,
-	discount = "postman",
-	destination = function(player)
-		return math.random(10) == 1 and Position(33324, 32173, 6) or Position(33289, 32481, 6)
-	end,
-})
-childTravelNode:addChildKeyword({ "no" }, StdModule.say, { npcHandler = npcHandler, reset = true, text = "We would like to serve you some time." })
-travelNode:addChildKeyword({ "no" }, StdModule.say, { npcHandler = npcHandler, reset = true, text = "We would like to serve you some time." })
-
--- Kick
-keywordHandler:addKeyword({ "kick" }, StdModule.kick, { npcHandler = npcHandler, destination = { Position(32952, 32031, 6), Position(32955, 32031, 6), Position(32957, 32032, 6) } })
-
--- Basic
-keywordHandler:addKeyword({ "sail" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go? To {Issavi}, {krailos}, {Thais}, {Carlin}, {Ab'Dendriel}, {Port Hope}, {Edron}, {Darashia}, {Liberty Bay}, {Svargrond}, {Yalahar}, {Gray Island} or {Ankrahmun}?" })
-keywordHandler:addKeyword({ "passage" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go? To {Issavi} {krailos}, {Thais}, {Carlin}, {Ab'Dendriel}, {Port Hope}, {Edron}, {Darashia}, {Liberty Bay}, {Svargrond}, {Yalahar}, {Gray Island} or {Ankrahmun}?" })
-keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, text = "I am the captain of this ship." })
-keywordHandler:addKeyword({ "captain" }, StdModule.say, { npcHandler = npcHandler, text = "I am the captain of this ship." })
-keywordHandler:addKeyword({ "venore" }, StdModule.say, { npcHandler = npcHandler, text = "This is Venore. Where do you want to go?" })
-keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, text = "My name is Captain Fearless from the Royal Tibia Line." })
-
-npcHandler:setMessage(MESSAGE_GREET, "Welcome on board, |PLAYERNAME|. Where can I {sail} you today?")
-npcHandler:setMessage(MESSAGE_FAREWELL, "Good bye. Recommend us if you were satisfied with our service.")
-npcHandler:setMessage(MESSAGE_WALKAWAY, "Good bye then.")
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 

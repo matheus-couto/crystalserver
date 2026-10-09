@@ -18,7 +18,7 @@ local config = {
 		to = Position(5423, 5399, 14)
 	},
 	exit = Position(5406, 5438, 14),
-	storage = Storage.Quest.U11_80.TheSecretLibrary.GhuloshTimer
+	storage = Storage.Quest.U11_80.TheSecretLibrary.Library.GhuloshTimer
 }
 
 local ghuloshLever = Action()

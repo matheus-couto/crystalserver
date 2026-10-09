@@ -64,9 +64,9 @@ monster.light = {
 monster.summon = {
 	maxSummons = 6,
 	summons = {
-		{ name = "lion archer", chance = 0, interval = 600000, count = 2 },
-		{ name = "lion knight", chance = 0, interval = 600000, count = 2 },
-		{ name = "lion warlock", chance = 0, interval = 600000, count = 2 },
+		{ name = "lion archer", chance = 100, interval = 60000, count = 2 },
+		{ name = "lion knight", chance = 100, interval = 60000, count = 2 },
+		{ name = "lion warlock", chance = 100, interval = 60000, count = 2 },
 	},
 }
 

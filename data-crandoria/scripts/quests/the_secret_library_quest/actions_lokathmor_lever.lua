@@ -18,7 +18,7 @@ local config = {
 		to = Position(5418, 5366, 14)
 	},
 	exit = Position(5380, 5415, 14),
-	storage = Storage.Quest.U11_80.TheSecretLibrary.LokathmorTimer
+	storage = Storage.Quest.U11_80.TheSecretLibrary.Library.LokathmorTimer
 }
 
 local lokathmorLever = Action()

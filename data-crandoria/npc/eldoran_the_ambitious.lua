@@ -107,6 +107,7 @@ end
 npcHandler:setMessage(MESSAGE_GREET, "Um intruso na ilha de Stag Bastion? Veio {enfrentar} o Court Warlock, eu presumo...")
 npcHandler:setMessage(MESSAGE_FAREWELL, "Ate mais.")
 npcHandler:setMessage(MESSAGE_WALKAWAY, "...")
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 

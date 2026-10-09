@@ -619,12 +619,21 @@ function Player:onGainExperience(target, exp, rawExp)
 		end
 	end
 
+	-- CRANDORIA EDIT --
+	local passeXp = 0
+	if self:hasMount(145) then
+		passeXp = 0.05
+	end
+
 	-- Final Adjustments: Low Level Bonus and Base Rate
 	local lowLevelBonusExp = self:getFinalLowLevelBonus()
 	local baseRateExp = self:getFinalBaseRateExperience()
 
 	-- Return final experience value
-	return (exp * (1 + xpBoostPercent / 100 + lowLevelBonusExp / 100)) * staminaBonusXp * baseRateExp
+	-- return (exp * (1 + xpBoostPercent / 100 + lowLevelBonusExp / 100)) * staminaBonusXp * baseRateExp
+	-- CRANDORIA EDIT --
+	local collectionExp = CollectionBonus.get(self).exp
+	return (exp * (1 + xpBoostPercent / 100 + lowLevelBonusExp / 100 + collectionExp / 100 + passeXp)) * staminaBonusXp * baseRateExp
 end
 
 function Player:onLoseExperience(exp)
@@ -664,7 +673,9 @@ function Player:onGainSkillTries(skill, tries)
 	end
 
 	-- Calculate and return the final experience gain
-	return tries * skillRate
+	-- return tries * skillRate
+	local collectionSkills = CollectionBonus.get(self).skills
+	return tries * skillRate * (1 + collectionSkills / 100)
 end
 
 function Player:onCombat(target, item, primaryDamage, primaryType, secondaryDamage, secondaryType)

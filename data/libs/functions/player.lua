@@ -323,6 +323,12 @@ function Player:CreateFamiliarSpell(spellId)
 		self:sendCancelMessage("You need a premium account.")
 		return false
 	end
+	
+	local tile = Tile(playerPosition)
+	if tile and tile:hasFlag(TILESTATE_NOLOGOUT) then
+		self:sendCancelMessage("Voce nao pode invocar um Familiar aqui.")
+		return false
+	end
 
 	if #self:getSummons() >= 1 and self:getAccountType() < ACCOUNT_TYPE_GOD then
 		self:sendCancelMessage("You can't have other summons.")
@@ -581,6 +587,10 @@ function Player:calculateLootFactor(monster)
 		suffix = string.format("vip bonus %d%%", math.floor(vipBoost * 100 + 0.5))
 	end
 
+	-- CRANDORIA EDIT --
+	factor = factor * (1 + CollectionBonus.get(self).loot / 100)
+	--------------------
+	
 	return {
 		factor = factor,
 		msgSuffix = suffix,

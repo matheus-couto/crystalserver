@@ -80,7 +80,7 @@ monster.loot = {
 	{ name = "crown helmet", chance = 4500 }, -- não confirmado
 	{ name = "crown legs", chance = 4000 }, -- não confirmado
 	{ name = "mastermind shield", chance = 2000 }, -- não confirmado
-	{ name = "great shield", chance = 1500 }, -- não confirmado
+	{ name = "great shield", chance = 100, unique = true }, -- não confirmado
 	{ name = "giant sword", chance = 3000 }, -- não confirmado
 	{ name = "magic longsword", chance = 2500 }, -- não confirmado
 	{ name = "small diamond", chance = 30000, maxCount = 5 }, -- não confirmado

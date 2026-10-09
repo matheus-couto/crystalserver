@@ -85,6 +85,7 @@ monster.loot = {
 	{ name = "opal", chance = 2500, maxCount = 3 },
 	{ name = "rainbow quartz", chance = 2500, maxCount = 3 },
 	{ name = "proficiency catalyst", chance = 3000 },
+	{ name = "scallop shell", chance = 400 },
 }
 
 -- missing spells

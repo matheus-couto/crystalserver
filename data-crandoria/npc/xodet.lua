@@ -159,7 +159,7 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:say('Sorry, you aren\'t a druid either a sorcerer.', npc, creature)
 		end
 	elseif MsgContains(message, "primeiro dragao") then
-		if player:getStorageValue(Storage.FirstDragon.Progresso) == 3 then
+		if player:getStorageValue(Storage.Quest.U11_02.TheFirstDragon.Progresso) == 3 then
 			npcHandler:say("Voce esta maluco? Esta mesmo pensando em lutar contra o Primeiro Dragao das lendas? \z
 			Eu nao sei muito sobre ele e nao te diria nada se soubesse. Enfrentar o Primeiro Dragao... Ha! \z
 			Faz ideia do risco que isso pode trazer para Crandoria? Nao posso te ajudar.", npc, creature)

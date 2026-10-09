@@ -1,4 +1,4 @@
-﻿local internalNpcName = "Kozlon"
+local internalNpcName = "Kozlon"
 local npcType = Game.createNpcType(internalNpcName)
 local npcConfig = {}
 
@@ -126,10 +126,10 @@ local function creatureSayCallback(npc, creature, type, message)
         npcHandler:setTopic(playerId, 2)
     elseif MsgContains(message, "transmutar") or MsgContains(message, "transmute") then
         npcHandler:say("Bom, como combinado, agora voce podera usar a transmutacao. Esse metodo antigo te permite trocar 3 itens de uma mesma classe por 1 item da mesma classe a sua escolha. \z
-        Para isso, voce precisara entrar no teleport descendo as escadas. Va! Leia o livro com as instrucoes e use o metodo quando quiser.", npc, creature)
+        Para isso, basta dizer !transmutar seguido dos itens iguais que voce quer trocar e, depois, o nome do item da mesma clase que voce deseja. \z
+        Por exemplo: !transmutar cobra hood, cobra axe. Dessa forma, voce troca 3 Cobra Hoods por 1 Cobra Axe. Boa sorte!", npc, creature)
         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso, 11)
         npcHandler:setTopic(playerId, 0)
-    end
 
 
 
@@ -141,35 +141,35 @@ local function creatureSayCallback(npc, creature, type, message)
     --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.ItemTrade, 0)
     --         npcHandler:setTopic(playerId, 4) 
     --     end
-    -- elseif MsgContains(message, "yes") or MsgContains(message, "sim") then
-    --     if npcHandler:getTopic(playerId) == 2 then
-    --         npcHandler:say("Excelente! Eu sabia que encontraria alguem que finalmente poderia me ajudar. Desca as escadas e voce chegara na cidade destruida das Furys. Eu nao lembro bem onde esta o documento, mas lembro de ter guardado ele em uma \z
-    --         caixa em algumm lugar. Ou seria uma gaveta? Bom, de qualquer forma a cidade esta um caos, nao sera uma tarefa facil. Te desejo boa sorte!", npc, creature)
-    --         npcHandler:setTopic(playerId, 0)
-    --         player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso, 1)
-    --     elseif npcHandler:getTopic(playerId) == 3 then
-    --         if player:removeItem(7935, 1) then
-    --             npcHandler:say("Isso! Este realmente era o documento que eu mais precisava! Mas esute, eu nao possuo credibilidade em Magincia. Preciso que voce pegue o conteudo dessa carta e leve ate Zoltan. Ja fomos amigos um dia, ele vai acreditar em mim. \z
-    --             Por favor, leve isso para Zoltan. Me diga se conseguir uma resposta positiva sobre a incursao ate a cidade dos Warlocks.", npc, creature)
-    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso, 2)
-    --             player:addItem(348, 1)
-    --         else
-    --             npcHandler:say("E onde estao os documentos? Nao vejo nada com voce. Volte quando estiver com eles em maos!", npc, creature)
-    --             npcHandler:setTopic(playerId, 0)
-    --         end
-    --     elseif npcHandler:getTopic(playerId) == 17 then
-    --         if player:removeItem(24873, 1) then
-    --             npcHandler:say("Dois itens iguais e uma 'luminescent heart potion'? Eu nunca ouvi falar em algo assim, mas com certeza Filandrel, alquimista de Astralis, sabe algo sobre isso. Pergunte a ele sobre essa pocao e talvez ele te informe melhor sobre como obte-la.", npc, creature)
-    --             player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso, 11)
-    --             npcHandler:setTopic(playerId, 0)
-    --         end
-    --     elseif npcHandler:getTopic(playerId) == 18 then
-    --         npcHandler:say("Excelente! E qual dos seus itens Eldritch ou Sanguine voce gostaria de trocar?", npc, creature)
-    --         npcHandler:setTopic(playerId, 15)
-    --     end
-    -- elseif MsgContains(message, "no") or MsgContains(message, "nao") then
-    --     npcHandler:say("Ah... Tudo bem entao.", npc, creature)
-    --     npcHandler:setTopic(playerId, 0)
+    elseif MsgContains(message, "yes") or MsgContains(message, "sim") then
+        if npcHandler:getTopic(playerId) == 2 then
+            npcHandler:say("Excelente! Eu sabia que encontraria alguem que finalmente poderia me ajudar. Desca as escadas e voce chegara na cidade destruida das Furys. Eu nao lembro bem onde esta o documento, mas lembro de ter guardado ele em uma \z
+            caixa em algumm lugar. Ou seria uma gaveta? Bom, de qualquer forma a cidade esta um caos, nao sera uma tarefa facil. Te desejo boa sorte!", npc, creature)
+            npcHandler:setTopic(playerId, 0)
+            player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso, 1)
+        elseif npcHandler:getTopic(playerId) == 3 then
+            if player:removeItem(7935, 1) then
+                npcHandler:say("Isso! Este realmente era o documento que eu mais precisava! Mas esute, eu nao possuo credibilidade em Magincia. Preciso que voce pegue o conteudo dessa carta e leve ate Zoltan. Ja fomos amigos um dia, ele vai acreditar em mim. \z
+                Por favor, leve isso para Zoltan. Me diga se conseguir uma resposta positiva sobre a incursao ate a cidade dos Warlocks.", npc, creature)
+                player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso, 2)
+                player:addItem(348, 1)
+            else
+                npcHandler:say("E onde estao os documentos? Nao vejo nada com voce. Volte quando estiver com eles em maos!", npc, creature)
+                npcHandler:setTopic(playerId, 0)
+            end
+        elseif npcHandler:getTopic(playerId) == 17 then
+            if player:removeItem(24873, 1) then
+                npcHandler:say("Dois itens iguais e uma 'luminescent heart potion'? Eu nunca ouvi falar em algo assim, mas com certeza Filandrel, alquimista de Astralis, sabe algo sobre isso. Pergunte a ele sobre essa pocao e talvez ele te informe melhor sobre como obte-la.", npc, creature)
+                player:setStorageValue(Storage.Quest.Crandoria.WarlocksConspiracy.Progresso, 11)
+                npcHandler:setTopic(playerId, 0)
+            end
+        elseif npcHandler:getTopic(playerId) == 18 then
+            npcHandler:say("Excelente! E qual dos seus itens Eldritch ou Sanguine voce gostaria de trocar?", npc, creature)
+            npcHandler:setTopic(playerId, 15)
+        end
+    elseif MsgContains(message, "no") or MsgContains(message, "nao") then
+        npcHandler:say("Ah... Tudo bem entao.", npc, creature)
+        npcHandler:setTopic(playerId, 0)
     --     ----------------------------------------- COBRA ----------------------------------------------
     -- elseif MsgFind(message, "cobra") then
     --     if npcHandler:getTopic(playerId) == 4 then
@@ -1736,7 +1736,7 @@ local function creatureSayCallback(npc, creature, type, message)
     --             npcHandler:setTopic(playerId, 0)
     --         end
     --     end
-    -- end
+    end
 end
 
 keywordHandler:addKeyword({'living crystal'}, StdModule.say, {npcHandler = npcHandler, text = 'Os living crystal sao cristais criados por meio de pura magia pelo mago Zarabastan. Esses cristais possibilitam a execucao de feiticos nunca antes imaginados... Mas os cristais devem ser rapidamente manupulados uma vez adquiridos, por possuem tempo limitado de duracao.'})

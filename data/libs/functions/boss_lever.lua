@@ -20,6 +20,23 @@
 ---@field private encounter Encounter
 ---@field private timeoutEvent Event
 ---@field private disableCooldown boolean
+
+local function removePlayerSummons(player)
+	if not player or not player:isPlayer() then
+		return
+	end
+
+	local summons = player:getSummons()
+	if not summons or #summons == 0 then
+		return
+	end
+
+	for _, summon in ipairs(summons) do
+		RemoveFamiliar(summon:getId(), player:getId())
+	end
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Familiares e summons nao sao permitidos em bosses de alavanca.")
+end
+
 BossLever = {}
 
 --[[
@@ -240,6 +257,7 @@ function BossLever:onUse(player)
 			end
 			monster:registerEvent("BossLeverOnDeath")
 		end
+		lever:executeOnPlayers(removePlayerSummons) -- CRANDORIA EDIT
 		lever:teleportPlayers()
 		local rottenBloodBosses = {
 			["murcion"] = true,
@@ -435,6 +453,9 @@ function CreateDefaultLeverBoss(player, config)
         if not boss then
             return true
         end
+		----- CRANDORIA EDIT ------
+        lever:executeOnPlayers(removePlayerSummons)
+		-----------------------------
         lever:teleportPlayers()
         if config.storage then
             lever:setStorageAllPlayers(config.storage, os.time() + config.timeToFightAgain)

@@ -5,6 +5,7 @@ local bosses = {
 	["goshnar's cruelty"] = { storage = Storage.Quest.U12_40.SoulWar.GoshnarCrueltyKilled },
 	["goshnar's greed"] = { storage = Storage.Quest.U12_40.SoulWar.GoshnarGreedKilled },
 	["goshnar's megalomania"] = { storage = Storage.Quest.U12_40.SoulWar.GoshnarMegalomaniaKilled },
+	["goshnars megalomania jar"] = { storage = "noSoulWarStorage"},
 }
 
 local BAG_KILL_COUNT_STORAGE = Storage.Quest.U12_40.SoulWar.BagKillCount
@@ -40,13 +41,14 @@ function bossesSoulWar.onDeath(creature, corpse, killer, mostDamageKiller)
 			end -- valor padr�o
 
 			local chanceBag = math.random(1, 1000)
-			if target:getName() == "Goshnar's Megalomania" or target:getName() == "Goshnar's Megalomania 3" or target:getName() == "Goshnar's Megalomania 2" then
+			if target:getName() == "Goshnar's Megalomania" or target:getName() == "Goshnar's Megalomania 3" or target:getName() == "Goshnar's Megalomania 2" or target:getName() == "Goshnars Megalomania Jar" then
 				if chanceBag < attackerPlayer:getStorageValue(BAG_KILL_COUNT_STORAGE) then
 					attackerPlayer:addItem(34109, 1)
 					attackerPlayer:setStorageValue(BAG_KILL_COUNT_STORAGE, 0)
 					attackerPlayer:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu uma Bag You Desire!")
 				else
 					attackerPlayer:setStorageValue(BAG_KILL_COUNT_STORAGE, current + 1)
+					attackerPlayer:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce sente a sorte se aproximando...")
 				end
 			else
 				attackerPlayer:setStorageValue(BAG_KILL_COUNT_STORAGE, current + 1)

@@ -56,9 +56,9 @@ local config = {
 	storage = Storage.Quest.Crandoria.StagBastion.CourtWarlockTimer,
 	monsters = {
 		{ name = "Raging Raubritter", pos = Position(5249, 5469, 2) },
-		{ name = "Energised Raubritter", pos = Position(5249, 5249, 2) },
-		{ name = "Frozen Raubritter", pos = Position(5256, 5249, 2) },
-		{ name = "Poisoned Raubritter", pos = Position(5249, 5469, 2) },
+		{ name = "Energised Raubritter", pos = Position(5249, 5476, 2) },
+		{ name = "Frozen Raubritter", pos = Position(5256, 5477, 2) },
+		{ name = "Poisoned Raubritter", pos = Position(5256, 5469, 2) },
 	},
 }
 local function clearUpperFloorMonsters(specPos)

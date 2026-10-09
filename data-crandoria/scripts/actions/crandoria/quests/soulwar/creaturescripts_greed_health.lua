@@ -35,13 +35,12 @@ function greedDeath.onDeath(creature, corpse, killer, mostDamageKiller, unjustif
 
         local sphere = Game.createMonster("Soul Sphere", Position(33752, 31659, 14))
 
+        local pos = sphere:getPosition()
+        local bossPos = Position(pos.x - 1, pos.y, pos.z)
+
         if sphere then
             addEvent(function()
-                sphere:changeSpeed(35)
-                sphere:move(DIRECTION_WEST)
-                addEvent(function()
-                    sphere:changeSpeed(-35)
-                end, 500)
+                sphere:teleportTo(bossPos)
             end, 4000)
         end
 

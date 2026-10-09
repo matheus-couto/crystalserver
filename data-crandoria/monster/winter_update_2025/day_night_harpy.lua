@@ -84,6 +84,7 @@ monster.loot = {
 	{ name = "giant topaz", chance = 130, maxCount = 1 },
 	{ name = "giant topaz", chance = 130, maxCount = 1 },
 	{ name = "night harpy feathers", chance = 570, minCount = 5, maxCount = 10 },
+	{ id = 52632, chance = 20000, maxCount = 1},
 }
 
 monster.attacks = {

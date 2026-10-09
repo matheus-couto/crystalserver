@@ -120,9 +120,9 @@ monster.loot = {
 }
 
 monster.attacks = {
-	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -5000 },
-	{ name = "combat", interval = 2000, chance = 28, type = COMBAT_ICEDAMAGE, minDamage = -2450, maxDamage = -4400, length = 10, spread = 4, effect = CONST_ME_ICEAREA, target = false },
-	{ name = "combat", interval = 2000, chance = 30, type = COMBAT_ICEDAMAGE, minDamage = -2350, maxDamage = -3000, range = 7, radius = 4, shootEffect = CONST_ANI_ICE, effect = CONST_ME_ICEAREA, target = true },
+	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -6000 },
+	{ name = "combat", interval = 2000, chance = 28, type = COMBAT_ICEDAMAGE, minDamage = -3300, maxDamage = -6200, length = 10, spread = 4, effect = CONST_ME_ICEAREA, target = false },
+	{ name = "combat", interval = 2000, chance = 30, type = COMBAT_ICEDAMAGE, minDamage = -3050, maxDamage = -4500, range = 7, radius = 4, shootEffect = CONST_ANI_ICE, effect = CONST_ME_ICEAREA, target = true },
 	{ name = "boss break", interval = 2000, chance = 100, target = false},
 	{ name = "goshnars malice death", interval = 35000, chance = 100, range = 15, target = false},
 	{ name = "goshnars malice cage", interval = 15000, chance = 100, range = 15, target = false},

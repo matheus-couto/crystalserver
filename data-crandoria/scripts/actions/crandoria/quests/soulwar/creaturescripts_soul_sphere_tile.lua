@@ -22,13 +22,7 @@ function soulSphereTile.onStepIn(creature, item, position, fromPosition)
 			-- Caso contrário, executa o movimento
 			addEvent(function()
 				if creature and creature:isMonster() then
-					creature:changeSpeed(35)
-					creature:move(DIRECTION_WEST)
-					addEvent(function()
-						if creature and creature:isMonster() then
-							creature:changeSpeed(-35)
-						end
-					end, 250)
+					creature:teleportTo(bossPos)
 				end
 			end, 4500)
 		end

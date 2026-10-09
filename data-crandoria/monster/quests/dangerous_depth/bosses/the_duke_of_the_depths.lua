@@ -113,6 +113,7 @@ monster.loot = {
 	{ name = "violet gem", chance = 2080 },
 	{ name = "gnome legs", chance = 3390 },
 	{ name = "gnomish footwraps", chance = 3390 },
+	{ id = 27526, chance = 2000 }
 }
 
 monster.attacks = {

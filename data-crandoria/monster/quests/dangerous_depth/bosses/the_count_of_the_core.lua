@@ -117,6 +117,7 @@ monster.loot = {
 	{ name = "twiceslicer", chance = 1690 },
 	{ name = "tinged pot", chance = 1690 },
 	{ name = "gnomish footwraps", chance = 1790 },
+	{ id = 27525, chance = 2000 },
 }
 
 monster.attacks = {

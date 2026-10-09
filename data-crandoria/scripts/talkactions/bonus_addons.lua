@@ -83,8 +83,8 @@ function bonusAddons.onSay(player, words, param)
             count = count + 1
         end
     end
-    if count > 100 then
-        count = 100
+    if count > 50 then
+        count = 50
     end
 
     -- Conta montarias
@@ -102,34 +102,50 @@ function bonusAddons.onSay(player, words, param)
     -- local mountBonusBlocks = math.floor(countMount / 10) -- Blocos de 10
     -- local mountBonusPercent = mountBonusBlocks * 0.5 -- 0.5% por bloco
 
-    -- Atualiza storages
-    player:setStorageValue(Storage.Quest.Crandoria.AddonsBonus.BonusExp, count)
-    player:setStorageValue(Storage.Quest.Crandoria.AddonsBonus.BonusLoot, count)
-    player:setStorageValue(Storage.Quest.Crandoria.AddonsBonus.BonusSkills, count)
+    -- -- Atualiza storages
+    -- player:setStorageValue(Storage.Quest.Crandoria.AddonsBonus.BonusExp, count)
+    -- player:setStorageValue(Storage.Quest.Crandoria.AddonsBonus.BonusLoot, count)
+    -- player:setStorageValue(Storage.Quest.Crandoria.AddonsBonus.BonusSkills, count)
 
-    player:setStorageValue(Storage.Quest.Crandoria.MountBonus.BonusExp, countMount)
-    player:setStorageValue(Storage.Quest.Crandoria.MountBonus.BonusLoot, countMount)
-    player:setStorageValue(Storage.Quest.Crandoria.MountBonus.BonusSkills, countMount)
+    -- player:setStorageValue(Storage.Quest.Crandoria.MountBonus.BonusExp, countMount)
+    -- player:setStorageValue(Storage.Quest.Crandoria.MountBonus.BonusLoot, countMount)
+    -- player:setStorageValue(Storage.Quest.Crandoria.MountBonus.BonusSkills, countMount)
 
-    -- Cálculo dos bônus de addons (outfits)
-    local expBonus = count * 0.2
-    local lootBonus = count * 0.05
-    local skillsBonus = count * 0.1
+	-- Atualiza storages (contagens)
+	player:setStorageValue(Storage.Quest.Crandoria.AddonsBonus.BonusExp, count)
+	player:setStorageValue(Storage.Quest.Crandoria.MountBonus.BonusExp, countMount)
 
-	local expBonusMount = countMount * 0.1
-    local lootBonusMount = countMount * 0.1
-    local skillsBonusMount = countMount * 0.1
+	-- Atualiza o cache lido pelos scripts de ganho
+	local bonus = CollectionBonus.set(player, count, countMount)
+
+    -- -- Cálculo dos bônus de addons (outfits)
+    -- local expBonus = count * 0.1
+    -- local lootBonus = count * 0.1
+    -- local skillsBonus = count * 0.1
+
+	-- local expBonusMount = countMount * 0.1
+    -- local lootBonusMount = countMount * 0.1
+    -- local skillsBonusMount = countMount * 0.1
 
     -- Monta a mensagem incluindo montarias e seus bônus
-    local msg = string.format(
-        "Voce possui %d outfits completos.\n\n" ..
-        "Exp Bonus: %.1f%%\nLoot Bonus: %.1f%%\nSkills Bonus: %.1f%%\n\n" ..
-        "Voce possui %d montarias.\n\n" ..
-        "Exp Bonus: %.1f%%\nLoot Bonus: %.1f%%\nSkills Bonus: %.1f%%",
-        count, expBonus, lootBonus, skillsBonus,
-        countMount,
-        expBonusMount, lootBonusMount, skillsBonusMount
-    )
+    -- local msg = string.format(
+    --     "Voce possui %d outfits completos.\n\n" ..
+    --     "Exp Bonus: %.1f%%\nLoot Bonus: %.1f%%\nSkills Bonus: %.1f%%\n\n" ..
+    --     "Voce possui %d montarias.\n\n" ..
+    --     "Exp Bonus: %.1f%%\nLoot Bonus: %.1f%%\nSkills Bonus: %.1f%%",
+    --     count, expBonus, lootBonus, skillsBonus,
+    --     countMount,
+    --     expBonusMount, lootBonusMount, skillsBonusMount
+    -- )
+
+	local msg = string.format(
+		"Outfits completos: %d (+%.1f%%, max 5%%)\n" ..
+		"Montarias obtidas: %d (+%.1f%%, max 5%%)\n\n" ..
+		"Bonus total:\nExp: %.1f%%\nLoot: %.1f%%\nSkills: %.1f%%",
+		count, bonus.outfits,
+		countMount, bonus.mounts,
+		bonus.exp, bonus.loot, bonus.skills
+	)
 
 	-- Mostra janela ao jogador
 	player:popupFYI(msg)

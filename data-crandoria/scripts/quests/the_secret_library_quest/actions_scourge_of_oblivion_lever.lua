@@ -23,7 +23,7 @@ local config = {
 		to = Position(5326, 5427, 13)
 	},
 	exit = Position(5266, 5421, 13),
-	storage = Storage.Quest.U11_80.TheSecretLibrary.ScourgeOfOblivionTimer
+	storage = Storage.Quest.U11_80.TheSecretLibrary.Library.ScourgeOfOblivionTimer
 }
 
 local scourgeOfOblivionLever = Action()

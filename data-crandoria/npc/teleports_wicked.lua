@@ -48,7 +48,7 @@ function teleportsWicked.onStepIn(creature, item, position, fromPosition)
             return true
         end
     elseif position == Position(4602, 4525, 5) then
-        if player:getLevel() >= 400 and (storageMageSociety >= 1 or player:isVip() or storageNillux > os.time()) then
+        if player:getLevel() >= 400 and storageMageSociety >= 1 then
             player:teleportTo(5123, 4311, 6)
             return true
         else

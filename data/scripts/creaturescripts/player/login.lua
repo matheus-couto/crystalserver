@@ -41,6 +41,39 @@ function playerLoginGlobal.onLogin(player)
 	end
 	player:sendTextMessage(MESSAGE_LOGIN, loginStr)
 
+	------------ CRANDORIA EDIT ------------
+	-- BONUS ADDONS E MOUNTS --
+	if CollectionBonus then
+		local ok, err = pcall(CollectionBonus.load, player)
+		if not ok then
+			logger.error("[CollectionBonus] falha ao carregar bonus de {}: {}", player:getName(), tostring(err))
+		end
+	else
+		logger.error("[CollectionBonus] modulo nao carregado")
+	end
+
+	-- REPUTACAO --
+	local rep = math.max(player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points), 0)
+
+	local lastLogin = player:getLastLoginSaved()
+	if lastLogin > 0 then
+		local hoursAway = (os.time() - lastLogin) / 3600
+		local daysAway = math.floor(hoursAway / 24)
+		local loss = daysAway * 3
+
+		if loss > 0 and rep > 0 then
+			local newRep = math.max(rep - loss, 0)
+			player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, newRep)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format(
+				"Voce ficou %d dia(s) sem entrar e perdeu %d ponto(s) de reputacao.",
+				daysAway,
+				rep - newRep
+			))
+			rep = newRep
+		end
+	end
+	---------------------------------------------
+	
 	-- Promotion
 	local vocation = player:getVocation()
 	local promotion = vocation:getPromotion()

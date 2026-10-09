@@ -80,7 +80,7 @@ monster.voices = {
 
 monster.loot = {
 	{ name = "gold coin", chance = 100000, maxCount = 100 },
-	{ name = "vampire lord token", chance = 100000 },
+	-- { name = "vampire lord token", chance = 100000 },
 	{ name = "blood preservation", chance = 91090 },
 	{ name = "vampire shield", chance = 15840 },
 	{ name = "strong health potion", chance = 18000 },

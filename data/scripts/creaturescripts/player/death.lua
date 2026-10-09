@@ -5,6 +5,10 @@ function playerDeath.onDeath(player, corpse, killer, mostDamageKiller, unjustifi
 	if player:getStorageValue(Storage.Quest.U8_0.BarbarianArena.PitDoor) > 0 then
 		player:setStorageValue(Storage.Quest.U8_0.BarbarianArena.PitDoor, 0)
 	end
+	
+	-- CRANDORIA EDIT --
+	local rep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+	local repPoints = 3
 
 	if not deathListEnabled then
 		return
@@ -26,6 +30,12 @@ function playerDeath.onDeath(player, corpse, killer, mostDamageKiller, unjustifi
 	else
 		killerName = "field item"
 	end
+	
+	-- CRANDORIA EDIT --
+	local losePoints = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points) - repPoints
+	local newRep = math.max(0, losePoints)
+	player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, newRep)
+	-------------------------
 
 	local byPlayerMostDamage = 0
 	local mostDamageName

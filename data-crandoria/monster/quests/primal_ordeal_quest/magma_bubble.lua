@@ -21,7 +21,7 @@ monster.speed = 200
 monster.manaCost = 0
 
 monster.events = {
-	"magmabubbleDeath",
+	"MagmaBubbleDeath",
 }
 
 
@@ -115,7 +115,7 @@ monster.loot = {
 	-- { id = 39186, chance = 200 }, -- name = "charged arboreal ring"
 	-- { id = 39180, chance = 200 }, -- name = "charged alicorn ring"
 	-- { id = 39177, chance = 200 }, -- name = "charged spiritthorn ring"
-	{ id = 39546, chance = 500, unique = true },
+	{ id = 39546, chance = 400, unique = true },
 	{ id = 39136, chance = 3000 }, -- perdao real
 }
 

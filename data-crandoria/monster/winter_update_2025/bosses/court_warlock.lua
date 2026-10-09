@@ -107,7 +107,7 @@ monster.loot = {
 	{ name = "magma monocle", chance = 5000 }, -- não confirmado
 	{ name = "glacier mask", chance = 5000 }, -- não confirmado
 	{ name = "broken staff of mind control", chance = 5000 }, -- não confirmado
-	{ name = "twisted marionette", chance = 5000 }, -- não confirmado
+	{ name = "twisted marionette", chance = 2500 }, -- não confirmado
 	-- { name = "stag shinguards", chance = 3000 }, -- não confirmado
 	-- { name = "stag boots", chance = 3000 }, -- não confirmado
 	-- { name = "stag footwraps", chance = 3000 }, -- não confirmado

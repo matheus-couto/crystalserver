@@ -10179,11 +10179,20 @@
 		</attribute>
 	</item>
 	<item id="3402" article="a" name="native armor">
-		<attribute key="primarytype" value="armors" />
-		<attribute key="armor" value="7" />
-		<attribute key="weight" value="8000" />
-		<attribute key="script" value="moveevent">
-			<attribute key="slot" value="armor" />
+		<attribute key="primarytype" value="armors"/>
+		<attribute key="absorbpercentphysical" value="8"/>
+		<attribute key="absorbpercentdeath" value="6"/>
+		<attribute key="skilldist" value="5"/>
+		<attribute key="armor" value="19"/>
+		<attribute key="weight" value="16000"/>
+		<attribute key="imbuementslot" value="2">
+			<attribute key="life leech" value="3"/>
+			<attribute key="elemental protection earth" value="3"/>
+			<attribute key="elemental protection fire" value="3"/>
+			<attribute key="elemental protection death" value="3"/>
+			<attribute key="elemental protection ice" value="3"/>
+			<attribute key="elemental protection energy" value="3"/>
+			<attribute key="elemental protection holy" value="3"/>
 		</attribute>
 	</item>
 	<item id="3403" article="a" name="tribal mask">
@@ -22794,11 +22803,9 @@
 		<attribute key="maxtextlen" value="99" />
 		<attribute key="weight" value="150" />
 	</item>
-	<item id="8151" article="a" name="TibiaHispano Emblem">
-		<attribute key="description" value="Only a brave and true hero of TibiaHispano can possess it" />
-		<attribute key="writeable" value="1" />
-		<attribute key="maxtextlen" value="99" />
-		<attribute key="weight" value="1000" />
+	<item id="8151" article="a" name="Passe dos Teleports">
+		<attribute key="description" value="Garante acesso ilimitado e gratuito a teleports de Hunts na Teleport Room por 1 semana. TPs de boss ainda exigem acesso."/>
+		<attribute key="weight" value="1000"/>
 	</item>
 	<item id="8152" article="the" name="mexcalibur">
 		<attribute key="description" value="Your name is carved on this mighty sword" />
@@ -23485,7 +23492,7 @@
 		<attribute key="weight" value="90" />
 	</item>
 	<item id="8778" article="a" name="addon doll">
-		<attribute key="description" value="Use o comando !addon para obter um addon da Store de ate 600 TC."/>
+		<attribute key="description" value="Use o comando !addon para obter um addon da Store de ate 500 TC."/>
 		<attribute key="primarytype" value="dolls and bears"/>
 		<attribute key="weight" value="1200"/>
 	</item>
@@ -45733,7 +45740,7 @@
 		<attribute key="weight" value="1400" />
 	</item>
 	<item id="22771" article="a" name="mount certificate">
-		<attribute key="description" value="Fornece uma montaria da Store de ate 600 Tibia Coins com o comando !mount."/>
+		<attribute key="description" value="Fornece uma montaria da Store de ate 500 Tibia Coins com o comando !mount."/>
 		<attribute key="weight" value="800"/>
 	</item>
 	<item id="22772" article="a" name="scroll of ascension">
@@ -60267,7 +60274,11 @@
 		<attribute key="weight" value="500" />
 	</item>
 	<item id="31962" name="reserved sprite" />
-	<item fromid="31963" toid="32008" name="event item" />
+	<item fromid="31963" toid="31981" name="event item" />
+	<item fromid="31983" toid="32008" name="event item" />
+	<item id="31982" article="a" name="rare mushroom">
+		<attribute key="weight" value="50" />
+	</item>
 	<item id="32009" article="a" name="veal">
 		<attribute key="primarytype" value="food" />
 		<attribute key="showCount" value="1" />
@@ -87805,7 +87816,7 @@
 		<attribute key="weight" value="500" />
 	</item>
 	<item id="52746" article="a" name="twisted marionette">
-		<attribute key="description" value="A twisted marionette once in the possession of an evil warlock." />
+		<attribute key="description" value="Use este item para reiniciar o cooldown do Court Warlock." />
 		<attribute key="weight" value="1001" />
 	</item>
 	<item id="52747" article="a" name="broken staff of mind control">
@@ -88307,6 +88318,14 @@
 		<attribute key="decayTo" value="0" />
 		<attribute key="duration" value="900" />
 	</item>
-	
-
+	<item id="51877" article="a" name="ramp">
+		<attribute key="floorchange" value="west" />
+	</item>
+	<item id="51875" article="a" name="ramp">
+		<attribute key="floorchange" value="north" />
+	</item>
+	<item id="44433" article="a" name="ceremonial brush">
+		<attribute key="primarytype" value="valuables" />
+		<attribute key="weight" value="100" />
+	</item>
 </items>

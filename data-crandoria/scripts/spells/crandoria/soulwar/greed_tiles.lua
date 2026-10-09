@@ -18,7 +18,7 @@ function spell.onCastSpell(creature, variant)
 	}
 
 	local id1 = 39532
-	local id2 = 20121
+	local id2 = 33791
 
 	local group1 = {} -- itens com id1
 	local group2 = {} -- itens com id2
