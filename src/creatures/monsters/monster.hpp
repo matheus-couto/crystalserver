@@ -81,6 +81,7 @@ public:
 	bool isHostile() const;
 	bool isFamiliar() const;
 	bool canSeeInvisibility() const override;
+	bool canSee(const Position &pos) override;
 	uint32_t getManaCost() const;
 	RespawnType getRespawnType() const;
 	void setSpawnMonster(const std::shared_ptr<SpawnMonster> &newSpawnMonster);

@@ -263,6 +263,22 @@ bool Monster::isFamiliar() const {
 	return mType->info.isFamiliar;
 }
 
+bool Monster::canSee(const Position &pos) {
+	if (Creature::canSee(pos)) {
+		return true;
+	}
+
+	// Creature::canSee blocks the surface/underground boundary (7 <-> 8), so a monster
+	// next to stairs/holes stays idle while a player is one floor away. Accept 1 floor.
+	if (Position::getDistanceZ(position, pos) != 1) {
+		return false;
+	}
+
+	const int32_t offsetz = position.getZ() - pos.getZ();
+	return pos.getX() >= position.getX() - MAP_MAX_VIEW_PORT_X + offsetz && pos.getX() <= position.getX() + MAP_MAX_VIEW_PORT_X + offsetz
+		&& pos.getY() >= position.getY() - MAP_MAX_VIEW_PORT_Y + offsetz && pos.getY() <= position.getY() + MAP_MAX_VIEW_PORT_Y + offsetz;
+}
+
 bool Monster::canSeeInvisibility() const {
 	return isImmune(CONDITION_INVISIBLE);
 }
