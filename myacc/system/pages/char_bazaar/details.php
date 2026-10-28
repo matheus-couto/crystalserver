@@ -3,8 +3,11 @@
 global $config, $db, $template_path;
 $auction_iddetails = $getPageDetails;
 
+require_once SYSTEM . 'pages/char_bazaar/lib.php';
+charbazaarEnsureSchema($db);
+
 /* GET INFO AUCTION */
-$getAuction = $db->query("SELECT `id`, `account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price`, `status` FROM `myaac_charbazaar` WHERE `id` = {$db->quote($auction_iddetails)}");
+$getAuction = $db->query("SELECT `id`, `account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price`, `status`, `showcase`, `sales_arguments` FROM `myaac_charbazaar` WHERE `id` = {$db->quote($auction_iddetails)}");
 if (!$getAuction = $getAuction->fetch()) {
     echo "We can not find auction with this id!";
     return;
@@ -310,6 +313,17 @@ table td.PercentageColumn span.PercentageString {
                                                                             <p>Cap<br><?= $character['cap'] ?></p>
                                                                         </div>
                                                                     </div>
+                                                                    <?php $showcaseIds = charbazaarShowcaseIds($getAuction['showcase']); ?>
+                                                                    <?php if ($showcaseIds) { ?>
+                                                                        <div class="AuctionBodyBlock AuctionDisplay AuctionItemsViewBox"
+                                                                            title="Items chosen by the seller">
+                                                                            <?php foreach ($showcaseIds as $showcaseId) { ?>
+                                                                                <div class="CVIcon CVIconObject">
+                                                                                    <?= getItemImage($showcaseId) ?>
+                                                                                </div>
+                                                                            <?php } ?>
+                                                                        </div>
+                                                                    <?php } ?>
                                                                     <div class="AuctionBodyBlock ShortAuctionData">
                                                                         <?php $dateFormat = $subtopic == 'currentcharactertrades' ? 'M d Y, H:i:s' : 'd M Y' ?>
                                                                         <div class="ShortAuctionDataLabel">Auction
@@ -461,17 +475,12 @@ table td.PercentageColumn span.PercentageString {
                                                                             Charm Points <?= $Charm_Points ?>, Unused
                                                                             Charm Points: <?= $Charm_UsedPoints ?>
                                                                         </div>
-                                                                        <div class="Entry">
-                                                                            <img class="CharacterFeatureCategory"
-                                                                                src="<?= $template_path; ?>/images/charactertrade/usp-category-0.png">10
-                                                                            Distance Fighting (Loyalty bonus not
-                                                                            included)
-                                                                        </div>
-                                                                        <div class="Entry">
-                                                                            <img class="CharacterFeatureCategory"
-                                                                                src="<?= $template_path; ?>/images/charactertrade/usp-category-0.png">10
-                                                                            Shielding (Loyalty bonus not included)
-                                                                        </div>
+                                                                        <?php foreach (charbazaarSalesArguments($getAuction['sales_arguments']) as $salesArgument) { ?>
+                                                                            <div class="Entry">
+                                                                                <img class="CharacterFeatureCategory"
+                                                                                    src="<?= $template_path; ?>/images/charactertrade/usp-category-<?= $salesArgument['icon'] ?>.png"><?= htmlspecialchars($salesArgument['text']) ?>
+                                                                            </div>
+                                                                        <?php } ?>
 
                                                                     </div>
                                                                 </div>

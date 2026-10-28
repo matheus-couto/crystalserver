@@ -17,94 +17,50 @@ require SYSTEM . 'pages/char_bazaar/semifinishauction.php';
 // // =====================================================
 
 // Cancelamento da auction
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_GET['action'] ?? null) === 'cancel') {
-    $idAuctionCancel = (int)$_POST['auction_cancel_id'];
+//
+// So o dono, so leilao aberto e so sem lances. Antes nada disso era conferido:
+// cancelar um leilao ja vendido devolvia o char ao vendedor, devolvia o lance ao
+// comprador e dava +50 TC, e podia ser repetido quantas vezes quisesse.
+// A taxa de anuncio nao e devolvida.
+if ($logged && $_SERVER['REQUEST_METHOD'] === 'POST' && ($_GET['action'] ?? null) === 'cancel') {
+    $idAuctionCancel = (int)($_POST['auction_cancel_id'] ?? 0);
+    $cancelError = null;
 
-    // Consulta a auction especificada acima no banco de dados
-    $getAuctionCancel = $db->query("SELECT `id`, `price`, `account_old`, `player_id`, `bid_account`, `bid_price`, `date_end` FROM `myaac_charbazaar` WHERE `id` = {$idAuctionCancel}");
-    $getAuctionCancel = $getAuctionCancel->fetch();
-    // Reembolso da última bid ativa
-    $getAccountOldBid = $db->query("SELECT `coins_transferable` FROM `accounts` WHERE `id` = {$db->quote($getAuctionCancel['bid_account'])}");
-    $getAccountOldBid = $getAccountOldBid->fetch();
-    $SomaCoinsOldBid = $getAccountOldBid['coins_transferable'] + $getAuctionCancel['bid_price'];
+    $db->beginTransaction();
+    try {
+        $getAuctionCancel = $db->query("SELECT `id`, `account_old`, `player_id`, `status` FROM `myaac_charbazaar` WHERE `id` = {$idAuctionCancel} FOR UPDATE")->fetch();
 
-    // Dados do componente (alguns úteis para eventual debug)
-    $precoAuctionCancel = $getAuctionCancel['price'];
-    $idCharAuctionCancel = $getAuctionCancel['player_id'];
-    $idDonoAuctionCancel = $getAuctionCancel['account_old'];
-    $dataCancelamento = date('Y-m-d H:i:s');
-    $dataFimAuction = $getAuctionCancel['date_end'];
-    $precoAuctionCreate = $config['bazaar_create'];
-
-    if ($account_logged->getId() != $idDonoAuctionCancel) {
-        echo <<<HTML
-            <div class="SmallBox">
-                <div class="MessageContainer">
-                    <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                    <div class="BoxFrameEdgeLeftTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="BoxFrameEdgeRightTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="Message">
-                    <div class="BoxFrameVerticalLeft" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                    <div class="BoxFrameVerticalRight" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                    <table class="HintBox">
-                        <tbody>
-                        <tr>
-                        <td>
-                            <p style="color: #b32d2d; font-weight: bold; text-align: center; margin: 0;">
-                            You can only cancel your own auctions.            </p>
-                        </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    </div>
-                    <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                    <div class="BoxFrameEdgeRightBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="BoxFrameEdgeLeftBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                </div>
-            </div>
-            <br>
-        HTML;
+        if (!charbazaarCsrfValid()) {
+            $cancelError = 'Your session expired. Please try again.';
+        } elseif (!$getAuctionCancel || (int)$getAuctionCancel['account_old'] !== (int)$account_logged->getId()) {
+            $cancelError = 'You can only cancel your own auctions.';
+        } elseif ((int)$getAuctionCancel['status'] !== CHARBAZAAR_STATUS_OPEN) {
+            $cancelError = 'This auction is already finished.';
+        } elseif ($db->query("SELECT 1 FROM `myaac_charbazaar_bid` WHERE `auction_id` = {$idAuctionCancel} LIMIT 1")->rowCount() > 0) {
+            $cancelError = 'An auction that already has bids cannot be cancelled.';
         } else {
-        echo <<<HTML
-            <div class="SmallBox">
-        <div class="MessageContainer">
-            <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-            <div class="BoxFrameEdgeLeftTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-            <div class="BoxFrameEdgeRightTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-            <div class="Message">
-                <div class="BoxFrameVerticalLeft" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                <div class="BoxFrameVerticalRight" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                <table class="HintBox">
-                    <tbody>
-                    <tr>
-                    <td>
-                        <p style="color: #2f7a2f; font-weight: bold; text-align: center; margin: 0;">
-                        Auction cancelled successfully. Your character has been returned and 50 Tibia Coins have been refunded.            </p>
-                    </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-                <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                <div class="BoxFrameEdgeRightBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                <div class="BoxFrameEdgeLeftBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-            </div>
-        </div>
-        <br>
-        HTML;
-        
-        // ######## Ações no banco de dados ########
-         // muda status da auction para finalizado e a encerra com a data atual durante o cancelamento
-         $db->exec("UPDATE `myaac_charbazaar` SET `status` = 2, `date_end` = '$dataCancelamento', `account_new` = $idDonoAuctionCancel WHERE `id` = {$idAuctionCancel}");
-         // reembolsa o valor da última bid para a conta-alvo
-         $db->exec('UPDATE `accounts` SET `coins_transferable` = ' . $db->quote($SomaCoinsOldBid) . ' WHERE `id` = ' . $db->quote($getAuctionCancel['bid_account']));
-         // reembolsa o valor da criação da auction para a conta original
-         $db->exec("UPDATE `accounts` SET `coins_transferable` = `coins_transferable` + $precoAuctionCreate WHERE `id` = {$idDonoAuctionCancel}");  
-         // devolve player para a conta original
-         $db->exec("UPDATE `players` SET `account_id` = $idDonoAuctionCancel, `deletion` = 0, `charbazaar` = 0 WHERE `id` = {$idCharAuctionCancel}");
-        
+            $idDonoAuctionCancel = (int)$getAuctionCancel['account_old'];
+            $dataCancelamento = date('Y-m-d H:i:s');
+
+            // muda status da auction para cancelada e a encerra com a data atual
+            $db->exec("UPDATE `myaac_charbazaar` SET `status` = " . CHARBAZAAR_STATUS_CLOSED . ", `date_end` = '{$dataCancelamento}', `account_new` = {$idDonoAuctionCancel} WHERE `id` = {$idAuctionCancel}");
+            // devolve player para a conta original
+            $db->exec("UPDATE `players` SET `account_id` = {$idDonoAuctionCancel}, `deletion` = 0, `charbazaar` = 0 WHERE `id` = " . (int)$getAuctionCancel['player_id']);
         }
+
+        $db->commit();
+    } catch (Exception $e) {
+        $db->rollback();
+        error_log('Erro ao cancelar auction: ' . $e->getMessage());
+        $cancelError = 'Internal error. Please try again.';
     }
+
+    if ($cancelError) {
+        charbazaarMessage($cancelError);
+    } else {
+        charbazaarMessage('Auction cancelled. Your character has been returned to your account. The auction fee is not refunded.', true);
+    }
+}
 
     // Alerta caso esteja deslogado
     if ($logged == 0) {
@@ -256,6 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_GET['action'] ?? null) === 'canc
                                                             src="<?= $template_path; ?>/images//account/icon-tibiacointrusted.png"
                                                             class="VSCCoinImages" title="Transferable Tibia Coins"></td>
                                                     <?php if (strtotime($End) > strtotime($Hoje) && $Auction['status'] == 0) { ?>
+                                                        <?php $canCancel = (int)$Auction['bid_account'] === 0; ?>
                                                         <td>
                                                             <a href="?subtopic=currentcharactertrades&details=<?= $Auction['id'] ?>">
                                                                 <div class="BigButton"
@@ -270,6 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_GET['action'] ?? null) === 'canc
                                                                     </div>
                                                                 </div>
                                                             </a>
+                                                            <?php if ($canCancel) { ?>
                                                             <form method="post" action="?subtopic=owncharactertrades&action=cancel"
                                                             style="display:inline-block; margin: 0;">    
                                                                 <div class="BigButton"
@@ -279,6 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_GET['action'] ?? null) === 'canc
                                                                             <div class="BigButtonOver"
                                                                                 style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_red_over.gif); visibility: hidden;"></div>
                                                                             <input type="hidden" name="auction_cancel_id" value="<?= $Auction['id'] ?>">
+                                                                            <?= charbazaarCsrfField() ?>
                                                                             <input
                                                                                 class="BigButtonText"
                                                                                 type="submit"
@@ -287,6 +246,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_GET['action'] ?? null) === 'canc
                                                                         </div>
                                                                 </div>
                                                             </form>
+                                                            <?php } ?>
                                                         </td>
                                                             
 

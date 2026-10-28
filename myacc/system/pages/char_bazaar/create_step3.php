@@ -200,10 +200,10 @@ if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
                                                 <td style="font-weight:normal;">
                                                     <?= $charbazaar_create ?> <img
                                                         src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png">
-                                                    to create an auction.
+                                                    to create an auction (not refundable).
                                                 </td>
                                                 <td style="font-weight:normal;">
-                                                    <?= $charbazaar_tax ?>% fee on auction.
+                                                    <?= $charbazaar_buyer_fee ?>% buyer fee, paid by the winner.
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -536,8 +536,8 @@ if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
                                                                 </td>
                                                                 <td class="GreedyCell">
                                                                     <input style="width: 100%;" name="auction_price"
-                                                                           type="number" placeholder="in Tibia Coins"
-                                                                           size="15" min="1" step="1" maxlength="2" autofocus="" required>
+                                                                           type="number" placeholder="min <?= charbazaarMinimumPrice() ?> Tibia Coins"
+                                                                           size="15" min="<?= charbazaarMinimumPrice() ?>" max="<?= CHARBAZAAR_MAX_PRICE ?>" step="1" maxlength="2" autofocus="" required>
                                                                 </td>
                                                             </tr>
                                                             <tr>

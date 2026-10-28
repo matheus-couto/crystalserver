@@ -21,9 +21,9 @@ $getPageAction = $_GET['action'] ?? null;
 // GET PAGES
 
 /* CHAR BAZAAR CONFIG */
-$charbazaar_tax = $config['bazaar_tax'];
-$charbazaar_bid = $config['bazaar_bid'];
-$charbazaar_create = $config['bazaar_create'];
+require_once SYSTEM . 'pages/char_bazaar/lib.php';
+$charbazaar_buyer_fee = charbazaarBuyerFeePercent();
+$charbazaar_create = charbazaarListingFee();
 /* CHAR BAZAAR CONFIG END */
 
 /* COUNTER CONFIG */
@@ -228,16 +228,23 @@ if ($getPageDetails) {
 <?php
 if ($getPageAction == 'bid') {
 
-    $Auction_iden = $_POST['auction_iden'];
-    $Auction_maxbid = $_POST['maxbid'];
+    $Auction_iden = (int)($_POST['auction_iden'] ?? 0);
+    // (int): o valor e impresso na pagina e num input hidden.
+    $Auction_maxbid = (int)($_POST['maxbid'] ?? 0);
+    $Auction_fee = charbazaarBuyerFee($Auction_maxbid);
+    $Auction_total = $Auction_maxbid + $Auction_fee;
 
     /* GET INFO CHARACTER */
-    $getAuction = $db->query('SELECT `id`, `account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price` FROM `myaac_charbazaar` WHERE `id` = ' . $db->quote($Auction_iden) . '');
+    $getAuction = $db->query('SELECT `id`, `account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price`, `status` FROM `myaac_charbazaar` WHERE `id` = ' . $Auction_iden);
     $getAuction = $getAuction->fetch();
     /* GET INFO CHARACTER END */
 
+    if ($getAuction && ((int)$getAuction['status'] !== CHARBAZAAR_STATUS_OPEN || strtotime($getAuction['date_end']) <= time())) {
+        charbazaarMessage('Este leilão já foi encerrado.');
+        $getAuction = false;
+    }
 
-    if ($logged && $getAuction['account_old'] != $account_logged->getId()) {
+    if ($logged && $getAuction && $getAuction['account_old'] != $account_logged->getId()) {
 
 
         /* GET INFO CHARACTER */
@@ -258,13 +265,15 @@ if ($getPageAction == 'bid') {
         $character_voc = $config['vocations'][$character['vocation']];
         /* CONVERT VOCATION END */
 
-        if ($Auction_maxbid >= $getAccount['coins_transferable']) {
+        if ($Auction_total > $getAccount['coins_transferable']) {
             $Verif_CoinsAcc = 'false';
         } else {
             $Verif_CoinsAcc = 'true';
         }
 
-        if ($Auction_maxbid > $getAuction['price'] && $Auction_maxbid > $getAuction['bid_price']) {
+        // Sem lances o minimo e o preco inicial; com lances, o maior lance + 1.
+        $Auction_minimum = (int)$getAuction['bid_account'] > 0 ? (int)$getAuction['bid_price'] + 1 : (int)$getAuction['price'];
+        if ($Auction_maxbid >= $Auction_minimum) {
             $Verif_Price = 'true';
         } else {
             $Verif_Price = 'false';
@@ -311,9 +320,8 @@ if ($getPageAction == 'bid') {
                                                         (<?= $getAccount['coins_transferable'] ?> <img
                                                             src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png">)
                                                     </td>
-                                                    <td style="font-weight:normal;"><?= $charbazaar_bid ?> <img
-                                                            src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png">
-                                                        to give an bid.
+                                                    <td style="font-weight:normal;"><?= $charbazaar_buyer_fee ?>% buyer fee,
+                                                        paid only by the winner.
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -410,12 +418,20 @@ if ($getPageAction == 'bid') {
                                     </tr>
 
                                     <tr>
-                                        <td><br>If you confirm this bid, a <b>non-refundable deposit</b> of <b><?= $charbazaar_bid ?></b> <img
+                                        <td><br>If you confirm this bid, your bid plus a <b><?= $charbazaar_buyer_fee ?>% buyer fee</b>
+                                            (<b><?= $Auction_fee ?></b> <img
+                                                src="<?= $template_path; ?>/images//account/icon-tibiacointrusted.png"
+                                                class="VSCCoinImages" title="Transferable Tibia Coins">), a total of <b><?= $Auction_total ?></b> <img
                                                 src="<?= $template_path; ?>/images//account/icon-tibiacointrusted.png"
                                                 class="VSCCoinImages" title="Transferable Tibia Coins"> transferable
-                                            Tibia Coins will be subtracted from your account's Tibia Coins balance.
+                                            Tibia Coins, will be reserved from your account's balance.
                                             <br>
-                                            If you  <b>have already placed a bid or someone has placed a higher bid than you</b>, your <b>last bid</b> will be returned to your account.
+                                            If <b>someone places a higher bid than you</b>, the bid and the fee are <b>fully returned</b> to your account.
+                                            The fee is only kept if you win the auction.
+                                            <?php if (charbazaarExtensionMinutes() > 0) { ?>
+                                                <br>
+                                                A bid placed in the last <b><?= charbazaarExtensionMinutes() ?> minutes</b> extends the auction to <?= charbazaarExtensionMinutes() ?> minutes from that bid.
+                                            <?php } ?>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -535,6 +551,7 @@ if ($getPageAction == 'bid') {
                 </script>
                 <form method="post" action="?subtopic=currentcharactertrades&action=bidfinish">
                 <input type="hidden" name="bid_iden" value="<?= $getAuction['id'] ?>">
+                <?= charbazaarCsrfField() ?>
                 <input type="hidden" name="bid_max" value="<?= $Auction_maxbid ?>">
                 <div class="BigButton"
                      style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton_green.gif)">
@@ -595,268 +612,80 @@ if ($getPageAction == 'bid') {
 
 <?php
 //REGISTRO NA DB
+//
+// Tudo dentro de uma transacao que trava a linha da auction (FOR UPDATE): dois
+// lances ao mesmo tempo nao leem o mesmo "maior lance" e o lance anterior nao e
+// devolvido duas vezes. O mesmo lock e usado pela finalizacao, entao nenhum lance
+// entra numa auction que esta sendo encerrada.
+//
+// Fica reservado lance + taxa do comprador. Quem for coberto recebe os dois de
+// volta; o vencedor paga a taxa e o lance vai inteiro para o vendedor.
 if ($getPageAction == 'bidfinish') {
 
-    if (isset($_POST['bid_confirm']) && $_POST['bid_max'] && $logged) {
-        $idLogged = $account_logged->getId();
-        
-        // VALIDAÇÃO: Conversão para inteiros para evitar manipulação
-        $bid_iden = (int) $_POST['bid_iden'];
-        $bid_max = (int) $_POST['bid_max'];
+    if (isset($_POST['bid_confirm']) && !empty($_POST['bid_max']) && $logged) {
+        $idLogged = (int)$account_logged->getId();
+        $bid_iden = (int)($_POST['bid_iden'] ?? 0);
+        $bid_max = (int)$_POST['bid_max'];
+        $bidError = null;
 
-        // VALIDAÇÃO: Verifica se valores são positivos
-        if ($bid_iden <= 0 || $bid_max <= 0) {
-            echo <<<HTML
-            <div class="SmallBox">
-                <div class="MessageContainer">
-                    <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                    <div class="BoxFrameEdgeLeftTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="BoxFrameEdgeRightTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="Message">
-                    <div class="BoxFrameVerticalLeft" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                    <div class="BoxFrameVerticalRight" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                    <table class="HintBox">
-                        <tbody>
-                        <tr>
-                        <td>
-                            <p style="color: #b32d2d; font-weight: bold; text-align: center; margin: 0;">
-                            Dados inválidos fornecidos.
-                            </p>
-                        </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    </div>
-                    <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                    <div class="BoxFrameEdgeRightBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="BoxFrameEdgeLeftBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                </div>
-            </div>
-            <br>
-            HTML;
-            return;
+        if (!charbazaarCsrfValid()) {
+            $bidError = 'Sessão expirada. Abra o leilão e dê o lance novamente.';
+        } elseif ($bid_iden <= 0 || $bid_max <= 0 || $bid_max > CHARBAZAAR_MAX_PRICE) {
+            $bidError = 'Dados inválidos fornecidos.';
         }
 
-        // Dados da Auction
-        $getAuction = $db->query("SELECT `id`, `account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price` FROM `myaac_charbazaar` WHERE `id` = {$db->quote($bid_iden)}");
-        
-        // VALIDAÇÃO: Verifica se o leilão existe
-        if ($getAuction->rowCount() == 0) {
-            echo <<<HTML
-            <div class="SmallBox">
-                <div class="MessageContainer">
-                    <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                    <div class="BoxFrameEdgeLeftTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="BoxFrameEdgeRightTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="Message">
-                    <div class="BoxFrameVerticalLeft" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                    <div class="BoxFrameVerticalRight" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                    <table class="HintBox">
-                        <tbody>
-                        <tr>
-                        <td>
-                            <p style="color: #b32d2d; font-weight: bold; text-align: center; margin: 0;">
-                            Leilão não encontrado.
-                            </p>
-                        </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    </div>
-                    <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                    <div class="BoxFrameEdgeRightBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="BoxFrameEdgeLeftBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                </div>
-            </div>
-            <br>
-            HTML;
-            return;
-        }
-        
-        $getAuction = $getAuction->fetch();
+        if (!$bidError) {
+            $db->beginTransaction();
+            try {
+                $getAuction = $db->query("SELECT `id`, `account_old`, `price`, `date_end`, `status` FROM `myaac_charbazaar` WHERE `id` = {$bid_iden} FOR UPDATE")->fetch();
+                $topBid = $getAuction ? $db->query("SELECT `account_id`, `bid`, `fee` FROM `myaac_charbazaar_bid` WHERE `auction_id` = {$bid_iden} ORDER BY `bid` DESC LIMIT 1")->fetch() : false;
+                $minimumBid = $topBid ? (int)$topBid['bid'] + 1 : ($getAuction ? (int)$getAuction['price'] : 0);
+                $bidFee = charbazaarBuyerFee($bid_max);
+                $totalCost = $bid_max + $bidFee;
 
-        // VALIDAÇÃO: Verifica se usuário NÃO é o dono do leilão
-        if ($idLogged == $getAuction['account_old']) {
-            echo <<<HTML
-            <div class="SmallBox">
-                <div class="MessageContainer">
-                    <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                    <div class="BoxFrameEdgeLeftTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="BoxFrameEdgeRightTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="Message">
-                    <div class="BoxFrameVerticalLeft" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                    <div class="BoxFrameVerticalRight" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                    <table class="HintBox">
-                        <tbody>
-                        <tr>
-                        <td>
-                            <p style="color: #b32d2d; font-weight: bold; text-align: center; margin: 0;">
-                            Você não pode dar bid no seu próprio leilão.
-                            </p>
-                        </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    </div>
-                    <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                    <div class="BoxFrameEdgeRightBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="BoxFrameEdgeLeftBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                </div>
-            </div>
-            <br>
-            HTML;
-            return;
-        }
+                if (!$getAuction) {
+                    $bidError = 'Leilão não encontrado.';
+                } elseif ((int)$getAuction['status'] !== CHARBAZAAR_STATUS_OPEN || strtotime($getAuction['date_end']) <= time()) {
+                    $bidError = 'Este leilão já foi encerrado.';
+                } elseif ($idLogged === (int)$getAuction['account_old']) {
+                    $bidError = 'Você não pode dar bid no seu próprio leilão.';
+                } elseif ($bid_max < $minimumBid) {
+                    $bidError = "Seu bid deve ser no mínimo {$minimumBid} coins.";
+                } else {
+                    // Devolve primeiro o lance anterior (lance + taxa reservada). Se
+                    // o anterior for do proprio usuario, isso ja conta no saldo dele.
+                    if ($topBid) {
+                        charbazaarCreditCoins($db, (int)$topBid['account_id'], (int)$topBid['bid'] + (int)$topBid['fee']);
+                    }
 
-        // Dados da bid referente à Auction
-        $getAuctionBid = $db->query("SELECT `id`, `account_id`, `auction_id`, `bid`, `date` FROM `myaac_charbazaar_bid` WHERE `auction_id` = {$db->quote($bid_iden)} ORDER BY `bid` DESC LIMIT 1");
-        $countAuctionBid = $getAuctionBid->rowCount();
-        $getAuctionBid = $getAuctionBid->fetch();
+                    if (!charbazaarDebitCoins($db, $idLogged, $totalCost)) {
+                        $bidError = "Saldo insuficiente. Necessário: {$totalCost} coins ({$bid_max} + {$bidFee} de taxa).";
+                    } else {
+                        // Anti-sniping: um lance nos ultimos minutos empurra o fim
+                        // para dar tempo de quem foi coberto responder.
+                        $newDateEnd = charbazaarExtendedEnd($getAuction['date_end']);
+                        $dateEndSql = $newDateEnd ? ", `date_end` = '{$newDateEnd}'" : '';
 
-        // VALIDAÇÃO: Verifica se o bid é maior que o atual
-        $minimumBid = ($countAuctionBid > 0) ? $getAuctionBid['bid'] + 1 : $getAuction['price'];
-        if ($bid_max < $minimumBid) {
-            echo <<<HTML
-            <div class="SmallBox">
-                <div class="MessageContainer">
-                    <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                    <div class="BoxFrameEdgeLeftTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="BoxFrameEdgeRightTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="Message">
-                    <div class="BoxFrameVerticalLeft" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                    <div class="BoxFrameVerticalRight" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                    <table class="HintBox">
-                        <tbody>
-                        <tr>
-                        <td>
-                            <p style="color: #b32d2d; font-weight: bold; text-align: center; margin: 0;">
-                            Seu bid deve ser no mínimo {$minimumBid} coins.
-                            </p>
-                        </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    </div>
-                    <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                    <div class="BoxFrameEdgeRightBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="BoxFrameEdgeLeftBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                </div>
-            </div>
-            <br>
-            HTML;
-            return;
-        }
+                        $db->exec("UPDATE `myaac_charbazaar` SET `price` = {$bid_max}, `bid_account` = {$idLogged}, `bid_price` = {$bid_max}{$dateEndSql} WHERE `id` = {$bid_iden}");
+                        $db->exec("INSERT INTO `myaac_charbazaar_bid` (`account_id`, `auction_id`, `bid`, `fee`) VALUES ({$idLogged}, {$bid_iden}, {$bid_max}, {$bidFee})");
+                    }
+                }
 
-        // VALIDAÇÃO: Verificar se usuário tem saldo suficiente
-        $getAccountBalance = $db->query("SELECT `coins_transferable` FROM `accounts` WHERE `id` = {$db->quote($idLogged)}");
-        $accountBalance = $getAccountBalance->fetch();
-        $totalCost = $bid_max + $charbazaar_bid; // verificação do valor mínimo real
-
-        if ($accountBalance['coins_transferable'] < $totalCost) {
-            echo <<<HTML
-            <div class="SmallBox">
-                <div class="MessageContainer">
-                    <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                    <div class="BoxFrameEdgeLeftTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="BoxFrameEdgeRightTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="Message">
-                    <div class="BoxFrameVerticalLeft" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                    <div class="BoxFrameVerticalRight" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                    <table class="HintBox">
-                        <tbody>
-                        <tr>
-                        <td>
-                            <p style="color: #b32d2d; font-weight: bold; text-align: center; margin: 0;">
-                            Saldo insuficiente. Necessário: {$totalCost} coins.
-                            </p>
-                        </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    </div>
-                    <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                    <div class="BoxFrameEdgeRightBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="BoxFrameEdgeLeftBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                </div>
-            </div>
-            <br>
-            HTML;
-            return;
-        }
-
-        // uso de TRANSAÇÃO para evitar condições de corrida
-        $db->beginTransaction();
-
-        try {
-            if ($countAuctionBid > 0) {
-                // OLD BID ACCOUNT RETURN COINS - CORRIGIDO: usar conta do bid anterior
-                $getAccountOldBid = $db->query("SELECT `coins_transferable` FROM `accounts` WHERE `id` = {$db->quote($getAuctionBid['account_id'])}");
-                $getAccountOldBid = $getAccountOldBid->fetch();
-                $SomaCoinsOldBid = $getAccountOldBid['coins_transferable'] + $getAuctionBid['bid'];
-                $UpdateAccountOldBid = $db->exec('UPDATE `accounts` SET `coins_transferable` = ' . $db->quote($SomaCoinsOldBid) . ' WHERE `id` = ' . $db->quote($getAuctionBid['account_id']));
-
-                // NEW BID ACCOUNT REMOVE COINS - CORRIGIDO: usar saldo atual
-                $getAccountNewBid = $db->query("SELECT `coins_transferable` FROM `accounts` WHERE `id` = {$db->quote($idLogged)}");
-                $getAccountNewBid = $getAccountNewBid->fetch();
-                $SubCoinsNewBid = $getAccountNewBid['coins_transferable'] - $bid_max;
-                $TaxCoinsNewBid = $SubCoinsNewBid - $charbazaar_bid; // TAX TO CREATE BID
-                $UpdateAccountNewBid = $db->exec('UPDATE `accounts` SET `coins_transferable` = ' . $db->quote($TaxCoinsNewBid) . ' WHERE `id` = ' . $db->quote($idLogged));
-
-                // UPDATE AUCTION NEW BID
-                $Update_Auction = $db->exec('UPDATE `myaac_charbazaar` SET `price` = ' . $db->quote($bid_max) . ', `bid_account` = ' . $db->quote($idLogged) . ', `bid_price` = ' . $db->quote($bid_max) . ' WHERE `id` = ' . $db->quote($getAuction['id']));
-
-                // CORRIGIDO: INSERT ao invés de UPDATE na tabela de bids
-                $Insert_NewBid = $db->exec('INSERT INTO `myaac_charbazaar_bid` (`account_id`, `auction_id`, `bid`) VALUES (' . $db->quote($idLogged) . ', ' . $db->quote($getAuction['id']) . ', ' . $db->quote($bid_max) . ')');
-
-            } else {
-                // NEW BID ACCOUNT REMOVE COINS - CORRIGIDO: usar saldo atual
-                $getAccountNewBid = $db->query("SELECT `coins_transferable` FROM `accounts` WHERE `id` = {$db->quote($idLogged)}");
-                $getAccountNewBid = $getAccountNewBid->fetch();
-                $SubCoinsNewBid = $getAccountNewBid['coins_transferable'] - $bid_max;
-                $TaxCoinsNewBid = $SubCoinsNewBid - $charbazaar_bid; // TAX TO CREATE BID
-                $UpdateAccountNewBid = $db->exec('UPDATE `accounts` SET `coins_transferable` = ' . $db->quote($TaxCoinsNewBid) . ' WHERE `id` = ' . $db->quote($idLogged));
-
-                // UPDATE AUCTION NEW BID
-                $Update_Auction = $db->exec('UPDATE `myaac_charbazaar` SET `price` = ' . $db->quote($bid_max) . ', `bid_account` = ' . $db->quote($idLogged) . ', `bid_price` = ' . $db->quote($bid_max) . ' WHERE `id` = ' . $db->quote($getAuction['id']));
-
-                // INSERT NEW BID
-                $Insert_NewBid = $db->exec('INSERT INTO `myaac_charbazaar_bid` (`account_id`, `auction_id`, `bid`) VALUES (' . $db->quote($idLogged) . ', ' . $db->quote($getAuction['id']) . ', ' . $db->quote($bid_max) . ')');
+                if ($bidError) {
+                    // Desfaz a devolucao do lance anterior, se houve.
+                    $db->rollback();
+                } else {
+                    $db->commit();
+                }
+            } catch (Exception $e) {
+                $db->rollback();
+                error_log('Erro ao registrar bid: ' . $e->getMessage());
+                $bidError = 'Erro interno. Tente novamente.';
             }
+        }
 
-            // Confirma todas as operações
-            $db->commit();
-
-        } catch (Exception $e) {
-            // Desfaz todas as operações em caso de erro
-            $db->rollback();
-            echo <<<HTML
-            <div class="SmallBox">
-                <div class="MessageContainer">
-                    <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                    <div class="BoxFrameEdgeLeftTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="BoxFrameEdgeRightTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="Message">
-                    <div class="BoxFrameVerticalLeft" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                    <div class="BoxFrameVerticalRight" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                    <table class="HintBox">
-                        <tbody>
-                        <tr>
-                        <td>
-                            <p style="color: #b32d2d; font-weight: bold; text-align: center; margin: 0;">
-                            Erro interno. Tente novamente.
-                            </p>
-                        </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    </div>
-                    <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                    <div class="BoxFrameEdgeRightBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="BoxFrameEdgeLeftBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                </div>
-            </div>
-            <br>
-            HTML;
+        if ($bidError) {
+            charbazaarMessage($bidError);
             return;
         }
 

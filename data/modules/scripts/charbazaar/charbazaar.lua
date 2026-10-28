@@ -25,8 +25,11 @@ CharBazaar = {
 -- two sides have to agree: the fee charged here is the fee the site quotes, and a
 -- character parked on the wrong account would never show up in the auction list.
 CharBazaar.Config = {
-	fee = 50, -- bazaar_create, in transferable coins
-	taxPercent = 12, -- bazaar_tax, the commission kept from a sale
+	fee = 50, -- bazaar_create, in transferable coins, never refunded
+	-- No commission on the sale: the seller receives the whole winning bid and the
+	-- buyer pays bazaar_buyer_fee on the website. Kept at 0 so the minimum starting
+	-- bid comes out as fee + 1, the same as charbazaarMinimumPrice() on the site.
+	taxPercent = 0,
 	vaultAccount = 1, -- bazaar_accountid, the account an auctioned character is moved to
 	minLevel = 8, -- CHARBAZAAR_MIN_LEVEL
 	showcaseSlots = 4, -- CHARBAZAAR_SHOWCASE_SLOTS
@@ -1646,12 +1649,16 @@ end
 -- teaches people to stop reading error lines.
 CharBazaar.knownColumns = {}
 
+-- Only a "yes" is remembered. On this server the website adds the columns itself
+-- (charbazaarEnsureSchema() in myacc/system/pages/char_bazaar/lib.php) the first
+-- time anyone opens a bazaar page, which can happen after this module loaded; a
+-- remembered "no" would keep dropping the showcase until the next reload.
 function CharBazaar.hasColumn(column, migration)
-	if CharBazaar.knownColumns[column] == nil then
+	if not CharBazaar.knownColumns[column] then
 		CharBazaar.knownColumns[column] = rowExists(string.format("SHOW COLUMNS FROM `myaac_charbazaar` LIKE '%s'", column))
 
 		if not CharBazaar.knownColumns[column] then
-			logger.warn("[CharBazaar] myaac_charbazaar has no `{}` column: what the seller " .. "picks in game will not reach the website until its migration {} has run", column, migration)
+			logger.warn("[CharBazaar] myaac_charbazaar has no `{}` column: open any Char Bazaar page " .. "on the website once so it creates it ({})", column, migration)
 		end
 	end
 
@@ -1835,7 +1842,11 @@ function CharBazaar.create(player, configuration)
 	-- is claimed and cannot change again, so a snapshot that does not get written now
 	-- is written by the website the next time anyone opens the auction list. Putting
 	-- it earlier would mean rolling back a live auction over a copy.
-	CharBazaar.writeSnapshot(player, auctionId, configuration)
+	-- This server's website reads the character live and has no snapshot table, so
+	-- the frozen copy is only written where that table exists.
+	if rowExists("SHOW TABLES LIKE 'myaac_charbazaar_snapshot'") then
+		CharBazaar.writeSnapshot(player, auctionId, configuration)
+	end
 
 	logger.info("[CharBazaar] created auction {} for {}: price {}, ends {}, {} items, {} sales arguments", auctionId, name, configuration.price, dateEnd, #configuration.items, #configuration.highlights)
 

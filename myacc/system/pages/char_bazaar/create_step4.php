@@ -91,16 +91,16 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
     $getAccount = $db->query('SELECT `id`, `premdays`, `coins`, `coins_transferable`' . 'FROM `accounts`' . 'WHERE `id` = ' . $account_logged->getId() . '');
     $getAccount = $getAccount->fetch();
 
-    $auction_inputdays = $_POST['auction_days'];
+    // (int): os tres valores sao impressos na pagina e em inputs hidden.
+    $auction_price = (int)$_POST['auction_price'];
+    $auction_inputdays = min(max((int)$_POST['auction_days'], 1), CHARBAZAAR_MAX_DAYS);
+    $auction_character = (int)$_POST['auction_character'];
     $auction_end = date('d M Y', strtotime('+' . $auction_inputdays . ' days'));
 
-    if (isset($_POST['auction_price'])) {
-        $auction_pricetaxone = $_POST['auction_price'] / 100;
-        $auction_pricetaxtwo = $auction_pricetaxone * 12;
-        $auction_pricetaxtwo = number_format($auction_pricetaxtwo, 0, ',', ',');
-        $auction_finalprice = $_POST['auction_price'] - $auction_pricetaxtwo;
-        $auction_finalprice = number_format($auction_finalprice, 0, ',', ',');
-    }
+    // Sem comissao: o vendedor recebe o lance vencedor inteiro. A taxa do
+    // comprador e cobrada a parte, de quem vencer.
+    $auction_buyerfee = number_format(charbazaarBuyerFee($auction_price), 0, ',', ',');
+    $auction_finalprice = number_format($auction_price, 0, ',', ',');
     ?>
 
 
@@ -207,10 +207,10 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
                                                 </td>
                                                 <td style="font-weight:normal;"><?= $charbazaar_create ?> <img
                                                         src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png">
-                                                    to create an auction.
+                                                    to create an auction (not refundable).
                                                 </td>
-                                                <td style="font-weight:normal;"><?= $charbazaar_tax ?>% fee on
-                                                    auction.
+                                                <td style="font-weight:normal;"><?= $charbazaar_buyer_fee ?>% buyer fee,
+                                                    paid by the winner.
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -263,20 +263,20 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
                                             <tbody>
                                             <tr>
                                                 <td style="font-weight:bold;">Auction Start Price:</td>
-                                                <td style="font-weight:normal;"><?= $_POST['auction_price'] ?> <img
+                                                <td style="font-weight:normal;"><?= $auction_finalprice ?> <img
                                                         src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="font-weight:bold;">
-                                                    Auction Tax (<?= $charbazaar_tax ?>%):
+                                                    Buyer fee at this price (<?= $charbazaar_buyer_fee ?>%, paid by the winner):
                                                 </td>
-                                                <td style="font-weight:normal;"><?= $auction_pricetaxtwo ?> <img
+                                                <td style="font-weight:normal;"><?= $auction_buyerfee ?> <img
                                                         src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png">
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="font-weight:bold;">Total:</td>
+                                                <td style="font-weight:bold;">You receive (if sold at this price):</td>
                                                 <td style="font-weight:normal;"><?= $auction_finalprice ?> <img
                                                         src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png">
                                                 </td>
@@ -600,9 +600,10 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
     <br>
 
     <form method="post" action="?subtopic=createcharacterauction&step=5">
-        <input type="hidden" name="auction_price" value="<?= $_POST['auction_price'] ?>">
-        <input type="hidden" name="auction_days" value="<?= $_POST['auction_days'] ?>">
-        <input type="hidden" name="auction_character" value="<?= $_POST['auction_character'] ?>">
+        <input type="hidden" name="auction_price" value="<?= $auction_price ?>">
+        <input type="hidden" name="auction_days" value="<?= $auction_inputdays ?>">
+        <input type="hidden" name="auction_character" value="<?= $auction_character ?>">
+        <?= charbazaarCsrfField() ?>
         <table class="InnerTableButtonRow" cellspacing="0" cellpadding="0">
             <tbody>
             <tr>

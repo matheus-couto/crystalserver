@@ -340,9 +340,9 @@ $config = array(
 	'pace_color' => 'white', // black, blue, green, orange, pink, purple, red, silver, white, yellow
 
 	// char bazaar
-	'bazaar_create' => 50, // price to create auction
-	'bazaar_tax' => 12, // tax to bid
-	'bazaar_bid' => 50, // price to bid
+	'bazaar_create' => 50, // fee to create an auction, in transferable coins, never refunded
+	'bazaar_buyer_fee' => 12, // % of the winning bid paid by the buyer; reserved with each bid, returned when outbid
+	'bazaar_extension_minutes' => 5, // a bid with less than this left pushes the end to now + this; 0 disables
 	'bazaar_accountid' => 1, // account id to move auction character
 
 	// gifts/shop system

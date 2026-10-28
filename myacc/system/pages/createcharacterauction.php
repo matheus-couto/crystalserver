@@ -51,10 +51,9 @@ if ($logged) {
 }
 
 /* CHAR BAZAAR CONFIG ~ USING IN STEPS, DO NOT REMOVE! */
-$charbazaar_create = $config['bazaar_create'];
-$charbazaar_tax = $config['bazaar_tax'];
-$charbazaar_bid = $config['bazaar_bid'];
-$charbazaar_newacc = $config['bazaar_accountid'];
+$charbazaar_create = charbazaarListingFee();
+$charbazaar_buyer_fee = charbazaarBuyerFeePercent();
+$charbazaar_newacc = (int)$config['bazaar_accountid'];
 /* CHAR BAZAAR CONFIG END */
 
 $getAuctionStep = $_GET['step'] ?? null;
@@ -92,148 +91,70 @@ if ($getAuctionStep == 4) {
 /* STEP CONFIRM START */
 if ($getAuctionStep == '5') {
     /* CADASTRAR AUCTION */
+    //
+    // Tudo e conferido de novo aqui, dentro de uma transacao: o POST deste passo
+    // pode chegar sem passar pelo passo 2 (char online, em guild, com casa...).
+    // Antes so a posse do char e o saldo eram conferidos.
     if (isset($_POST['auction_confirm']) && isset($_POST['auction_price']) && isset($_POST['auction_days']) && isset($_POST['auction_character'])) {
-        $idLogged = $account_logged->getId(); // Para uso na validação de personagem
-        $auction_price =  $_POST['auction_price'];
-        $auction_days =  $_POST['auction_days'];
-        $auction_character = $_POST['auction_character'];
-
-        // Validação: verifica se o preço e a data estão dentro dos limites
-         if ( !is_numeric($auction_price) || !is_numeric($auction_days) || !is_numeric($auction_character) ||
-         (int)$auction_price < 1 || (int)$auction_days < 1 || (int)$auction_days > 28) {
-            echo <<<HTML
-            <div class="SmallBox">
-                <div class="MessageContainer">
-                    <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                    <div class="BoxFrameEdgeLeftTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="BoxFrameEdgeRightTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="Message">
-                    <div class="BoxFrameVerticalLeft" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                    <div class="BoxFrameVerticalRight" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                    <table class="HintBox">
-                        <tbody>
-                        <tr>
-                        <td>
-                            <p style="color: #b32d2d; font-weight: bold; text-align: center; margin: 0;">
-                            You must set a valid value for the auction date and price.            </p>
-                        </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    </div>
-                    <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                    <div class="BoxFrameEdgeRightBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="BoxFrameEdgeLeftBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                </div>
-            </div>
-            <br>
-            HTML;
-            return;
-        }
-
-        /* UPDATE CHARACTER TO NEW ACCOUNT */
-        /*$update_character = $db->query('UPDATE `players` SET `account_id` = `1` WHERE `id` = ' . $auction_character .'');
-        $update_character = $update_character->fetch();*/
-        /* UPDATE CHARACTER TO NEW ACCOUNT END */
-
-        /* REGISTER AUCTION */
-        $getCharacter = $db->query('SELECT `id`, `account_id` FROM `players` WHERE `id` = ' . $db->quote($auction_character) . '');
-        $getCharacter = $getCharacter->fetch();
-
-        // Validação: verifica se a conta logada possui o personagem
-        if ($idLogged != $getCharacter['account_id']) {
-            echo <<<HTML
-            <div class="SmallBox">
-                <div class="MessageContainer">
-                    <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                    <div class="BoxFrameEdgeLeftTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="BoxFrameEdgeRightTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="Message">
-                    <div class="BoxFrameVerticalLeft" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                    <div class="BoxFrameVerticalRight" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></div>
-                    <table class="HintBox">
-                        <tbody>
-                        <tr>
-                        <td>
-                            <p style="color: #b32d2d; font-weight: bold; text-align: center; margin: 0;">
-                            You can only create auctions for your characters.            </p>
-                        </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    </div>
-                    <div class="BoxFrameHorizontal" style="background-image:url(templates/tibiacom/images/global/content/box-frame-horizontal.gif);"></div>
-                    <div class="BoxFrameEdgeRightBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                    <div class="BoxFrameEdgeLeftBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></div>
-                </div>
-            </div>
-            <br>
-            HTML;
-            return;
-        }
-
-        $getAccount = $db->query('SELECT `id`, `premdays`, `coins_transferable` FROM `accounts` WHERE `id` = ' . $db->quote($getCharacter['account_id']) . '');
-        $getAccount = $getAccount->fetch();
-
-        if ($auction_days > 28) {
-            $auction_inputdays = $auction_days;
-            $auction_end = date('Ymd', strtotime('+' . $auction_inputdays . ' days'));
-        } else {
-            $auction_inputdays = $auction_days;
-            $auction_end = date('Ymd', strtotime('+' . $auction_inputdays . ' days'));
-        }
-
-        $account_old = $getCharacter['account_id'];
-        $account_new = $charbazaar_newacc;
-        $player_id = $auction_character;
-        $price = $auction_price;
-
-        $date_start = date('YmdHis');
-        $date_end = $auction_end . date('His');
-
-        $getCoinsAccountLogged = $db->query('SELECT `id`, `coins_transferable` FROM `accounts` WHERE `id` = ' . $account_logged->getId() . '');
-        $getCoinsAccountLogged = $getCoinsAccountLogged->fetch();
-
-        $charbazaar_mycoins = $getCoinsAccountLogged['coins_transferable'];
-        $charbazaar_mycoins_calc = $charbazaar_mycoins - $charbazaar_create;
-
+        $idLogged = (int)$account_logged->getId();
+        $auction_price = (int)$_POST['auction_price'];
+        $auction_days = (int)$_POST['auction_days'];
+        $player_id = (int)$_POST['auction_character'];
         $auctionId = 0;
+        $createProblems = [];
 
-        // Começa como zero e é definida como 1 se houver moedas suficientes
-        // Essa variável controla a renderização da página de sucesso logo abaixo
-        $auctionSucesso = 0;
+        if (!charbazaarCsrfValid()) {
+            $createProblems[] = 'Your session expired. Please start the auction again.';
+        }
 
-        // Duas coisas acontecem aqui:
-        //
-        // 1) >= e nao >. O create_step2.php libera o jogador que tem exatamente
-        //    o valor da taxa, e a criacao falhava em silencio apos os 4 passos.
-        //
-        // 2) Reivindica o personagem com a MESMA guarda que o servidor usa em
-        // data/modules/scripts/charbazaar/charbazaar.lua: o AND `charbazaar` = 0
-        // impede que o jogo e o site abram dois leiloes para o mesmo char.
-        // `deletion` = 1 e o que tira o personagem da lista e bloqueia o login,
-        // entao ele fica realmente indisponivel enquanto o anuncio durar.
-        // Curto-circuito: o UPDATE so roda se as moedas bastarem.
-        $claimed = ($getCoinsAccountLogged['coins_transferable'] >= $charbazaar_create)
-            && $db->exec('UPDATE `players` SET `deletion` = 1, `charbazaar` = 1 WHERE `id` = '
-                . (int)$getCharacter['id'] . ' AND `charbazaar` = 0');
+        if ($auction_price < charbazaarMinimumPrice() || $auction_price > CHARBAZAAR_MAX_PRICE) {
+            $createProblems[] = 'The starting price must be between ' . charbazaarMinimumPrice() . ' and ' . CHARBAZAAR_MAX_PRICE . ' Tibia Coins.';
+        }
 
-        if ($claimed) {
+        if ($auction_days < 1 || $auction_days > CHARBAZAAR_MAX_DAYS) {
+            $createProblems[] = 'The auction must end between 1 and ' . CHARBAZAAR_MAX_DAYS . ' days from now.';
+        }
 
-            $auctionSucesso = 1;
-            $update_accountcoins = $db->exec('UPDATE `accounts` SET `coins_transferable` = ' . $charbazaar_mycoins_calc . ' WHERE `id` = ' . $getAccount['id'] . '');
+        if (!$createProblems) {
+            $db->beginTransaction();
+            try {
+                $createProblems = charbazaarSellProblems($db, $player_id, $idLogged);
 
-            $insert_auction = $db->exec('INSERT INTO `myaac_charbazaar` 
-(`account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price`, `status`)
-VALUES (' . $db->quote($account_old) . ', ' . $db->quote($account_new) . ', ' . $db->quote($player_id) . ', ' . $db->quote($price) . ', ' . $db->quote($date_end) . ', ' . $db->quote($date_start) . ', 0, 0, 0)');
+                if (!$createProblems) {
+                    // Reivindica o personagem com a MESMA guarda que o servidor usa em
+                    // data/modules/scripts/charbazaar/charbazaar.lua: o AND `charbazaar` = 0
+                    // impede que o jogo e o site abram dois leiloes para o mesmo char.
+                    // `deletion` = 1 tira o personagem da lista e bloqueia o login.
+                    $claimed = $db->exec("UPDATE `players` SET `deletion` = 1, `charbazaar` = 1 WHERE `id` = {$player_id} AND `account_id` = {$idLogged} AND `charbazaar` = 0") > 0;
 
-            $getAuctionId = $db->query("SELECT `id` FROM `myaac_charbazaar` WHERE `account_old` = " . $db->quote($account_old) . " AND `player_id` = " . $db->quote($player_id) . " ORDER BY `id` DESC LIMIT 1");
-			$auctionIdRow = $getAuctionId->fetch();
+                    if (!$claimed) {
+                        $createProblems[] = 'This character could not be put up for auction.';
+                    } elseif (!charbazaarDebitCoins($db, $idLogged, $charbazaar_create)) {
+                        $createProblems[] = "You need {$charbazaar_create} transferable Tibia Coins to create this auction.";
+                    } else {
+                        $date_start = date('YmdHis');
+                        $date_end = date('YmdHis', strtotime('+' . $auction_days . ' days'));
 
-			$auctionId = $auctionIdRow ? $auctionIdRow['id'] : 0;
+                        $db->exec("INSERT INTO `myaac_charbazaar` (`account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price`, `status`) VALUES ({$idLogged}, {$charbazaar_newacc}, {$player_id}, {$auction_price}, '{$date_end}', '{$date_start}', 0, 0, " . CHARBAZAAR_STATUS_OPEN . ")");
+                        $auctionId = (int)$db->lastInsertId();
 
-            $update_character = $db->exec('UPDATE `players` SET `account_id` = ' . $account_new . ' WHERE `id` = ' . $getCharacter['id'] . '');
+                        $db->exec("UPDATE `players` SET `account_id` = {$charbazaar_newacc} WHERE `id` = {$player_id}");
+                    }
+                }
 
+                if ($createProblems) {
+                    $db->rollback();
+                } else {
+                    $db->commit();
+                }
+            } catch (Exception $e) {
+                $db->rollback();
+                error_log('Erro ao criar auction: ' . $e->getMessage());
+                $createProblems = ['Internal error. Please try again.'];
+            }
+        }
+
+        if (!$createProblems) {
             ?>
         <div class="TableContainer">
             <div class="CaptionContainer">
@@ -306,73 +227,20 @@ VALUES (' . $db->quote($account_old) . ', ' . $db->quote($account_new) . ', ' . 
 
         // Página de aviso de erro na criação do bazar
         else {
-            $auctionSucesso = 0;
+            foreach ($createProblems as $problem) {
+                charbazaarMessage($problem);
+            }
         ?>
-        <div class="TableContainer">
-            <div class="CaptionContainer">
-                <div class="CaptionInnerContainer">
-                    <span class="CaptionEdgeLeftTop"
-                          style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
-                    <span class="CaptionEdgeRightTop"
-                          style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
-                    <span class="CaptionBorderTop"
-                          style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
-                    <span class="CaptionVerticalLeft"
-                          style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
-                    <div class="Text">Atenção!</div>
-                    <span class="CaptionVerticalRight"
-                          style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
-                    <span class="CaptionBorderBottom"
-                          style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
-                    <span class="CaptionEdgeLeftBottom"
-                          style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
-                    <span class="CaptionEdgeRightBottom"
-                          style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+        <a href="?subtopic=createcharacterauction&step=1">
+            <div class="BigButton"
+                style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton.gif)">
+                <div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);">
+                    <div class="BigButtonOver"
+                        style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_over.gif); visibility: hidden;"></div>
+                    <input class="BigButtonText" type="button" value="Back">
                 </div>
             </div>
-            <table class="Table5" cellspacing="0" cellpadding="0">
-                <tbody>
-                <tr>
-                    <td>
-                        <div class="InnerTableContainer">
-                            <table style="width:100%;">
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="TableContentContainer">
-                                            <table class="TableContent" style="border:1px solid #faf0d7;" width="100%">
-                                                <tbody>
-                                                <tr>
-                                                    <td style="font-weight:normal;"><img
-                                                            src="<?= $template_path; ?>/images/charactertrade/nocoins.gif">
-                                                    </td>
-                                                    <td style="font-weight:bold; font-size: 24px;">Coins Insuficientes!</td>
-                                                    <td>
-                                                    <a href="?subtopic=createcharacterauction&step=1">
-                                                        <div class="BigButton"
-                                                            style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton.gif)">
-                                                            <div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);">
-                                                                <div class="BigButtonOver"
-                                                                    style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_over.gif); visibility: hidden;"></div>
-                                                                <input class="BigButtonText" type="button" value="Back">
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+        </a>
         <?php
         }
     }
