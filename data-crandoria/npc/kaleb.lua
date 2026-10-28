@@ -56,9 +56,18 @@ local function creatureSayCallback(npc, creature, type, message)
         return false
     end
 
-    if MsgContains(message, "mission") or MsgContains(message, "missao") then
-        npcHandler:say("Eu nao estou precisando de nada. Mas talvez voce possa falar com Kamila, minha irma. Ela sempre esta com algum problema... Ha ha ha ha...", npc, creature)
-        npcHandler:setTopic(playerId, 0)
+    local storageVirtude = player:getStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso)
+
+    if MsgContains(message, "mission") or MsgContains(message, "missao") or MsgContains(message, 'heart') then
+		if storageVirtude == 17 then
+			npcHandler:say('Como voce deve saber, estou em busca de um Writhing Heart. Nao busco por nenhuma razao em especial alem do dinheiro que posso obter com ele. \z
+            Com tantas montarias hoje em dia, cuidar de dromedarios nao esta me dando bons retornos e preciso prover para minha familia. Mas como nao sou um guerreiro, preciso buscar de outras formas. \z
+            Mas tenho certeza que ninguem gostaria de me ceder um desses tao facilmente. Sao extremamente valiosos.', npc, creature)
+			npcHandler:setTopic(playerId, 0)
+        else
+            npcHandler:say("Eu nao estou precisando de nada. Mas talvez voce possa falar com Kamila, minha irma. Ela sempre esta com algum problema... Ha ha ha ha...", npc, creature)
+            npcHandler:setTopic(playerId, 0)
+		end
     elseif (MsgContains(message, "cristal magico") or MsgContains(message, "magic crystal")) then
         npcHandler:say("Cristal magico? E o que exatamente seria isso? Voce possui um com voce?", npc, creature)
         npcHandler:setTopic(playerId, 1)

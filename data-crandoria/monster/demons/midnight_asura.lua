@@ -2,7 +2,7 @@ local mType = Game.createMonsterType("Midnight Asura")
 local monster = {}
 
 monster.description = "a midnight asura"
-monster.experience = 4100
+monster.experience = 3700
 monster.outfit = {
 	lookType = 150,
 	lookHead = 0,
@@ -34,11 +34,23 @@ monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
+	interval = 3000,
+	chance = 35,
+}
+
+monster.changeTarget2 = {
 	interval = 4000,
 	chance = 10,
 }
 
 monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	random = 10,
+	damage = 10,
+}
+
+monster.strategiesTarget2 = {
 	nearest = 70,
 	health = 10,
 	damage = 10,
@@ -79,6 +91,8 @@ monster.voices = {
 }
 
 monster.loot = {
+	-- -- { id = 3250, chance = 1975, maxCount = 1 },
+	-- { id = 3250, chance = 900, maxCount = 2 },
 	{ id = 3031, chance = 70980, maxCount = 100 }, -- gold coin
 	{ id = 3035, chance = 80500, maxCount = 6 }, -- platinum coin
 	{ id = 7368, chance = 6640, maxCount = 5 }, -- assassin star
@@ -112,13 +126,13 @@ monster.loot = {
 }
 
 monster.attacks = {
-	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -387 },
-	{ name = "combat", interval = 3300, chance = 10, type = COMBAT_MANADRAIN, minDamage = 0, maxDamage = -70, range = 7, target = true },
-	{ name = "combat", interval = 3700, chance = 17, type = COMBAT_ENERGYDAMAGE, minDamage = -150, maxDamage = -200, length = 5, spread = 0, effect = CONST_ME_PURPLEENERGY, target = false },
-	{ name = "combat", interval = 4100, chance = 27, type = COMBAT_DEATHDAMAGE, minDamage = -150, maxDamage = -300, length = 8, spread = 0, effect = CONST_ME_MORTAREA, target = false },
-	{ name = "combat", interval = 2700, chance = 15, type = COMBAT_DEATHDAMAGE, minDamage = -50, maxDamage = -200, range = 5, shootEffect = CONST_ANI_SUDDENDEATH, target = true },
-	{ name = "combat", interval = 3100, chance = 15, type = COMBAT_ENERGYDAMAGE, minDamage = -50, maxDamage = -100, range = 1, shootEffect = CONST_ANI_ENERGY, target = true },
-	{ name = "speed", interval = 2000, chance = 20, speedChange = -800, radius = 1, shootEffect = CONST_ANI_EXPLOSION, effect = CONST_ME_SLEEP, target = true, duration = 15000 },
+	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -269 },
+	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_MANADRAIN, minDamage = 0, maxDamage = -110, range = 7, target = false },
+	-- { name = "firefield", interval = 2000, chance = 10, range = 7, radius = 1, shootEffect = CONST_ANI_FIRE, target = true },
+	{ name = "combat", interval = 2000, chance = 12, type = COMBAT_DEATHDAMAGE, minDamage = -40, maxDamage = -200, range = 5, shootEffect = CONST_ANI_SUDDENDEATH, effect = CONST_ME_MORTAREA, target = true },
+	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_LIFEDRAIN, minDamage = -50, maxDamage = -200, length = 8, spread = 3, effect = CONST_ME_PURPLEENERGY, target = false },
+	{ name = "energy strike", interval = 2000, chance = 10, minDamage = -80, maxDamage = -140, range = 1, target = false },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -100, radius = 1, effect = CONST_ME_MAGIC_RED, target = true, duration = 30000 },
 }
 
 monster.defenses = {

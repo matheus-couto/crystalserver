@@ -12,11 +12,16 @@ monster.outfit = {
 	lookAddons = 3,
 }
 
+
+monster.events = {
+	"adventurerGroupDeath",
+}
+
 monster.health = 155000
 monster.maxHealth = 155000
 monster.race = "blood"
 monster.corpse = 6081
-monster.speed = 125
+monster.speed = 135
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -25,7 +30,7 @@ monster.changeTarget = {
 }
 
 monster.bosstiary = {
-	bossRaceId = 2713,
+	bossRaceId = 2712,
 	bossRace = RARITY_ARCHFOE, -- não confirmado
 }
 
@@ -47,7 +52,7 @@ monster.flags = {
 	canPushItems = true,
 	canPushCreatures = true, -- não confirmado
 	staticAttackChance = 90, -- não confirmado
-	targetDistance = 5, -- não confirmado
+	targetDistance = 4, -- não confirmado
 	runHealth = 0, -- não confirmado
 	healthHidden = false, -- não confirmado
 	isBlockable = false, -- não confirmado
@@ -57,8 +62,8 @@ monster.flags = {
 }
 
 monster.light = {
-	level = 0, -- não confirmado
-	color = 0, -- não confirmado
+	level = 0,
+	color = 0,
 }
 
 monster.voices = {
@@ -74,10 +79,10 @@ monster.loot = {}
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -380 }, -- não confirmado
-	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_PHYSICALDAMAGE, minDamage = -400, maxDamage = -700, range = 7, shootEffect = CONST_ANI_ROYALSPEAR, effect = CONST_ME_EXPLOSIONHIT, target = true }, -- não confirmado
+	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_PHYSICALDAMAGE, minDamage = -400, maxDamage = -800, range = 7, shootEffect = CONST_ANI_ROYALSPEAR, effect = CONST_ME_EXPLOSIONHIT, target = true }, -- não confirmado
 	{ name = "combat", interval = 2500, chance = 18, type = COMBAT_HOLYDAMAGE, minDamage = -350, maxDamage = -600, range = 7, shootEffect = CONST_ANI_HOLY, effect = CONST_ME_HOLYDAMAGE, target = true }, -- não confirmado
 	{ name = "combat", interval = 3000, chance = 15, type = COMBAT_HOLYDAMAGE, minDamage = -500, maxDamage = -750, radius = 4, effect = CONST_ME_HOLYAREA, target = false }, -- não confirmado
-	{ name = "combat", interval = 2000, chance = 12, type = COMBAT_PHYSICALDAMAGE, minDamage = -450, maxDamage = -650, length = 6, spread = 2, effect = CONST_ME_EXPLOSIONHIT, target = false }, -- não confirmado
+	{ name = "combat", interval = 2000, chance = 12, type = COMBAT_PHYSICALDAMAGE, minDamage = -450, maxDamage = -900, length = 6, spread = 2, effect = CONST_ME_EXPLOSIONHIT, target = false }, -- não confirmado
 }
 
 monster.defenses = {

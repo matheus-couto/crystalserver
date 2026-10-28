@@ -66,7 +66,6 @@ local function creatureSayCallback(npc, creature, type, message)
 		elseif player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 70 then
 			if player:removeItem(21170, 1) then
 				player:addItem(23682, 1, true)
-				player:addItem(4049, 1, true)
 				player:addItem(22724, 15, true)
 				player:addExperience(5000000, true)
 				npcHandler:say("Exatamente o que eu precisava para me sentir mais segura ao sair da padaria sozinha a noite. Muito obrigada! Aqui, leve isso como agradecimento. Kradok, o anao que vive em cima das minas, parecia precisar de ajuda com algo.", npc, creature)

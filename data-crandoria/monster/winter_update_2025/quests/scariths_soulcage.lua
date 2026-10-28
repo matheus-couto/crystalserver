@@ -23,6 +23,11 @@ monster.strategiesTarget = {
 	nearest = 100, -- não confirmado
 }
 
+monster.events = {
+	"soulcageLifeChange",
+	"soulcageDeath"
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -50,10 +55,19 @@ monster.light = {
 
 monster.loot = {}
 
+monster.summon = {
+	maxSummons = 1,
+	summons = {
+		{ name = "Scarith's Spirit", chance = 100, interval = 2000, count = 1 },
+	},
+}
+
 -- Death Chain (1400+), Death Explosion (700+)
 monster.attacks = {
-	{ name = "combat", interval = 2000, chance = 30, type = COMBAT_DEATHDAMAGE, minDamage = -1400, maxDamage = -2000, length = 8, spread = 3, effect = CONST_ME_MORTAREA, target = false }, -- não confirmado
-	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_DEATHDAMAGE, minDamage = -700, maxDamage = -1000, radius = 4, effect = CONST_ME_MORTAREA, target = false }, -- não confirmado
+	{ name = "soulcage spell", interval = 2000, chance = 20, range = 10 },
+	{ name = "soulcage mechanic", interval = 2000, chance = 5, range = 10 },
+	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_DEATHDAMAGE, minDamage = -700, maxDamage = -1100, radius = 4, effect = CONST_ME_MORTAREA, target = false },
+	{ name = "death chain", interval = 2000, chance = 20, minDamage = -1200, maxDamage = -1500, range = 8, target = true},
 }
 
 monster.defenses = {

@@ -17,6 +17,24 @@ local function onMovementRemoveProtection(playerId, oldPos, time)
 	addEvent(onMovementRemoveProtection, 1000, playerId, oldPos, time - 1)
 end
 
+-- CRANDORIA EDIT --
+local function cachePlayerStorages(player)
+	local cache = {}
+	
+	-- Storages de passe de batalha
+	cache.passeMount = player:getStorageValue(Storage.Quest.Crandoria.PasseDeBatalha.Mount)
+	cache.passeOutfit = player:getStorageValue(Storage.Quest.Crandoria.PasseDeBatalha.Outfit)
+	
+	-- Storages de ARAM e Batalha
+	cache.aramTimer = player:getStorageValue(Storage.Quest.Crandoria.TibiaAram.TimerGeral)
+	cache.aramChaos = player:getStorageValue(Storage.Quest.Crandoria.TibiaAram.TimeChaos)
+	cache.aramAnvillux = player:getStorageValue(Storage.Quest.Crandoria.TibiaAram.TimeAnvillux)
+	cache.batalhaTimer = player:getStorageValue(Storage.Quest.Crandoria.Batalha.TimerPartida)
+	cache.batalhaTime = player:getStorageValue(Storage.Quest.Crandoria.Batalha.Time)
+	
+	return cache
+end
+
 local playerLoginGlobal = CreatureEvent("PlayerLoginGlobal")
 
 function playerLoginGlobal.onLogin(player)
@@ -42,6 +60,8 @@ function playerLoginGlobal.onLogin(player)
 	player:sendTextMessage(MESSAGE_LOGIN, loginStr)
 
 	------------ CRANDORIA EDIT ------------
+	-- Cache de storages
+	local cache = cachePlayerStorages(player)
 	-- BONUS ADDONS E MOUNTS --
 	if CollectionBonus then
 		local ok, err = pcall(CollectionBonus.load, player)
@@ -71,6 +91,12 @@ function playerLoginGlobal.onLogin(player)
 			))
 			rep = newRep
 		end
+	end
+
+	--------- MOUNT PASSE ---------
+	if cache.passeMount < os.time() and player:hasMount(145) then
+		player:sendTextMessage(MESSAGE_FAILURE, "O tempo da sua Montaria Jousting Eagle acabou.")
+		player:removeMount(145)
 	end
 	---------------------------------------------
 	

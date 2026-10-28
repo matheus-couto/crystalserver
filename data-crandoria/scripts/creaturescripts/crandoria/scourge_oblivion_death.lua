@@ -10,9 +10,9 @@ function oblivionDeath.onDeath(creature)
 	local spectators = Game.getSpectators(config.centerPosition, false, false, config.rangeX, config.rangeX, config.rangeY, config.rangeY)
 	for _, specCreature in pairs(spectators) do
 		if specCreature:isPlayer() then
-			if specCreature:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 178 then
-				specCreature:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce derrotou The Scourge Oblivion para Kalahar. Retorne ate ela e reporte sua missao.")
-				specCreature:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 179)
+			if specCreature:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 183 then
+				specCreature:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce derrotou The Scourge of Oblivion para Kalahar. Retorne ate ela e reporte sua missao.")
+				specCreature:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 184)
 			end
 			local storageRep = specCreature:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
 			specCreature:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 1)

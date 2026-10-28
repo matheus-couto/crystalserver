@@ -21,15 +21,15 @@ monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
-	interval = 4000,
+	interval = 2000,
 	chance = 10,
 }
 
 monster.strategiesTarget = {
-	nearest = 70, -- não confirmado
+	nearest = 50, -- não confirmado
 	health = 10, -- não confirmado
 	damage = 10, -- não confirmado
-	random = 10, -- não confirmado
+	random = 30, -- não confirmado
 }
 
 monster.flags = {
@@ -42,11 +42,11 @@ monster.flags = {
 	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
-	staticAttackChance = 90, -- não confirmado
-	targetDistance = 4, -- não confirmado
-	runHealth = 0, -- não confirmado
-	healthHidden = false, -- não confirmado
-	isBlockable = false, -- não confirmado
+	staticAttackChance = 90, 
+	targetDistance = 4, 
+	runHealth = 0,
+	healthHidden = false, 
+	isBlockable = false, 
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -61,14 +61,16 @@ monster.loot = {}
 
 -- Energy Missile (450+), Bleed Explosion (800+)
 monster.attacks = {
-	{ name = "combat", interval = 2000, chance = 30, type = COMBAT_ENERGYDAMAGE, minDamage = -300, maxDamage = -450, range = 7, shootEffect = CONST_ANI_ENERGY, effect = CONST_ME_ENERGYHIT, target = true }, -- não confirmado
-	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_PHYSICALDAMAGE, minDamage = -600, maxDamage = -800, radius = 4, effect = CONST_ME_DRAWBLOOD, target = false }, -- não confirmado
+	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -2000 },
+	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_ENERGYDAMAGE, minDamage = -1000, maxDamage = -1600, shootEffect = CONST_ANI_ENERGY, effect = CONST_ME_PURPLEENERGY, target = true },
+	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_LIFEDRAIN, minDamage = -500, maxDamage = -1500, radius = 5, effect = CONST_ME_SOUND_PURPLE, target = false },
+	-- { name = "fear", interval = 2000, chance = 5, range = 8, target = true },
 }
 
 monster.defenses = {
-	defense = 75, -- não confirmado
-	armor = 75, -- não confirmado
-	mitigation = 2.30, -- não confirmado
+	defense = 75, 
+	armor = 75, 
+	mitigation = 2.30, 
 }
 
 monster.elements = {
@@ -76,9 +78,9 @@ monster.elements = {
 	{ type = COMBAT_ENERGYDAMAGE, percent = 100 },
 	{ type = COMBAT_EARTHDAMAGE, percent = 100 },
 	{ type = COMBAT_FIREDAMAGE, percent = 100 },
-	{ type = COMBAT_LIFEDRAIN, percent = 0 }, -- não confirmado
-	{ type = COMBAT_MANADRAIN, percent = 0 }, -- não confirmado
-	{ type = COMBAT_DROWNDAMAGE, percent = 0 }, -- não confirmado
+	{ type = COMBAT_LIFEDRAIN, percent = 100 }, 
+	{ type = COMBAT_MANADRAIN, percent = 100 },
+	{ type = COMBAT_DROWNDAMAGE, percent = 100 }, 
 	{ type = COMBAT_ICEDAMAGE, percent = 100 },
 	{ type = COMBAT_HOLYDAMAGE, percent = 100 },
 	{ type = COMBAT_DEATHDAMAGE, percent = 100 },

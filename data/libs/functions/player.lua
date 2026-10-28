@@ -547,6 +547,9 @@ function Player:addItemStoreInbox(itemId, amount, movable, setOwner)
 	return self:addItemStoreInboxEx(item, movable, setOwner)
 end
 
+-- CRANDORIA EDIT --
+local day = os.date("%A")
+
 ---@param monster Monster
 ---@return {factor: number, msgSuffix: string}
 function Player:calculateLootFactor(monster)
@@ -589,6 +592,9 @@ function Player:calculateLootFactor(monster)
 
 	-- CRANDORIA EDIT --
 	factor = factor * (1 + CollectionBonus.get(self).loot / 100)
+	if day == "Monday" then
+		factor = factor * 1.25
+	end
 	--------------------
 	
 	return {

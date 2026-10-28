@@ -101,7 +101,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		npcHandler:say("Posso te levar para Roshamuul por 750 gold coins. Podemos partir?", npc, creature)
         npcHandler:setTopic(playerId, 10)	
 	elseif MsgContains(message, "icehold") then
-		npcHandler:say("Posso te levar para Roshamuul por 750 gold coins. Podemos partir?", npc, creature)
+		npcHandler:say("Posso te levar para Icehold por 750 gold coins. Podemos partir?", npc, creature)
         npcHandler:setTopic(playerId, 11)	
 	elseif MsgContains(message, "yes") or MsgContains(message, "sim") then
 		if npcHandler:getTopic(playerId) == 1 then

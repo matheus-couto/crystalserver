@@ -45135,9 +45135,6 @@
 	<monster centerx="4682" centery="5215" centerz="7" radius="1">
 		<monster name="Ghoul" x="0" y="0" z="7" spawntime="184" />
 	</monster>
-	<monster centerx="4931" centery="5215" centerz="7" radius="1">
-		<monster name="Butterfly" x="0" y="0" z="7" spawntime="184" />
-	</monster>
 	<monster centerx="5082" centery="5215" centerz="7" radius="1">
 		<monster name="Crab" x="0" y="0" z="7" spawntime="184" />
 	</monster>
@@ -46183,9 +46180,6 @@
 	</monster>
 	<monster centerx="4618" centery="5261" centerz="7" radius="1">
 		<monster name="Rorc" x="0" y="0" z="7" spawntime="184" />
-	</monster>
-	<monster centerx="4921" centery="5261" centerz="7" radius="1">
-		<monster name="Dog" x="0" y="0" z="7" spawntime="184" />
 	</monster>
 	<monster centerx="5251" centery="5261" centerz="7" radius="1">
 		<monster name="Dragon" x="0" y="0" z="7" spawntime="184" />
@@ -56407,6 +56401,339 @@
 	</monster>
 	<monster centerx="4628" centery="5925" centerz="7" radius="1">
 		<monster name="Fanatico da Folia" x="0" y="0" z="7" spawntime="184" />
+	</monster>
+	<monster centerx="4443" centery="6086" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4447" centery="6086" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4439" centery="6088" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4444" centery="6089" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4447" centery="6090" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4438" centery="6091" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4443" centery="6093" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4441" centery="6099" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4453" centery="6100" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4480" centery="6103" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4484" centery="6103" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4489" centery="6105" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4481" centery="6106" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4487" centery="6106" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4427" centery="6107" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4438" centery="6107" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4483" centery="6107" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4423" centery="6108" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4470" centery="6108" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4423" centery="6110" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4427" centery="6110" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4483" centery="6110" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4432" centery="6112" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4423" centery="6113" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4427" centery="6113" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4456" centery="6114" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4460" centery="6114" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4454" centery="6117" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4458" centery="6117" centerz="7" radius="1">
+		<monster name="Ancient Pharaoh" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4455" centery="6121" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4458" centery="6121" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4471" centery="6121" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4438" centery="6124" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4421" centery="6127" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4427" centery="6127" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4472" centery="6127" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4423" centery="6130" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4429" centery="6130" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4438" centery="6130" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4422" centery="6132" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4430" centery="6132" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4498" centery="6132" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4501" centery="6132" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4402" centery="6134" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4425" centery="6134" centerz="7" radius="1">
+		<monster name="Ancient Pharaoh" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4428" centery="6134" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4407" centery="6135" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4502" centery="6135" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4495" centery="6136" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4402" centery="6137" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4406" centery="6137" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4485" centery="6137" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4399" centery="6139" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4497" centery="6139" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4455" centery="6140" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4462" centery="6140" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4471" centery="6140" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4500" centery="6140" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4404" centery="6141" centerz="7" radius="1">
+		<monster name="Ancient Pharaoh" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4409" centery="6141" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4458" centery="6141" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4465" centery="6141" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4487" centery="6141" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4437" centery="6142" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4452" centery="6142" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4469" centery="6142" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4399" centery="6143" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4407" centery="6144" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4410" centery="6144" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4454" centery="6144" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4464" centery="6144" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4467" centery="6144" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4404" centery="6145" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4459" centery="6145" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4472" centery="6145" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4419" centery="6150" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4416" centery="6152" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4421" centery="6153" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4416" centery="6155" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4419" centery="6155" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4432" centery="6156" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4453" centery="6158" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4468" centery="6158" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4487" centery="6158" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4484" centery="6159" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4451" centery="6160" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4466" centery="6160" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4489" centery="6160" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4492" centery="6160" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4455" centery="6162" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4472" centery="6162" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4469" centery="6163" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4491" centery="6163" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4433" centery="6164" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4452" centery="6164" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4485" centery="6164" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4436" centery="6166" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4486" centery="6166" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4489" centery="6166" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4429" centery="6167" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4433" centery="6168" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4431" centery="6172" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4435" centery="6172" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4461" centery="6176" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4456" centery="6177" centerz="7" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4461" centery="6179" centerz="7" radius="1">
+		<monster name="Ancient Pharaoh" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4465" centery="6179" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4458" centery="6180" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4464" centery="6181" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4458" centery="6183" centerz="7" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="4462" centery="6184" centerz="7" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="7" spawntime="60" />
 	</monster>
 	<monster centerx="32602" centery="32259" centerz="7" radius="3">
 		<monster name="Deer" x="-1" y="2" z="7" spawntime="184" />
@@ -85066,6 +85393,288 @@
 	</monster>
 	<monster centerx="4362" centery="5816" centerz="8" radius="1">
 		<monster name="Alma Penada" x="0" y="0" z="8" spawntime="184" />
+	</monster>
+	<monster centerx="4427" centery="6107" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4441" centery="6107" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4423" centery="6108" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4433" centery="6108" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4438" centery="6109" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4444" centery="6109" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4422" centery="6110" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4430" centery="6110" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4422" centery="6113" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4428" centery="6113" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4425" centery="6114" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4454" centery="6117" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4458" centery="6122" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4486" centery="6122" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4462" centery="6123" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4482" centery="6123" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4492" centery="6123" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4498" centery="6123" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4463" centery="6126" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4413" centery="6128" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4499" centery="6128" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4407" centery="6129" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4416" centery="6129" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4424" centery="6130" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4393" centery="6132" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4416" centery="6133" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4499" centery="6133" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4402" centery="6135" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4496" centery="6135" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4502" centery="6135" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4393" centery="6136" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4405" centery="6136" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4500" centery="6136" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4399" centery="6138" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4406" centery="6139" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4429" centery="6139" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4462" centery="6139" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4497" centery="6139" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4500" centery="6139" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4399" centery="6140" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4402" centery="6140" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4465" centery="6140" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4402" centery="6142" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4407" centery="6142" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4459" centery="6142" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4397" centery="6143" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4467" centery="6143" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4460" centery="6145" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4462" centery="6145" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4431" centery="6146" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4465" centery="6146" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4424" centery="6151" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4428" centery="6151" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4433" centery="6151" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4427" centery="6153" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4425" centery="6154" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4406" centery="6155" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4421" centery="6155" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4429" centery="6155" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4404" centery="6157" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4488" centery="6157" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4448" centery="6158" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4484" centery="6158" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4393" centery="6159" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4451" centery="6159" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4454" centery="6159" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4476" centery="6159" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4486" centery="6160" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4488" centery="6160" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4492" centery="6160" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4455" centery="6161" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4468" centery="6161" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4449" centery="6162" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4492" centery="6162" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4393" centery="6163" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4430" centery="6164" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4446" centery="6164" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4489" centery="6164" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4432" centery="6165" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4452" centery="6165" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4485" centery="6165" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4437" centery="6166" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4396" centery="6167" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4432" centery="6167" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4404" centery="6168" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4429" centery="6168" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4407" centery="6169" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4434" centery="6169" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4431" centery="6171" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4433" centery="6172" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4463" centery="6179" centerz="8" radius="1">
+		<monster name="Superior Mummy" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4460" centery="6181" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4465" centery="6181" centerz="8" radius="1">
+		<monster name="Cobra Evento" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="4463" centery="6184" centerz="8" radius="1">
+		<monster name="Ancient Scarab Evento" x="0" y="0" z="8" spawntime="60" />
 	</monster>
 	<monster centerx="33943" centery="31015" centerz="8" radius="1">
 		<monster name="Capricious Phantom" x="1" y="0" z="8" spawntime="184" />

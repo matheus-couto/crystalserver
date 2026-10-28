@@ -12,6 +12,10 @@ monster.outfit = {
 	lookAddons = 3,
 }
 
+monster.events = {
+	"adventurerGroupDeath",
+}
+
 monster.health = 155000
 monster.maxHealth = 155000
 monster.race = "blood"
@@ -79,6 +83,7 @@ monster.attacks = {
 	{ name = "combat", interval = 2500, chance = 18, type = COMBAT_ENERGYDAMAGE, minDamage = -450, maxDamage = -750, length = 6, spread = 3, effect = CONST_ME_ENERGYHIT, target = false }, -- não confirmado
 	{ name = "combat", interval = 3000, chance = 15, type = COMBAT_FIREDAMAGE, minDamage = -550, maxDamage = -850, radius = 5, effect = CONST_ME_FIREAREA, target = false }, -- não confirmado
 	{ name = "combat", interval = 2000, chance = 12, type = COMBAT_ENERGYDAMAGE, minDamage = -350, maxDamage = -550, radius = 4, effect = CONST_ME_PURPLEENERGY, target = false }, -- não confirmado
+	{ name = "adventurer change", interval = 5000, chance = 100, range = 8 },
 }
 
 monster.defenses = {

@@ -21,15 +21,15 @@ monster.speed = 160 -- não confirmado
 monster.manaCost = 0
 
 monster.changeTarget = {
-	interval = 4000,
+	interval = 2000,
 	chance = 10,
 }
 
 monster.strategiesTarget = {
-	nearest = 70, -- não confirmado
+	nearest = 60, -- não confirmado
 	health = 10, -- não confirmado
 	damage = 10, -- não confirmado
-	random = 10, -- não confirmado
+	random = 20, -- não confirmado
 }
 
 monster.flags = {
@@ -60,9 +60,9 @@ monster.light = {
 monster.loot = {}
 
 monster.attacks = {
-	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -800 }, -- não confirmado
+	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -1400 }, -- não confirmado
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_FIREDAMAGE, minDamage = -700, maxDamage = -1200, length = 8, spread = 3, effect = CONST_ME_FIREATTACK, target = false }, -- não confirmado
-	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_FIREDAMAGE, minDamage = -600, maxDamage = -1000, radius = 5, effect = CONST_ME_FIREAREA, target = false }, -- não confirmado
+	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_FIREDAMAGE, minDamage = -600, maxDamage = -1000, radius = 5, effect = CONST_ME_FIREAREA, target = false }, -- não confirmado
 }
 
 monster.defenses = {

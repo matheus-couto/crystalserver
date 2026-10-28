@@ -19,10 +19,14 @@ monster.bosstiary = {
 	storageCooldown = 82071, -- não confirmado
 }
 
+monster.events = {
+	"EldritchDragonLordDefense",
+}
+
 monster.health = 350000
 monster.maxHealth = 350000
 monster.race = "blood"
-monster.corpse = 44828 -- não confirmado
+monster.corpse = 52121 -- não confirmado
 monster.speed = 195
 monster.manaCost = 0
 
@@ -63,13 +67,13 @@ monster.light = {
 	color = 0,
 }
 
-monster.summon = {
-	maxSummons = 3, -- não confirmado
-	summons = {
-		{ name = "Eruption", chance = 12, interval = 4000, count = 2 }, -- não confirmado
-		{ name = "Flame Totem", chance = 10, interval = 5000, count = 1 }, -- não confirmado
-	},
-}
+-- monster.summon = {
+-- 	maxSummons = 3, -- não confirmado
+-- 	summons = {
+-- 		{ name = "Eruption", chance = 12, interval = 4000, count = 2 }, -- não confirmado
+-- 		{ name = "Flame Totem", chance = 10, interval = 5000, count = 1 }, -- não confirmado
+-- 	},
+-- }
 
 monster.voices = {
 	interval = 5000,
@@ -82,7 +86,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "crystal coin", chance = 100000, maxCount = 61 },
+	{ name = "crystal coin", chance = 100000, maxCount = 35 },
 	{ name = "dragon ham", chance = 50000, maxCount = 4 }, -- não confirmado
 	{ name = "strong mana potion", chance = 54550, maxCount = 93 }, -- não confirmado
 	{ id = 238, chance = 54550, maxCount = 69 }, -- great mana potion
@@ -109,8 +113,8 @@ monster.loot = {
 	{ name = "greater spiritualist gem", chance = 3000 }, -- não confirmado
 	{ name = "dragon tongue", chance = 10000 }, -- não confirmado
 	{ name = "golden claw", chance = 5000 }, -- não confirmado
-	{ name = "cryptic fossil", chance = 5000 }, -- não confirmado
-	{ name = "fetid heart", chance = 5000 }, -- não confirmado
+	-- { name = "cryptic fossil", chance = 5000 }, -- não confirmado
+	-- { name = "fetid heart", chance = 5000 }, -- não confirmado
 	{ name = "dragonbone staff", chance = 5000 }, -- não confirmado
 	{ name = "dragon shield", chance = 5000 }, -- não confirmado
 	{ name = "wand of inferno", chance = 5000 }, -- não confirmado
@@ -135,6 +139,10 @@ monster.defenses = {
 	mitigation = 3.20, -- não confirmado
 	{ name = "combat", interval = 2500, chance = 18, type = COMBAT_HEALING, minDamage = 1500, maxDamage = 3000, effect = CONST_ME_MAGIC_BLUE, target = false }, -- não confirmado
 	{ name = "speed", interval = 5000, chance = 10, speedChange = 400, effect = CONST_ME_MAGIC_GREEN, target = false, duration = 5000 }, -- não confirmado
+}
+
+monster.heals = {
+	{ type = COMBAT_FIREDAMAGE, percent = 100 },
 }
 
 monster.elements = {

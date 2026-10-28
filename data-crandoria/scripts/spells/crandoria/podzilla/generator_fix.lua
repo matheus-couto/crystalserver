@@ -101,5 +101,6 @@ end
 spell:name("generator fix") -- use esse mesmo nome no "name" da entrada em monster.attacks
 spell:words("###778") -- ajuste se seu fork exigir um identificador único diferente
 spell:isAggressive(true)
+spell:needLearn(true)
 spell:blockWalls(true)
 spell:register()

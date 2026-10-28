@@ -24955,11 +24955,11 @@
 		<attribute key="maxtextlen" value="149" />
 		<attribute key="weight" value="1550" />
 	</item>
-	<item id="9219" article="an" name="arcane insignia">
-		<attribute key="primarytype" value="contest prizes" />
-		<attribute key="writeable" value="1" />
-		<attribute key="maxtextlen" value="149" />
-		<attribute key="weight" value="1350" />
+	<item id="9219" article="an" name="medalha de honra">
+		<attribute key="primarytype" value="contest prizes"/>
+		<attribute key="writeable" value="1"/>
+		<attribute key="maxtextlen" value="149"/>
+		<attribute key="weight" value="1350"/>
 	</item>
 	<item id="9220" article="a" name="hero's medal">
 		<attribute key="writeable" value="1" />
@@ -28351,10 +28351,10 @@
 		<attribute key="primarytype" value="quest items" />
 		<attribute key="weight" value="1400" />
 	</item>
-	<item id="11372" article="an" name="interdimensional potion">
-		<attribute key="primarytype" value="liquids" />
-		<attribute key="description" value="This potion will help you enter the dreams of any lifeform" />
-		<attribute key="weight" value="180" />
+	<item id="11372" article="an" name="experience boost potion">
+		<attribute key="primarytype" value="liquids"/>
+		<attribute key="description" value="This potion provides 50% experience boost for one hour."/>
+		<attribute key="weight" value="180"/>
 	</item>
 	<item fromid="11373" toid="11377" article="a" name="corrupted plantation" />
 	<item fromid="11378" toid="11379" article="a" name="poison field" />
@@ -39423,6 +39423,8 @@
 	<item id="19149" article="a" name="hot firecatcher urn">
 		<attribute key="primarytype" value="quest items" />
 		<attribute key="description" value="This special urn is brimming with harmless flames gathered from the ashes of fire elementals" />
+		<attribute key="duration" value="120" />
+		<attribute key="decayTo" value="0" />
 		<attribute key="weight" value="150" />
 	</item>
 	<item id="19150" article="a" name="norseman doll">
@@ -40771,13 +40773,13 @@
 		<attribute key="decayTo" value="20125" />
 	</item>
 	<item id="20137" article="a" name="flowing water" />
-	<item id="20138" article="an" name="essence of dread">
-		<attribute key="description" value="You don't like holding it. Really don't. As if something bad was just waiting to happen" />
-		<attribute key="weight" value="30" />
+	<item id="20138" article="a" name="small stamina refill">
+		<attribute key="description" value="Adds two hours to your stamina."/>
+		<attribute key="weight" value="30"/>
 	</item>
-	<item id="20139" article="an" name="essence of wishful thinking">
-		<attribute key="description" value="Just looking at it makes you feel better. What could possibly go wrong" />
-		<attribute key="weight" value="30" />
+	<item id="20139" article="an" name="full stamina refill">
+		<attribute key="description" value="Restores all of your stamina."/>
+		<attribute key="weight" value="30"/>
 	</item>
 	<item id="20140" article="an" name="eerie song book">
 		<attribute key="primarytype" value="shields" />
@@ -60274,10 +60276,14 @@
 		<attribute key="weight" value="500" />
 	</item>
 	<item id="31962" name="reserved sprite" />
-	<item fromid="31963" toid="31981" name="event item" />
+	<item fromid="31963" toid="31966" name="event item" />
+	<item fromid="31968" toid="31981" name="event item" />
 	<item fromid="31983" toid="32008" name="event item" />
 	<item id="31982" article="a" name="rare mushroom">
 		<attribute key="weight" value="50" />
+	</item>
+	<item id="31967" article="a" name="sujeira">
+		<attribute key="weight" value="500" />
 	</item>
 	<item id="32009" article="a" name="veal">
 		<attribute key="primarytype" value="food" />
@@ -71670,9 +71676,9 @@
 	<item fromid="39004" toid="39035" name="shallow water">
 		<attribute key="primarytype" value="natural tiles" />
 	</item>
-	<item id="39036" article="a" name="rainbow opal">
-		<attribute key="primarytype" value="valuables" />
-		<attribute key="weight" value="175" />
+	<item id="39036" article="a" name="magical teleport stone">
+		<attribute key="primarytype" value="valuables"/>
+		<attribute key="weight" value="175"/>
 	</item>
 	<item id="39037" article="a" name="cobalt ridge">
 		<attribute key="primarytype" value="valuables" />
@@ -73846,9 +73852,9 @@
 		<attribute key="weight" value="160" />
 		<attribute key="description" value="Use this to get the ballons no.0 to no.9" />
 	</item>
-	<item id="39707" article="a" name="Pantibian Amphora">
-		<attribute key="weight" value="2500" />
-		<attribute key="description" value="It emanates a divine aura." />
+	<item id="39707" article="a" name="chaotic jar">
+		<attribute key="weight" value="2500"/>
+		<attribute key="description" value="Use na Arena Especial de Bosses para quebrar o vaso libertando um boss."/>
 	</item>
 	<item id="39710" article="a" name="big reward box">
 		<attribute key="primarytype" value="decoration" />
@@ -88327,5 +88333,38 @@
 	<item id="44433" article="a" name="ceremonial brush">
 		<attribute key="primarytype" value="valuables" />
 		<attribute key="weight" value="100" />
+	</item>
+	<item id="52441" article="a" name="searing fire">
+		<attribute key="primarytype" value="fields" />
+		<attribute key="type" value="magicfield" />
+		<attribute key="field" value="fire">
+			<attribute key="damage" value="300" />
+		</attribute>
+		<attribute key="replaceable" value="0" />
+		<attribute key="duration" value="20" />
+		<attribute key="decayTo" value="0" />
+		<attribute key="script" value="moveevent">
+			<attribute key="eventType" value="stepin" />
+		</attribute>
+	</item>
+	<item id="44736" article="a" name="bulltaur horn">
+		<attribute key="loottype" value="creature products" />
+		<attribute key="weight" value="20" />
+	</item>
+	<item id="44740" article="a" name="strange substance">
+		<attribute key="loottype" value="creature products" />
+		<attribute key="weight" value="20" />
+	</item>
+	<item id="44737" article="a" name="bulltaur hoof">
+		<attribute key="loottype" value="creature products" />
+		<attribute key="weight" value="20" />
+	</item>
+	<item id="44738" article="a" name="bulltaur armor scrap">
+		<attribute key="loottype" value="creature products" />
+		<attribute key="weight" value="20" />
+	</item>
+	<item id="44739" article="a" name="encrypted notes">
+		<attribute key="loottype" value="creature products" />
+		<attribute key="weight" value="20" />
 	</item>
 </items>

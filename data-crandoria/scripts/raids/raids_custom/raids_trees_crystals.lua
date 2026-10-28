@@ -40,13 +40,14 @@ local raids2 = {
 	"Yakchal",
 	"Crystal Wolf",
 	"Draptor",
-    "Suggar Mommy",
+    "Sugar Mommy",
 	"Hibernal Moth",
 	"Piratas One",
 	"Piratas Two",
 	"Piratas Three",
 	"Crustacea Gigantica treasure",
 	"Crustacea Gigantica treasure1",
+	"Trio Asuras",
 }
 
 local raids3 = {
@@ -70,12 +71,12 @@ local raids3 = {
 	"Wild Horses",
 	"Gnarlhounds",
 	"Crustacea Gigantica treasure2",
-	"Jungle Queen",
+	-- "Jungle Queen",
 	"Giant Beaver",
 	"Jaul",
 	-- "Feroxa",
-	"Giant Beaver",
-	"Jungle Queen",
+	-- "Giant Beaver",
+	-- "Jungle Queen",
 	"Thornfire Wolf",
 }
 

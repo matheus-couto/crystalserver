@@ -1,4 +1,4 @@
-﻿
+
 local config = {
 	[12299] = { flamePosition = Position(4768, 5096, 7), toPosition = Position(4768, 5094, 7) }, -- Mysterious library Magincia
 	[12300] = { flamePosition = Position(5328, 4996, 7), toPosition = Position(5321, 4997, 7) }, -- Asura Palace Jagunda Jungle 
@@ -33,7 +33,7 @@ function huntCoalBasin.onAddItem(moveitem, tileitem, position)
 		return true
 	end
 
-	if tileitem.uid == 12299 and moveitem.itemid == 22723 and moveitem:getCount() == 30 then
+	if tileitem.uid == 12299 and moveitem.itemid == 22723 and moveitem:getCount() == 15 then
 		moveitem:remove()
 		position:sendMagicEffect(CONST_ME_HITBYFIRE)
 
@@ -75,7 +75,7 @@ function huntCoalBasin.onAddItem(moveitem, tileitem, position)
 		Tile(targetCoalBasin.flamePosition):relocateTo(targetCoalBasin.toPosition)
 		targetCoalBasin.toPosition:sendMagicEffect(CONST_ME_TELEPORT)
 		return true
-	elseif tileitem.uid == 12305 and moveitem.itemid == 22723 and moveitem:getCount() == 30 then
+	elseif tileitem.uid == 12305 and moveitem.itemid == 22723 and moveitem:getCount() == 15 then
 		moveitem:remove()
 		position:sendMagicEffect(CONST_ME_HITBYFIRE)
 
@@ -89,7 +89,7 @@ function huntCoalBasin.onAddItem(moveitem, tileitem, position)
 		Tile(targetCoalBasin.flamePosition):relocateTo(targetCoalBasin.toPosition)
 		targetCoalBasin.toPosition:sendMagicEffect(CONST_ME_TELEPORT)
 		return true
-	elseif tileitem.uid == 12307 and moveitem.itemid == 22723 and moveitem:getCount() == 30 then
+	elseif tileitem.uid == 12307 and moveitem.itemid == 22723 and moveitem:getCount() == 15 then
 		moveitem:remove()
 		position:sendMagicEffect(CONST_ME_HITBYFIRE)
 
@@ -110,14 +110,14 @@ function huntCoalBasin.onAddItem(moveitem, tileitem, position)
 		Tile(targetCoalBasin.flamePosition):relocateTo(targetCoalBasin.toPosition)
 		targetCoalBasin.toPosition:sendMagicEffect(CONST_ME_TELEPORT)
 		return true
-	elseif tileitem.uid == 12310 and moveitem.itemid == 22723 and moveitem:getCount() == 20 then
+	elseif tileitem.uid == 12310 and moveitem.itemid == 22723 and moveitem:getCount() == 15 then
 		moveitem:remove()
 		position:sendMagicEffect(CONST_ME_HITBYFIRE)
 
 		Tile(targetCoalBasin.flamePosition):relocateTo(targetCoalBasin.toPosition)
 		targetCoalBasin.toPosition:sendMagicEffect(CONST_ME_TELEPORT)
 		return true
-	elseif tileitem.uid == 12311 and moveitem.itemid == 22723 and moveitem:getCount() == 20 then
+	elseif tileitem.uid == 12311 and moveitem.itemid == 22723 and moveitem:getCount() == 10 then
 		moveitem:remove()
 		position:sendMagicEffect(CONST_ME_HITBYFIRE)
 

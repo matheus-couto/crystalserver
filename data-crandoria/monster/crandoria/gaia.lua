@@ -118,7 +118,7 @@ monster.loot = {
 	{id = 16162, chance = 2754}, -- mycological mace
 	{id = 3043, chance = 100000, maxCount = 14},
 	{id = 3102, chance = 150, maxCount = 1},
-	{id = 12669, chance = 150 },
+	-- {id = 12669, chance = 150 },
 	-- {id = 35909, chance = 250, maxCount = 1},
 	{ id = 39136, chance = 5000 }, -- perdao real
 	-- { name = "primal bag", chance = 250, unique = true },

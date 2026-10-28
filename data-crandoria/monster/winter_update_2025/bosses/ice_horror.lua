@@ -19,10 +19,10 @@ monster.bosstiary = {
 	storageCooldown = 82072, -- não confirmado
 }
 
-monster.health = 550000
-monster.maxHealth = 550000
+monster.health = 600000
+monster.maxHealth = 600000
 monster.race = "undead"
-monster.corpse = 44830 -- não confirmado
+monster.corpse = 52126 -- não confirmado
 monster.speed = 180
 monster.manaCost = 0
 
@@ -66,7 +66,7 @@ monster.light = {
 monster.summon = {
 	maxSummons = 4, -- não confirmado
 	summons = {
-		{ name = "Ice Blockade", chance = 15, interval = 4000, count = 2 }, -- não confirmado
+		-- { name = "Ice Blockade", chance = 15, interval = 4000, count = 2 }, -- não confirmado
 		{ name = "Ice Crawler", chance = 12, interval = 5000, count = 2 }, -- não confirmado
 	},
 }
@@ -81,8 +81,8 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "crystal coin", chance = 100000, maxCount = 51 },
-	{ name = "yellow gem", chance = 50000, maxCount = 10 }, -- não confirmado
+	{ name = "crystal coin", chance = 100000, maxCount = 33 },
+	{ name = "yellow gem", chance = 50000, maxCount = 8 }, -- não confirmado
 	{ name = "strong mana potion", chance = 50000, maxCount = 95 }, -- não confirmado
 	{ id = 238, chance = 50000, maxCount = 69 }, -- great mana potion -- não confirmado
 	{ name = "great spirit potion", chance = 50000, maxCount = 53 }, -- não confirmado
@@ -92,9 +92,9 @@ monster.loot = {
 	{ name = "supreme health potion", chance = 41670, maxCount = 15 }, -- não confirmado
 	{ name = "blue gem", chance = 25000, maxCount = 3 }, -- não confirmado
 	{ id = 3039, chance = 25000, maxCount = 7 }, -- red gem (não confirmado)
-	{ name = "giant ruby", chance = 10000, maxCount = 2 }, -- não confirmado
-	{ name = "giant emerald", chance = 10000 }, -- não confirmado
-	{ name = "giant sapphire", chance = 10000, maxCount = 3 }, -- não confirmado
+	{ name = "giant ruby", chance = 5000, maxCount = 2 }, -- não confirmado
+	{ name = "giant emerald", chance = 5000 }, -- não confirmado
+	{ name = "giant sapphire", chance = 5000, maxCount = 3 }, -- não confirmado
 	{ name = "guardian gem", chance = 5000 }, -- não confirmado
 	{ name = "marksman gem", chance = 5000 }, -- não confirmado
 	{ name = "mystic gem", chance = 5000 }, -- não confirmado
@@ -114,13 +114,13 @@ monster.loot = {
 	{ name = "glacier mask", chance = 5000 }, -- não confirmado
 	{ name = "glacial rod", chance = 5000 }, -- não confirmado
 	{ name = "ice rapier", chance = 5000 },
-	{ name = "cryptic fossil", chance = 5000 }, -- não confirmado
-	{ name = "fetid heart", chance = 5000 }, -- não confirmado
+	-- { name = "cryptic fossil", chance = 5000 }, -- não confirmado
+	-- { name = "fetid heart", chance = 5000 }, -- não confirmado
 	{ name = "frozen crapace", chance = 5000 },
 	{ id = 52729, chance = 3000 }, -- frozen claw (não confirmado)
 	{ name = "icy scales", chance = 5000 },
-	{ name = "icy horns", chance = 5000 },
-	{ name = "icy crypt rune", chance = 100000 },
+	{ name = "icy horns", chance = 2500 },
+	{ name = "icy crypt rune", chance = 300 },
 }
 
 monster.attacks = {
@@ -138,20 +138,20 @@ monster.defenses = {
 	defense = 92, -- não confirmado
 	armor = 92, -- não confirmado
 	mitigation = 3.00, -- não confirmado
-	{ name = "combat", interval = 2500, chance = 18, type = COMBAT_HEALING, minDamage = 1200, maxDamage = 2500, effect = CONST_ME_MAGIC_BLUE, target = false }, -- não confirmado
+	-- { name = "combat", interval = 2500, chance = 18, type = COMBAT_HEALING, minDamage = 1200, maxDamage = 2500, effect = CONST_ME_MAGIC_BLUE, target = false }, -- não confirmado
 }
 
 monster.elements = {
-	{ type = COMBAT_PHYSICALDAMAGE, percent = 0 },
-	{ type = COMBAT_ENERGYDAMAGE, percent = 0 },
-	{ type = COMBAT_EARTHDAMAGE, percent = 0 },
-	{ type = COMBAT_FIREDAMAGE, percent = 0 },
+	{ type = COMBAT_PHYSICALDAMAGE, percent = 25 },
+	{ type = COMBAT_ENERGYDAMAGE, percent = 25 },
+	{ type = COMBAT_EARTHDAMAGE, percent = 25 },
+	{ type = COMBAT_FIREDAMAGE, percent = 25 },
 	{ type = COMBAT_LIFEDRAIN, percent = 0 }, -- não confirmado
 	{ type = COMBAT_MANADRAIN, percent = 0 }, -- não confirmado
 	{ type = COMBAT_DROWNDAMAGE, percent = 0 }, -- não confirmado
 	{ type = COMBAT_ICEDAMAGE, percent = 100 },
-	{ type = COMBAT_HOLYDAMAGE, percent = 0 },
-	{ type = COMBAT_DEATHDAMAGE, percent = 0 },
+	{ type = COMBAT_HOLYDAMAGE, percent = 25 },
+	{ type = COMBAT_DEATHDAMAGE, percent = 40 },
 }
 
 monster.immunities = {

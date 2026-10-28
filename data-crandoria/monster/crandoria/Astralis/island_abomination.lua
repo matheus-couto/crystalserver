@@ -99,7 +99,7 @@ monster.loot = {
 	{ id = 36938, chance = 300, maxCount = 1 },
 	{ id = 22724, chance = 1000000, minCount = 1, maxCount = 3 },
 	{id = 22721, chance = 100000, minCount = 1, maxCount = 3},
-	{id = 12669, chance = 150 },
+	-- {id = 12669, chance = 150 },
 }
 
 monster.summon = {

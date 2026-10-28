@@ -23,6 +23,11 @@ monster.strategiesTarget = {
 	nearest = 100, -- não confirmado
 }
 
+monster.events = {
+	"soulcageLifeChange",
+	"soulcageDeath"
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -31,8 +36,8 @@ monster.flags = {
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
-	canPushItems = false,
-	canPushCreatures = false,
+	canPushItems = true,
+	canPushCreatures = true,
 	staticAttackChance = 90, -- não confirmado
 	targetDistance = 1, -- não confirmado
 	runHealth = 0, -- não confirmado
@@ -50,10 +55,19 @@ monster.light = {
 
 monster.loot = {}
 
+monster.summon = {
+	maxSummons = 1,
+	summons = {
+		{ name = "Zharvorin's Spirit", chance = 100, interval = 2000, count = 1 },
+	},
+}
+
 -- Ice Explosion (700+), Ice Chain (700+)
 monster.attacks = {
-	{ name = "combat", interval = 2000, chance = 30, type = COMBAT_ICEDAMAGE, minDamage = -700, maxDamage = -1200, length = 8, spread = 3, effect = CONST_ME_ICEATTACK, target = false }, -- não confirmado
-	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_ICEDAMAGE, minDamage = -700, maxDamage = -1000, radius = 4, effect = CONST_ME_ICEAREA, target = false }, -- não confirmado
+	{ name = "soulcage spell", interval = 2000, chance = 20, range = 10 },
+	{ name = "soulcage mechanic", interval = 2000, chance = 5, range = 10 },
+	{name ="ice chain", interval = 2000, chance = 20, minDamage = -900, maxDamage = -1100, range = 7},
+	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_ICEDAMAGE, minDamage = -600, maxDamage = -900, radius = 4, effect = CONST_ME_ICEAREA, target = false },
 }
 
 monster.defenses = {

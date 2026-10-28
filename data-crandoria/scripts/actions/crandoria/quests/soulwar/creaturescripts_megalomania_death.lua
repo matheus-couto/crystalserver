@@ -23,8 +23,8 @@ function event.onDeath(creature, corpse, killer, mostDamage, unjustified, mostDa
 				player:addOutfit(1323, 0)
 				player:setStorageValue(Storage.Quest.Crandoria.SoulWar.Outfit, 1)
 			end
-			if player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 157 then
-				player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 158)
+			if player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 196 then
+				player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 197)
 				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce derrotou Goshnar's Megalomania. Reporte sua missao para o Comandante Crassus.")
 			end
 			if player:getStorageValue(Storage.Quest.Crandoria.TheRedPath.Outfit) == 5 then

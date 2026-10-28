@@ -2,7 +2,7 @@ local mType = Game.createMonsterType("Dawnfire Asura")
 local monster = {}
 
 monster.description = "a dawnfire asura"
-monster.experience = 4100
+monster.experience = 3700
 monster.outfit = {
 	lookType = 150,
 	lookHead = 114,
@@ -34,11 +34,23 @@ monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
+	interval = 3000,
+	chance = 35,
+}
+
+monster.changeTarget2 = {
 	interval = 4000,
 	chance = 10,
 }
 
 monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	random = 10,
+	damage = 10,
+}
+
+monster.strategiesTarget2 = {
 	nearest = 70,
 	health = 10,
 	damage = 10,
@@ -79,6 +91,8 @@ monster.voices = {
 }
 
 monster.loot = {
+	-- -- { id = 3250, chance = 1975, maxCount = 1 },
+	-- { id = 3250, chance = 900, maxCount = 1 },
 	{ id = 3031, chance = 69190, maxCount = 100 }, -- gold coin
 	{ id = 3035, chance = 84140, maxCount = 9 }, -- platinum coin
 	{ id = 6558, chance = 20910, maxCount = 2 }, -- flask of demonic blood
@@ -107,10 +121,12 @@ monster.loot = {
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -269 },
-	{ name = "combat", interval = 3700, chance = 17, type = COMBAT_LIFEDRAIN, minDamage = -100, maxDamage = -300, length = 8, spread = 0, effect = CONST_ME_PURPLEENERGY, target = false },
-	{ name = "combat", interval = 3200, chance = 25, type = COMBAT_DEATHDAMAGE, minDamage = -100, maxDamage = -350, radius = 4, range = 5, target = true, effect = CONST_ME_MORTAREA },
-	{ name = "combat", interval = 2700, chance = 20, type = COMBAT_FIREDAMAGE, minDamage = -95, maxDamage = -180, range = 3, shootEffect = CONST_ANI_FIRE, target = true },
-	{ name = "speed", interval = 2000, chance = 20, speedChange = -800, radius = 1, shootEffect = CONST_ANI_EXPLOSION, effect = CONST_ME_SLEEP, target = true, duration = 15000 },
+	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_MANADRAIN, minDamage = 0, maxDamage = -200, range = 7, target = false },
+	{ name = "firefield", interval = 2000, chance = 10, range = 7, radius = 1, shootEffect = CONST_ANI_FIRE, target = true },
+	{ name = "combat", interval = 2000, chance = 12, type = COMBAT_DEATHDAMAGE, minDamage = -40, maxDamage = -280, range = 5, shootEffect = CONST_ANI_SUDDENDEATH, effect = CONST_ME_MORTAREA, target = true },
+	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_LIFEDRAIN, minDamage = -50, maxDamage = -200, length = 8, spread = 3, effect = CONST_ME_PURPLEENERGY, target = false },
+	{ name = "energy strike", interval = 2000, chance = 10, minDamage = -10, maxDamage = -100, range = 1, target = false },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -100, radius = 1, effect = CONST_ME_MAGIC_RED, target = true, duration = 30000 },
 }
 
 monster.defenses = {

@@ -84,8 +84,8 @@ local function creatureSayCallback(npc, creature, type, message)
                 player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 1)
                 player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
                 npcHandler:setTopic(playerId, 0)
-                if player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 160 then
-                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 161)
+                if player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 199 then
+                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 200)
                 end
             end
         elseif player:getStorageValue(Storage.Quest.Crandoria.BloodPassageQuest.Timer) > os.time() then
@@ -95,8 +95,8 @@ local function creatureSayCallback(npc, creature, type, message)
             elseif player:getStorageValue(Storage.Quest.Crandoria.BloodPassageQuest.SecondTask) == 2 then
                 npcHandler:say("Muito bom, vejo que conseguiu destruir uma das flores de sangue. Posso sentir a forca dos demonios infernais diminuindo. Sobre a sua recompensa... \z
                 Tenho varias coisas no meu bau, aqui ao lado. Abra-o e peque o primeiro item que voce enxergar. Sera todo seu. ", npc, creature)
-                if player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 161 then
-                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 162)
+                if player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 200 then
+                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 201)
                 end
                 player:setStorageValue(Storage.Quest.Crandoria.BloodPassageQuest.SecondTask, 3)
                 local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)

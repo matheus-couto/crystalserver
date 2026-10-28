@@ -107,6 +107,29 @@ function fluid.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		end
 		return true
 	end
+	
+	if item.itemid == 2873 and target.itemid == 31967 and target.actionid == 100 then
+		local storageVirtude = player:getStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso)
+		local storageVirtudeCount = player:getStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Count)
+		if storageVirtude == 15 then
+			if storageVirtudeCount < 10 then
+				target:remove()
+				player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Count, storageVirtudeCount + 1)
+				player:sendTextMessage(MESSAGE_FAILURE, "Voce coletou um pouco de sujeira.")
+				return true
+			elseif storageVirtudeCount >= 10 and storageVirtudeCount < 19 then
+				target:remove()
+				player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Count, storageVirtudeCount + 1)
+				player:sendTextMessage(MESSAGE_FAILURE, "Voce coletou uma boa quantidade de sujeira.")
+				return true
+			else
+				target:remove()
+				player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Count, storageVirtudeCount + 1)
+				player:sendTextMessage(MESSAGE_FAILURE, "Voce ja coletou mais que o suficiente.")
+				return true
+			end
+		end
+	end
 
 	if targetType:isFluidContainer() then
 		if target.type == 0 and item.type ~= 0 then

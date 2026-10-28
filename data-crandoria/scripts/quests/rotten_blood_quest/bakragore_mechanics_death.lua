@@ -42,6 +42,18 @@ function bakragoreDeath.onDeath(creature, corpse, killer, mostDamageKiller, last
 		else
 			logger.debug("No special bag added with {} essences (chance: {}%, roll: {})", essenceCount, chancePerBag, roll)
 		end
+
+		local damageMap = creature:getMonster():getDamageMap()
+		for key, _ in pairs(damageMap) do
+			local player = Player(key)
+			if player then
+				if player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 230 then
+					player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 231)
+					player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce derrotou Bakragore para o Comandante Crassus. Reporte sua missao.")
+				end
+			end
+		end
+
 	end
 
 	cleanupBakragore()

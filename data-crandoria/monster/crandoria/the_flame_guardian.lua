@@ -106,13 +106,12 @@ monster.loot = {
 	{id = 23533, chance = 5040}, -- ring of red plasma
 	{id = 23544, chance = 10070}, -- collar of red plasma
 	{id = 22721, chance = 100000, minCount = 1, maxCount = 3},
-	{id = 12669, chance = 150 },
+	-- {id = 12669, chance = 150 },
 	-- {id = 35909, chance = 50, maxCount = 1},
 	-- {id = 5924, chance = 50, maxCount = 1},
 	{ id = 39136, chance = 5000 }, -- perdao real
 	{ id = 8053, chance = 5000 }, -- fireborn armor
 	{ id = 12811, chance = 50 },
-	{ id = 19149, chance = 200 },
 	
 }
 

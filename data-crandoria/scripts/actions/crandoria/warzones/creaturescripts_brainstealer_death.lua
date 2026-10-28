@@ -17,6 +17,11 @@ function theBrainstealerDeath.onPrepareDeath(creature)
 			local storageRep = specCreature:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
 			specCreature:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 3)
 			specCreature:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+			local storage = specCreature:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso)
+			if storage == 180 then
+				specCreature:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 181)
+				specCreature:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce derrotou o boss para Kalahar. Reporte sua missao.")
+			end
 		end
 	end
 

@@ -14,7 +14,7 @@ monster.outfit = {
 }
 
 monster.events = {
-	"RottenBloodBossDeath",
+	-- "RottenBloodBossDeath",
 	"ChagorzMechanicsDeath",
 }
 

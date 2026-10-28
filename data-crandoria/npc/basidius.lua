@@ -49,7 +49,7 @@ local function creatureSayCallback(npc, creature, type, message)
         return false
     end
 
-    local experiencia = (player:getLevel() * 250) * (player:getLevel() / 15)
+    local experiencia = (player:getLevel() * 500) * (player:getLevel() / 15)
     -- if player:getLevel() > 800 then
     --     experiencia = (player:getLevel() * 1000) * (player:getLevel() / 15)
     -- end

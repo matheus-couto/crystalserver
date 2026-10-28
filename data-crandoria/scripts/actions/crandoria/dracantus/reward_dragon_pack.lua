@@ -76,8 +76,12 @@ function rewardDragonPack.onUse(player, item, fromPosition, target, toPosition, 
 
 	local container = player:addItem(2867, 1)
 	if container then
-		player:setStorageValue(Storage.Quest.Crandoria.TwentyYearsCook.Reward, os.time() + 24 * 60 * 59)
-		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu uma Red Backpack com sua recompensa.")
+		player:setStorageValue(Storage.Quest.Crandoria.TwentyYearsCook.Reward, os.time() + 20 * 60 * 59)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu uma Backpack com sua recompensa.")
+		if  player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 186 then
+			player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 187)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce derrotou o Dragon Pack para Kalahar.")
+		end
 		generateDragonPackLoot(container)
 		return true
 	else

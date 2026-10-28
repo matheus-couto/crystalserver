@@ -64,7 +64,7 @@ function oberonLever.onUse(creature, item, fromPosition, target, toPosition, isH
 			player:getPosition():sendMagicEffect(CONST_ME_POFF)
 			player:teleportTo(Position(setting.playerTeleport), false)
 			doSendMagicEffect(player:getPosition(), CONST_ME_TELEPORT)
-			player:setStorageValue(Storage.Quest.U11_80.TheSecretLibrary.FalconBastion.OberonTimer, os.time() + 20 * 60)
+			-- player:setStorageValue(Storage.Quest.U11_80.TheSecretLibrary.FalconBastion.OberonTimer, os.time() + 20 * 60 * 60)
 			player:setStorageValue(Storage.Quest.U11_80.TheSecretLibrary.FalconBastion.ChestsTimer.OberonCrandoriaTimer, os.time() + 20 * 60 * 60)
 			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'You have 20 minute(s) to defeat the boss.')
 			addEvent(function(cid)

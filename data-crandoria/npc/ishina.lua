@@ -1,4 +1,4 @@
-﻿local internalNpcName = "Ishina"
+local internalNpcName = "Ishina"
 local npcType = Game.createNpcType(internalNpcName)
 local npcConfig = {}
 
@@ -58,6 +58,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	local storageVirtude = player:getStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso)
 
 	if MsgContains(message, 'outfit') then
 		if player:getSex() == PLAYERSEX_MALE then
@@ -89,6 +90,13 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, 0)
 		else
 			npcHandler:say('Cada um com seus brinquedos. Fique com suas armas e armaduras e eu ficarei com meus cristais!', npc, creature)
+			npcHandler:setTopic(playerId, 0)
+		end
+	elseif MsgContains(message, 'missao') or MsgContains(message, 'mission') or MsgContains(message, 'heart') then
+		if storageVirtude == 17 then
+			npcHandler:say('Ah, esta aqui por causa do Writhing Heart? Bom, eu preciso muito de um deles para minha colecao. Estou colecionando artefatos raros ha muitos anos. \z
+			O Writing Heart deixara minha colecao quase completa e poderei finalmente expor meus itens numa sala especial em Valkesh. Nao acha que seria sensacional? \z
+			Enfim, sei que muitos estao em busca dele, mas sigo na esperanca de obter um em breve!', npc, creature)
 			npcHandler:setTopic(playerId, 0)
 		end
 	elseif MsgContains(message, 'sim') or MsgContains(message, 'yes') then

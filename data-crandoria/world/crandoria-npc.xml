@@ -1306,9 +1306,6 @@
 	<npc centerx="4261" centery="5205" centerz="7" radius="1">
 		<npc name="Gregor" x="0" y="0" z="7" spawntime="60" />
 	</npc>
-	<npc centerx="4928" centery="5209" centerz="7" radius="1">
-		<npc name="Gregor" x="0" y="0" z="7" spawntime="60" />
-	</npc>
 	<npc centerx="4734" centery="5214" centerz="7" radius="1">
 		<npc name="Avar Tar" x="0" y="0" z="7" spawntime="60" />
 	</npc>
@@ -1342,38 +1339,14 @@
 	<npc centerx="4240" centery="5249" centerz="7" radius="1">
 		<npc name="Jessica" x="0" y="0" z="7" spawntime="60" direction="2" />
 	</npc>
-	<npc centerx="4914" centery="5251" centerz="7" radius="1">
-		<npc name="Rock In A Hard Place" x="0" y="0" z="7" spawntime="60" />
-	</npc>
-	<npc centerx="4924" centery="5251" centerz="7" radius="1">
-		<npc name="Rashid" x="0" y="0" z="7" spawntime="60" direction="3" />
-	</npc>
 	<npc centerx="4189" centery="5258" centerz="7" radius="1">
 		<npc name="Smuggler Rose" x="0" y="0" z="7" spawntime="60" />
-	</npc>
-	<npc centerx="4915" centery="5258" centerz="7" radius="1">
-		<npc name="Yaman" x="0" y="0" z="7" spawntime="60" direction="1" />
-	</npc>
-	<npc centerx="4924" centery="5258" centerz="7" radius="1">
-		<npc name="Nah'Bob" x="0" y="0" z="7" spawntime="60" direction="3" />
 	</npc>
 	<npc centerx="6127" centery="5260" centerz="7" radius="1">
 		<npc name="Frigard" x="0" y="0" z="7" spawntime="60" />
 	</npc>
-	<npc centerx="4915" centery="5265" centerz="7" radius="1">
-		<npc name="Yasir" x="0" y="0" z="7" spawntime="60" direction="1" />
-	</npc>
-	<npc centerx="4924" centery="5265" centerz="7" radius="1">
-		<npc name="Esrik" x="0" y="0" z="7" spawntime="60" direction="3" />
-	</npc>
 	<npc centerx="4321" centery="5271" centerz="7" radius="1">
 		<npc name="Guard" x="0" y="0" z="7" spawntime="60" direction="1" />
-	</npc>
-	<npc centerx="4915" centery="5272" centerz="7" radius="1">
-		<npc name="Alesar" x="0" y="0" z="7" spawntime="60" direction="1" />
-	</npc>
-	<npc centerx="4924" centery="5272" centerz="7" radius="1">
-		<npc name="Lailene" x="0" y="0" z="7" spawntime="60" direction="3" />
 	</npc>
 	<npc centerx="4194" centery="5274" centerz="7" radius="1">
 		<npc name="Vincent" x="0" y="0" z="7" spawntime="60" direction="2" />
@@ -1620,6 +1593,9 @@
 	</npc>
 	<npc centerx="4646" centery="5856" centerz="7" radius="1">
 		<npc name="Vincent" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="4455" centery="6085" centerz="7" radius="1">
+		<npc name="Gundralph" x="0" y="0" z="7" spawntime="60" />
 	</npc>
 	<npc centerx="32614" centery="32266" centerz="7" radius="1">
 		<npc name="A Weakened Forest Fury" x="0" y="0" z="7" spawntime="60" />

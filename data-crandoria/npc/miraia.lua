@@ -52,15 +52,58 @@ end
 
 local topic = {}
 
+-- local config = {
+-- 	['ape fur'] = {
+-- 		itemId = 5883,
+-- 		count = 100,
+-- 		storageValue = 1,
+-- 		text = {
+-- 			'Have you really managed to fulfil the task and brought me 100 pieces of ape fur?',
+-- 			'Only ape fur is good enough to touch the feet of our Caliph.',
+-- 			'Ahhh, this softness! I\'m impressed, |PLAYERNAME|. You\'re on the best way to earn that turban. Now, please retrieve 100 fish fins.'
+-- 		}
+-- 	},
+-- 	['fish fins'] = {
+-- 		itemId = 5895,
+-- 		count = 100,
+-- 		storageValue = 2,
+-- 		text = {
+-- 			'Were you able to discover the undersea race and retrieved 100 fish fins?',
+-- 			'I really wonder what the explorer society is up to. Actually I have no idea how they managed to dive unterwater.',
+-- 			'I never thought you\'d make it, |PLAYERNAME|. Now we only need two enchanted chicken wings to start our waterwalking test!'
+-- 		}
+-- 	},
+-- 	['enchanted chicken wings'] = {
+-- 		itemId = 5891,
+-- 		count = 2,
+-- 		storageValue = 3,
+-- 		text = {
+-- 			'Were you able to get hold of two enchanted chicken wings?',
+-- 			'Enchanted chicken wings are actually used to make boots of haste, so they could be magically extracted again. Djinns are said to be good at that.',
+-- 			'Great, thank you very much. Just bring me 100 pieces of blue cloth now and I will happily show you how to make a turban.'
+-- 		}
+-- 	},
+-- 	['blue cloth'] = {
+-- 		itemId = 5912,
+-- 		count = 100,
+-- 		storageValue = 4,
+-- 		text = {
+-- 			'Ah, have you brought the 100 pieces of blue cloth?',
+-- 			'It\'s a great material for turbans.',
+-- 			'Ah! Congratulations - I hope this veil will turn out as beautiful as you are. Here, I\'ll do it for you.'
+-- 		}
+-- 	}
+-- }
+
 local config = {
 	['ape fur'] = {
 		itemId = 5883,
 		count = 100,
 		storageValue = 1,
 		text = {
-			'Have you really managed to fulfil the task and brought me 100 pieces of ape fur?',
-			'Only ape fur is good enough to touch the feet of our Caliph.',
-			'Ahhh, this softness! I\'m impressed, |PLAYERNAME|. You\'re on the best way to earn that turban. Now, please retrieve 100 fish fins.'
+			'Voce realmente conseguiu cumprir a tarefa e trouxe 100 unidades de ape fur?',
+			'Somente pelos de macaco sao dignos de tocar os pes do nosso Califa.',
+			'Ahhh, que maciez! Estou impressionado, |PLAYERNAME|. Voce esta no caminho certo para conquistar esse turbante. Agora, por favor, traga 100 barbatanas de peixe.'
 		}
 	},
 	['fish fins'] = {
@@ -68,9 +111,9 @@ local config = {
 		count = 100,
 		storageValue = 2,
 		text = {
-			'Were you able to discover the undersea race and retrieved 100 fish fins?',
-			'I really wonder what the explorer society is up to. Actually I have no idea how they managed to dive unterwater.',
-			'I never thought you\'d make it, |PLAYERNAME|. Now we only need two enchanted chicken wings to start our waterwalking test!'
+			'Voce conseguiu descobrir a raca submarina e trazer 100 fish fins?',
+			'Eu realmente me pergunto o que a sociedade de exploradores esta fazendo. Na verdade, nao faco ideia de como eles conseguiram mergulhar debaixo d\'agua.',
+			'Nunca pensei que voce conseguiria, |PLAYERNAME|. Agora so precisamos de duas asas de galinha encantadas para comecar nosso teste de caminhar sobre a agua!'
 		}
 	},
 	['enchanted chicken wings'] = {
@@ -78,9 +121,9 @@ local config = {
 		count = 2,
 		storageValue = 3,
 		text = {
-			'Were you able to get hold of two enchanted chicken wings?',
-			'Enchanted chicken wings are actually used to make boots of haste, so they could be magically extracted again. Djinns are said to be good at that.',
-			'Great, thank you very much. Just bring me 100 pieces of blue cloth now and I will happily show you how to make a turban.'
+			'Voce conseguiu obter duas enchanted chicken wings?',
+			'Enchanted chicken wings sao usadas para fabricar botas de velocidade, entao sua magia pode ser extraida novamente. Dizem que os djinns sao bons nisso.',
+			'Excelente, muito obrigado. Agora traga 100 pedacos de tecido azul e terei prazer em lhe mostrar como fazer um turbante.'
 		}
 	},
 	['blue cloth'] = {
@@ -88,9 +131,9 @@ local config = {
 		count = 100,
 		storageValue = 4,
 		text = {
-			'Ah, have you brought the 100 pieces of blue cloth?',
-			'It\'s a great material for turbans.',
-			'Ah! Congratulations - I hope this veil will turn out as beautiful as you are. Here, I\'ll do it for you.'
+			'Ah, voce trouxe os 100 blue pieces of cloth?',
+			'E um excelente material para turbantes.',
+			'Ah! Parabens! Espero que este veu fique tao bonito quanto voce. Aqui, vou faze-lo para voce.'
 		}
 	}
 }
@@ -103,15 +146,17 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	local storageVirtude = player:getStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso)
+
 	if MsgContains(message, 'outfit') then
-		npcHandler:say(player:getSex() == PLAYERSEX_FEMALE and 'Hehe, would you like to wear a pretty veil like I do? Well... I could help you, but you would have to complete a task first.' or 'My veil? No, I will definitely not lift it for you! If you are looking for an addon, go talk to Razan.', npc, creature)
+		npcHandler:say(player:getSex() == PLAYERSEX_FEMALE and 'Hehe, gostaria de usar um veu bonito como o meu? Bom... eu poderia te ajudar com isso, mas voce precisaria cumprir uma task para mim antes.' or 'Nao, definitivalemte nao. Se quiser um addon, va falar com Razan.', npc, creature)
 	elseif MsgContains(message, 'task') then
 		if player:getSex() == PLAYERSEX_MALE then
-			npcHandler:say('Uh... I don\'t think that I have work for you right now. If you need a job, go talk to Razan.', npc, creature)
+			npcHandler:say('Nao tenho nenhum trabalho pra voce no momento...', npc, creature)
 			return true
 		end
 		if player:getStorageValue(Storage.Quest.U7_8.OutfitQuest.SecondOrientalAddon) < 1 then
-			npcHandler:say('You mean, you would like to prove that you deserve to wear such a veil?', npc, creature)
+			npcHandler:say('Voce gostaria de provar que merece usar tal adorno?', npc, creature)
 			npcHandler:setTopic(playerId, 1)
 		end
 	elseif config[message] and npcHandler:getTopic(playerId) == 0 then
@@ -122,22 +167,29 @@ local function creatureSayCallback(npc, creature, type, message)
 		else
 			npcHandler:say(config[message].text[2], npc, creature)
 		end
-	elseif MsgContains(message, 'scarab cheese') then
-		if player:getStorageValue(Storage.Quest.U8_1.TheTravellingTrader.Mission03) == 1 then
-			npcHandler:say('Let me cover my nose before I get this for you... Would you REALLY like to buy scarab cheese for 100 gold?', npc, creature)
-		elseif player:getStorageValue(Storage.Quest.U8_1.TheTravellingTrader.Mission03) == 2 then
-			npcHandler:say('Oh the last cheese molded? Would you like to buy another one for 100 gold?', npc, creature)
+	elseif MsgContains(message, 'missao') or MsgContains(message, 'mission') or MsgContains(message, 'heart') then
+		if storageVirtude == 17 then
+			npcHandler:say('UM WRITHING HEART? Por favor, me diga que voce tem um. Eu preciso muito dele para dar de presente para alguem... \z
+			Sabe, Kaleb precisa muito de um desses para que possa ajudar sua familia e disse que dara um desconto vitalicio em dromedarios para quem ajuda-lo. \z
+			Como minha familia cria dromedarios eu vou ganhar muito com isso e, claro, ele ficara muito feliz. Nao acha uma boa causa? Eu acho que realmente mereco o Writhing Heart.', npc, creature)
+			npcHandler:setTopic(playerId, 0)
 		end
-		npcHandler:setTopic(playerId, 4)
-	elseif MsgContains(message, 'yes') then
+	-- elseif MsgContains(message, 'scarab cheese') then
+	-- 	if player:getStorageValue(Storage.Quest.U8_1.TheTravellingTrader.Mission03) == 1 then
+	-- 		npcHandler:say('Let me cover my nose before I get this for you... Would you REALLY like to buy scarab cheese for 100 gold?', npc, creature)
+	-- 	elseif player:getStorageValue(Storage.Quest.U8_1.TheTravellingTrader.Mission03) == 2 then
+	-- 		npcHandler:say('Oh the last cheese molded? Would you like to buy another one for 100 gold?', npc, creature)
+	-- 	end
+	-- 	npcHandler:setTopic(playerId, 4)
+	elseif MsgContains(message, 'yes') or MsgContains(message, 'sim') then
 		if npcHandler:getTopic(playerId) == 1 then
 			npcHandler:say({
-				'Alright, then listen to the following requirements. We are currently in dire need of ape fur since the Caliph has requested a new bathroom carpet. ...',
-				'Thus, please bring me 100 pieces of ape fur. Secondly, it came to our ears that the explorer society has discovered a new undersea race of fishmen. ...',
-				'Their fins are said to allow humans to walk on water! Please bring us 100 of these fish fin. ...',
-				'Third, if the plan of walking on water should fail, we need enchanted chicken wings to prevent the testers from drowning. Please bring me two. ...',
-				'Last but not least, just drop by with 100 pieces of blue cloth and I will happily show you how to make a turban. ...',
-				'Did you understand everything I told you and are willing to handle this task?'
+				'Muito bem, entao preste atencao aos seguintes requisitos. Estamos precisando urgentemente de ape fur, ja que o Califa pediu um tapete novo para o banheiro...',
+				'Portanto, traga-me 100 unidades de Ape Fur. Em segundo lugar, chegou aos nossos ouvidos que a sociedade de exploradores descobriu uma nova raca submarina de homens-peixe...',
+				'Dizem que as nadadeiras deles permitem que humanos caminhem sobre a água! Por favor, traga-nos 100 dessas nadadeiras (Fish Fin)...',
+				'Em terceiro lugar, caso o plano de caminhar sobre a agua falhe, precisaremos de Enchanted Chicken Wings para evitar que os testadores se afoguem. Traga-me duas, por favor...',
+				'Por fim, mas nao menos importante, basta aparecer com 100 Blue Pieces of Cloth, e terei o prazer de lhe ensinar como fazer um turbante...',
+				'Voce entendeu tudo o que eu disse e esta disposto a realizar esta tarefa?'
 			}, npc, creature)
 			npcHandler:setTopic(playerId, 2)
 		elseif npcHandler:getTopic(playerId) == 2 then
@@ -145,12 +197,12 @@ local function creatureSayCallback(npc, creature, type, message)
 				player:setStorageValue(Storage.Quest.U7_8.OutfitQuest.DefaultStart, 1)
 			end
 			player:setStorageValue(Storage.Quest.U7_8.OutfitQuest.SecondOrientalAddon, 1)
-			npcHandler:say('Excellent! Come back to me once you have collected 100 pieces of ape fur.', npc, creature)
+			npcHandler:say('Excelente! Retorne quando tiver coletado 100 unidades de pelo (fur).', npc, creature)
 			npcHandler:setTopic(playerId, 0)
 		elseif npcHandler:getTopic(playerId) == 3 then
 			local targetMessage = config[topic[playerId]]
 			if not player:removeItem(targetMessage.itemId, targetMessage.count) then
-				npcHandler:say('That is a shameless lie.', npc, creature)
+				npcHandler:say('Que mentira deslavada!', npc, creature)
 				npcHandler:setTopic(playerId, 0)
 				return true
 			end
@@ -167,14 +219,14 @@ local function creatureSayCallback(npc, creature, type, message)
 				player:setStorageValue(Storage.Quest.U8_1.TheTravellingTrader.Mission03, 2)
 				player:addItem(169, 1)
 				player:removeMoneyBank(100)
-				npcHandler:say('Here it is.', npc, creature)
+				npcHandler:say('Aqui esta.', npc, creature)
 			else
-				npcHandler:say('You don\'t have enough money.', npc, creature)
+				npcHandler:say('Voce nao tem dinheiro o suficiente.', npc, creature)
 			end
 			npcHandler:setTopic(playerId, 0)
 		end
-	elseif MsgContains(message, 'no') and npcHandler:getTopic(playerId) ~= 0 then
-		npcHandler:say('What a pity.', npc, creature)
+	elseif (MsgContains(message, 'no') or MsgContains(message, 'nao')) and npcHandler:getTopic(playerId) ~= 0 then
+		npcHandler:say('Que pena.', npc, creature)
 		npcHandler:setTopic(playerId, 0)
 	end
 	return true

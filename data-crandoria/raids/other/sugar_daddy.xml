@@ -2,5 +2,5 @@
 <raid>
 	<announce delay="1000" type="event" message="Sugar Daddy esta vagando nas profundezas de Candia!" />
 	<!--Single Spawns-->
-	<singlespawn delay="1000" name="Suggar Daddy" x="4879" y="4274" z="8" />
+	<singlespawn delay="1000" name="Sugar Daddy" x="4879" y="4274" z="8" />
 </raid>

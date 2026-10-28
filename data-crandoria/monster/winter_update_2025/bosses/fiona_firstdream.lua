@@ -12,11 +12,15 @@ monster.outfit = {
 	lookAddons = 3,
 }
 
+monster.events = {
+	"adventurerGroupDeath",
+}
+
 monster.health = 155000
 monster.maxHealth = 155000
 monster.race = "blood"
 monster.corpse = 6081
-monster.speed = 125
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -77,9 +81,10 @@ monster.loot = {}
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -350 }, -- não confirmado
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_ENERGYDAMAGE, minDamage = -400, maxDamage = -650, range = 7, shootEffect = CONST_ANI_ENERGY, effect = CONST_ME_ENERGYHIT, target = true }, -- não confirmado
-	{ name = "combat", interval = 2500, chance = 18, type = COMBAT_ICEDAMAGE, minDamage = -350, maxDamage = -600, length = 6, spread = 3, effect = CONST_ME_ICEATTACK, target = false }, -- não confirmado
+	{ name = "combat", interval = 2500, chance = 18, type = COMBAT_FIREDAMAGE, minDamage = -350, maxDamage = -600, length = 6, spread = 3, effect = CONST_ME_FIREAREA, target = false }, -- não confirmado
 	{ name = "combat", interval = 3000, chance = 15, type = COMBAT_ENERGYDAMAGE, minDamage = -500, maxDamage = -800, radius = 4, effect = CONST_ME_ENERGYAREA, target = false }, -- não confirmado
-	{ name = "combat", interval = 2000, chance = 12, type = COMBAT_ICEDAMAGE, minDamage = -300, maxDamage = -550, range = 7, shootEffect = CONST_ANI_ICE, effect = CONST_ME_ICEAREA, target = true }, -- não confirmado
+	{ name = "combat", interval = 2000, chance = 12, type = COMBAT_FIREDAMAGE, minDamage = -300, maxDamage = -550, range = 7, shootEffect = CONST_ANI_FIRE, effect = CONST_ME_FIREAREA, target = true }, -- não confirmado
+	{ name = "adventurer change", interval = 5000, chance = 100, range = 8 },
 }
 
 monster.defenses = {

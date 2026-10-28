@@ -71,6 +71,7 @@
 	<raid name="Scarab" file="valkesh/scarab.xml" interval2="500" margin="120" />
 	<raid name="Dragons" file="valkesh/dragons.xml" interval2="500" margin="120" />
 	<raid name="Undead Valkesh" file="valkesh/undead.xml" interval2="1440" margin="120" />
+	<raid name="Trio Asuras" file="valkesh/trio_asuras.xml" interval2="500" margin="120" />
 	<!-- Other -->
 	<raid name="Gryphon" file="other/gryphon.xml" interval2="1440" margin="120" />
 	<raid name="Water Buffalo" file="other/water_buffalos.xml" interval2="1440" margin="120" />

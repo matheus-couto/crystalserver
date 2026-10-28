@@ -98,8 +98,8 @@ monster.loot = {
 	{ name = "ultimate health potion", chance = 100000, maxCount = 38},
 	{ name = "ultimate spirit potion", chance = 100000, maxCount = 32},
 	{ id = 12811, chance = 100, maxCount = 1},
-	{id = 12669, chance = 150 },
-	{id = 39707, chance = 250, unique = true },
+	-- {id = 12669, chance = 150 },
+	{id = 39707, chance = 1000, unique = true },
 --	{ id = 43733, chance = 20000 }, -- rabbit token
 }
 

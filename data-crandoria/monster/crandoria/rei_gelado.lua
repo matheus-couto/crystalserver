@@ -59,9 +59,9 @@ monster.flags = {
 	runHealth = 20000,
 	healthHidden = false,
 	isBlockable = false,
-	canWalkOnEnergy = false,
-	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnEnergy = true,
+	canWalkOnFire = true,
+	canWalkOnPoison = true
 }
 
 monster.light = {
@@ -123,7 +123,7 @@ monster.loot = {
 	{name = "spellbook of lost souls", chance = 10666},
 	{name = "spellscroll of prophecies", chance = 15000},
 	{name = "spellbook of dark mysteries", chance = 10000},
-	{id = 12669, chance = 150 },
+	-- {id = 12669, chance = 150 },
 	-- {id = 35909, chance = 10, maxCount = 1},
 	{ id = 39136, chance = 5000 }, -- perdao real
 	{ id = 12811, chance = 50 },

@@ -88,7 +88,7 @@ monster.loot = {
 	{ name = "amber staff", chance = 710 },
 	{ name = "amber with a bug", chance = 490 },
 	{ name = "amber with a dragonfly", chance = 180 },
-	{ name = "fetid heart", chance = 160 },
+	{ name = "fetid heart", chance = 100 },
 }
 
 monster.attacks = {

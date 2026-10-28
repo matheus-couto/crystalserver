@@ -94,6 +94,8 @@ local function creatureSayCallback(npc, creature, type, message)
     local druid = player:getVocation():getBaseId() == VOCATION.BASE_ID.DRUID
     local sorcerer = player:getVocation():getBaseId() == VOCATION.BASE_ID.SORCERER
 
+    local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
+
     local itemsLeft = 4 - player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.ItensDeQualidade)
 
 
@@ -169,7 +171,7 @@ local function creatureSayCallback(npc, creature, type, message)
                             player:addItem(8072, 1, true)
                             player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
                         end
-                        npcHandler:say("Essas flores nao estao tao bonitas quanto eu me lembrava... Mas tudo bem, sua missao esta completa! Aqui estao suas recompensas. Me avise quando quiser um novo desafio.", npc, creature)
+                        npcHandler:say("Esses dedos... Aargh o cheiro... Mas tudo bem, sua missao esta completa! Aqui estao suas recompensas. Me avise quando quiser um novo desafio.", npc, creature)
                         player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 6)
                         local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
                         player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 3)
@@ -180,131 +182,130 @@ local function creatureSayCallback(npc, creature, type, message)
                         npcHandler:setTopic(playerId, 0)
                     end
                 elseif storage == 6 then
-                    if player:getLevel() >= 30 then
-                        npcHandler:say("Voce realmente tem me surpreendido. Tem muito mais poder do que eu imaginava! Bom, seu novo desafio sera realmente mais... desafiador! Ha ha ha... Eu preciso de 3 green dragon leathers e 3 green dragon scales. \z
-                        Voce podera obter esses itens de dragoes. Eles estao espalhados por toda parte. Se quiser uma dica, saia pelo portao norte e va para a direcao nordeste e encontara uma montanha cheia deles! Voce aceita a missao?", npc, creature)
-                        npcHandler:setTopic(playerId, 4)
-                    else
-                        npcHandler:say("Sinto muito, mas apenas jogadores de nivel 30 ou superior podem se alistar para a proxima missao.", npc, creature)
-                        npcHandler:setTopic(playerId, 0)
-                    end
+                    -- if player:getLevel() >= 30 then
+                    --     -- npcHandler:say("Voce realmente tem me surpreendido. Tem muito mais poder do que eu imaginava! Bom, seu novo desafio sera realmente mais... desafiador! Ha ha ha... Eu preciso de 3 green dragon leathers e 3 green dragon scales. \z
+                    --     -- Voce podera obter esses itens de dragoes. Eles estao espalhados por toda parte. Se quiser uma dica, saia pelo portao norte e va para a direcao nordeste e encontara uma montanha cheia deles! Voce aceita a missao?", npc, creature)
+                    --     npcHandler:say("Bom, |PLAYERNAME|, parece que Cyclops ainda nao sao um desafio para voce. Se forca bruta nao foi um problema, que tal enfrentar um ser magico so pra variar? \z
+                    --     Va ate os elfos, proximo a Elvenshire, e derrote alguns Elf Arcanists. Traga para mim 3 Holy Orchids. Nao parece dificil, certo? Aceita a missao?", npc, creature)
+                    --     npcHandler:setTopic(playerId, 4)
+                    -- else
+                    --     npcHandler:say("Sinto muito, mas apenas jogadores de nivel 30 ou superior podem se alistar para a proxima missao.", npc, creature)
+                    --     npcHandler:setTopic(playerId, 0)
+                    -- end
+                    npcHandler:say("Voce ja ouviu falar na Peregrinacao? Bom, agora ouviu! Ha Ha Ha!... Bom, mas vamos falar serio aqui. A peregrinacao nao percisa ser finalizada por ninguem. \z
+                    Apesar disso, achamos importante que todos os Defensores de Crandoria conhecam o caminho. Para isso, voce deve falar com Enpa-Deia Pema no noroeste da cidade, dentro dos muros. \z
+                    Ela te guiara pelo primeiro altar. Apos honra-lo retorne ate mim.", npc, creature)
+                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 7)
+                    npcHandler:setTopic(playerId, 5)
                 elseif storage == 7 then
-                    if knight then
-                        if player:getItemCount(5877) >= 3 and player:getItemCount(5920) >= 3 then
-                            npcHandler:say("Impressinante! Estao em otimo estado. Muito obrigado pelas iguarias, jovem. Te recompensarei com experiencia, ouro e uma nova arma. Voce gostaria de um {machado}, uma {clava} ou uma {espada}?.", npc, creature)
+                    local MONK_QUEST = "the_way_of_the_monk_quest"
+                    local kv = player:questKV(MONK_QUEST)
+                    if kv:scoped("mainShrines"):get("guidance") then
+                        if knight then
+                            npcHandler:say("Muito bem, vejo que iniciou sua peregrinacao. Te recompensarei com experiencia, ouro e uma nova arma. Voce gostaria de um {machado}, uma {clava} ou uma {espada}?.", npc, creature)
                             npcHandler:setTopic(playerId, 5)
-                        else
-                            npcHandler:say("Por favor, me traga os 3 green dragon leathers e as 3 green dragon scales. Estarei aguardando pelo seu retorno.", npc, creature)
-                            npcHandler:setTopic(playerId, 0)
+                        elseif paladin then
+                            npcHandler:say("Muito bem, vejo que iniciou sua peregrinacao. Muito obrigado pelas iguarias, jovem. Te recompensarei com experiencia, ouro e uma nova arma. Espero que goste!", npc, creature)
+                            player:addItem(8021, 1, true)
+                            player:addExperience(1000000, true)
+                            player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
+                            player:addMoney(40000, true)
+                            npcHandler:setTopic(playerId, 5)
+                            player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 8)
+                        elseif druid then
+                            npcHandler:say("Muito bem, vejo que iniciou sua peregrinacao. Muito obrigado pelas iguarias, jovem. Te recompensarei com experiencia, ouro e uma nova arma. Espero que goste!", npc, creature)
+                            player:addItem(8084, 1, true)
+                            player:addExperience(1000000, true)
+                            player:addMoney(40000, true)
+                            player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
+                            player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 8)
+                        elseif sorcerer then
+                            npcHandler:say("Muito bem, vejo que iniciou sua peregrinacao. Muito obrigado pelas iguarias, jovem. Te recompensarei com experiencia, ouro e uma nova arma. Espero que goste!", npc, creature)
+                            player:addItem(8092, 1, true)
+                            player:addExperience(1000000, true)
+                            player:addMoney(40000, true)
+                            player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
+                            player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 8)
+                        elseif monk then
+                            npcHandler:say("Muito bem, vejo que iniciou sua peregrinacao. Muito obrigado pelas iguarias, jovem. Te recompensarei com experiencia, ouro e uma nova arma. Espero que goste!", npc, creature)
+                            player:addItem(50182, 1, true)
+                            player:addExperience(1000000, true)
+                            player:addMoney(40000, true)
+                            player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
+                            player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 8)
                         end
-                    elseif paladin then
-                        if player:getItemCount(5877) >= 3 and player:getItemCount(5920) >= 3 then
-                            if player:removeItem(5877, 3) and player:removeItem(5920, 3) then
-                                npcHandler:say("Impressinante! Estao em otimo estado. Muito obrigado pelas iguarias, jovem. Te recompensarei com experiencia, ouro e uma nova arma. Espero que goste!", npc, creature)
-                                player:addItem(8021, 1, true)
-                                player:addExperience(1000000, true)
-                                player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
-                                player:addMoney(40000, true)
-                                npcHandler:setTopic(playerId, 5)
-                                player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 8)
-                            else
-                                npcHandler:say("Por favor, me traga os 3 green dragon leathers e as 3 green dragon scales. Estarei aguardando pelo seu retorno.", npc, creature)
-                                npcHandler:setTopic(playerId, 0)
-                            end
-                        else
-                            npcHandler:say("Por favor, me traga os 3 green dragon leathers e as 3 green dragon scales. Estarei aguardando pelo seu retorno.", npc, creature)
-                            npcHandler:setTopic(playerId, 0)
-                        end
-                    elseif druid then
-                        if player:getItemCount(5877) >= 3 and player:getItemCount(5920) >= 3 then
-                            if player:removeItem(5877, 3) and player:removeItem(5920, 3) then
-                                npcHandler:say("Impressinante! Estao em otimo estado. Muito obrigado pelas iguarias, jovem. Te recompensarei com experiencia, ouro e uma nova arma. Espero que goste!", npc, creature)
-                                player:addItem(8084, 1, true)
-                                player:addExperience(1000000, true)
-                                player:addMoney(40000, true)
-                                player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
-                                player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 8)
-                            else
-                                npcHandler:say("Por favor, me traga os 3 green dragon leathers e as 3 green dragon scales. Estarei aguardando pelo seu retorno.", npc, creature)
-                                npcHandler:setTopic(playerId, 0)
-                            end
-                        else
-                            npcHandler:say("Por favor, me traga os 3 green dragon leathers e as 3 green dragon scales. Estarei aguardando pelo seu retorno.", npc, creature)
-                            npcHandler:setTopic(playerId, 0)
-                        end
-                    elseif sorcerer then
-                        if player:getItemCount(5877) >= 3 and player:getItemCount(5920) >= 3 then
-                            if player:removeItem(5877, 3) and player:removeItem(5920, 3) then
-                                npcHandler:say("Impressinante! Estao em otimo estado. Muito obrigado pelas iguarias, jovem. Te recompensarei com experiencia, ouro e uma nova arma. Espero que goste!", npc, creature)
-                                player:addItem(8092, 1, true)
-                                player:addExperience(1000000, true)
-                                player:addMoney(40000, true)
-                                player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
-                                player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 8)
-                            else
-                                npcHandler:say("Por favor, me traga os 3 green dragon leathers e as 3 green dragon scales. Estarei aguardando pelo seu retorno.", npc, creature)
-                                npcHandler:setTopic(playerId, 0)
-                            end
-                        else
-                            npcHandler:say("Por favor, me traga os 3 green dragon leathers e as 3 green dragon scales. Estarei aguardando pelo seu retorno.", npc, creature)
-                            npcHandler:setTopic(playerId, 0)
-                        end
-                    elseif monk then
-                        if player:getItemCount(5877) >= 3 and player:getItemCount(5920) >= 3 then
-                            if player:removeItem(5877, 3) and player:removeItem(5920, 3) then
-                                npcHandler:say("Impressinante! Estao em otimo estado. Muito obrigado pelas iguarias, jovem. Te recompensarei com experiencia, ouro e uma nova arma. Espero que goste!", npc, creature)
-                                player:addItem(50182, 1, true)
-                                player:addExperience(1000000, true)
-                                player:addMoney(40000, true)
-                                player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
-                                player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 8)
-                            else
-                                npcHandler:say("Por favor, me traga os 3 green dragon leathers e as 3 green dragon scales. Estarei aguardando pelo seu retorno.", npc, creature)
-                                npcHandler:setTopic(playerId, 0)
-                            end
-                        else
-                            npcHandler:say("Por favor, me traga os 3 green dragon leathers e as 3 green dragon scales. Estarei aguardando pelo seu retorno.", npc, creature)
-                            npcHandler:setTopic(playerId, 0)
-                        end
+                    else
+                        npcHandler:say("Fale com Enpa-Deia Pema e honre o primeiro altar.", npc, creature)
+                        npcHandler:setTopic(playerId, 0)
                     end
+                    -- if knight then
+                    --     if player:getItemCount(5922) >= 2 then
+                    --         npcHandler:say("Impressinante! Estao em otimo estado. Te recompensarei com experiencia, ouro e uma nova arma. Voce gostaria de um {machado}, uma {clava} ou uma {espada}?.", npc, creature)
+                    --         npcHandler:setTopic(playerId, 5)
+                    --     else
+                    --         npcHandler:say("Por favor, me traga as Holy Orchids para mim. Estarei aguardando pelo seu retorno.", npc, creature)
+                    --         npcHandler:setTopic(playerId, 0)
+                    --     end
+                    -- elseif paladin then
+                    --     if player:removeItem(5922, 2) then
+                    --         npcHandler:say("Impressinante! Estao em otimo estado. Muito obrigado pelas iguarias, jovem. Te recompensarei com experiencia, ouro e uma nova arma. Espero que goste!", npc, creature)
+                    --         player:addItem(8021, 1, true)
+                    --         player:addExperience(1000000, true)
+                    --         player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
+                    --         player:addMoney(40000, true)
+                    --         npcHandler:setTopic(playerId, 5)
+                    --         player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 8)
+                    --     else
+                    --         npcHandler:say("Por favor, me traga os 2 Holy Orchids. Estarei aguardando pelo seu retorno.", npc, creature)
+                    --         npcHandler:setTopic(playerId, 0)
+                    --     end
+                    -- elseif druid then
+                    --     if player:removeItem(5922, 2) then
+                    --         npcHandler:say("Impressinante! Estao em otimo estado. Muito obrigado pelas iguarias, jovem. Te recompensarei com experiencia, ouro e uma nova arma. Espero que goste!", npc, creature)
+                    --         player:addItem(8084, 1, true)
+                    --         player:addExperience(1000000, true)
+                    --         player:addMoney(40000, true)
+                    --         player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
+                    --         player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 8)
+                    --     else
+                    --         npcHandler:say("Por favor, me traga os 2 Holy Orchids. Estarei aguardando pelo seu retorno.", npc, creature)
+                    --         npcHandler:setTopic(playerId, 0)
+                    --     end
+                    -- elseif sorcerer then
+                    --     if player:removeItem(5922, 2) then
+                    --         npcHandler:say("Impressinante! Estao em otimo estado. Muito obrigado pelas iguarias, jovem. Te recompensarei com experiencia, ouro e uma nova arma. Espero que goste!", npc, creature)
+                    --         player:addItem(8092, 1, true)
+                    --         player:addExperience(1000000, true)
+                    --         player:addMoney(40000, true)
+                    --         player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
+                    --         player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 8)
+                    --     else
+                    --         npcHandler:say("Por favor, me traga os 2 Holy Orchids. Estarei aguardando pelo seu retorno.", npc, creature)
+                    --         npcHandler:setTopic(playerId, 0)
+                    --     end
+                    -- elseif monk then
+                    --     if player:removeItem(5922, 2) then
+                    --         npcHandler:say("Impressinante! Estao em otimo estado. Muito obrigado pelas iguarias, jovem. Te recompensarei com experiencia, ouro e uma nova arma. Espero que goste!", npc, creature)
+                    --         player:addItem(50182, 1, true)
+                    --         player:addExperience(1000000, true)
+                    --         player:addMoney(40000, true)
+                    --         player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
+                    --         player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 8)
+                    --     else
+                    --         npcHandler:say("Por favor, me traga os 2 Holy Orchids. Estarei aguardando pelo seu retorno.", npc, creature)
+                    --         npcHandler:setTopic(playerId, 0)
+                    --     end
+                    -- end
                 elseif storage == 8 then
-                    if player:getLevel() >= 50 then
-                        -- npcHandler:say("Voce esta progredindo rapidamente. Isso me parece um sinal de que voce precisa de uma missao mais seria e perigosa. Abaixo do templo de Crandoria ha uma alavanca que te levara a Miniboss Room. \z 
-                        -- Enfrente um dos bosses e retorne ate mim, mesmo que nao saia vitorioso, e eu te recompensarei pela sua coragem. O que acha? Aceita essa missao?", npc, creature)
-                        -- npcHandler:setTopic(playerId, 6)
-                        npcHandler:say("Voce esta progredindo rapidamente. Isso me parece um sinal de que voce precisa de uma missao mais desafiadora e perigosa... Entao vamos la! \z
-                        Na montanha ao norte de Hakata ha diversas cavernas de Hydras. Em uma delas ha uma flor gigante que solta um cheiro extremamente agradavel. A unica da especie... \z
-                        Va ate ela e colete uma amostra de seu extrato. Mas atencao! Voce deve retornar em no maximo 10 minutos apos coletar, ou o cheiro se perdera! Estarei esperando.", npc, creature)
-                        player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 9)
-                        npcHandler:setTopic(playerId, 0)
-                    else
-                        npcHandler:say("Sinto muito, mas apenas jogadores de nivel 50 ou superior podem se alistar para a proxima missao.", npc, creature)
-                        npcHandler:setTopic(playerId, 0)
-                    end
-                elseif storage == 9 then
-                    if player:getStorageValue(Storage.Quest.Crandoria.BossRoom.MiniBossRoomTimer) > os.time() then
-                        npcHandler:say("Voce conseguiu! Aqui, deixe-me coletar uma amostra do aroma da flor. Isso com certeza sera uma boa descoberta para Filandrel, em Astralis. Aqui, uma singela recompensa.", npc, creature)
-                        player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 10)
-                        player:addMoney(50000, true)
-                        player:addExperience(1500000, true)
-                        player:addItem(22721, 1, true)
-                        player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
-                        player:addAchievement("Escudeiro de Crandoria")
-                        npcHandler:setTopic(playerId, 0)
-                    else
-                        npcHandler:say("Onde esta o extrato? Voce chegou a encontrar a flor? Nao sinto cheiro nenhum... Encontre a flor especial entre as Hydras ao norte de Hakata e traga seu extrato para mim. ", npc, creature)
-                        npcHandler:setTopic(playerId, 0)
-                    end
-                elseif storage == 10 then
                     if player:getLevel() >= 60 then
                         npcHandler:say("Acredito que voce ja tenha forca suficiente para enfrentar Heroes e Necromancers, estou certo? Pois bem! Preciso que me traga uma Crown Legs dos heroes e um Skull Staff dos necromances. Me entregue ambos os itens juntos. \z
                         Esses equipamentos ajudarao um novo recruta que temos em Crandoria e, obviamente, te recompensarei por eles. Voce esta disposto a embarcar nessa missao?", npc, creature)
                         npcHandler:setTopic(playerId, 7)
                     else
-                        npcHandler:say("Sinto muito, mas apenas jogadores de nivel 60 ou superior podem se alistar para a proxima missao.", npc, creature)
+                        npcHandler:say("Sinto muito, mas apenas jogadores de nivel 50 ou superior podem se alistar para a proxima missao.", npc, creature)
                         npcHandler:setTopic(playerId, 0)
                     end
-                elseif storage == 11 then
+                elseif storage == 9 then
                     if player:getItemCount(3382) >= 1 and player:getItemCount(3324) >= 1 then
                         if player:removeItem(3382, 1) and player:removeItem(3324, 1) then
                             npcHandler:say("Por que demorou tanto? As coisas estao ficando dificeis, nao e mesmo? Ha ha ha. Bom, o importante sempre sera os guerreiros retornarem saos e salvos. Como combinao, aqui esta sua recompensa, descubra um bom uso para isso. Retorne quand quiser um novo desafio.", npc, creature)
@@ -312,7 +313,7 @@ local function creatureSayCallback(npc, creature, type, message)
                             player:addItem(7889, 3, true)
                             player:addExperience(2500000, true)
                             player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
-                            player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 12)
+                            player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 10)
                             local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
                             player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 3)
                             player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
@@ -325,16 +326,44 @@ local function creatureSayCallback(npc, creature, type, message)
                         npcHandler:say("Por favor, traga uma Crown Armor e um Skull Staff para mim.", npc, creature)
                         npcHandler:setTopic(playerId, 0)
                     end
+                elseif storage == 10 then
+                    if player:getLevel() >= 50 then
+                        npcHandler:say("Voce esta progredindo rapidamente. Isso me parece um sinal de que voce precisa de uma missao mais desafiadora e perigosa... Entao vamos la! \z
+                        Na montanha ao norte de Hakata ha diversas cavernas de Hydras. Em uma delas ha uma flor gigante que solta um cheiro extremamente agradavel. A unica da especie... \z
+                        Va ate ela e colete uma amostra de seu extrato. Mas atencao! Voce deve retornar em no maximo 10 minutos apos coletar, ou o cheiro se perdera! Estarei esperando.", npc, creature)
+                        player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 11)
+                        npcHandler:setTopic(playerId, 0)
+                    else
+                        npcHandler:say("Sinto muito, mas apenas jogadores de nivel 60 ou superior podem se alistar para a proxima missao.", npc, creature)
+                        npcHandler:setTopic(playerId, 0)
+                    end
+                elseif storage == 11 then
+                    if player:getStorageValue(Storage.Quest.Crandoria.BossRoom.MiniBossRoomTimer) > os.time() then
+                        npcHandler:say("Voce conseguiu! Aqui, deixe-me coletar uma amostra do aroma da flor. Isso com certeza sera uma boa descoberta para Filandrel, em Astralis. Aqui, uma singela recompensa.", npc, creature)
+                        player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 12)
+                        player:addMoney(50000, true)
+                        player:addExperience(1500000, true)
+                        player:addItem(22721, 1, true)
+                        player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
+                        player:addAchievement("Escudeiro de Crandoria")
+                        npcHandler:setTopic(playerId, 0)
+                    else
+                        npcHandler:say("Onde esta o extrato? Voce chegou a encontrar a flor? Nao sinto cheiro nenhum... Encontre a flor especial entre as Hydras ao norte de Hakata e traga seu extrato para mim. ", npc, creature)
+                        npcHandler:setTopic(playerId, 0)
+                    end
                 elseif storage == 12 then
                     if player:getLevel() >= 75 then
-                        npcHandler:say("Voce realmente esta indo muito bem, jovem... Que tal um desafio que te levara um pouco mais longe agora? Por favor, cace algumas criaturas das regioes frias e obtenha delas 5 Shards. Traga os shards para mim e te recompensarei por eles. Voce aceita o desafio?", npc, creature)
-                        npcHandler:setTopic(playerId, 8)
+                        npcHandler:say("Se voce enfrenta Hydras facilmente, com certeza conseguira derrotar alguns Wyrms tambem. Mas agora o pedido sera para algo mais... pessoal... hehehe. \z
+                        Quero dar um vestido de hibisco (hibiscus dress) de presente para uma pessoa. Derrote alguns Wyrms e consiga um para mim. Facil, nao? Voce encontrara Wyrms em Chaos. \z
+                        Se quiser buscar em outro local ou obte-lo de outros monstros, nao ha problema. Estarei esperando!", npc, creature)
+                        player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 13)
+                        npcHandler:setTopic(playerId, 0)
                     else
                         npcHandler:say("Sinto muito, mas apenas jogadores de nivel 75 ou superior podem se alistar para a proxima missao.", npc, creature)
                         npcHandler:setTopic(playerId, 0)
                     end
                 elseif storage == 13 then
-                    if player:removeItem(7290, 5) then
+                    if player:removeItem(8045, 1) then
                         if knight or paladin or monk then
                             npcHandler:say("Voce foi mais rapido do que eu esperava para essa missao. Bom trabalho! Aqui esta sua recompensa.", npc, creature)
                             player:addMoney(90000, true)
@@ -351,30 +380,35 @@ local function creatureSayCallback(npc, creature, type, message)
                         player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 14)
                         npcHandler:setTopic(playerId, 0)
                     else
-                        npcHandler:say("Por favor, traga 5 shards para mim o quanto antes. Voce pode encontra-los derrotando frost dragons, frost giants, crystal spider e algumas outras criaturas.", npc, creature)
+                        npcHandler:say("Por favor, traga o Hibiscus Dress para mim. Voce pode encontra-lo derrotando Wyrms e algumas outras criaturas.", npc, creature)
                         npcHandler:setTopic(playerId, 0)
                     end
                 elseif storage == 14 then
-                    if player:getLevel() >= 100 then
-                        npcHandler:say("Um dos nossos cavaleiros perdeu seu escudo. Precisamos repor este escudo ao nosso arsenal. Por favor, saia e busque um Tower Shield e traga ate mim e eu te recompensarei. Voce aceita a missao?", npc, creature)
+                    if player:getLevel() >= 90 then
+                        npcHandler:say("Um dos nossos cavaleiros perdeu seu escudo e sua lanca. Precisamos repor os itens ao nosso arsenal. Por favor, saia e busque um Tower Shield e uma Dragon Lance e traga ate mim e eu te recompensarei. Voce aceita a missao?", npc, creature)
                         npcHandler:setTopic(playerId, 9)
                     else
-                        npcHandler:say("Apenas jogadores de nivel 100 ou superior podem se alistar para a proxima missao.", npc, creature)
+                        npcHandler:say("Apenas jogadores de nivel 90 ou superior podem se alistar para a proxima missao.", npc, creature)
                         npcHandler:setTopic(playerId, 0)
                     end
                 elseif storage == 15 then
-                    if player:removeItem(3428, 1) then
-                        npcHandler:say("Este escudo esta em otimo estado! Muito obrigado. Aqui esta sua recompensa.", npc, creature)
-                        player:addMoney(100000, true)
-                        player:addExperience(3000000, true)
-                        player:addPreyCards(2, true)
-                        player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
-                        npcHandler:setTopic(playerId, 0)
-                        player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 16)
+                    if player:getItemCount(3428) >= 1 and player:getItemCount(3302) >= 1 then
+                        if player:removeItem(3428, 1) and player:removeItem(3302, 1) then
+                            npcHandler:say("Este escudo esta em otimo estado! Muito obrigado. Aqui esta sua recompensa.", npc, creature)
+                            player:addMoney(100000, true)
+                            player:addExperience(3000000, true)
+                            player:addPreyCards(2, true)
+                            player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
+                            npcHandler:setTopic(playerId, 0)
+                            player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 16)
+                        else
+                            npcHandler:say("Nao volte sem um Tower Shield e a Dragon Lance. Agora va, depressa!", npc, creature)
+                            npcHandler:setTopic(playerId, 0)
+                        end
                     else
-                        npcHandler:say("Nao volte sem um Tower Shield. Agora va, depressa!", npc, creature)
+                        npcHandler:say("Nao volte sem um Tower Shield e a Dragon Lance. Agora va, depressa!", npc, creature)
                         npcHandler:setTopic(playerId, 0)
-                    end
+                    end 
                 elseif storage == 16 then
                     if player:getLevel() >= 100 then
                         npcHandler:say("Preste atencao, a sua proxima missao sera a mais dificil ate agora... Voce tera que passar por uma prova de fogo e morte, em meio a demonios poderosos. Essa sera a Annihilator Quest! O local fica para o sudeste, descendo as escadas das ruinas abandonadas. \z
@@ -439,39 +473,31 @@ local function creatureSayCallback(npc, creature, type, message)
                         npcHandler:setTopic(playerId, 0)
                     end
                 elseif storage == 22 then
-                    npcHandler:say("Teremos uma cerimonia para celebrar a volta de um dos nossos guerreiros e precisamos de um Medusa Shield e um Royal Helmet para ornamentar o local. Por favor, obtenha um de cada desses itens para mim. Nao se preocupe se voce acabar morrendo no caminho... HA HA HA!", npc, creature)
-                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 23)
+                    npcHandler:say("Parece que voce esta se tornando alguem importante para Crandoria, |PLAYERNAME|. Prova disso esta no documento que recebi hoje, incluindo seu nome na lista de acesso da Arena de Minibosses. \z
+                    A Arena fica localizada numa pequena ilha que pode ser acessada pelo bote do Captain Fearless, a sudoeste de Crandoria. Sua missao agora sera simples: Va ate a arena e enfrente um miniboss quando houver uma invasao. \z
+                    As informacoes sobre as invasoes estarao no livro na ilha. Retorne aqui quando completar a missao.", npc, creature)
+                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 22)
                     npcHandler:setTopic(playerId, 0)
                 elseif storage == 23 then
-                    if player:getItemCount(3436) >= 1 and player:getItemCount(3392) >= 1 then
-                        if player:removeItem(3436, 1) and player:removeItem(3392, 1) then
-                            npcHandler:say("Muito bem. Aposto que nao foi nada dificil! Aqui esta sua recompensa, como combinado. 1 dia de Vip e algum ouro para que possa aproveitar melhor o inicio de sua jornada.", npc, creature)
-                            player:addExperience(5000000, true)
-                            player:addMoney(150000, true)
-                            player:addPremiumDays(1)
-                            player:onAddVip(1)
-                            player:getPosition():sendMagicEffect(CONST_ME_HOLYAREA)
-                            player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
-                            player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 24)
-                            npcHandler:setTopic(playerId, 0)
-                        else
-                            npcHandler:say("Obtenha 1 Medusa Shield e 1 Royal Helmet para mim, por favor.", npc, creature)
-                            npcHandler:setTopic(playerId, 0)
-                        end
-                    else
-                        npcHandler:say("Obtenha 1 Medusa Shield e 1 Royal Helmet para mim, por favor.", npc, creature)
-                        npcHandler:setTopic(playerId, 0)
-                    end
+                    npcHandler:say("Muito bem. Aposto que nao foi nada dificil! Aqui esta sua recompensa, como combinado. 1 dia de Vip e algum ouro para que possa aproveitar melhor o inicio de sua jornada.", npc, creature)
+                    player:addExperience(5000000, true)
+                    player:addMoney(150000, true)
+                    player:addPremiumDays(1)
+                    player:onAddVip(1)
+                    player:getPosition():sendMagicEffect(CONST_ME_HOLYAREA)
+                    player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
+                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 24)
+                    npcHandler:setTopic(playerId, 0)
                 elseif storage == 24 then
                     if player:getLevel() >= 130 then
-                        npcHandler:say("Que tal enfrentar algumas criaturas demoniacas? Estamos precisando de algumas Demonic Essences e seria otimo se voce pudesse nos ajudar com isso. Traga-me 20 Demonic Essences e te darei uma boa recompensa. Trato feito?", npc, creature)
+                        npcHandler:say("Que tal enfrentar algumas criaturas demoniacas? Estamos precisando de algumas Demonic Essences e seria otimo se voce pudesse nos ajudar com isso. Traga-me 50 Demonic Essences e te darei uma boa recompensa. Trato feito?", npc, creature)
                         npcHandler:setTopic(playerId, 11)
                     else
                         npcHandler:say("Apenas jogadores de nivel 130 ou superior podem se alistar para a proxima missao.", npc, creature)
                         npcHandler:setTopic(playerId, 0)
                     end
                 elseif storage == 25 then
-                    if player:removeItem(6499, 20) then
+                    if player:removeItem(6499, 50) then
                         npcHandler:say("Demonios sao o mesmo que nada para voce? Ha ha ha! Muito bom, jovem |PLAYERNAME|. Aqui, pegue sua recompensa.", npc, creature)
                         player:addExperience(5000000, true)
                         player:addMoney(160000, true)
@@ -480,7 +506,7 @@ local function creatureSayCallback(npc, creature, type, message)
                         player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 26)
                         npcHandler:setTopic(playerId, 0)
                     else
-                        npcHandler:say("Traga as 20 Demonic Essences para completar sua missao.", npc, creature)
+                        npcHandler:say("Traga as 50 Demonic Essences para completar sua missao.", npc, creature)
                         npcHandler:setTopic(playerId, 0)
                     end
                 elseif storage == 26 then
@@ -631,14 +657,14 @@ local function creatureSayCallback(npc, creature, type, message)
                     if player:getLevel() >= 230 then
                         npcHandler:say("Ha um homem chamado Lord Thompson que vive numa ilha habitada por insetos, ao sul de Elvenshire. Ele precisa de ajuda, parece que ele tem problemas com alguns insetos gigantes. Ajude-o em sua primeira missao e retorne ate mim e eu te recompensarei. \z
                         Essa nao sera uma missao muito facil, entao tenha cuidado. Voce aceita o desafio?", npc, creature)
-                    npcHandler:setTopic(playerId, 24)
+                        npcHandler:setTopic(playerId, 24)
                     else
                         npcHandler:say("Apenas jogadores de nivel 230 ou superior podem se alistar para a proxima missao.", npc, creature)
                         npcHandler:setTopic(playerId, 0)
                     end
                 elseif storage == 39 then
                     if player:getStorageValue(Storage.Quest.Crandoria.InsectoidOutfit.Outfit) >= 1 then
-                        npcHandler:say("Como foi lidar com aqueles insetos? Aposto que foi divertido... HA HA HA! Bom, tenho certeza de que Lord Thompson ficou satisfeito. Aqui esta sua recompensa pela missao.", npc, creature)
+                        npcHandler:say("Oh, ja ajudou Lord Thompson? Como foi lidar com aqueles insetos? Aposto que foi divertido... HA HA HA! Bom, tenho certeza de que Lord Thompson ficou satisfeito. Aqui esta sua recompensa pela missao.", npc, creature)
                         player:addExperience(10000000, true)
                         player:addMoney(200000, true)
                         player:addItem(22721, 2, true)
@@ -650,13 +676,13 @@ local function creatureSayCallback(npc, creature, type, message)
                         npcHandler:setTopic(playerId, 0)
                     end
                 elseif storage == 40 then
-                    npcHandler:say("Voce provavelmente nao tem idade para se lembrar disso, mas a Magic Plate Armor ja foi uma das armaduras mais belas e desejadas de todo o antigo continente Tibiano... muitos mataram por uma dessas ha um tempo atras. \z
-                    Hoje, esquecidas, se tornaram reliquias para aqueles que ainda enxergam valor em sua historia. E eu sou um deles! HA HA HA! Coff.. coff.. Bom.. Por isso, sua proxima missao sera me trazer uma Magic Plate Armor! Estarei aguardando ansiosamente!", npc, creature)
+                    npcHandler:say("Estou buscando por um escudo especial e poderoso. Um escudo que ja foi uma reliquia que poucos possuiam ha algumas decadas. \z
+                    Claro, estou falando do Mastermind Shield. Obtenha um deles e traga-o para mim. Nem preciso dizer que te darei uma recompensa por ele.", npc, creature)
                     player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 41)
                     npcHandler:setTopic(playerId, 0)
                 elseif storage == 41 then
-                    if player:removeItem(3366, 1) then
-                        npcHandler:say("Que espetaculo! Essa deve ser a armadura mais esplendida de todas! HA! Nao acredito que poderei andar por ai com minha propria... Digo... Bom, muito obrigado. Como prometido, aqui esta sua recompensa.", npc, creature)
+                    if player:removeItem(3414, 1) then
+                        npcHandler:say("Que espetaculo! Esse deve ser o escudo mais esplendido de todos! HA! Nao acredito que poderei andar por ai com meu proprio... Digo... Bom, muito obrigado. Como prometido, aqui esta sua recompensa.", npc, creature)
                         player:addExperience(10000000, true)
                         player:addMoney(200000, true)
                         player:addPreyCards(5, true)
@@ -719,11 +745,14 @@ local function creatureSayCallback(npc, creature, type, message)
                         npcHandler:setTopic(playerId, 0)
                     end
                 elseif storage == 46 then
-                    npcHandler:say("Cace alguns Gazer Spectres e traga para mim 3 Hexagonal Rubys. Voce pode encontra-los em algumas cavernas com acesso por Magincia, pelo deserto de Valkesh ou pela Selva de Jagunda. Voce aceita a missao?", npc, creature)
+                    npcHandler:say("Nas profundezas do esconderijo de Ahau, em Warmwind, ha um portal que leva ao antigo povo Mitmah. Estamos estudando algumas de suas ferramentas. \z
+                    Embora sejam seres talentosos, seus equipamentos sao delicados e unicos, por isso precisamos de muitas unidades do que chamam de Ceremonial Brush. \z
+                    Derrote Mitmah Scouts e Mitmah Seers no local e traga-me 10 de seus Ceremonial Brushes. Estou esperando.", npc, creature)
+                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 47)
                     npcHandler:setTopic(playerId, 18)
                 elseif storage == 47 then
-                    if player:removeItem(30180, 3) then
-                        npcHandler:say("Magnifico! Olhe como elas brilham... sensacional! Ah! Quase me esqueci, aqui esta sua recompensa.", npc, creature)
+                    if player:removeItem(44433, 10) then
+                        npcHandler:say("Incrivel! Olhe como elas sao magnificas... sensacional! Ah! Quase me esqueci, aqui esta sua recompensa.", npc, creature)
                         player:addExperience(12000000, true)
                         player:addMoney(200000, true)
                         player:addItem(25698, 1, true)
@@ -772,7 +801,9 @@ local function creatureSayCallback(npc, creature, type, message)
                     end
                 elseif storage == 52 then
                     if player:getLevel() >= 270 then
-                        npcHandler:say("Alguns habitantes de Crandoria precisam de sapatos novos. Dizem que os Oriental Shoes das asuras sao extremamente confortaveis. Traga 3 dos Oriental Shoes para mim e eu te recompensarei. Estarei esperando.", npc, creature)
+                        npcHandler:say("Queremos fazer uma comemoracao pelas vitorias que os guerreiros de Crandoria tem conquistado nos ultimos dias. Algo simples, mas significativo. \z
+                        Precisamos de algo delicioso para servir como jantar e sobremesa para todos os convidados. Entao preste atencao: Precisaremos de 10 Dragon Meat, isso nao sera dificil. \z
+                        Porem a sobremesa sera desafiadora. Precisamos de 10 Dark Chocolate Coins e 10 Milk Chocolate Coins. Voce obtera esses itens com monstros derrotados em Candia. Estarei esperando por voce.", npc, creature)
                         player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 53)
                         npcHandler:setTopic(playerId, 0)
                     else
@@ -780,21 +811,29 @@ local function creatureSayCallback(npc, creature, type, message)
                         npcHandler:setTopic(playerId, 0)
                     end
                 elseif storage == 53 then
-                    if player:removeItem(21981, 3) then
-                        npcHandler:say("Deixe-me avaliar esses sapatos... Humm... aham.... Otimo! Estao em perfeito estado. Aqui esta sua recompensa e muito obrigado, |PLAYERNAME|.", npc, creature)
+                    if player:getItemCount(3583) >= 10 and player:getItemCount(48250) >= 10 and player:getItemCount(48249) >= 10 then
+                        player:removeItem(3583, 10)
+                        player:removeItem(48250, 10)
+                        player:removeItem(48249, 10)
+                        npcHandler:say("Incrivel, |PLAYERNAME|! Esse com certeza sera um banquete delicioso e deixara todos os cidadaos contentes.", npc, creature)
                         player:addExperience(16500000, true)
                         player:addMoney(215000, true)
-                        player:addItem(39136, 2, true)
+                        local bag = player:addItem(2861, 1)
+                        if bag then
+                            bag:addItem(637, 1, true)
+                            bag:addItem(637, 1, true)
+                            bag:addItem(54266, 1, true)
+                        end
                         player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
                         player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 54)
                         npcHandler:setTopic(playerId, 0)
                     else
-                        npcHandler:say("Por favor, traga os 3 Oriental Shoes para mim.", npc, creature)
+                        npcHandler:say("Por favor, traga 10 Dragon Hams, 10 Milk Chocolate Coins e 10 Dark Chocolate Coins para mim.", npc, creature)
                         npcHandler:setTopic(playerId, 0)
                     end
                 elseif storage == 54 then
                     if player:getLevel() >= 300 then
-                        npcHandler:say("Eis a sua provacao, |PLAYERNAME|... A partir daqui voce estara em um novo nivel e suas missoes comecarao a exigir um pouco mais de voce. Alem disso, voce podera pegar apenas uma missao por dia a partir de agora. \z 
+                        npcHandler:say("Eis a sua provacao, |PLAYERNAME|... A partir daqui voce estara em um novo nivel e suas missoes comecarao a exigir um pouco mais de voce. \z 
                         Prepare-se! Para sua proxima missao, voce devera falar com Henricus. Ele fica na torre sudoeste de Crandoria. Complete sua missao, a Inquisition Quest. Apos finalizar a quest retorne ate mim e nos conversaremos. Voce entendeu?", npc, creature)
                         npcHandler:setTopic(playerId, 21)
                     else
@@ -816,11 +855,24 @@ local function creatureSayCallback(npc, creature, type, message)
                         npcHandler:setTopic(playerId, 0)
                     end
                 elseif storage == 56 then
-                    npcHandler:say("Ola, " .. dear .. " |PLAYERNAME|. Ha uma missao disponivel para voce hoje: Coletar 10 Empty Honey Glasses. Voce aceita a missao?", npc, creature)
-                    npcHandler:setTopic(playerId, 22)
+                    if player:getLevel() >= 300 then
+                        npcHandler:say("Voce ja se deparou com os vampiros mais fortes do Novo Continente? Recebemos um pedido de ajuda de um deles, da pra acreditar? \z
+                        Anaztassja Moroia vive em uma ilha remota que pode ser acessada por alguma passagem secreta em Magincia. Ela precisa de apoio com um problema entre os vampiros. \z
+                        Sua missao sera encontrar o local e ajuda-la a derrotar 4 Lordes Vampiros. Apos finalizar esta etapa, darei sua missao como concluida. Boa sorte.", npc, creature)
+                        player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 57)
+                        npcHandler:setTopic(playerId, 0)
+                    else
+                        npcHandler:say("Apenas jogadores de nivel 300 ou superior podem se alistar para a proxima missao.", npc, creature)
+                        npcHandler:setTopic(playerId, 0)
+                    end
                 elseif storage == 57 then
-                    if player:removeItem(31331, 10) then
-                        npcHandler:say("Bom te ver novamente, " .. dear .. " |PLAYERNAME|. Os itens estao corretos, aqui esta sua recompensa.", npc, creature)
+                    local arthei = player:getStorageValue(Storage.Quest.U8_4.BloodBrothers.ArtheiDoor)
+                    local boreth = player:getStorageValue(Storage.Quest.U8_4.BloodBrothers.BorethDoor)
+                    local lesartio = player:getStorageValue(Storage.Quest.U8_4.BloodBrothers.LersatioDoor)
+                    local marziel = player:getStorageValue(Storage.Quest.U8_4.BloodBrothers.MarzielDoor)
+                    if arthei >= 1 and boreth >= 1 and lesartio >= 1 and marziel >= 1 then
+                        npcHandler:say("Bom te ver novamente, " .. dear .. " |PLAYERNAME|. Espero que os vampiros nao tenham te dado muita dor de cabeca. Precisamos manter a paz ate mesmo entre monstros, quando possivel. \z
+                        Aqui esta uma singela recompensa. Fale comigo quando estiver pronto para sua proxima missao.", npc, creature)
                         player:addExperience(17500000, true)
                         player:addMoney(225000, true)
                         player:addItem(11587, 2, true)
@@ -831,14 +883,16 @@ local function creatureSayCallback(npc, creature, type, message)
                         player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
                         npcHandler:setTopic(playerId, 0)
                     else
-                        npcHandler:say("Por favor, nos traga os 10 Empty Honey Glasses.", npc, creature)
+                        npcHandler:say("Voce ainda nao derrotou os quatro Lorde Vampiros para Anaztassja Moroia.", npc, creature)
                         npcHandler:setTopic(playerId, 0)
                     end
                 elseif storage == 58 then
-                    npcHandler:say("" .. dear .. " |PLAYERNAME|. Ha uma missao disponivel para voce hoje: Coletar 05 Manticore Ears e 05 Sphinx Tiaras. Voce aceita a missao?", npc, creature)
-                    npcHandler:setTopic(playerId, 23)
+                    npcHandler:say("" .. dear .. " |PLAYERNAME|, preciso de sua ajuda de forma rapida, objetiva e sem perguntas: Traga-me 15 Broken Dreams. Talvez o melhor lugar para encontra-los seja em Roshamuul. \z
+                    Fale com o Captain Whitepatch e ele o levara la num instante.", npc, creature)
+                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 59)
+                    npcHandler:setTopic(playerId, 0)
                 elseif storage == 59 then
-                    if player:removeItem(31440, 5) and player:removeItem(31438, 5) then
+                    if player:removeItem(20029, 15) then
                         npcHandler:say("Teve um bom retorno, " .. dear .. " |PLAYERNAME|? Sobre sua missao: Os itens estao corretos, aqui esta sua recompensa.", npc, creature)
                         player:addExperience(20000000, true)
                         player:addMoney(230000, true)
@@ -848,7 +902,7 @@ local function creatureSayCallback(npc, creature, type, message)
                         player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Timer, os.time() + 2 * 60 * 60)
                         npcHandler:setTopic(playerId, 0)
                     else
-                        npcHandler:say("Retorne com 5 sphinx tiaras e 5 manticore ears e tera sua recompensa, " .. dear .. " |PLAYERNAME|.", npc, creature)
+                        npcHandler:say("Retorne com 15 Broken Dreams e tera sua recompensa, " .. dear .. " |PLAYERNAME|.", npc, creature)
                         npcHandler:setTopic(playerId, 0)
                     end
                 elseif storage == 60 then
@@ -874,7 +928,7 @@ local function creatureSayCallback(npc, creature, type, message)
                 elseif storage == 62 then
                     if player:getLevel() >= 350 then
                         npcHandler:say("Sabe, " .. dear .. " |PLAYERNAME|, nem toda missao tem como objetivo apenas batalhas, sangue e morte... Algumas vezes nossos objetivos sao apenas os de ajudar uma pessoa ou um grupo de pessoas. Suas proximas missoes te mostrarao melhor o que eu quero dizer. \z
-                        Pegando o barco do Captain Whitepatch voce podera chegar a Astralis. Astralis sempre foi uma cidade pacifica que gira em torno da producao de recursos como alimentos e minerios para todo o Novo Continente. Alem disso, a idade sempre foi amiga de Crandoria. \z
+                        Pegando o barco do Captain Whitepatch voce podera chegar a Astralis. Astralis sempre foi uma cidade pacifica que gira em torno da producao de recursos como alimentos e minerios para todo o Novo Continente. Alem disso, a cidade sempre foi amiga de Crandoria. \z
                         Por isso quero que voce va ate la e converse com os habitantes e ajude-os com o que precisarem. Eu soube que Gondariel precisava de ajuda com algumas colheitas. Comece por ele. Retorne quando acabar suas missoes por la!", npc, creature)
                         player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 63)
                         npcHandler:setTopic(playerId, 0)
@@ -996,7 +1050,7 @@ local function creatureSayCallback(npc, creature, type, message)
                     npcHandler:say("Sensacional, " .. dear .. " |PLAYERNAME|! Voce tem se tornado uma pessoa de muita honra por todo o Novo Continente. Aqui, tome sua recompensa.", npc, creature)
                     player:addExperience(20000000, true)
                     player:addMoney(275000, true)
-                    player:addItem(39136, 2, true)
+                    player:addItem(51588, 1, true)
                     player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
                     player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 106)
                     player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Timer, os.time() + 1 * 60 * 60)
@@ -1079,12 +1133,12 @@ local function creatureSayCallback(npc, creature, type, message)
                         end
                     end
                 elseif storage == 116 then
-                    npcHandler:say("Sua proxima missao sera coletar 5 Liodile Fangs. Essas raras criaturas sao encontradas na ilha de Squidspot. Captain Donahue pode te levar ate la. Traga-me os itens de alta qualidade!", npc, creature)
+                    npcHandler:say("Sua proxima missao sera coletar 5 Stag Parchments. Voce encontrara estes itens na Stag Bastion, acessivel por Roshamuul. Traga-me os itens de alta qualidade!", npc, creature)
                     player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 117)
                     npcHandler:setTopic(playerId, 0)
                 elseif storage == 117 then
                     if randomChance > 2 then
-                        if player:removeItem(40583, 1) then
+                        if player:removeItem(52664, 1) then
                             if storageItems < 3 then
                                 player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.ItensDeQualidade, storageItems + 1)
                                 npcHandler:say("Incrivel! Esse item tem altissima qualidade. Ok, traga-me mais " ..itemsLeft.. " itens iguais a este.", npc, creature)
@@ -1106,15 +1160,15 @@ local function creatureSayCallback(npc, creature, type, message)
                                 npcHandler:setTopic(playerId, 0)
                             end
                         else
-                            npcHandler:say("Traga-me todas as 5 Liodile Fangs com alta qualidade.", npc, creature)
+                            npcHandler:say("Traga-me todas as 5 Stag Parchments com alta qualidade.", npc, creature)
                             npcHandler:setTopic(playerId, 0)
                         end
                     else
-                        if player:removeItem(40583, 1) then
+                        if player:removeItem(52664, 1) then
                             npcHandler:say("Sinto muito, mas esse item nao tem boa qualidade.", npc, creature)
                             npcHandler:setTopic(playerId, 0)
                         else
-                            npcHandler:say("Traga-me todas as 5 Liodile Fangs com alta qualidade.", npc, creature)
+                            npcHandler:say("Traga-me todas as 5 Stag Parchments com alta qualidade.", npc, creature)
                             npcHandler:setTopic(playerId, 0)
                         end
                     end
@@ -1321,20 +1375,20 @@ local function creatureSayCallback(npc, creature, type, message)
                     end
                 elseif storage == 128 then
                     npcHandler:say("Essa sera sua ultima missao de coleta de itens de alta qualidade, " ..dear.. " |PLAYERNAME|. Pelo menos por enquanto... 'HA HA HA!' Bom... Esta preparado? \z
-                    Para essa missao, preciso que me traga 5 Infernal Hearts! Voce pode obte-los derrotando Infernal Phantoms. Estarei esperando pelos Infernal Hearts de maxima qualidade!", npc, creature)
+                    Para essa missao, preciso que me traga 5 Norcferatu Talismans! Voce pode obte-los derrotando criaturas Norcferatu na ilha dos vampiros. Estarei esperando!", npc, creature)
                     player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 129)
                     npcHandler:setTopic(playerId, 0)
                 elseif storage == 129 then
                     if randomChance > 6 then
-                        if player:removeItem(34139, 1) then
+                        if player:removeItem(51487, 1) then
                             if storageItems < 3 then
                                 player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.ItensDeQualidade, storageItems + 1)
-                                npcHandler:say("Excelente! Esse Infernal Heart tem uma otima qualidade. Ok, traga-me mais " ..itemsLeft.. " itens iguais a este.", npc, creature)
+                                npcHandler:say("Excelente! Esse Norcferatu Talisman tem uma otima qualidade. Ok, traga-me mais " ..itemsLeft.. " itens iguais a este.", npc, creature)
                                 player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.ItemsTimer, os.time() + 15 * 60)
                                 npcHandler:setTopic(playerId, 0)
                             elseif storageItems == 3 then
                                 player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.ItensDeQualidade, storageItems + 1)
-                                npcHandler:say("Ecelente! Esse Infernal Heart tem altissima qualidade. Ok, traga-me mais " ..itemsLeft.. " item igual a este.", npc, creature)
+                                npcHandler:say("Ecelente! Esse Norcferatu Talisman tem altissima qualidade. Ok, traga-me mais " ..itemsLeft.. " item igual a este.", npc, creature)
                                 player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.ItemsTimer, os.time() + 15 * 60)
                                 npcHandler:setTopic(playerId, 0)
                             elseif storageItems >= 4 then
@@ -1349,25 +1403,25 @@ local function creatureSayCallback(npc, creature, type, message)
                                 npcHandler:setTopic(playerId, 0)
                             end
                         else
-                            npcHandler:say("Traga-me todas as 5 Infernal Hearts com alta qualidade.", npc, creature)
+                            npcHandler:say("Traga-me todas as 5 Norcferatu Talismans com alta qualidade.", npc, creature)
                             npcHandler:setTopic(playerId, 0)
                         end
                     else
-                        if player:removeItem(34139, 1) then
+                        if player:removeItem(51487, 1) then
                             npcHandler:say("Sinto muito, mas esse item nao tem boa qualidade.", npc, creature)
                             npcHandler:setTopic(playerId, 0)
                         else
-                            npcHandler:say("Traga-me todas as 5 Infernal Hearts com alta qualidade.", npc, creature)
+                            npcHandler:say("Traga-me todas as 5 Norcferatu Talismans com alta qualidade.", npc, creature)
                             npcHandler:setTopic(playerId, 0)
                         end
                     end
                 elseif storage == 130 then
                     npcHandler:say("Bom, " ..dear.. " |PLAYERNAME|... Suas proximas missoes serao para beneficiar a todos de Crandoria. Faremos em breve uma comemoracao do aniversario da cidade e preciso que me traga algumas coisas. \z
-                    Tudo o que vou te pedir sera essencial para que corra tudo bem e nao falte nada na festa, entao por favor nos ajude com isso. Primeiramente eu preciso de garrafas de cerveja. Elas podem ser adquiridas com Brugadok em Astralis. \z
-                    Preciso de 5 delas. Estarei esperando, por favor nao demore!", npc, creature)
+                    Tudo o que vou te pedir sera essencial para que corra tudo bem e nao falte nada na festa, entao por favor nos ajude com isso. Primeiramente eu preciso de um pouco de rum de Astralis. Rum pode ser adquirido com Brugadok. \z
+                    Preciso de 1 garrafa. Estarei esperando, por favor nao demore!", npc, creature)
                     player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 131)
                 elseif storage == 131 then
-                    if player:removeItem(21872, 5) then
+                    if player:removeItem(36601, 1) then
                         npcHandler:say("Excelente! A cerveja de Astralis sempre foi a melhor cerveja do Novo Continente. Alguns dizem que a agua do lugar tem uma pureza especial... Quem sabe... Bom, aqui esta sua recompensa. Me avise quando quiser iniciar a proxima missao.", npc, creature)
                         player:addExperience(2500000 * (player:getLevel() / 100), true)
                         player:addMoney(300000, true)
@@ -1424,14 +1478,14 @@ local function creatureSayCallback(npc, creature, type, message)
                         npcHandler:setTopic(playerId, 0)
                     end
                 elseif storage == 136 then
-                    npcHandler:say("Bom, " ..dear.. " |PLAYERNAME|. Por ultimo, mas nao menos importante: Precisamos de presentes! Acredito que um dos melhores presentes que alguem pode receber talvez seja uma Wilfred's Bag. \z
-                    Wilfred Storm fica ao lado da loja da Jessica, em Crandoria, e oferece missoes diarias a guerreiros que ja possuem seu poder comprovado. Em troca ele oferece suas Wilfred Bags. Que tal trazer uma para mim? \z
-                    Se cada guerreiro trouxer uma, conseguiremos presentear todos os habitantes de Crandoria na nossa comemoracao. Estarei esperando!", npc, creature)
+                    npcHandler:say("Bom, " ..dear.. " |PLAYERNAME|. Por ultimo, mas nao menos importante: Precisamos de presentes! Como a maioria dos convidados sao guerreiros de Crandoria, talvez seja interessante algo que sirva para eles. \z
+                    Sendo assim, quero que me traga Gold Tokens. Acredito que 30 Gold Tokens serao o suficiente. Voce encontrara Gold Tokens derrotando diversos bosses do continente. Ficarei esperando por voce.", npc, creature)
                     player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 137)
                     npcHandler:setTopic(playerId, 0)
                 elseif storage == 137 then
-                    if player:removeItem(39577, 1) then
-                        npcHandler:say("Sua generosidade nao tem tamanho, " ..dear.. " |PLAYERNAME|. Sei que alguem ficara feliz ao receber este presente. Aqui, te darei uma boa recompensa em troca dele. Agora sim teremos uma festa e tanto! Muito obrigado pela ajuda.", npc, creature)
+                    if player:removeItem(22721, 30) then
+                        npcHandler:say("Sua generosidade nao tem tamanho, " ..dear.. " |PLAYERNAME|. Sei que alguem ficara feliz ao receber este presente. Aqui, te darei uma boa recompensa em troca dele. Agora sim teremos uma festa e tanto! Muito obrigado pela ajuda.\z
+                        Escute... Vou conversar com Mordecai sobre voce. Ele fica na regiao norte de Crandoria e cuida das Estatuas de Virtude. Depois fale com ele, talvez ele permita que voce use os buffs das estatuas. Fale comigo quando quiser otura {missao}.", npc, creature)
                         player:addExperience(2500000 * (player:getLevel() / 100), true)
                         player:addMoney(350000, true)
                         player:addItem(26186, 2, true)
@@ -1440,7 +1494,7 @@ local function creatureSayCallback(npc, creature, type, message)
                         player:addAchievement("Festejando em Crandoria")
                         npcHandler:setTopic(playerId, 0)
                     else
-                        npcHandler:say("Por favor, traga uma Wilfred's Bag para que possamos usa-la como presente para um de nossos habitantes durante nossa festa.", npc, creature)
+                        npcHandler:say("Por favor, traga 30 Gold Tokens para que possamos usa-las como presentes nossos guerreiros durante nossa festa.", npc, creature)
                         npcHandler:setTopic(playerId, 0)
                     end
                 elseif storage == 138 then
@@ -1561,7 +1615,6 @@ local function creatureSayCallback(npc, creature, type, message)
                         player:addOutfitAddon(1094, 2)
                         player:addAchievement("Explorador de Crandoria")
                         player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
-                        local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
                         player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 3)
                         player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
                         player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 150)
@@ -1580,170 +1633,71 @@ local function creatureSayCallback(npc, creature, type, message)
                     npcHandler:say("Derrote a Pale Worm e retorne ate mim para reportar sua vitoria.", npc, creature)
                     npcHandler:setTopic(playerId, 0)
                 elseif storage == 152 then
-                    npcHandler:say("Mais uma vez voce nao decepcionou, " ..dear.. " |PLAYERNAME|. Aquele maldito verme gigante estava causando problemas ha muito tempo! Aqui esta sua recompensa. Me avise quando quiser iniciar a sua proxima missao.", npc, creature)
+                    npcHandler:say("Mais uma vez voce nao decepcionou, " ..dear.. " |PLAYERNAME|. Aquele maldito verme gigante estava causando problemas ha muito tempo! Aqui esta sua recompensa.", npc, creature)
                     player:addExperience(2500000 * (player:getLevel() / 100), true)
                     player:addMoney(400000, true)
                     player:addItem(9099, 1, true)
                     player:addItem(637, 3, true)
                     player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
                     player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 153)
+                    player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 3)
+                    player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
                     npcHandler:setTopic(playerId, 0)
                 elseif storage == 153 then
-                    npcHandler:say("Chegou a hora, " ..dear.. " |PLAYERNAME|. Precisamos explorar melhor os perigos do Novo Continente, nao apenas para derrotar criaturas terriveis, mas para resolver problemas que nos cercam. \z
-                    Em Squidspot ha um desses problemas, chamado Doctor Marrow. Este cientista maluco esta trabalhando em experimentos terriveis, tentando transformar a si proprio num monstro. Temos medo de que ele utilize isso nao apenas em si, mas nos outros. \z
-                    Preciso que voce va ate as profundezas das cavernas de Squidspot e encontre seu esconderijo. Derrote-o de uma vez por todas e retorne ate mim. E tenha muito cuidado!", npc, creature)
+                    npcHandler:say("Chegou a hora, " ..dear.. " |PLAYERNAME|. Essa sera uma longa jornada dependendo do quanto voce ja explorou do Novo Continente. Mas sei que sera capaz. \z
+                    Na ilha de Dracantus ha um poderoso individuo nomeado Drako. Ele conhece os segredos da ilha, assim como a forma de chegar ao The First Dragon, o primeiro dos dragoes. \z
+                    Sua missao sera ajuda-lo a encontrar este temivel dragao e derrota-lo. Ao fazer isso voce recebera um novo acesso a um local conhecido apenas pelos mais fortes. Retorne ate mim quando finalizar a missao.", npc, creature)
                     player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 154)
                     npcHandler:setTopic(playerId, 0)
                 elseif storage == 154 then
-                    npcHandler:say("Derrote Doctor Marrow em Squidspot e retorne ate mim.", npc, creature)
-                    npcHandler:setTopic(playerId, 0)
-                elseif storage == 155 then
-                    npcHandler:say("Nem mesmo o terrivel monstro de Doctor Marrow coseguiu te parar, " ..dear.. " |PLAYERNAME|. Muito impressionante! Aqui esta sua recompensa. Sua proxima missao ja te espera!", npc, creature)
-                    player:addExperience(2500000 * (player:getLevel() / 100), true)
-                    player:addMoney(400000, true)
-                    player:addItem(22724, 25, true)
-                    player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
-                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 156)
-                    npcHandler:setTopic(playerId, 0)
-                elseif storage == 156 then
-                    npcHandler:say("Muito bem, " ..dear.. " |PLAYERNAME|. O Doctor Marrow talvez nao tenha sido um desafio tao grande para voce, mas o proximo desafio com certeza sera muito maior! \z
-                    Nas profundezas das cavernas que levam a Pale Worm voce encontrara uma alavanca que o levara para uma gruta sombria e perigosa. Atravessando o lugar voce encontrara um teleport que o levara para uma sala especial. \z
-                    Nessa sala voce encontrara os chefes da 'Soul War'! Sua missao sera derrotar todos eles e, por fim, derrotar o temivel Goshnar's Megalomania! Se conseguir terminar a missao, retorne ate mim. Confio no seu poder.", npc, creature)
-                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 157)
-                    npcHandler:setTopic(playerId, 0)
-                elseif storage == 157 then
-                    npcHandler:say("Derrote Goshnar's Megalomania e retorne ate mim. Te darei uma boa recompensa em troca de sua missao.", npc, creature)
-                    npcHandler:setTopic(playerId, 0)
-                elseif storage == 158 then
-                    npcHandler:say("Voce demorou, " ..dear.. " |PLAYERNAME|. Mas eu entendo perfeitamente... Goshnar's Megalomania nao seria mesmo um desafio facil. Aqui, sua recompensa. Muito obrigado pela ajuda nessa missao tao importante.", npc, creature)
-                    player:addExperience(2500000 * (player:getLevel() / 100), true)
-                    player:addMoney(400000, true)
-                    player:addItem(22724, 35, true)
-                    player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
-                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 159)
-                    npcHandler:setTopic(playerId, 0)
-                elseif storage == 159 then
-                    npcHandler:say("Vejamos se voce realmente se tornou mestre em explorar cavernas e locais perigosos, " ..dear.. " |PLAYERNAME|. Sua proxima missao sera em uma caverna na Ilha de Sangue, onde fica localizada a cidade de Umbra. \z
-                    No leste da ilha voce encontrara um velho chamado Frigard. Ele precisara de ajuda com duas missoes. Finalize as duas missoes de Frigard e retorne ate mim. MAS CUIDADO!! Na segunda missao voce ira para um local muito perigoso. \z
-                    Todos que sao derrotados naquele lugar perdem seus pertences. Tome muito cuidado. Leve um time, se achar necessario! Retorne quanto terminar sua missao e te darei uma grande recompensa!", npc, creature)
-                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 160)
-                    npcHandler:setTopic(playerId, 0)
-                elseif storage == 160 or storage == 161 then
-                    npcHandler:say("Voce deve ajudar Frigard em suas duas missoes e depois retornar ate mim.", npc, creature)
-                    npcHandler:setTopic(playerId, 0)
-                elseif storage == 162 then
-                    npcHandler:say("Muito bom, " ..dear.. " |PLAYERNAME|. Espero que voce nao tenha passado por grandes problemas durante as missoes. De qualquer forma, devo dizer que voce esta me impressionando. Aqui, sua recompensa e o novo outfit Cave Explorer, dado apenas aos verdadeiros Exploradores das Profundezas.", npc, creature)
-                    player:addExperience(2500000 * (player:getLevel() / 100), true)
-                    player:addMoney(400000, true)
-                    player:addItem(22724, 30, true)
-                    player:addOutfit(575, 0)
-                    player:addOutfit(574, 0)
-                    local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
-                    player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 1)
-                    player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
-                    player:addAchievement("Explorador das Profundezas")
-                    player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
-                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 163)
-                    local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
-                    player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 5)
-                    player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
-                    npcHandler:setTopic(playerId, 0)
-                elseif storage == 163 then
-                    npcHandler:say("" ..dear.. " |PLAYERNAME|, sua coragem realmente inspira todos em Crandoria. Creio que esta na hora de avaliar se voce realmente entendeu como algumas coisas funcionam por aqui... \z
-                    Voce passara por um teste que sera dividido em tres missoes. A primeira missao se chama 'Paz na Guerra'. Essa missao sera muito simples: Derrote um jogador que esteja com White Skull ativada. Mas atencao! \z
-                    O jogador nao pode ter mais que 100 niveis abaixo do seu! Boa sorte limpando Crandoria dos malfeitores.", npc, creature)
-                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 164)
-                    npcHandler:setTopic(playerId, 0)
-                elseif storage == 164 then
-                    npcHandler:say("Paz na Guerra: derrote um jogador com skull - White, Red ou Black - que tenha no maximo 100 niveis a menos que voce. A morte precisa ser justa e nao vale personagem do mesmo IP que o seu.", npc, creature)
-                    npcHandler:setTopic(playerId, 0)
-                elseif storage == 165 then
-                    npcHandler:say("Muito bem, " ..dear.. " |PLAYERNAME|. Um malfeitor a menos nas ruas de Crandoria! Aqui esta sua recompensa. \z
-                    A segunda missao se chama 'Justica em Crandoria': derrote tres jogadores DIFERENTES com skull, seguindo a mesma regra - no maximo 100 niveis a menos que voce. Retorne quando terminar.", npc, creature)
-                    player:addExperience(2500000 * (player:getLevel() / 100), true)
-                    player:addMoney(300000, true)
-                    player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
-                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.PvpAlvos, 0)
-                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.PvpAlvo1, -1)
-                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.PvpAlvo2, -1)
-                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 166)
-                    npcHandler:setTopic(playerId, 0)
-                elseif storage == 166 then
-                    local feitos = math.max(0, player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.PvpAlvos))
-                    npcHandler:say("Justica em Crandoria: derrote tres jogadores diferentes com skull, com no maximo 100 niveis a menos que voce. Voce ja derrotou " ..feitos.. " de 3.", npc, creature)
-                    npcHandler:setTopic(playerId, 0)
-                elseif storage == 167 then
-                    local maosLimpas = player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.PvpMaosLimpas)
-                    if maosLimpas < 1 then
-                        npcHandler:say("Tres malfeitores derrotados! Crandoria agradece, " ..dear.. " |PLAYERNAME|. Aqui esta sua recompensa. \z
-                        Mas um verdadeiro defensor sabe quando NAO lutar. A ultima missao do teste se chama 'Maos Limpas': fique 24 horas sem matar nenhum jogador de forma injustificada e volte sem skull. \z
-                        Se matar alguem injustamente, o prazo recomeca.", npc, creature)
-                        player:addExperience(2500000 * (player:getLevel() / 100), true)
-                        player:addMoney(300000, true)
-                        player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
-                        player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.PvpMaosLimpas, os.time())
-                    elseif player:getSkull() ~= SKULL_NONE then
-                        npcHandler:say("Voce esta marcado com uma skull, " ..dear.. " |PLAYERNAME|. Volte quando ela tiver sumido.", npc, creature)
-                    elseif os.time() - maosLimpas < 24 * 60 * 60 then
-                        local horas = math.ceil((maosLimpas + 24 * 60 * 60 - os.time()) / 3600)
-                        npcHandler:say("Maos Limpas: continue sem matar ninguem de forma injustificada. Faltam cerca de " ..horas.. " hora(s).", npc, creature)
+                    if player:getStorageValue(Storage.Quest.U11_02.TheFirstDragon.Progresso) < 11 then
+                        npcHandler:say("Derrote o The First Dragon e finalize sua missao com Drako.", npc, creature)
+                        npcHandler:setTopic(playerId, 0)
                     else
-                        npcHandler:say("Maos limpas e cabeca fria. Voce passou no meu teste, " ..dear.. " |PLAYERNAME|! Fale comigo novamente sobre a proxima {missao}.", npc, creature)
+                        npcHandler:say("Muito bem, " ..dear.. " |PLAYERNAME|. Muito impressionante! Aqui esta sua recompensa.", npc, creature)
+                        player:addExperience(2500000 * (player:getLevel() / 100), true)
+                        player:addMoney(400000, true)
+                        local bag = player:addItem(2859, 1)
+                        if bag then
+                            player:addItem(22724, 25, true)
+                            player:addItem(22721, 15, true)
+                            player:addItem(22516, 15, true)
+                        end
                         player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
-                        player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 168)
-                    end
-                    npcHandler:setTopic(playerId, 0)
-                elseif storage == 168 then
-                    npcHandler:say("Bom, " ..dear.. " |PLAYERNAME|, Voce agora tornou Crandoria um local mais seguro. Mas tambem sera importante entender como se sentem os criminosos do nosso mundo... \z
-                    Por isso sua proxima missao sera ir para a prisao! Ha ha ha. Voce nao ouviu errado... \z
-                    Seja pego pelo Anti Afk respondendo errado a uma checagem ou deixando o tempo acabar antes de responder. Depois disso retorne ate mim e me conte sobre sua experiencia.", npc, creature)
-                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 169)
-                    player:addExperience(player:getLevel() * 25000)
-                    player:addItem(22706, 1)
-                    npcHandler:setTopic(playerId, 0)
-                elseif storage == 169 then
-                    npcHandler:say("Seja preso pelo sistema Anti Afk e depois retorne ate mim e me conte sobre sua experiencia.", npc, creature)
-                    npcHandler:setTopic(playerId, 0)
-                elseif storage == 170 then
-                    npcHandler:say("Como foi a experiencia, " ..dear.. " |PLAYERNAME|? Nao ficou com medo da prisao, ficou? Ha ha ha ha! Claramente eu nao deixaria que voce passasse nenhum minuto preso naquele lugar. Tudo foi planejado. \z
-                    Bom, agora voce sabe o que voce passa ao ser pego pelo antiafk... A cada vez que voce for preso, sua pena aumentara em 15 minutos, podendo chegar a 24 horas! Entao tome cuidado... \z
-                    Aqui, uma recompensa pelo susto que te fiz passar... Ha ha ha!", npc, creature)
-                    player:addExperience(3500000 * (player:getLevel() / 100), true)
-                    player:addMoney(200000, true)
-                    player:addItem(39136, 3, true)
-                    player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
-                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 171)
-                    npcHandler:setTopic(playerId, 0)
-                elseif storage == 171 then 
-                    npcHandler:say("Voce chegou longe, " ..dear.. " |PLAYERNAME|. Devo dizer que depois de tudo o que passamos estou muito orgulhoso do seu progresso, Te passarei agora a ultima missao que voce fara ao meu lado... Pelo menos por enquanto.  \z
-                    Voce agora esta entendendo bem as regras e ja mostrou que tem conhecimento do que evitar para ficar longe da prisao... Muito bem, agora te darei seu ultimo teste, voce esta preparado? ({sim} / {nao})", npc, creature)
-                    npcHandler:setTopic(playerId, 26)
-                elseif storage == 172 or storage == 173 then
-                    npcHandler:say("Volte quando tiver conseguido a permissao de King Tibianus para obter o Perdao Secreto.", npc, creature)
-                    npcHandler:setTopic(playerId, 0)
-                elseif storage == 174 then
-                    npcHandler:say("Eu sabia, " ..dear.. " |PLAYERNAME|! Voce realmente mostrou ser digno de ser chamado de Defensor de Crandoria! Estou muito contence em dizer que seu treinamento comigo chegou ao fim. \z
-                    Mas nao pense que isso significa que suas aventuras pelo reino de Crandoria acabaram. Voce apenas mudara um pouco o rumo das coisas... Va ate Magincia e converse com Kalahar, um dos representantes supremos da Sociedade dos Magos. \z
-                    Ele guiara seu caminho para desafios ainda maiores que os meus. Prepare-se... Sera uma jornada e tanto! Boa sorte. E aqui, sua ultima recompensa!", npc, creature)
-                    player:addExperience(5000000 * (player:getLevel() / 100), true)
-                    player:addItem(14112)
-                    player:addItem(22706, 3, true)
-                    player:addItem(26186, 2, true)
-                    player:getPosition():sendMagicEffect(CONST_ME_THUNDER)
-                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 175)
-                    local storageRep = player:getStorageValue(Storage.Quest.Crandoria.Reputation.Points)
-                    player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 5)
-                    player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
-                    npcHandler:setTopic(playerId, 0)
-                elseif storage == 175 then
-                    npcHandler:say("Nao tenho mais nenhuma missao para voce, " ..dear.. " |PLAYERNAME|.", npc, creature)
-                    npcHandler:setTopic(playerId, 0)
-                else
-                    if player:getStorageValue(Storage.Quest.Crandoria.IntoTheShaodws.Progresso) == 16 then
-                        npcHandler:say("Entao voces descobriram a localizacao de Hidrox e Rocket Tank? Otimo. Diga a Lady Vandart que mandarei as tropas hoje mesmo para captura-los.", npc, creature)
-                        player:setStorageValue(Storage.Quest.Crandoria.IntoTheShaodws.Progresso, 17)
+                        player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 175)
+                        player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 3)
+                        player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
                         npcHandler:setTopic(playerId, 0)
                     end
+                elseif storage >= 175 and storage < 229 then
+                    npcHandler:say("Sua jornada a partir daqui sera guiada por Kalahar, em Magincia. Procure por ele e siga com suas missoes. Caso seja necessario ele o guiara de volta ate aqui. Boa sorte!", npc, creature)
+                    npcHandler:setTopic(playerId, 0)
+                elseif storage == 229 then
+                    npcHandler:say("Muito bem, " ..dear.. " |PLAYERNAME|. Kalahar disse que voce foi excepcional em suas tarefas. Fico feliz em saber que nao te superestimei. \z
+                    Agora voce esta pronto para a sua missao mais dificil: Derrotar Bakragore. Voce o encontrara em Tartarus, pelo navio do Captain Donahue. Boa sorte, voce vai precisar...", npc, creature)
+                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 230)
+                    npcHandler:setTopic(playerId, 0)
+                elseif storage == 230 then
+                    npcHandler:say("Derrote Bakragore na ilha de Tartarus.", npc, creature)
+                    npcHandler:setTopic(playerId, 0)
+                elseif storage == 231 then
+                    npcHandler:say("Parabens, " ..dear.. " |PLAYERNAME|! Voce se tornou oficialmente um Defendor de Crandoria da classe mais alta. Em troca voce recebera o Golden Outfits completo. \z
+                    Alem disso, uma boa quantidade de experiencia e, claro, uma Bag you Covet. Faca bom proveito!", npc, creature)
+                    player:addOutfit(1211)
+                    player:addOutfit(1210)
+                    player:addOutfitAddon(1211, 1)
+                    player:addOutfitAddon(1211, 2)
+                    player:addOutfitAddon(1210, 1)
+                    player:addOutfitAddon(1210, 2)
+                    player:addItem(43895, 1)
+                    player:addExperience(200000000, true)
+                    player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 232)
+                    player:setStorageValue(Storage.Quest.Crandoria.Reputation.Points, storageRep + 15)
+                    player:say('+ Reputacao', TALKTYPE_MONSTER_SAY)
+                    npcHandler:setTopic(playerId, 0)
+                elseif storage == 232 then
+                    npcHandler:say("Voce atingiu o nivel mais alto entre os Defensores de Crandoria. Caminhe livremente pelo Novo Continente e continua escrevendo sua historia, " ..dear.. " |PLAYERNAME|.", npc, creature)
+                    npcHandler:setTopic(playerId, 0)
                 end
             elseif itemsTimer > os.time() then
                 npcHandler:say("" ..dear.. " |PLAYERNAME|, voce precisa esperar " ..timeLeftItems.." minutos para trazer um novo item. Ainda estou limpando minhas ferramentas de analise.", npc, creature)
@@ -1753,15 +1707,6 @@ local function creatureSayCallback(npc, creature, type, message)
             npcHandler:say("Voce precisara aguardar " ..timeLeft.. " minutos para iniciar uma nova missao.", npc, creature)
             npcHandler:setTopic(playerId, 0)
         end
-    elseif MsgContains(message, "boss eye") then
-        npcHandler:say("Gostaria de vender seu Boss Eye por 15 Tokens de Evento?", npc, creature)
-        npcHandler:setTopic(playerId, 36)
-    elseif MsgContains(message, "special timer") then
-        npcHandler:say("Gostaria de vender seu Special Timer por 20 Tokens de Evento?", npc, creature)
-        npcHandler:setTopic(playerId, 37)
-    elseif MsgContains(message, "passe dos novatos") then
-        npcHandler:say("Gostaria de vender seu Passe dos Novatos por 50.000 gold coins?", npc, creature)
-        npcHandler:setTopic(playerId, 35)
     elseif MsgContains(message, "cookie") then
         if player:getStorageValue(Storage.Quest.Crandoria.EventoNatal.Missao) == 1 then
             if player:getItemCount(3598) >= 5 then
@@ -1798,7 +1743,8 @@ local function creatureSayCallback(npc, creature, type, message)
             npcHandler:setTopic(playerId, 0)
         elseif npcHandler:getTopic(playerId) == 4 then
             player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 7)
-            npcHandler:say("Perfeito! HA! Agora esses malditos dragoes terao o que merecem! Estarei te esperando com os 3 green dragon leathers e os 3 green dragon scales.", npc, creature)
+            -- npcHandler:say("Perfeito! HA! Agora esses malditos dragoes terao o que merecem! Estarei te esperando com os 3 green dragon leathers e os 3 green dragon scales.", npc, creature)
+            npcHandler:say("Muito bem, estarei aguardando. Tenho certeza de que nao sera um problema para alguem tao promissor. Boa sorte!", npc, creature)
             npcHandler:setTopic(playerId, 0)
         elseif npcHandler:getTopic(playerId) == 6 then
             player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 9)
@@ -1806,11 +1752,8 @@ local function creatureSayCallback(npc, creature, type, message)
             npcHandler:setTopic(playerId, 0)
         elseif npcHandler:getTopic(playerId) == 7 then
             npcHandler:say("Otimo. Proximo aos dragons de Crandoria voce encontrara uma caverna onde ha variso Heroes e Necromancers. Mas se preferir pode buscar por outros locais, o Novo Continente esta cheio deles. Estarei te esperando com os itens!", npc, creature)
-            player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 11)
+            player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 9)
             npcHandler:setTopic(playerId, 0)
-        elseif npcHandler:getTopic(playerId) == 8 then
-            npcHandler:say("Nenhuma missao parece um desafio grande demais para voce, nao e mesmo? Entao va! Busque por frost giants, frost dragons, barbaros e crystal spiders e me traga os 5 shards.", npc, creature)
-            player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 13)
         elseif npcHandler:getTopic(playerId) == 9 then
             npcHandler:say("Excelente! Estarei esperando pelo escudo aqui mesmo. Voce podera obte-lo facilmente com Dragon Lords ou Frost Dragons.", npc, creature)
             player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 15)
@@ -1868,10 +1811,6 @@ local function creatureSayCallback(npc, creature, type, message)
             player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 57)
             npcHandler:setTopic(playerId, 0)
         elseif npcHandler:getTopic(playerId) == 23 then
-            npcHandler:say("Certo! Estarei esperando pelo seu retorno com os espolios solicitados!", npc, creature)
-            player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 59)
-            npcHandler:setTopic(playerId, 0)
-        elseif npcHandler:getTopic(playerId) == 23 then
             npcHandler:say("Muito bem. Lembre-se: Voce pode obter um Watering Can comprando por gold com a NPC Romira, em Astralis, ou pela Store.", npc, creature)
             player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Timer, os.time() + 1 * 60 * 60)
             player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 63)
@@ -1884,12 +1823,6 @@ local function creatureSayCallback(npc, creature, type, message)
             npcHandler:say("Muito bem!! Cuidado, esse item pode ser muito delicado e acabar estragando. Traga apenas um de cada vez! Ficarei esperando.", npc, creature)
             player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 115)
             player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.ItensDeQualidade, 0)
-            npcHandler:setTopic(playerId, 0)
-        elseif npcHandler:getTopic(playerId) == 26 then
-            npcHandler:say("Preste muita atencao! Te contarei agora um segredo que apenas alguns guerreiros de Crandoria conhecem e podem utilizar: O Perdao Secreto do Rei Tibianus. \z
-            O Rei Tibianus acredita que nem todo criminoso merece penas tao severas na prisao e, por isso, ele concedera seu Perdao Secreto, reduzindo a zero seu tempo acumulado de prisao. \z
-            Va ate o Rei Tibianus e fale a ele sobre o perdao secreto. Se ele perguntar, diga que voce foi enviado por mim. Consiga a aprovacao do Rei para que ele permita seu perdao para a prisao e depois retorne ate mim!", npc, creature)
-            player:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 172)
             npcHandler:setTopic(playerId, 0)
         elseif npcHandler:getTopic(playerId) == 30 then
             npcHandler:say("Entao preste atencao: Para ir de Crandoria para Viridia voce precisa estar sem nenhum item equipado, nem mesmo sua mochila. Alem disso, voce retornara ao nivel 8 e perdera 40 pontos de cada skill de valor igual ou superior a 50. \z

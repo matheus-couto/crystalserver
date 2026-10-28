@@ -61,8 +61,8 @@ local function creatureSayCallback(npc, creature, type, message)
     if MsgContains(message, "missao") or MsgContains(message, "mission") then
         if player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 63 then
             npcHandler:say("Ola, |PLAYERNAME|. Comandante Crassus avisou que voce viria. Como ele deve ter te falado, nossa cidade sobrevive basicamente a base de cultivo e mineracao, mas nao temos muitas pessoas produzindo ultimamente. \z
-			Enfim... Estou precisando de 25 Fresh Fruits para meu estoque. Voce pode colhe-las em sua propria fazenda ou diretamente das minhas plantas, ao norte do curral comunitario. Elas produzem a cada 8 horas, mas podem produzir coisas indesejaveis... \z
-			O importante sera conseguir todas as Peas! Voce aceita a missao?", npc, creature)
+			Enfim... Estou precisando de 25 Fresh Fruits para meu estoque. Voce pode colhe-las em sua propria fazenda ou diretamente das minhas plantas, ao norte do curral comunitario. Elas produzem de tempos em tempos, mas podem produzir coisas indesejaveis... \z
+			O importante sera conseguir todas as Fresh Fruits! Voce aceita a missao?", npc, creature)
 			npcHandler:setTopic(playerId, 1)
 		elseif player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 64 then
 			if player:removeItem(25692, 25) then

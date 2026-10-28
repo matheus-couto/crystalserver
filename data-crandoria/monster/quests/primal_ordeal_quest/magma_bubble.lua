@@ -2,7 +2,7 @@ local mType = Game.createMonsterType("Magma Bubble")
 local monster = {}
 
 monster.description = "magma bubble"
-monster.experience = 2500000
+monster.experience = 500000
 monster.outfit = {
 	lookType = 1413,
 	lookHead = 0,

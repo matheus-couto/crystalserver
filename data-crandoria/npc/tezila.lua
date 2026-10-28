@@ -121,6 +121,166 @@ npcConfig.shop = {
 	{ itemName = "bounty talisman", clientId = 51978, buy = 5000 },
 }
 
+
+local function creatureSayCallback(npc, creature, type, message)
+	local player = Player(creature)
+	local playerId = player:getId()
+
+	if not npcHandler:checkInteraction(npc, creature) then
+		return false
+	end
+
+	local knight = player:getVocation():getBaseId() == VOCATION.BASE_ID.KNIGHT
+    local paladin = player:getVocation():getBaseId() == VOCATION.BASE_ID.PALADIN
+    local monk = player:getVocation():getBaseId() == VOCATION.BASE_ID.MONK
+    local druid = player:getVocation():getBaseId() == VOCATION.BASE_ID.DRUID
+    local sorcerer = player:getVocation():getBaseId() == VOCATION.BASE_ID.SORCERER
+
+	local storage = player:getStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso)
+
+	local value1 = 100000 -- ek
+	local value2 = 100000 -- paladin
+	local value3 = 100000 -- sorcerer
+	local value4 = 100000 -- ed
+	local value5 = 100000 -- monk
+
+	if knight then
+		value1 = 50000
+		value2 = 50000
+	elseif paladin then
+		value2 = 50000
+		value3 = 50000
+	elseif sorcerer then
+		value3 = 50000
+		value4 = 50000
+	elseif druid then
+		value4 = 50000
+		value5 = 50000
+	elseif monk then
+		value5 = 50000
+		value1 = 50000
+	end
+
+	if MsgContains(message, "missao") or MsgContains(message, "mission") or MsgContains(message, "bonificacao") or MsgContains(message, "bonus") then
+		if storage == 2 then
+			npcHandler:say("Ah, entao Mordecai te mandou aqui pela bonificacao. Sim, estamos dando um bonus de acordo com as vocacoes dos Defensores de Crandoria. \z
+			Para Knights, "..value1.." gold coins. Para Paladins, "..value2.." gold coins. Para Sorcerers, "..value3.." gold coins. Para Druids, "..value4.." gold coins. Para Monks, "..value5.." gold coins. \z
+			E entao, qual a sua vocacao?", npc, creature)
+			npcHandler:setTopic(playerId, 1)
+		end
+	elseif MsgContains(message, "knight") then
+		if knight then
+			player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso, 3)
+			player:addItem(3043, 5)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu 5 Crystal Coins.")
+		elseif paladin then
+			player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso, 4)
+			player:addItem(3043, 5)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu 5 Crystal Coins.")
+		else
+			player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso, 5)
+			player:addItem(3043, 10)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu 10 Crystal Coins.")
+		end
+		npcHandler:say("Ah, verdade? Nao parece... se me perguntassem eu nao acertaria. Mas enfim, aqui esta. Anvillux agradece pelos seus servicos como Defensor de Crandoria e do Novo Continente!", npc, creature)
+		npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "paladin") then
+		if paladin then
+			player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso, 3)
+			player:addItem(3043, 5)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu 5 Crystal Coins.")
+		elseif sorcerer then
+			player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso, 4)
+			player:addItem(3043, 5)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu 5 Crystal Coins.")
+		else
+			player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso, 5)
+			player:addItem(3043, 10)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu 10 Crystal Coins.")
+		end
+		npcHandler:say("Ah, verdade? Nao parece... se me perguntassem eu nao acertaria. Mas enfim, aqui esta. Anvillux agradece pelos seus servicos como Defensor de Crandoria e do Novo Continente!", npc, creature)
+		npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "sorcerer") then
+		if sorcerer then
+			player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso, 3)
+			player:addItem(3043, 5)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu 5 Crystal Coins.")
+		elseif druid then
+			player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso, 4)
+			player:addItem(3043, 5)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu 5 Crystal Coins.")
+		else
+			player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso, 5)
+			player:addItem(3043, 10)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu 10 Crystal Coins.")
+		end
+		npcHandler:say("Ah, verdade? Nao parece... se me perguntassem eu nao acertaria. Mas enfim, aqui esta. Anvillux agradece pelos seus servicos como Defensor de Crandoria e do Novo Continente!", npc, creature)
+		npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "druid") then
+		if druid then
+			player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso, 3)
+			player:addItem(3043, 5)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu 5 Crystal Coins.")
+		elseif monk then
+			player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso, 4)
+			player:addItem(3043, 5)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu 5 Crystal Coins.")
+		else
+			player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso, 5)
+			player:addItem(3043, 10)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu 10 Crystal Coins.")
+		end
+		npcHandler:say("Ah, verdade? Nao parece... se me perguntassem eu nao acertaria. Mas enfim, aqui esta. Anvillux agradece pelos seus servicos como Defensor de Crandoria e do Novo Continente!", npc, creature)
+		npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "monk") then
+		if monk then
+			player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso, 3)
+			player:addItem(3043, 5)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu 5 Crystal Coins.")
+		elseif knight then
+			player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso, 4)
+			player:addItem(3043, 5)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu 5 Crystal Coins.")
+		else
+			player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso, 5)
+			player:addItem(3043, 10)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu 10 Crystal Coins.")
+		end
+		npcHandler:say("Ah, verdade? Nao parece... se me perguntassem eu nao acertaria. Mas enfim, aqui esta. Anvillux agradece pelos seus servicos como Defensor de Crandoria e do Novo Continente!", npc, creature)
+		npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "yes") or MsgContains(message, "sim") then
+		if npcHandler:getTopic(playerId) == 1 then
+			npcHandler:say("Muito bem, entao preste atencao: Ha seis virtudes igualmente importantes que voce precisa dominar no seu caminho, independente de sua vocacao. \z
+			Sao elas: Honra, Coragem, Sacrificio, Honestidade, Humildade e Justica. Quando conseguir dominar as seis virtudes, sera superior a grande maioria dos guerreiros dessas terras. \z
+			E para iniciar sua jornada, pedirei por algo simples que sera extremamente necessario em sua jornada: traga para mim um Writhing Heart, obtido do boss The Unwelcome. Simples, certo? Ficarei esperando.", npc, creature)
+			player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso, 1)
+			npcHandler:setTopic(playerId, 0)
+		elseif npcHandler:getTopic(playerId) == 2 then
+			if player:getItemCount(32599) >= 1 then
+				player:removeItem(32599, 1)
+				player:addExperience(2500000, true)
+				player:addMoney(185000, true)
+				npcHandler:say("Ah! Excelente! Nao se preocupe, te pagarei seu valor exato, aqui. Este coracao sera necessario para sua proxima missao, que sera tambem o inicio do seu caminho pelas Virtudes. \z
+				Me avise quando estiver pronto para essa {missao}.", npc, creature)
+				player:setStorageValue(Storage.Quest.Crandoria.EstatuasDaVirtude.Progresso, 2)
+				npcHandler:setTopic(playerId, 0)
+			else
+				npcHandler:say("Voce nao esta com o coracao? Parece que se confundiu...", npc, creature)
+				npcHandler:setTopic(playerId, 0)
+			end
+		end
+	end
+
+	return true
+end
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:setMessage(MESSAGE_GREET, "O banco de Anvillux te da as boas vindas!")
+npcHandler:setMessage(MESSAGE_FAREWELL, "Ate mais.")
+npcHandler:setMessage(MESSAGE_WALKAWAY, "Adeus.")
+
+npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
+
 -- On buy npc shop message
 npcType.onBuyItem = function(npc, player, itemId, subType, amount, ignore, inBackpacks, totalCost)
 	npc:sellItem(player, itemId, amount, subType, 0, ignore, inBackpacks)

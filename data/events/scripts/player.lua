@@ -481,6 +481,9 @@ function Player:onTradeRequest(target, item)
 	return true
 end
 
+-- CRANDORIA EDIT --
+local day = os.date("%A")
+
 function Player:onGainExperience(target, exp, rawExp)
 	if not target or target:isPlayer() then
 		return exp
@@ -628,6 +631,11 @@ function Player:onGainExperience(target, exp, rawExp)
 	-- Final Adjustments: Low Level Bonus and Base Rate
 	local lowLevelBonusExp = self:getFinalLowLevelBonus()
 	local baseRateExp = self:getFinalBaseRateExperience()
+	
+	-- CRANDORIA EDIT --
+	if day == "Thursday" then
+		baseRateExp = baseRateExp * 1.25
+	end
 
 	-- Return final experience value
 	-- return (exp * (1 + xpBoostPercent / 100 + lowLevelBonusExp / 100)) * staminaBonusXp * baseRateExp
@@ -670,6 +678,11 @@ function Player:onGainSkillTries(skill, tries)
 	if configManager.getBoolean(configKeys.VIP_SYSTEM_ENABLED) and self:isVip() then
 		local vipBonusSkill = math.min(configManager.getNumber(configKeys.VIP_BONUS_SKILL), 100)
 		skillRate = skillRate + (skillRate * (vipBonusSkill / 100))
+	end
+	
+	-- CRANDORIA EDIT --
+	if day == "Tuesday" then
+		skillRate = skillRate * 1.25
 	end
 
 	-- Calculate and return the final experience gain

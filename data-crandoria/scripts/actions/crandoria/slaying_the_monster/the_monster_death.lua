@@ -25,10 +25,6 @@ function event.onDeath(creature, corpse, killer, mostDamageKiller)
 				specCreature:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Congratulations! You slayed The Monster.")
 				specCreature:setStorageValue(Storage.Quest.Crandoria.SlayingTheMonster.TheMonsterKilled, 1)
 			end
-			if specCreature:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 154 then
-				specCreature:setStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 155)
-				specCreature:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce derrotou Doctor Marrow. Reporte sua missao para o Comandante Crassus.")
-			end
 			if specCreature:getStorageValue(Storage.Quest.Crandoria.BossTasks.Boss) == 28 and specCreature:getStorageValue(Storage.Quest.Crandoria.BossTasks.Count) < 1 then
 				specCreature:setStorageValue(Storage.Quest.Crandoria.BossTasks.Count, 1)
 				specCreature:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce derrotou o boss para Thorwulf.")

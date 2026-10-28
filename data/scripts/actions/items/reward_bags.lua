@@ -110,7 +110,6 @@ local rewardBags = {
 		{ id = 28724, name = "falcon battleaxe" },
 		{ id = 28725, name = "falcon mace" },
 		{ id = 50161, name = "falcon sai" },
-		{ id = 52783, name = "falcon circlet" },
 	},
 
 	[STAG_YOU_DESIRE] = {
@@ -205,7 +204,6 @@ local rewardBags = {
 		{ id = 28724, name = "falcon battleaxe" },
 		{ id = 28725, name = "falcon mace" },
 		{ id = 50161, name = "falcon sai" },
-		{ id = 52783, name = "falcon circlet" },
 		{ id = 52348, name = "stag helmet" },
 		{ id = 52349, name = "stag robe" },
 		{ id = 52350, name = "stag plate" },
@@ -251,7 +249,6 @@ local rewardBags = {
 		{ id = 28724, name = "falcon battleaxe" },
 		{ id = 28725, name = "falcon mace" },
 		{ id = 50161, name = "falcon sai" },
-		{ id = 52783, name = "falcon circlet" },
 		{ id = 52348, name = "stag helmet" },
 		{ id = 52349, name = "stag robe" },
 		{ id = 52350, name = "stag plate" },

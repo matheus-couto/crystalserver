@@ -7169,7 +7169,7 @@ if not Quests then
 			startStorageValue = 1,
 			missions = {
 				[1] = {
-					name = "A katana perdida",
+					name = "Capitulo 1: A katana perdida",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13001,
 					startValue = 1,
@@ -7181,72 +7181,69 @@ if not Quests then
 					},
 				},
 				[2] = {
-					name = "O desafio das amazonas",
+					name = "Capitulo 2: O desafio das amazonas",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13002,
-					startValue = 2,
+					startValue = 3,
 					endValue = 4,
 					ignoreendvalue = true,
 					states = {
-						[2] = "Alcance o nivel 12 e fale com o Comandante Crassus para receber a proxima missao.",
 						[3] = "Na montanha das amazonas, a noroeste da saida norte de Crandoria, abra um dos seis baus no fundo da caverna e reporte ao Comandante Crassus.",
 						[4] = "Voce venceu o desafio das amazonas.",
 					},
 				},
 				[3] = {
-					name = "Os ciclopes",
+					name = "Capitulo 3: Os ciclopes",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13003,
-					startValue = 4,
+					startValue = 5,
 					endValue = 6,
 					ignoreendvalue = true,
 					states = {
-						[4] = "Alcance o nivel 16 e fale com o Comandante Crassus para receber a proxima missao.",
 						[5] = "Derrote ciclopes na regiao acima das amazonas e leve 5 cyclops toes ao Comandante Crassus.",
 						[6] = "Voce controlou a populacao de ciclopes.",
 					},
 				},
 				[4] = {
-					name = "Couro de dragao",
+					name = "Capitulo 4: Peregrinacao",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13004,
-					startValue = 6,
+					startValue = 7,
 					endValue = 8,
 					ignoreendvalue = true,
 					states = {
-						[6] = "Alcance o nivel 30 e fale com o Comandante Crassus para receber a proxima missao.",
-						[7] = "Leve 3 green dragon leathers e 3 green dragon scales ao Comandante Crassus. Ha muitos dragoes na montanha a nordeste do portao norte.",
-						[8] = "Voce entregou o couro e as escamas de dragao e escolheu sua nova arma.",
+						[7] = "Fale com Enpa-Deia Pema para iniciar sua peregrinacao. Honre o primeiro altar e retorne ao Comandante Crassus.",
+						[8] = "Missao finalizada.",
 					},
 				},
 				[5] = {
-					name = "A flor das hydras",
+					name = "Capitulo 5: Heroes e necromancers",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
-					missionId = 13005,
-					startValue = 8,
+					missionId = 13006,
+					startValue = 9,
 					endValue = 10,
 					ignoreendvalue = true,
 					states = {
-						[8] = "Alcance o nivel 50 e fale com o Comandante Crassus para receber a proxima missao.",
-						[9] = "Nas cavernas de hydras ao norte de Hakata, colete o extrato da flor gigante e volte ao Comandante Crassus em ate 10 minutos, antes que o aroma se perca.",
-						[10] = "Voce trouxe o extrato da flor das hydras.",
+						[9] = "Alcance o nivel 50 e fale com o Comandante Crassus para receber a proxima missao.",
+						[10] = "Leve juntos 1 crown legs, dos heroes, e 1 skull staff, dos necromancers, ao Comandante Crassus.",
+						[11] = "Voce equipou um novo recruta de Crandoria.",
 					},
 				},
 				[6] = {
-					name = "Heroes e necromancers",
+					name = "Capitulo 6: A flor das hydras",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
-					missionId = 13006,
+					missionId = 13005,
 					startValue = 10,
-					endValue = 12,
+					endValue = 10,
 					ignoreendvalue = true,
 					states = {
 						[10] = "Alcance o nivel 60 e fale com o Comandante Crassus para receber a proxima missao.",
-						[11] = "Leve juntos 1 crown legs, dos heroes, e 1 skull staff, dos necromancers, ao Comandante Crassus.",
-						[12] = "Voce equipou um novo recruta de Crandoria.",
+						[11] = "Nas cavernas de hydras ao norte de Hakata, colete o extrato da flor gigante e volte ao Comandante Crassus em ate 10 minutos, antes que o aroma se perca.",
+						[12] = "Voce trouxe o extrato da flor das hydras.",
 					},
 				},
 				[7] = {
-					name = "Shards das regioes frias",
+					name = "Capitulo 7: Shards das regioes frias",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13007,
 					startValue = 12,
@@ -7254,25 +7251,25 @@ if not Quests then
 					ignoreendvalue = true,
 					states = {
 						[12] = "Alcance o nivel 75 e fale com o Comandante Crassus para receber a proxima missao.",
-						[13] = "Leve 5 shards ao Comandante Crassus. Frost dragons, frost giants e crystal spiders estao entre as criaturas que os deixam.",
-						[14] = "Voce entregou os shards.",
+						[13] = "Leve 1 Hibiscus Dress para o Comandante Crassus.",
+						[14] = "Voce entregou o vestido.",
 					},
 				},
 				[8] = {
-					name = "O escudo perdido",
+					name = "Capitulo 8: O escudo perdido",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13008,
 					startValue = 14,
 					endValue = 16,
 					ignoreendvalue = true,
 					states = {
-						[14] = "Alcance o nivel 100 e fale com o Comandante Crassus para receber a proxima missao.",
-						[15] = "Leve 1 tower shield ao Comandante Crassus.",
+						[14] = "Alcance o nivel 90 e fale com o Comandante Crassus para receber a proxima missao.",
+						[15] = "Leve 1 Tower Shield e 1 Dragon Lance ao Comandante Crassus.",
 						[16] = "Voce repos o escudo do arsenal.",
 					},
 				},
 				[9] = {
-					name = "A Annihilator",
+					name = "Capitulo 9: A Annihilator",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13009,
 					startValue = 16,
@@ -7285,7 +7282,7 @@ if not Quests then
 					},
 				},
 				[10] = {
-					name = "As garras dos deeplings",
+					name = "Capitulo 10: As garras dos deeplings",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13010,
 					startValue = 18,
@@ -7298,7 +7295,7 @@ if not Quests then
 					},
 				},
 				[11] = {
-					name = "As presas dos behemoths",
+					name = "Capitulo 11: As presas dos behemoths",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13011,
 					startValue = 20,
@@ -7307,24 +7304,24 @@ if not Quests then
 					states = {
 						[20] = "Alcance o nivel 120 e fale com o Comandante Crassus para receber a proxima missao.",
 						[21] = "Cace behemoths e leve 2 perfect behemoth fangs ao comandante crassus.",
-						[22] = "Voce trouxe as presas dos behemoths.",
+						[22] = "Voce trouxe as presas dos behemoths. Fale com o Comandante Crassus para a proxima missao.",
 					},
 				},
 				[12] = {
-					name = "A cerimonia do guerreiro",
+					name = "Capitulo 12: A Arena de Minibosses",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13012,
 					startValue = 22,
 					endValue = 24,
 					ignoreendvalue = true,
 					states = {
-						[22] = "Fale com o Comandante Crassus para receber a proxima missao.",
-						[23] = "Leve 1 medusa shield e 1 royal helmet ao Comandante Crassus.",
-						[24] = "Voce trouxe os ornamentos da cerimonia.",
+						[22] = "Voce recebeu permissao do Comandante Crassus para acessar a Arena dos Miniboss. Fale com ele para mais informacoes sobre o que fazer.",
+						[23] = "Voce enfrentou um miniboss na Arena. Retorne ao Comandante Crassus",
+						[24] = "Missao cumprida.",
 					},
 				},
 				[13] = {
-					name = "Essencias demoniacas",
+					name = "Capitulo 13: Essencias demoniacas",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13013,
 					startValue = 24,
@@ -7332,12 +7329,12 @@ if not Quests then
 					ignoreendvalue = true,
 					states = {
 						[24] = "Alcance o nivel 130 e fale com o Comandante Crassus para receber a proxima missao.",
-						[25] = "Leve 20 demonic essences ao Comandante Crassus.",
+						[25] = "Leve 50 demonic essences ao Comandante Crassus.",
 						[26] = "Voce trouxe as essencias demoniacas.",
 					},
 				},
 				[14] = {
-					name = "O Demon Helmet",
+					name = "Capitulo 14: O Demon Helmet",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13014,
 					startValue = 26,
@@ -7350,7 +7347,7 @@ if not Quests then
 					},
 				},
 				[15] = {
-					name = "Silver Tokens",
+					name = "Capitulo 15: Silver Tokens",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13015,
 					startValue = 28,
@@ -7363,7 +7360,7 @@ if not Quests then
 					},
 				},
 				[16] = {
-					name = "Wrath of the Emperor",
+					name = "Capitulo 16: Wrath of the Emperor",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13016,
 					startValue = 30,
@@ -7376,7 +7373,7 @@ if not Quests then
 					},
 				},
 				[17] = {
-					name = "Linguas de crocodilo",
+					name = "Capitulo 17: Linguas de crocodilo",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13017,
 					startValue = 32,
@@ -7389,7 +7386,7 @@ if not Quests then
 					},
 				},
 				[18] = {
-					name = "Os espelhos da lua",
+					name = "Capitulo 18: Os espelhos da lua",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13018,
 					startValue = 34,
@@ -7397,12 +7394,12 @@ if not Quests then
 					ignoreendvalue = true,
 					states = {
 						[34] = "Alcance o nivel 200 e fale com o Comandante Crassus para receber a proxima missao.",
-						[35] = "No fundo das masmorras de Oskayaat, pressione os 5 espelhos da lua na ordem correta para abrir a porta da sala de Tamru e Ayana, e volte ao Comandante Crassus.",
+						[35] = "No fundo das masmorras de Oskayaat, pressione os 5 espelhos da lua na ordem correta para abrir a porta da sala de Tamru e Ayana, e volte ao Comandante Crassus. Voce nao precisa derrotar os bosses.",
 						[36] = "Voce abriu o caminho ate Tamru e Ayana.",
 					},
 				},
 				[19] = {
-					name = "Azerus",
+					name = "Capitulo 19: Azerus",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13019,
 					startValue = 36,
@@ -7415,7 +7412,7 @@ if not Quests then
 					},
 				},
 				[20] = {
-					name = "Lord Thompson",
+					name = "Capitulo 20: Lord Thompson",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13020,
 					startValue = 38,
@@ -7428,7 +7425,7 @@ if not Quests then
 					},
 				},
 				[21] = {
-					name = "A Magic Plate Armor",
+					name = "Capitulo 21: O Escudo Lendario",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13021,
 					startValue = 40,
@@ -7436,25 +7433,24 @@ if not Quests then
 					ignoreendvalue = true,
 					states = {
 						[40] = "Fale com o Comandante Crassus para receber a proxima missao.",
-						[41] = "Leve 1 magic plate armor ao Comandante Crassus.",
-						[42] = "Voce trouxe a Magic Plate Armor.",
+						[41] = "Leve 1 Mastermind Shield ao Comandante Crassus.",
+						[42] = "Voce entregou o Mastermind Shield. Alcance o nivel 250 e fale com o Comandante Crassus para receber a proxima missao.",
 					},
 				},
 				[22] = {
-					name = "O Demon Oak",
+					name = "Capitulo 22: O Demon Oak",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13022,
-					startValue = 42,
+					startValue = 43,
 					endValue = 44,
 					ignoreendvalue = true,
 					states = {
-						[42] = "Alcance o nivel 250 e fale com o Comandante Crassus para receber a proxima missao.",
 						[43] = "Na ilha ao norte de Magincia, fale com Oldrak sobre o Demon Oak, derrote-o, pegue a recompensa em um dos baus e volte ao Comandante Crassus.",
 						[44] = "Voce derrotou o Demon Oak.",
 					},
 				},
 				[23] = {
-					name = "Tecidos para as bandeiras",
+					name = "Capitulo 23: Tecidos para as bandeiras",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13023,
 					startValue = 44,
@@ -7463,128 +7459,119 @@ if not Quests then
 					states = {
 						[44] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[45] = "Leve 10 pieces of cloth de cada cor: vermelha, amarela, branca, verde, marrom e azul, ao Comandante Crassus.",
-						[46] = "Voce trouxe os tecidos.",
+						[46] = "Voce trouxe os tecidos. Fale com o Comandante Crassus para sua proxima missao.",
 					},
 				},
 				[24] = {
-					name = "Os rubis hexagonais",
+					name = "Capitulo 24: Estudando os Mitmahs",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13024,
-					startValue = 46,
+					startValue = 47,
 					endValue = 48,
 					ignoreendvalue = true,
 					states = {
-						[46] = "Fale com o Comandante Crassus para receber a proxima missao.",
-						[47] = "Cace gazer spectres e leve 3 hexagonal rubies ao comandante crassus. Ha cavernas deles com acesso por Magincia, pelo deserto de Valkesh e pela Selva de Jagunda.",
-						[48] = "Voce trouxe os rubis hexagonais.",
+						[47] = "Derrote Mitmah Scouts e Mitmah Seets e obtenha 10 Ceremonial Brushes para o Comandante Crassus.",
+						[48] = "Obteve os itens. Fale com o Comandante Crassus para sua proxima missao.",
 					},
 				},
 				[25] = {
-					name = "A Mysterious Voodoo Skull",
+					name = "Capitulo 25: A Mysterious Voodoo Skull",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13025,
-					startValue = 48,
+					startValue = 49,
 					endValue = 50,
 					ignoreendvalue = true,
 					states = {
-						[48] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[49] = "Encontre uma mysterious voodoo skull e leve-a ao Comandante Crassus.",
 						[50] = "Voce encontrou a Mysterious Voodoo Skull.",
 					},
 				},
 				[26] = {
-					name = "Os lordes da Grave Danger",
+					name = "Capitulo 26: Os Lordes da Grave Danger",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13026,
-					startValue = 50,
+					startValue = 51,
 					endValue = 52,
 					ignoreendvalue = true,
 					states = {
-						[50] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[51] = "Derrote ao menos uma vez cada lorde da Grave Danger: Duke Krule, Sir Baeloc, Count Vlarkorth, Earl Osam, Lord Azaram e King Zelos. Depois volte ao Comandante Crassus.",
-						[52] = "Voce derrotou os lordes da Grave Danger.",
+						[52] = "Voce derrotou os lordes da Grave Danger. Alcance o nivel 270 e fale com o Comandante Crassus para receber a proxima missao.",
 					},
 				},
 				[27] = {
-					name = "Oriental shoes",
+					name = "Capitulo 27: Jantar e Sobremesa",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13027,
-					startValue = 52,
+					startValue = 53,
 					endValue = 54,
 					ignoreendvalue = true,
 					states = {
-						[52] = "Alcance o nivel 270 e fale com o Comandante Crassus para receber a proxima missao.",
-						[53] = "Leve 3 oriental shoes, das asuras, ao Comandante Crassus.",
-						[54] = "Voce trouxe os oriental shoes.",
+						[53] = "Leve 10 Dragon Ham, 10 Milk Chocolate Coins e 10 Dark Chocolate Coins para o Comandante Crassus.",
+						[54] = "Voce entregou todos os itens. Alcance o nivel 300 e fale com Crassus para sua proxima missao.",
 					},
 				},
 				[28] = {
-					name = "A Inquisition",
+					name = "Capitulo 28: A Inquisition",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13028,
-					startValue = 54,
+					startValue = 55,
 					endValue = 56,
 					ignoreendvalue = true,
 					states = {
-						[54] = "Alcance o nivel 300 e fale com o Comandante Crassus para receber a proxima missao.",
 						[55] = "Fale com Henricus, na torre sudoeste de Crandoria, complete a Inquisition Quest e volte ao Comandante Crassus. A partir daqui, e uma missao por dia.",
 						[56] = "Voce completou a Inquisition Quest.",
 					},
 				},
 				[29] = {
-					name = "Empty honey glasses",
+					name = "Capitulo 29: Briga de Vampiros",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13029,
-					startValue = 56,
+					startValue = 57,
 					endValue = 58,
 					ignoreendvalue = true,
 					states = {
-						[56] = "Fale com o Comandante Crassus para receber a proxima missao.",
-						[57] = "Leve 10 empty honey glasses ao Comandante Crassus.",
-						[58] = "Voce trouxe os empty honey glasses.",
+						[57] = "Va ate Magincia, encontre a passagem para a ilha dos Vampiros e ajude Anaztassja Moroia a derrotar os 4 Lordes Vampiros.",
+						[58] = "Missao finalizada.",
 					},
 				},
 				[30] = {
-					name = "Tiaras e orelhas",
+					name = "Capitulo 30: Tiaras e orelhas",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13030,
-					startValue = 58,
+					startValue = 59,
 					endValue = 60,
 					ignoreendvalue = true,
 					states = {
-						[58] = "Fale com o Comandante Crassus para receber a proxima missao.",
-						[59] = "Leve 5 manticore ears e 5 sphinx tiaras ao Comandante Crassus.",
-						[60] = "Voce trouxe as tiaras e as orelhas.",
+						[59] = "Leve 15 Broken Dreams ao Comandante Crassus.",
+						[60] = "Voce trouxe todos os itens. Fale com Comandante Crassus para sua proxima missao",
 					},
 				},
 				[31] = {
-					name = "Pits of Inferno",
+					name = "Capitulo 31: Pits of Inferno",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13031,
-					startValue = 60,
+					startValue = 61,
 					endValue = 62,
 					ignoreendvalue = true,
 					states = {
-						[60] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[61] = "Em Serpentis, no arquipelago de Chaos (tapete de Uzon), complete a Pits of Inferno passando por todos os tronos e volte ao Comandante Crassus.",
-						[62] = "Voce completou a Pits of Inferno.",
+						[62] = "Voce completou a Pits of Inferno. Alcance o nivel 350 e fale com o Comandante Crassus para sua proxima missao.",
 					},
 				},
 				[32] = {
-					name = "Ajuda a Astralis",
+					name = "Capitulo 32: A Cidade do Comercio",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13032,
-					startValue = 62,
+					startValue = 63,
 					endValue = 78,
 					ignoreendvalue = true,
 					states = {
-						[62] = "Alcance o nivel 350 e fale com o Comandante Crassus para receber a proxima missao.",
 						[63] = "Pegue o barco do Captain Whitepatch ate Astralis e fale com Gondariel.",
-						[64] = "Leve 25 fresh fruits a Gondariel, em Astralis.",
+						[64] = "Leve 25 fresh fruits a Gondariel. Elas crescem em fazendas de casas alugadas em Astralis ou na area comunitaria, acima do curral.",
 						[65] = "Fale com Taburok, ao lado de Gondariel.",
-						[66] = "Leve 15 pineapples a Taburok. Elas crescem na area comunitaria, acima do curral.",
+						[66] = "Leve 15 pineapples a Taburok. Elas crescem em fazendas de casas alugadas em Astralis ou na area comunitaria, acima do curral.",
 						[67] = "Fale com Calante, em Astralis.",
-						[68] = "Leve 5 dragonfruits a Calante.",
+						[68] = "Leve 5 dragonfruits a Calante. Elas crescem em fazendas de casas alugadas em Astralis ou na area comunitaria, acima do curral",
 						[69] = "Fale com Christine, ao norte da cidade.",
 						[70] = "Leve 1 gearwheel chain a Christine.",
 						[71] = "Fale com Kradok, que vive em cima das minas.",
@@ -7594,18 +7581,17 @@ if not Quests then
 						[75] = "Fale com Filandrel, o alquimista, em sua casa numa pequena ilha.",
 						[76] = "Leve 10 magic sulphurs a Filandrel.",
 						[77] = "Voce ajudou todos em Astralis. Volte ao Comandante Crassus.",
-						[78] = "Voce ajudou os moradores de Astralis.",
+						[78] = "Missao finalizada. Fale com o Comandante Crassus para receber a proxima missao.",
 					},
 				},
 				[33] = {
-					name = "Hakata e o Faceless Bane",
+					name = "Capitulo 33: Hakata e o Faceless Bane",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13033,
-					startValue = 78,
+					startValue = 79,
 					endValue = 83,
 					ignoreendvalue = true,
 					states = {
-						[78] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[79] = "Em Hakata, fale com Hugo, na loja de itens magicos em frente ao templo.",
 						[80] = "Na cabana abandonada no meio da selva, encontre e derrote o Faceless Bane.",
 						[81] = "Voce derrotou o Faceless Bane. Reporte a Hugo, em Hakata.",
@@ -7614,14 +7600,13 @@ if not Quests then
 					},
 				},
 				[34] = {
-					name = "Valkesh e o Holy Scarab",
+					name = "Capitulo 34: Valkesh e o Holy Scarab",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13034,
-					startValue = 83,
+					startValue = 84,
 					endValue = 87,
 					ignoreendvalue = true,
 					states = {
-						[83] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[84] = "Em Valkesh, fale com Ahmet.",
 						[85] = "Encontre o Holy Scarab roubado e devolva-o a Ahmet, em Valkesh.",
 						[86] = "Ahmet recuperou o Holy Scarab. Volte ao Comandante Crassus.",
@@ -7629,14 +7614,13 @@ if not Quests then
 					},
 				},
 				[35] = {
-					name = "Icehold e Dankwart",
+					name = "Capitulo 35: Icehold e Dankwart",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13035,
-					startValue = 87,
+					startValue = 88,
 					endValue = 91,
 					ignoreendvalue = true,
 					states = {
-						[87] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[88] = "Em Icehold, fale com Dankwart, o vendedor de alimentos da taverna.",
 						[89] = "Leve 20 fish fins a Dankwart.",
 						[90] = "Volte ao Comandante Crassus.",
@@ -7644,14 +7628,13 @@ if not Quests then
 					},
 				},
 				[36] = {
-					name = "Chaos e os viloes de Romella",
+					name = "Capitulo 36: Chaos e os viloes de Romella",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13036,
-					startValue = 91,
+					startValue = 92,
 					endValue = 98,
 					ignoreendvalue = true,
 					states = {
-						[91] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[92] = "Em Chaos, fale com Romella, a vendedora de armas.",
 						[93] = "A pedido de Romella, derrote Scarlett Etzel.",
 						[94] = "Agora derrote Drume.",
@@ -7662,14 +7645,13 @@ if not Quests then
 					},
 				},
 				[37] = {
-					name = "Elvenshire e Shiriel",
+					name = "Capitulo 37: Elvenshire e Shiriel",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13037,
-					startValue = 98,
+					startValue = 99,
 					endValue = 102,
 					ignoreendvalue = true,
 					states = {
-						[98] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[99] = "Em Elvenshire, fale com Shiriel, o comerciante de pocoes.",
 						[100] = "Leve 15 pieces of draconian steel e 15 pieces of royal steel a Shiriel.",
 						[101] = "Volte ao Comandante Crassus.",
@@ -7677,14 +7659,13 @@ if not Quests then
 					},
 				},
 				[38] = {
-					name = "Magincia e Sandra",
+					name = "Capitulo 38: Magincia e Sandra",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13038,
-					startValue = 102,
+					startValue = 103,
 					endValue = 106,
 					ignoreendvalue = true,
 					states = {
-						[102] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[103] = "Em Magincia, fale com Sandra, a vendedora de pocoes.",
 						[104] = "Leve 10 human teeth a Sandra.",
 						[105] = "Volte ao Comandante Crassus.",
@@ -7692,14 +7673,13 @@ if not Quests then
 					},
 				},
 				[39] = {
-					name = "Anvillux e Drulok",
+					name = "Capitulo 39: Anvillux e Drulok",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13039,
-					startValue = 106,
+					startValue = 107,
 					endValue = 110,
 					ignoreendvalue = true,
 					states = {
-						[106] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[107] = "Em Anvillux, a cidade dos anoes, fale com Drulok, na taverna.",
 						[108] = "Leve 10 vexclaw talons e 10 grimeleech wings a Drulok.",
 						[109] = "Volte ao Comandante Crassus.",
@@ -7707,32 +7687,30 @@ if not Quests then
 					},
 				},
 				[40] = {
-					name = "Nivabi e Mugruu",
+					name = "Capitulo 40: Nivabi e Mugruu",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13040,
-					startValue = 110,
+					startValue = 111,
 					endValue = 114,
 					ignoreendvalue = true,
 					states = {
-						[110] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[111] = "Em Nivabi, fale com Mugruu, o ogro pacifico.",
 						[112] = "Derrote o Urmahlullu e leve a cauda dele a Mugruu.",
 						[113] = "Volte ao Comandante Crassus.",
-						[114] = "Voce ajudou todo o Novo Continente.",
+						[114] = "Voce ajudou todo o Novo Continente. Fale com o Comandante Crassus para receber a proxima missao.",
 					},
 				},
 				[41] = {
-					name = "Itens de alta qualidade",
+					name = "Capitulo 41: Itens de alta qualidade",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13041,
-					startValue = 114,
+					startValue = 115,
 					endValue = 130,
 					ignoreendvalue = true,
 					states = {
-						[114] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[115] = "Leve 5 sphinx feathers de altissima qualidade ao Comandante Crassus. Ele confere um a um.",
 						[116] = "Fale com o Comandante Crassus para receber a proxima missao.",
-						[117] = "Leve 5 liodile fangs de altissima qualidade. Elas sao de Squidspot, onde o Captain Donahue pode te levar.",
+						[117] = "Leve 5 stag parchments de altissima qualidade. Elas sao obtidos na Stag Bastion, acessivel por Roshamuul.",
 						[118] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[119] = "Leve 5 sea horse figurines de altissima qualidade, dos guerreiros do Sol, em Nivabi.",
 						[120] = "Fale com o Comandante Crassus para receber a proxima missao.",
@@ -7744,38 +7722,36 @@ if not Quests then
 						[126] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[127] = "Leve 5 silken bookmarks de altissima qualidade.",
 						[128] = "Fale com o Comandante Crassus para receber a proxima missao.",
-						[129] = "Leve 5 infernal hearts de altissima qualidade, dos infernal phantoms.",
+						[129] = "Leve 5 norcferatu talismans de altissima qualidade, das criaturas norcferatu.",
 						[130] = "Voce entregou todos os itens de alta qualidade.",
 					},
 				},
 				[42] = {
-					name = "O aniversario de Crandoria",
+					name = "Capitulo 42: O aniversario de Crandoria",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13042,
-					startValue = 130,
+					startValue = 131,
 					endValue = 138,
 					ignoreendvalue = true,
 					states = {
-						[130] = "Fale com o Comandante Crassus para receber a proxima missao.",
-						[131] = "Leve 5 garrafas da cerveja de Astralis, vendidas por Brugadok, ao Comandante Crassus.",
+						[131] = "Leve 1 garrafa da rum de Astralis, vendida por Brugadok, ao Comandante Crassus.",
 						[132] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[133] = "Leve 1 hydra tongue salad, 1 blessed steak e 1 rotworm stew ao Comandante Crassus. Os comerciantes de Astralis trocam essas receitas por frutos das fazendas.",
 						[134] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[135] = "Leve 1 demonic tapestry, do Prince Drazzak, ao Comandante Crassus.",
 						[136] = "Fale com o Comandante Crassus para receber a proxima missao.",
-						[137] = "Leve 1 Wilfred's Bag ao Comandante Crassus. Wilfred Storm, ao lado da loja da Jessica em Crandoria, as entrega por suas missoes diarias.",
-						[138] = "Voce preparou a festa de aniversario de Crandoria.",
+						[137] = "Leve 30 Gold Tokens para o Comandante Crassus.",
+						[138] = "Voce preparou a festa de aniversario de Crandoria. Fale com Comandante Crassus para receber uma nova missao.",
 					},
 				},
 				[43] = {
-					name = "Explorador de Crandoria",
+					name = "Capitulo 43: Explorador de Crandoria",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13043,
-					startValue = 138,
+					startValue = 139,
 					endValue = 150,
 					ignoreendvalue = true,
 					states = {
-						[138] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[139] = "Em Hakata, ajude Lady Vandart a capturar os criminosos e volte ao Comandante Crassus.",
 						[140] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[141] = "Na praia de Crandoria, ajude o Captain Donahue a recuperar seu tesouro perdido e volte ao Comandante Crassus.",
@@ -7791,83 +7767,356 @@ if not Quests then
 					},
 				},
 				[44] = {
-					name = "Cavernas sombrias",
+					name = "Capitulo 44: Cavernas sombrias",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13044,
 					startValue = 150,
-					endValue = 163,
+					endValue = 175,
 					ignoreendvalue = true,
 					states = {
 						[150] = "Fale com o Comandante Crassus para receber a proxima missao.",
 						[151] = "Encontre e derrote a Pale Worm, em terras acessadas por um portal no deserto.",
 						[152] = "Voce derrotou a Pale Worm. Volte ao Comandante Crassus.",
 						[153] = "Fale com o Comandante Crassus para receber a proxima missao.",
-						[154] = "Nas profundezas das cavernas de Squidspot, encontre o esconderijo do Doctor Marrow e derrote sua criatura.",
-						[155] = "Voce derrotou a criatura do Doctor Marrow. Volte ao Comandante Crassus.",
-						[156] = "Fale com o Comandante Crassus para receber a proxima missao.",
-						[157] = "Nas cavernas que levam a Pale Worm, use a alavanca, atravesse a gruta ate o teleport, derrote os chefes da Soul War e, por fim, Goshnar's Megalomania.",
-						[158] = "Voce derrotou Goshnar's Megalomania. Volte ao Comandante Crassus.",
-						[159] = "Fale com o Comandante Crassus para receber a proxima missao.",
-						[160] = "Na Ilha de Sangue, a leste de Umbra, ajude Frigard em suas duas missoes. Cuidado: quem morre na segunda perde os pertences.",
-						[161] = "Complete a segunda missao de Frigard.",
-						[162] = "Voce ajudou Frigard. Volte ao Comandante Crassus.",
-						[163] = "Voce recebeu o outfit Cave Explorer.",
+						[154] = "Ajude Drako, em Dracantus, com a missao de derrotar o poderoso The First Dragon.",
+						[175] = "Missao finalizada. Procure por Kalahar, em Magincia, para continuar com os desafios.",
 					},
 				},
 				[45] = {
-					name = "O teste do Comandante",
+					name = "Capitulo 45: O Abrigo do Falso Deus",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13045,
-					startValue = 163,
-					endValue = 175,
+					startValue = 176,
+					endValue = 179,
 					ignoreendvalue = true,
 					states = {
-						[163] = "Fale com o Comandante Crassus para receber a proxima missao.",
-						[164] = "Paz na Guerra: derrote um jogador com skull (White, Red ou Black) que tenha no maximo 100 niveis a menos que voce. A morte precisa ser justa e nao vale personagem do mesmo IP.",
-						[165] = "Voce derrotou um malfeitor. Volte ao Comandante Crassus.",
-						[166] = function(player)
-							local feitos = math.max(0, player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.PvpAlvos))
-							return string.format("Justica em Crandoria: derrote 3 jogadores diferentes com skull, com no maximo 100 niveis a menos que voce. Progresso: %d/3.", feitos)
-						end,
-						[167] = function(player)
-							local inicio = player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.PvpMaosLimpas)
-							if inicio < 1 then
-								return "Voce derrotou 3 malfeitores. Volte ao Comandante Crassus."
-							end
-							local horas = math.ceil((inicio + 24 * 60 * 60 - os.time()) / 3600)
-							if horas <= 0 then
-								return "Maos Limpas: o prazo terminou. Volte ao Comandante Crassus sem skull."
-							end
-							return string.format("Maos Limpas: fique 24 horas sem matar nenhum jogador de forma injustificada e volte ao Comandante Crassus sem skull. Faltam cerca de %d hora(s).", horas)
-						end,
-						[168] = "Fale com o Comandante Crassus para receber a proxima missao.",
-						[169] = "Seja preso pelo sistema Anti Afk - respondendo errado ou deixando o tempo acabar - e volte ao Comandante Crassus.",
-						[170] = "Voce conheceu a prisao. Volte ao Comandante Crassus.",
-						[171] = "Fale com o Comandante Crassus para receber a proxima missao.",
-						[172] = "Fale com o King Tibianus sobre o perdao secreto.",
-						[173] = "Leve uma Bag You Covet ao King Tibianus.",
-						[174] = "O King Tibianus concedeu o perdao secreto. Volte ao Comandante Crassus.",
-						[175] = "Voce se tornou um Defensor de Crandoria.",
+						[176] = "Kalahar pediu que voce falasse com Vekandor, em Magincia, para buscar pelo Falso Deus e derrota-lo.",
+						[177] = "Voce derrotou o Falso Deus. Fale com Kalahar para seu proximo desafio.",
+						[178] = "Kalahar solicitou que voce colete 50 Bulltaur Horns e 25 Strange Substances e leve para ele.",
+						[179] = "Missao finalizada.",
 					},
 				},
 				[46] = {
-					name = "A Sociedade dos Magos",
+					name = "Capitulo 46: Equilibrando as Forcas",
 					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
 					missionId = 13046,
-					startValue = 175,
-					endValue = 184,
+					startValue = 180,
+					endValue = 197,
 					ignoreendvalue = true,
 					states = {
-						[175] = "Em Magincia, fale com Kalahar, da Sociedade dos Magos.",
-						[176] = "Na Secret Library, a sudeste de Crandoria, encontre documentos que expliquem como derrotar o Scourge of Oblivion.",
-						[177] = "Voce encontrou os documentos. Leve-os a Kalahar.",
-						[178] = "Derrote os quatro demonios que protegem o Scourge of Oblivion e, depois, o proprio Scourge of Oblivion.",
-						[179] = "Voce derrotou o Scourge of Oblivion. Reporte a Kalahar.",
-						[180] = "Fale com Kalahar para receber a proxima missao.",
-						[181] = "Leve 20 mantosaurus jaws a Kalahar.",
-						[182] = "Derrote a Magma Bubble e volte a Kalahar.",
-						[183] = "Voce derrotou a Magma Bubble. Reporte a Kalahar.",
-						[184] = "Voce concluiu as missoes de Kalahar. Fale com Kalahar sobre o proximo pedido da Sociedade dos Magos.",
+						[180] = "Derrote o Brainstealer no ultimo desafio das Warzones.",
+						[181] = "Voce derrotou o Brainstealer. Reporte sua missao.",
+						[182] = "Missao cumprida. Fale com Kalahar para obter seu proximo desafio.",
+						[183] = "Derrote The Scourge of Oblivion nas profundezas da Livraria Abandonada, a sudeste de Crandoria.",
+						[184] = "Voce derrotou The Scourge of Oblivion. Reporte sua missao.",
+						[185] = "Missao cumprida. Fale com Kalahar para obter seu proximo desafio.",
+						[186] = "Acesse as profundezas de Dracantus, onde o Dragon Pack se esconde por traz de uma alavanca, e derrote os 5 dragoes e colete sua recompensa.",
+						[187] = "Voce derrotou os dragoes e obteve as recompensas. Reporte sua vitoria a Kalahar.",
+						[188] = "Missao cumprida. Fale com Kalahar para obter seu proximo desafio.",
+						[189] = "Voce deve ir a ilha secreta dos Vampiros e ajudar Anaztassja Moroia a derrotar Vladrukh, lorde dos Norcferatus, pelo menos 3 vezes.",
+						[190] = "Voce derrotou Vladrukh 1 vez e ainda precisa derrota-lo 2 vezes.",
+						[191] = "Voce derrotou Vladrukh 2 vezes e ainda precisa derrota-lo 1 vez.",
+						[192] = "Voce derrotou Vladrukh 3 vezes. Reporte sua missao ao Kalahar em Magincia.",
+						[193] = "Missao cumprida. Fale com Kalahar para obter seu proximo desafio.",
+						[194] = "Voce agora devera ir para o Castelo de Azzilon, acessivel por um teleport a oeste de Astralis para aqueles que fazem parte da Sociedade dos Magos. Encontre com Lai e ajude-a a derrotar Arbaziloth. Depois retorne ao Kalahar e reporte sua missao.",
+						[195] = "Missao cumprida. Fale com Kalahar para obter seu proximo desafio.",
+						[196] = "Va ate a Soul War e derrote os chefes e, por fim, o Goshnar's Megalomania.",
+						[197] = "Voce derrotou o Goshnar's Megalomania. Reporte sua missao ao Kalahar.",
+						[198] = "Missao finalizada.",
+					},
+				},
+				[47] = {
+					name = "Capitulo 47: Frigard, o guardiao de Umbra",
+					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
+					missionId = 13047,
+					startValue = 199,
+					endValue = 202,
+					ignoreendvalue = true,
+					states = {
+						[199] = "Encontre Frigard, em Umbra, e ajude-o com suas duas missoes.",
+						[200] = "Voce ajudou Frigard com sua primeira missao. Agora ajude-o com a missao seguinte.",
+						[201] = "Voce ajudou Frigard com suas duas missoes. Reporte o sucesso da missao ao Kalahar.",
+						[202] = "Missao finalizada.",
+					},
+				},
+				[48] = {
+					name = "Capitulo 48: Os Perigos de Gnomprona",
+					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
+					missionId = 13048,
+					startValue = 203,
+					endValue = 175,
+					ignoreendvalue = true,
+					states = {
+						[203] = "Va ate Gnomprona errote a Magma Bubble 5 vezes.",
+						[204] = "Voce derrotou a Magma Bubble 1 vez.",
+						[205] = "Voce derrotou a Magma Bubble 2 vezes.",
+						[206] = "Voce derrotou a Magma Bubble 3 vezes.",
+						[207] = "Voce derrotou a Magma Bubble 4 vezes.",
+						[208] = "Voce derrotou a Magma Bubble 5 vezes. Fale com o Comandante Crassus.",
+						[209] = "Fale com o Comandante Crassus para obter sua proxima missao.",
+						[210] = "Va ate Gnomprona errote o Primal Menace 3 vezes.",
+						[211] = "Voce derrotou o Primal Menace 1 vez.",
+						[212] = "Voce derrotou o Primal Menace 2 vezes.",
+						[213] = "Voce derrotou o Primal Menace 3 vezes. Fale com o Comandante Crassus.",
+						[214] = "Missao finalizada."
+					},
+				},
+				[49] = {
+					name = "Capitulo 49: Recursos Imediatos",
+					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
+					missionId = 13049,
+					startValue = 215,
+					endValue = 220,
+					ignoreendvalue = true,
+					states = {
+						[215] = function(player)
+							local itemCount = 3 -- AJUSTE: quantidade que o NPC pede (veja a nota abaixo)
+
+							local itemId = player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.ItensDeQualidade)
+							local timer = player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.ItemsTimer)
+
+							-- NPC ainda nao sorteou o item
+							if itemId < 1 then
+								return "Fale com Kalahar para saber quais itens ele precisa."
+							end
+
+							local itemType = ItemType(itemId)
+							local itemName = getItemName(itemId)
+							if itemType and itemType:getId() ~= 0 then
+								itemName = itemType:getName()
+								if itemCount > 1 then
+									local plural = itemType:getPluralName()
+									itemName = (plural and plural ~= "") and plural or (itemName .. "s")
+								end
+							end
+
+							local remaining = timer - os.time()
+							if timer < 1 or remaining <= 0 then
+								return string.format("Kalahar solicitou %d %s em 4 horas, mas o prazo terminou. Fale com ele para tentar novamente.", itemCount, itemName)
+							end
+
+							local hours = math.floor(remaining / 3600)
+							local minutes = math.floor((remaining % 3600) / 60)
+
+							return string.format(
+								"Kalahar solicitou %d %s em 4 horas. Voce ainda tem %d horas e %d minutos para entregar os itens.",
+								itemCount, itemName, hours, minutes
+							)
+						end,
+						[216] = "Itens entregues. Fale com Kalahar para a proxima tarefa.",
+						[217] = function(player)
+							local itemCount = 20 -- AJUSTE: quantidade que o NPC pede (veja a nota abaixo)
+
+							local itemId = player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.ItensDeQualidade)
+							local timer = player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.ItemsTimer)
+
+							-- NPC ainda nao sorteou o item
+							if itemId < 1 then
+								return "Fale com Kalahar para saber quais itens ele precisa."
+							end
+
+							local itemType = ItemType(itemId)
+							local itemName = getItemName(itemId)
+							if itemType and itemType:getId() ~= 0 then
+								itemName = itemType:getName()
+								if itemCount > 1 then
+									local plural = itemType:getPluralName()
+									itemName = (plural and plural ~= "") and plural or (itemName .. "s")
+								end
+							end
+
+							local remaining = timer - os.time()
+							if timer < 1 or remaining <= 0 then
+								return string.format("Kalahar solicitou %d %s em 24 horas, mas o prazo terminou. Fale com ele para tentar novamente.", itemCount, itemName)
+							end
+
+							local hours = math.floor(remaining / 3600)
+							local minutes = math.floor((remaining % 3600) / 60)
+
+							return string.format(
+								"Kalahar solicitou %d %s em 24 horas. Voce ainda tem %d horas e %d minutos para entregar os itens.",
+								itemCount, itemName, hours, minutes
+							)
+						end,
+						[218] = "Itens entregues. Fale com Kalahar para a proxima tarefa.",
+						[219] = function(player)
+							local itemCount = 1 -- AJUSTE: quantidade que o NPC pede (veja a nota abaixo)
+
+							local itemId = player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.ItensDeQualidade)
+							local timer = player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.ItemsTimer)
+
+							-- NPC ainda nao sorteou o item
+							if itemId < 1 then
+								return "Fale com Kalahar para saber quais itens ele precisa."
+							end
+
+							local itemType = ItemType(itemId)
+							local itemName = getItemName(itemId)
+							if itemType and itemType:getId() ~= 0 then
+								itemName = itemType:getName()
+								if itemCount > 1 then
+									local plural = itemType:getPluralName()
+									itemName = (plural and plural ~= "") and plural or (itemName .. "s")
+								end
+							end
+
+							local remaining = timer - os.time()
+							if timer < 1 or remaining <= 0 then
+								return string.format("Kalahar solicitou %d %s em 120 horas, mas o prazo terminou. Fale com ele para tentar novamente.", itemCount, itemName)
+							end
+
+							local hours = math.floor(remaining / 3600)
+							local minutes = math.floor((remaining % 3600) / 60)
+
+							return string.format(
+								"Kalahar solicitou %d %s em 120 horas. Voce ainda tem %d horas e %d minutos para entregar os itens.",
+								itemCount, itemName, hours, minutes
+							)
+						end,
+						[220] = "Item entregue. Fale com Kalahar para sua proxima missao.",
+					},
+				},
+				[50] = {
+					name = "Capitulo 50: Briga de Gente Grande",
+					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
+					missionId = 13050,
+					startValue = 221,
+					endValue = 229,
+					ignoreendvalue = true,
+					states = {
+						[221] = "Encontre S'Zallar M'Andar em Umbra e ajude-o a derrotar o Bone Overlord. Ele o guiara pelo caminho. Caso ja tenha finalizado a quest, basta derrotar novamente o Bone Overlord.",
+						[222] = "Voce derrotou o Bone Overlord. Reporte ao Kalahar.",
+						[223] = "Missao completa. Fale com Kalahar para sua proxima missao.",
+						[224] = "Kalahar deseja alguns reagentes importantes e promete te conceder um poder especial em troca. Colete 30 Necromantic Cores para Kalahar nas criptas abaixo de Dracantus.",
+						[225] = "Itens entregues.",
+						[226] = "Leve agora 1 Fetid Heart e 1 Cryptic Fossil para Kalahar.",
+						[227] = "Itens entregues.",
+						[228] = "Para completar a colecao de itens, Kalahar deseja 1 Ancient Eye Stalk, obtido apenas derrotando o Bone Overlord.",
+						[229] = "Missao completa. Voce recebeu um poder especial de Kalahar como recompensa.",
+					},
+				},
+				[51] = {
+					name = "Capitulo 51: O Ultimo Desafio",
+					storageId = Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso,
+					missionId = 13051,
+					startValue = 230,
+					endValue = 232,
+					ignoreendvalue = true,
+					states = {
+						[230] = "Va ate Tartarus e derrote o grande Bakragore.",
+						[231] = "Voce derrotou o Bakragore. Reporte ao Kalahar.",
+						[232] = "Missao completa. Voce alcancou o mais alto nivel entre os Defensores de Crandoria.",
+					},
+				},
+			},
+		},
+		[53] = {
+			name = "Naga Queen Quest",
+			startStorageId = Storage.Quest.Crandoria.NagasQuest.Progresso,
+			startStorageValue = 1,
+			missions = {
+				[1] = {
+					name = "A rebeliao",
+					storageId = Storage.Quest.Crandoria.NagasQuest.Progresso,
+					missionId = 13101,
+					startValue = 1,
+					endValue = 2,
+					ignoreendvalue = true,
+					states = {
+						[1] = "Derrote 100 Rebel Nagas e volte a Visanis, a protetora do Santuario.",
+						[2] = "Voce ajudou a conter a rebeliao das nagas.",
+					},
+				},
+				[2] = {
+					name = "O Posto de Guarda",
+					storageId = Storage.Quest.Crandoria.NagasQuest.Progresso,
+					missionId = 13102,
+					startValue = 2,
+					endValue = 8,
+					ignoreendvalue = true,
+					states = {
+						[2] = "Fale com Shiraks, no Posto de Guarda a leste do Santuario.",
+						[3] = "Entre as Ancient Hydras, encontre o corpo de Ghuror e o Cristal de Luz que ele carregava.",
+						[4] = "Leve o Cristal de Luz a pequena fonte no extremo oeste das montanhas das Ancient Hydras e use-o para ativar a fonte.",
+						[5] = "Voce ativou a fonte. Volte a Shiraks.",
+						[6] = "Leve o Galho Santo a Shiraks.",
+						[7] = "Fale com Shiraks para receber a proxima missao.",
+						[8] = "Voce ajudou o Posto de Guarda.",
+					},
+				},
+				[3] = {
+					name = "O carregamento",
+					storageId = Storage.Quest.Crandoria.NagasQuest.Progresso,
+					missionId = 13103,
+					startValue = 8,
+					endValue = 10,
+					ignoreendvalue = true,
+					states = {
+						[8] = "No forte, passe pelo portao ao lado do Posto de Guarda e atravesse a ponte ate a Comandante Sivyna. Busque o carregamento que ela precisa.",
+						[9] = "Voce pegou o carregamento. Leve-o a Comandante Sivyna.",
+						[10] = "Voce entregou o carregamento a Comandante Sivyna.",
+					},
+				},
+				[4] = {
+					name = "O monstro das profundezas",
+					storageId = Storage.Quest.Crandoria.NagasQuest.Progresso,
+					missionId = 13104,
+					startValue = 10,
+					endValue = 13,
+					ignoreendvalue = true,
+					states = {
+						[10] = "Fale com a Comandante Sivyna para receber a proxima missao.",
+						[11] = "Passe pela porta indicada pela Comandante Sivyna e derrote Grugarosh, o monstro das profundezas.",
+						[12] = "Voce derrotou Grugarosh. Volte a Comandante Sivyna.",
+						[13] = "Voce derrotou Grugarosh.",
+					},
+				},
+				[5] = {
+					name = "A entrada no Palacio",
+					storageId = Storage.Quest.Crandoria.NagasQuest.Progresso,
+					missionId = 13105,
+					startValue = 13,
+					endValue = 14,
+					ignoreendvalue = true,
+					states = {
+						[13] = "Fale com Visanis e pague os Gold Tokens pela entrada no Palacio das Nagas.",
+						[14] = "Visanis liberou sua entrada no Palacio das Nagas.",
+					},
+				},
+				[6] = {
+					name = "Os moradores do Palacio",
+					storageId = Storage.Quest.Crandoria.NagasQuest.Progresso,
+					missionId = 13106,
+					startValue = 14,
+					endValue = 22,
+					ignoreendvalue = true,
+					states = {
+						[14] = "No Palacio, fale com Zynaka.",
+						[15] = "Leve a Zynaka 1 Abyssador's Lash, 1 Ancient Liche Bone, 1 Huge Chunk of Crude Iron e 1 Colourful Snail Shell.",
+						[16] = "Fale com Nehzzara, dentro do Palacio.",
+						[17] = "Leve a Nehzzara 10 Mad Froth, 10 Blue Pieces of Cloth, 10 Holy Orchids e 10 Ensouled Essences.",
+						[18] = "Fale com Nazhuk, o encarregado da colecao de pergaminhos do Palacio.",
+						[19] = "Leve a Nazhuk o livro que ele pedir para a sua vocacao.",
+						[20] = "Fale com Salkariss, no Palacio.",
+						[21] = "Leve a Salkariss 5 dragonfruits, 12 pineapples, 50 fresh fruits e 25 fire mushrooms.",
+						[22] = "Voce ajudou os moradores do Palacio.",
+					},
+				},
+				[7] = {
+					name = "A Rainha Naga",
+					storageId = Storage.Quest.Crandoria.NagasQuest.Progresso,
+					missionId = 13107,
+					startValue = 22,
+					endValue = 28,
+					ignoreendvalue = true,
+					states = {
+						[22] = "Fale com a Naga Queen.",
+						[23] = "Abra o pequeno bau vermelho no lado norte do Salao e volte a Naga Queen.",
+						[24] = "O bau era uma armadilha. Volte a Naga Queen.",
+						[25] = "Entre no vortex, atravesse o labirinto e derrote Sihrazz, o lider dos rebeldes.",
+						[26] = "Voce derrotou a Sombra de Sihrazz. Volte a Naga Queen.",
+						[27] = "Com a permissao da Naga Queen, coloque uma arma Eldritch no pedestal do altar de encantamento.",
+						[28] = "Voce encantou sua arma Eldritch.",
 					},
 				},
 			},

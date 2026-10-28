@@ -1,4 +1,4 @@
-﻿local internalNpcName = "King Tibianus"
+local internalNpcName = "King Tibianus"
 local npcType = Game.createNpcType(internalNpcName)
 local npcConfig = {}
 
@@ -95,23 +95,23 @@ local function creatureSayCallback(npc, creature, type, message)
 		"In exchange for a truly generous donation, I will offer a special outfit. Do you want to make a donation?",
 		npc, creature)
 		npcHandler:setTopic(playerId, 1)
-	elseif MsgContains(message, "perdao") then
-		if player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 172 then
-			npcHandler:say("O que? Como voce sabe disso? Quem te enviou aqui?", npc, creature)
-			npcHandler:setTopic(playerId, 15)
-		elseif player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 173 then
-			npcHandler:say("Voce trouxe a minha Bag You Covet?", npc, creature)
-			npcHandler:setTopic(playerId, 17)
-		elseif player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 174 then
-			npcHandler:say("Gostaria de ter o perdao do seu periodo de prisao acumulado pelo valor de " ..valor.. " moedas de ouro?", npc, creature)
-			npcHandler:setTopic(playerId, 18)
-		end
-	elseif MsgContains(message, "crassus") then
-		if npcHandler:getTopic(playerId) == 15 then
-			npcHandler:say("Ah.. Que alivio. Um enviado do Comandante Crassus. Se o Comandante te enviou ate mim para tratar desse assunto, ele realmente confia muito em voce, |PLAYERNAME|... \z
-			Sim, ele tem razao, eu posso conceder meu perdao e remover todo o seu tempo acumulado de prisao. Mas antes voce precisa provar para mim, e nao para o Crassus, que voce realmente tem valor! Aceita o desafio?", npc, creature)
-			npcHandler:setTopic(playerId, 16)
-		end
+	-- elseif MsgContains(message, "perdao") then
+	-- 	if player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 172 then
+	-- 		npcHandler:say("O que? Como voce sabe disso? Quem te enviou aqui?", npc, creature)
+	-- 		npcHandler:setTopic(playerId, 15)
+	-- 	elseif player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 173 then
+	-- 		npcHandler:say("Voce trouxe a minha Bag You Covet?", npc, creature)
+	-- 		npcHandler:setTopic(playerId, 17)
+	-- 	elseif player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso) == 174 then
+	-- 		npcHandler:say("Gostaria de ter o perdao do seu periodo de prisao acumulado pelo valor de " ..valor.. " moedas de ouro?", npc, creature)
+	-- 		npcHandler:setTopic(playerId, 18)
+	-- 	end
+	-- elseif MsgContains(message, "crassus") then
+	-- 	if npcHandler:getTopic(playerId) == 15 then
+	-- 		npcHandler:say("Ah.. Que alivio. Um enviado do Comandante Crassus. Se o Comandante te enviou ate mim para tratar desse assunto, ele realmente confia muito em voce, |PLAYERNAME|... \z
+	-- 		Sim, ele tem razao, eu posso conceder meu perdao e remover todo o seu tempo acumulado de prisao. Mas antes voce precisa provar para mim, e nao para o Crassus, que voce realmente tem valor! Aceita o desafio?", npc, creature)
+	-- 		npcHandler:setTopic(playerId, 16)
+	-- 	end
 	elseif (MsgContains(message, "yes") or MsgContains(message, "sim")) then
 		-- Vamos tratar todas condições para YES aqui
 		if npcHandler:getTopic(playerId) == 1 then
@@ -221,23 +221,6 @@ local function creatureSayCallback(npc, creature, type, message)
 				npc, creature)
 				player:setStorageValue(Storage.Quest.U8_54.TheNewFrontier.Mission05.KingTibianus, 1)
 				npcHandler:setTopic(playerId, 10)
-			end
-		elseif npcHandler:getTopic(playerId) == 16 then
-			npcHandler:say("Otimo! Meu pedido nao sera dificil para alguem tao nobre que foi mandado pelo proprio Comandante Crassus ate mim... tenho certeza disso! Bom, tudo o que eu quero é uma Bag You Covet! \z
-			Se voce me trouxer uma Bag You Covet eu saberei que voce tem seu valor e, a partir de entao, te darei meu perdao secreto. MAS ATENCAO! Esse perdao nao podera ser dado sempre e tera um custo em ouro! Aguardo pelo seu retorno!", npc, creature)
-			player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 173)
-			npcHandler:setTopic(playerId, 0)
-		elseif npcHandler:getTopic(playerId) == 17 then
-			if player:getItemCount(43895) >= 1 then
-				player:removeItem(43895, 1)
-				player:setStorageValue(Storage.Quest.Crandoria.Prison.AddTime, 0)
-				npcHandler:say("Otimo trabalho! Era tudo o que eu... O QUE? NAO VEIO A MINHA ESPADA? AAARGH... Enfim... Tudo certo. Agora voce podera pedir pelo meu perdao secreto uma vez por semana. \z
-				O valor do perdao secreto sera calculado de acordo com seu nivel e o seu tempo total na prisao e cobrado de voce em Gold Coins. Para isso, basta vir ate mim e me pedir por um {perdao}. Avisarei ao Comandante Crassus que voce cumpriu sua missao." , npc, creature)
-				player:getStorageValue(Storage.Quest.Crandoria.DefensoresDeCrandoria.Progresso, 174)
-				npcHandler:setTopic(playerId, 0)
-			else
-				npcHandler:say("Voce nao possui a Bag You Covet. Nao retorne aqui sem o item necessario!", npc, creature)
-				npcHandler:setTopic(playerId, 0)
 			end
 		elseif npcHandler:getTopic(playerId) == 18 then
 			if player:removeMoneyBank(valor) then

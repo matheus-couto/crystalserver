@@ -17,7 +17,7 @@ monster.health = 5000 -- não confirmado
 monster.maxHealth = 5000 -- não confirmado
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 0 -- não confirmado
+monster.speed = 200
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -26,7 +26,8 @@ monster.changeTarget = {
 }
 
 monster.strategiesTarget = {
-	nearest = 100, -- não confirmado
+	nearest = 70,
+	random = 30,
 }
 
 monster.flags = {
@@ -58,7 +59,7 @@ monster.loot = {}
 
 -- Agony Explosion - deals 30% of player's max HP
 monster.attacks = {
-	{ name = "combat", interval = 3000, chance = 100, type = COMBAT_LIFEDRAIN, minDamage = -500, maxDamage = -1500, radius = 5, effect = CONST_ME_DRAWBLOOD, target = false }, -- não confirmado
+	{ name = "eye explosion", interval = 2000, chance = 100, target = false }, -- não confirmado
 }
 
 monster.defenses = {

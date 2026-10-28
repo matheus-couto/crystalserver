@@ -70,7 +70,6 @@ npcConfig.shop = {
 	{ name = "small stamina refill", clientId = 20138, buy = 15 },
 	{ name = "full stamina refill", clientId = 20139, buy = 25 },
 	{ name = "gold token", clientId = 22721, buy = 3 },
-	{ name = "star ring", clientId = 12669, buy = 30 },
 }
 -- On buy npc shop message
 npcType.onBuyItem = function(npc, player, itemId, subType, amount, ignore, inBackpacks, totalCost)

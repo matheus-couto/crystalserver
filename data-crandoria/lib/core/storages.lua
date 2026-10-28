@@ -1319,18 +1319,29 @@ Storage = {
 				Terceiro = 13422,
 				TimerTile = 13423,
 			},
-			RoostOfTheGraveborn = { -- 13424 - 13430
+			RoostOfTheGraveborn = { -- 13424 - 13433
 				Progresso = 13424,
 				AdventurerGroupTimer = 13425,
 				EldritchDragonLordTimer = 13426,
 				IceHorrorTimer = 13427,
 				GravediggerTimer = 13428,
 				GravediggerWallCounter = 13429,
+				Forsaken = 13430,
+				Unhallowed = 13431,
+				BoneOverlordTimer = 13432,
+				JadeHead = 13433,
 			},
-			Morgathla = { -- 13431 - 13433
-				Health = 13431,
-				HealthChange = 13432,
-			}
+			Morgathla = { -- 13434 - 13435
+				Health = 13434,
+				HealthChange = 13435,
+			},
+			EventoProgramado = { -- 13436 - 13445
+				BossGlobal = 13436,
+				HellsinHealth = 13437,
+				HellsinHealthChange = 13438,
+				RewardArtefato = 13439,
+				RewardDisputa = 13440,
+			},
 		},
 		-- Start of quests per version
 		-- Use the reserved storage keys accordingly
@@ -3275,6 +3286,11 @@ Storage = {
 		U10_94 = { -- update 10.94 - Reserved Storages 45351 - 45450
 			HeartOfDestruction = {
 				WorldDevourerTimer = 49351,
+				AnomalyTimer = 49352,
+				EradicatorTimer = 49353,
+				OutburstTimer = 49354,
+				RealityquakeTimer = 49355,
+				RuptureTimer = 49356,
 			},
 		},
 		U11_02 = { -- update 11.02 - Reserved Storages 45451 - 45650
@@ -4220,6 +4236,7 @@ GlobalStorage = {
 		},
 		Eventos = { -- 69025 - 69050
 			SaoJoao = 69025,
+			EventoProgramado = 69026,
 		},
 		Mensagens = { -- 69051 - 69055
 			Geral = 69051,

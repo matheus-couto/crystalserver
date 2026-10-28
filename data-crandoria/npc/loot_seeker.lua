@@ -52,6 +52,7 @@ end
 
 
 npcConfig.shop = {
+	{itemNAme = "ancient eye stalk", clientId = 52716, sell = 3500000},
 	{ itemName = "behemoth trophy", clientId = 7396, sell = 20000 },
 	{ itemName = "blood orb", clientId = 3251, sell = 35000 },
 	{ itemName = "broken iks faulds", clientId = 40531, sell = 530 },
@@ -160,6 +161,7 @@ npcConfig.shop = {
 	{ itemName = "chitinous mouth", clientId = 27622, sell = 10000 },
 	{ itemName = "cliff strider claw", clientId = 16134, sell = 800 },
 	{ itemName = "closed pocket sundial", clientId = 43888, sell = 5000},
+	{ itemName = "cluster of crystallized death", clientId = 52720, sell = 9000 },
 	{ itemName = "cobra crest", clientId = 31678, sell = 650 },
 	{ itemName = "cobra tongue", clientId = 9634, sell = 15 },
 	{ itemName = "colourful feather", clientId = 11514, sell = 110 },
@@ -184,6 +186,7 @@ npcConfig.shop = {
 	{ itemName = "cry-stal", clientId = 39394, sell = 3200 },
 	{ itemName = "crystal bone", clientId = 23521, sell = 250 },
 	{ itemName = "crystallized anger", clientId = 23507, sell = 400 },
+	{ itemName = "crystallized death", clientId = 52719, sell = 3000 },
 	{ itemName = "cultish mask", clientId = 9638, sell = 280 },
 	{ itemName = "cultish robe", clientId = 9639, sell = 150 },
 	{ itemName = "cultish symbol", clientId = 11455, sell = 500 },
@@ -200,6 +203,7 @@ npcConfig.shop = {
 	{ itemName = "dark bell", clientId = 32596, sell = 310000 },
 	{ itemName = "dark rosary", clientId = 10303, sell = 48 },
 	{ itemName = "dead weight", clientId = 20202, sell = 450 },
+	{ itemName = "deadly fangs", clientId = 52718, sell = 5500 },
 	{ itemName = "deepling breaktime snack", clientId = 14011, sell = 90 },
 	{ itemName = "deepling claw", clientId = 14044, sell = 430 },
 	{ itemName = "deepling guard belt buckle", clientId = 14010, sell = 230 },
@@ -286,6 +290,7 @@ npcConfig.shop = {
 	{ itemName = "ghoul snack", clientId = 11467, sell = 60 },
 	{ itemName = "giant eye", clientId = 10280, sell = 380 },
 	{ itemName = "giant tentacle", clientId = 27619, sell = 10000 },
+	{ itemName = "giant tusk", clientId = 52707, sell = 6000 },
 	{ itemName = "girlish hair decoration", clientId = 11443, sell = 30 },
 	{ itemName = "old girtablilu carapace", clientId = 36972, sell = 570 },
 	{ itemName = "girtablilu warrior carapace", clientId = 36971, sell = 520 },
@@ -443,6 +448,7 @@ npcConfig.shop = {
 	{ itemName = "naga armring", clientId = 39411, sell = 390 },
 	{ itemName = "naga earring", clientId = 39412, sell = 380 },
 	{ itemName = "naga warrior scales", clientId = 39414, sell = 340 },
+	{ itemName = "necromantic core", clientId = 52705, sell = 10000 },
 	{ itemName = "necromantic robe", clientId = 11475, sell = 250 },
 	{ itemName = "nettle blossom", clientId = 10314, sell = 75 },
 	{ itemName = "nettle spit", clientId = 11476, sell = 25 },
@@ -631,6 +637,7 @@ npcConfig.shop = {
 	{ itemName = "thick fur", clientId = 10307, sell = 150 },
 	{ itemName = "thorn", clientId = 9643, sell = 100 },
 	{ itemName = "tiara", clientId = 35578, sell = 11000 },
+	{ itemName = "toe nails", clientId = 52706, sell = 4500 },
 	{ itemName = "token of love", clientId = 31594, sell = 440000 },
 	{ itemName = "tooth file", clientId = 18924, sell = 60 },
 	{ itemName = "tooth of tazhadur", clientId = 24940, sell = 10000 },
@@ -1285,7 +1292,7 @@ local function creatureSayCallback(npc, creature, type, message)
 	return true
 end
 
-npcHandler:setMessage(MESSAGE_FAREWELL, "Si, jema ze harun. <waves>")
+npcHandler:setMessage(MESSAGE_FAREWELL, "Ate mais!")
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 

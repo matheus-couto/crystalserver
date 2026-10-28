@@ -18,11 +18,11 @@ monster.bosstiary = {
 	bossRace = RARITY_ARCHFOE,
 }
 
-monster.health = 65000
-monster.maxHealth = 65000
+monster.health = 650000
+monster.maxHealth = 650000
 monster.race = "undead"
 monster.corpse = 44836 -- não confirmado
-monster.speed = 180
+monster.speed = 2000
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -106,27 +106,34 @@ monster.loot = {
 	{ name = "terra rod", chance = 10000 }, -- não confirmado
 	{ name = "necrotic rod", chance = 10000 }, -- não confirmado
 	{ name = "bonelord shield", chance = 8000 }, -- não confirmado
-	{ name = "shrunken head", chance = 5000 }, -- não confirmado
-	{ name = "cryptic fossil", chance = 5000 }, -- não confirmado
-	{ name = "fetid heart", chance = 5000 }, -- não confirmado
+	{ name = "shrunken head", chance = 3000 }, -- não confirmado
+	-- { name = "cryptic fossil", chance = 5000 }, -- não confirmado
+	-- { name = "fetid heart", chance = 5000 }, -- não confirmado
 	{ name = "deathly crypt rune", chance = 100000 },
 }
 
 monster.attacks = {
-	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -1050 }, -- não confirmado
-	{ name = "combat", interval = 2500, chance = 25, type = COMBAT_DEATHDAMAGE, minDamage = -700, maxDamage = -1300, range = 6, shootEffect = CONST_ANI_DEATH, effect = CONST_ME_MORTAREA, target = true }, -- não confirmado
-	{ name = "combat", interval = 3000, chance = 22, type = COMBAT_EARTHDAMAGE, minDamage = -600, maxDamage = -1150, radius = 5, effect = CONST_ME_POISONAREA, target = false }, -- não confirmado
-	{ name = "combat", interval = 2800, chance = 20, type = COMBAT_DEATHDAMAGE, minDamage = -650, maxDamage = -1200, length = 7, spread = 2, effect = CONST_ME_BLACKSMOKE, target = false }, -- não confirmado
-	{ name = "combat", interval = 3500, chance = 18, type = COMBAT_EARTHDAMAGE, minDamage = -550, maxDamage = -1100, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_GREEN_RINGS, target = true }, -- não confirmado
-	{ name = "condition", type = CONDITION_CURSED, interval = 4000, chance = 12, minDamage = -180, maxDamage = -350, radius = 4, effect = CONST_ME_BLACKSMOKE, target = false }, -- não confirmado
-	{ name = "condition", type = CONDITION_POISON, interval = 4500, chance = 10, minDamage = -150, maxDamage = -300, radius = 5, effect = CONST_ME_POISONAREA, target = false }, -- não confirmado
+	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -1200 },
+	{ name = "gravedigger wall", interval = 5000, chance = 100},
+	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_FIREDAMAGE, minDamage = -700, maxDamage = -1300, range = 6, shootEffect = CONST_ANI_FIRE, effect = CONST_ME_HITBYFIRE, target = true },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 20, minDamage = -150, maxDamage = -300, radius = 5, effect = CONST_ME_POISONAREA, target = false },
+	{ name = "combat", interval = 2500, chance = 25, type = COMBAT_DEATHDAMAGE, minDamage = -700, maxDamage = -1300, length = 6, effect = CONST_ME_MORTAREA, target = false },
+	{ name = "root", interval = 2000, chance = 3, target = true },
+	{ name = "combat", interval = 2500, chance = 15, type = COMBAT_DEATHDAMAGE, minDamage = -1000, maxDamage = -1800, radius = 7, effect = CONST_ME_MORTAREA, target = false },
+
+
+	-- { name = "combat", interval = 3000, chance = 22, type = COMBAT_EARTHDAMAGE, minDamage = -600, maxDamage = -1150, radius = 5, effect = CONST_ME_POISONAREA, target = false }, -- não confirmado
+	-- { name = "combat", interval = 2800, chance = 20, type = COMBAT_DEATHDAMAGE, minDamage = -650, maxDamage = -1200, length = 7, spread = 2, effect = CONST_ME_BLACKSMOKE, target = false }, -- não confirmado
+	-- { name = "combat", interval = 3500, chance = 18, type = COMBAT_EARTHDAMAGE, minDamage = -550, maxDamage = -1100, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_GREEN_RINGS, target = true }, -- não confirmado
+	-- { name = "condition", type = CONDITION_CURSED, interval = 4000, chance = 12, minDamage = -180, maxDamage = -350, radius = 4, effect = CONST_ME_BLACKSMOKE, target = false }, -- não confirmado
+	
 }
 
 monster.defenses = {
 	defense = 90, -- não confirmado
 	armor = 90, -- não confirmado
 	mitigation = 2.70, -- não confirmado
-	{ name = "combat", interval = 3000, chance = 17, type = COMBAT_HEALING, minDamage = 1000, maxDamage = 1800, effect = CONST_ME_MAGIC_BLUE, target = false }, -- não confirmado
+	{ name = "combat", interval = 3000, chance = 10, type = COMBAT_HEALING, minDamage = 1000, maxDamage = 1800, effect = CONST_ME_MAGIC_BLUE, target = false }, -- não confirmado
 }
 
 monster.elements = {

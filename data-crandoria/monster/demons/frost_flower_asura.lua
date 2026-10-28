@@ -34,11 +34,23 @@ monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
+	interval = 3000,
+	chance = 35,
+}
+
+monster.changeTarget2 = {
 	interval = 4000,
 	chance = 10,
 }
 
 monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	random = 10,
+	damage = 10,
+}
+
+monster.strategiesTarget2 = {
 	nearest = 100,
 }
 
@@ -73,6 +85,7 @@ monster.voices = {
 }
 
 monster.loot = {
+	-- { id = 3250, chance = 900, maxCount = 1 },
 	{ id = 3031, chance = 70980, maxCount = 100 }, -- gold coin
 	{ id = 3035, chance = 80500, maxCount = 6 }, -- platinum coin
 	{ id = 3567, chance = 680 }, -- blue robe
@@ -107,7 +120,7 @@ monster.loot = {
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = -110, maxDamage = -400 },
-	{ name = "combat", interval = 1300, chance = 14, type = COMBAT_HOLYDAMAGE, minDamage = -185, maxDamage = -210, length = 8, spread = 0, effect = CONST_ME_ICETORNADO, target = false },
+	{ name = "combat", interval = 1300, chance = 14, type = COMBAT_HOLYDAMAGE, minDamage = -185, maxDamage = -210, length = 8, spread = 3, effect = CONST_ME_ICETORNADO, target = false },
 	{ name = "combat", interval = 1000, chance = 9, type = COMBAT_ICEDAMAGE, minDamage = -120, maxDamage = -200, range = 7, shootEffect = CONST_ANI_SMALLICE, effect = CONST_ME_ICEATTACK, target = true },
 }
 

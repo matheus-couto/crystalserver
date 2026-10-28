@@ -1089,6 +1089,37 @@ function onUseSpikedSquelcher(player, item, fromPosition, target, toPosition, is
 	return true
 end
 
+local function resetPlant(target)
+    target:transform(5462)
+    addEvent(function()
+        target:transform(5470)
+        addEvent(function()
+            target:transform(5465)
+        end, 4 * 60 * 60 * 1000)
+    end, 4 * 60 * 60 * 1000)
+end
+
+local plantRules = {
+    [64] = {
+        max = 25,
+        chanceMax = 2,
+        reward = {id = 25692, count = 1},
+        text = "Voce colheu Fresh Fruits para Gondariel"
+    },
+    [66] = {
+        max = 15,
+        chanceMax = 4,
+        reward = {id = 11459, count = 1},
+        text = "Voce colheu Pineapple para Taburok"
+    },
+    [68] = {
+        max = 5,
+        chanceMax = 5,
+        reward = {id = 11682, count = 1},
+        text = "Voce colheu uma Dragonfruit para Calante"
+    }
+}
+
 function onUseScythe(player, item, fromPosition, target, toPosition, isHotkey)
 	if not table.contains({ 3453, 9596 }, item.itemid) then
 		return false

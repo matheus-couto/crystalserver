@@ -113,7 +113,7 @@ monster.loot = {
 	{id= 5913, chance = 32370, maxCount = 5},
 	{id= 3555, chance = 50},
 	{id= 3387, chance = 170},
-	{id = 12669, chance = 150 },
+	-- {id = 12669, chance = 150 },
 	-- { id = 37052, chance = 100 },
 	-- {id = 35909, chance = 150, maxCount = 1},
 	{ id = 12811, chance = 200, unique = true },

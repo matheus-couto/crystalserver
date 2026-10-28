@@ -7,10 +7,14 @@ monster.outfit = {
 	lookTypeEx = 52466,
 }
 
-monster.health = 50000 -- não confirmado
-monster.maxHealth = 50000 -- não confirmado
+monster.events = {
+	"soulcageDeath",
+}
+
+monster.health = 120000 -- não confirmado
+monster.maxHealth = 120000 -- não confirmado
 monster.race = "undead"
-monster.corpse = 44831 -- não confirmado
+monster.corpse = 6068 -- não confirmado
 monster.speed = 0
 monster.manaCost = 0
 
@@ -29,7 +33,7 @@ monster.flags = {
 	hostile = true, -- não confirmado
 	convinceable = false, -- não confirmado
 	pushable = false, -- não confirmado
-	rewardBoss = false, -- não confirmado
+	rewardBoss = true, -- não confirmado
 	illusionable = false, -- não confirmado
 	canPushItems = false, -- não confirmado
 	canPushCreatures = false, -- não confirmado
@@ -49,38 +53,46 @@ monster.light = {
 }
 
 monster.loot = {
-	{ name = "crystal coin", chance = 100000, maxCount = 49 }, -- não confirmado (chance)
-	{ name = "blue gem", chance = 100000, maxCount = 3 }, -- não confirmado (chance)
-	{ id = 3039, chance = 100000, maxCount = 8 }, -- red gem (não confirmado (chance))
-	{ name = "yellow gem", chance = 100000, maxCount = 9 }, -- não confirmado (chance)
-	{ name = "giant ruby", chance = 100000, maxCount = 2 }, -- não confirmado (chance)
-	{ name = "strong mana potion", chance = 100000, maxCount = 93 }, -- não confirmado (chance)
-	{ id = 238, chance = 100000, maxCount = 62 }, -- great mana potion -- não confirmado (chance)
-	{ name = "great spirit potion", chance = 100000, maxCount = 51 }, -- não confirmado (chance)
-	{ name = "ultimate mana potion", chance = 100000, maxCount = 22 }, -- não confirmado (chance)
-	{ name = "ultimate spirit potion", chance = 100000, maxCount = 24 }, -- não confirmado (chance)
-	{ name = "ultimate health potion", chance = 100000, maxCount = 33 }, -- não confirmado (chance)
-	{ name = "supreme health potion", chance = 100000, maxCount = 14 }, -- não confirmado (chance)
-	{ name = "guardian gem", chance = 100000 }, -- não confirmado (chance)
-	{ name = "marksman gem", chance = 100000 }, -- não confirmado (chance)
-	{ name = "mystic gem", chance = 100000 }, -- não confirmado (chance)
-	{ name = "sage gem", chance = 100000 }, -- não confirmado (chance)
-	{ name = "spiritualist gem", chance = 100000 }, -- não confirmado (chance)
-	{ name = "greater guardian gem", chance = 100000 }, -- não confirmado (chance)
-	{ name = "greater marksman gem", chance = 100000 }, -- não confirmado (chance)
-	{ name = "greater mystic gem", chance = 100000 }, -- não confirmado (chance)
-	{ name = "greater sage gem", chance = 100000 }, -- não confirmado (chance)
-	{ name = "greater spiritualist gem", chance = 100000 }, -- não confirmado (chance)
-	{ name = "small flask of eyedrops", chance = 100000 }, -- não confirmado (chance)
-	{ name = "bonelord eye", chance = 100000 }, -- não confirmado (chance)
-	{ id = 6299, chance = 100000 }, -- death ring (não confirmado (chance))
-	{ name = "haunted blade", chance = 100000 }, -- não confirmado (chance)
-	{ name = "bonelord shield", chance = 100000 }, -- não confirmado (chance)
-	{ name = "skull helmet", chance = 100000 }, -- não confirmado (chance)
-	{ name = "bone spikes", chance = 100000 }, -- não confirmado (chance)
-	{ name = "ancient scales", chance = 100000 }, -- não confirmado (chance)
-	{ name = "soul trap", chance = 100000 }, -- não confirmado (chance)
-	{ name = "necromantic crypt rune", chance = 100000 }, -- não confirmado (chance)
+	{ name = "crystal coin", chance = 100000, minCount = 30, maxCount = 50 },
+	{ name = "ultimate mana potion", chance = 40000, minCount = 22, maxCount = 50 },
+	{ name = "ultimate spirit potion", chance = 44000, minCount = 22, maxCount = 46 }, 
+	{ name = "ultimate health potion", chance = 44000, minCount = 22, maxCount = 38 }, 
+	{ id = 10316, chance = 44000, maxCount = 2 },
+	{ id = 238, chance = 32000, maxCount = 70 },
+	{ name = "haunted blade", chance = 32000 },
+	{ name = "yellow gem", chance = 28000, minCount = 3, maxCount = 10 },
+	{ id = 3039, chance = 28000, minCount = 3, maxCount = 8 },
+	{ name = "bonelord eye", chance = 28000, maxCount = 2 },
+	{ name = "great spirit potion", chance = 28000, minCount = 30, maxCount = 51 },
+	{ name = "supreme health potion", chance = 24000, minCount = 8, maxCount = 14 },
+	{ name = "strong mana potion", chance = 32000, minCount = 33, maxCount = 93 },
+	{ name = "small flask of eyedrops", chance = 24000 },
+	{ name = "blue gem", chance = 16000, maxCount = 3 },
+	{ name = "giant sapphire", chance = 16000, maxCount = 3 },
+	{ name = "bonelord shield", chance = 15000 },
+	{ id = 8061, chance = 8000 },
+	{ id = 10438, chance = 8000 },
+	{ name = "skull staff", chance = 8000 },
+	{ name = "giant ruby", chance = 4000, maxCount = 2 },
+	{ name = "giant emerald", chance = 4000, maxCount = 1 },
+	{ name = "skull helmet", chance = 4000 },
+	{ name = "ancient scales", chance = 4000 },
+	{ name = "soul trap", chance = 1500 },
+	{ name = "skull tendril", chance = 400 },
+	{ name = "necromantic crypt rune", chance = 400 },
+	{ id = 52716, chance = 400 },
+	
+	-- { name = "guardian gem", chance = 100000 },
+	-- { name = "marksman gem", chance = 100000 },
+	-- { name = "mystic gem", chance = 100000 },
+	-- { name = "sage gem", chance = 100000 },
+	-- { name = "spiritualist gem", chance = 100000 },
+	-- { name = "greater guardian gem", chance = 100000 },
+	-- { name = "greater marksman gem", chance = 100000 },
+	-- { name = "greater mystic gem", chance = 100000 }, 
+	-- { name = "greater sage gem", chance = 100000 }, 
+	-- { name = "greater spiritualist gem", chance = 100000 },
+
 }
 
 monster.attacks = {
@@ -90,7 +102,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 100, -- não confirmado
 	armor = 100, -- não confirmado
-	mitigation = 3.00, -- não confirmado
+	mitigation = 2.00, -- não confirmado
 }
 
 monster.elements = {
