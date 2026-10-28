@@ -130,7 +130,8 @@ static void applyElementalStance(const std::shared_ptr<Player> &player, CombatDa
 	}
 
 	// (A) Consume a pending conversion FIRST so the converted element also receives the bonus.
-	bool converted = false;
+	// A spell with Lua element variants already took it (Player::takeElementConversion).
+	bool converted = player->isElementConvertedCast();
 	const CombatType_t pending = player->getPendingElementConversion();
 	if (pending != COMBAT_NONE && damage.primary.type != pending) {
 		damage.primary.type = pending;

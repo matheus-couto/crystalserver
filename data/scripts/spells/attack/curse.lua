@@ -48,7 +48,7 @@ local spell = Spell("instant")
 function spell.onCastSpell(creature, var)
 	local player = creature:getPlayer()
 	if player then
-		local stance = player:getElementalStance()
+		local stance = player:getStanceConversion(COMBAT_DEATHDAMAGE)
 		if stance == STANCE_MASTER_OF_FLAMES then
 			return combatFlames:execute(creature, var)
 		elseif stance == STANCE_MASTER_OF_THUNDER then

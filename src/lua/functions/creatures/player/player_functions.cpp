@@ -508,6 +508,7 @@ void PlayerFunctions::init(lua_State* L) {
 	Lua::registerMethod(L, "Player", "setStance", PlayerFunctions::luaPlayerSetStance);
 	Lua::registerMethod(L, "Player", "getElementalStance", PlayerFunctions::luaPlayerGetElementalStance);
 	Lua::registerMethod(L, "Player", "setElementalStance", PlayerFunctions::luaPlayerSetElementalStance);
+	Lua::registerMethod(L, "Player", "takeElementConversion", PlayerFunctions::luaPlayerTakeElementConversion);
 
 	Lua::registerMethod(L, "Player", "applyImbuementScrollToItem", PlayerFunctions::luaPlayerApplyImbuementScrollToItem);
 	Lua::registerMethod(L, "Player", "onClearAllImbuementsOnEtcher", PlayerFunctions::luaPlayerOnClearAllImbuementsOnEtcher);
@@ -5727,6 +5728,19 @@ int PlayerFunctions::luaPlayerSetElementalStance(lua_State* L) {
 	const bool result = player->setElementalStance(stance);
 	player->persistStances(); // Vocation Adjustment: persist active stances across sessions
 	lua_pushboolean(L, result);
+	return 1;
+}
+
+int PlayerFunctions::luaPlayerTakeElementConversion(lua_State* L) {
+	// player:takeElementConversion(nativeCombatType)
+	const auto &player = Lua::getUserdataShared<Player>(L, 1);
+	if (!player) {
+		Lua::reportErrorFunc(Lua::getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));
+		lua_pushnil(L);
+		return 1;
+	}
+	const auto nativeType = Lua::getNumber<CombatType_t>(L, 2, COMBAT_NONE);
+	lua_pushnumber(L, static_cast<lua_Number>(player->takeElementConversion(nativeType)));
 	return 1;
 }
 

@@ -12742,6 +12742,19 @@ bool Player::setElementalStance(Stance_t stance) {
 	return true;
 }
 
+CombatType_t Player::takeElementConversion(CombatType_t nativeType) {
+	// Spells whose Lua script carries per-element variants (effect + missile) claim the armed conversion
+	// here, before executing. Marking the cast as converted keeps applyElementalStance from re-arming it,
+	// otherwise every following spell would also come out in the stance element.
+	const CombatType_t pending = m_pendingElementConversion;
+	if (pending == COMBAT_NONE || pending == nativeType) {
+		return COMBAT_NONE;
+	}
+	m_pendingElementConversion = COMBAT_NONE;
+	m_elementConvertedCast = true;
+	return pending;
+}
+
 void Player::persistStances() {
 	// Vocation Adjustment: persist the active stances so they are restored on the next login.
 	kv()->scoped("stance")->set("primary", static_cast<int>(m_stancePrimary));

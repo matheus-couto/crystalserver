@@ -1155,6 +1155,9 @@ bool InstantSpell::playerCastInstant(const std::shared_ptr<Player> &player, std:
 		return false;
 	}
 
+	// Vocation Adjustment: a new cast has not taken any Master-of-* conversion yet.
+	player->setElementConvertedCast(false);
+
 	LuaVariant var;
 	var.instantName = getName();
 	std::shared_ptr<Player> playerTarget = nullptr;

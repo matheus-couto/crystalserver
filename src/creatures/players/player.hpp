@@ -1682,6 +1682,13 @@ public:
 	void setPendingElementConversion(CombatType_t type) {
 		m_pendingElementConversion = type;
 	}
+	CombatType_t takeElementConversion(CombatType_t nativeType);
+	bool isElementConvertedCast() const {
+		return m_elementConvertedCast;
+	}
+	void setElementConvertedCast(bool converted) {
+		m_elementConvertedCast = converted;
+	}
 	uint8_t getMonkAuraVocMask() const;
 	void setMonkAuraVocMask(uint8_t mask);
 	uint8_t getMonkShrineCount() const;
@@ -2051,6 +2058,7 @@ private:
 	Stance_t m_stancePrimary = STANCE_NONE; // single stance for non-sorc; crippling stance for sorc
 	Stance_t m_stanceElemental = STANCE_NONE; // sorcerer-only (Master of Flames/Thunder/Decay)
 	CombatType_t m_pendingElementConversion = COMBAT_NONE; // Master-of-*: convert the NEXT off-element spell
+	bool m_elementConvertedCast = false; // the current cast already took the armed conversion (reset per instant cast)
 	uint8_t m_monkAuraVocMask = 0; // monk virtue aura: bitmask (1<<baseId) of vocation bonuses active here
 	int64_t m_monkAuraExpiry = 0; // OTSYS_TIME() until which m_monkAuraVocMask is valid
 

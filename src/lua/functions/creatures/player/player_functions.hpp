@@ -482,6 +482,7 @@ class PlayerFunctions {
 	static int luaPlayerSetStance(lua_State* L);
 	static int luaPlayerGetElementalStance(lua_State* L);
 	static int luaPlayerSetElementalStance(lua_State* L);
+	static int luaPlayerTakeElementConversion(lua_State* L);
 
 	static int luaPlayerApplyImbuementScrollToItem(lua_State* L);
 	static int luaPlayerOnClearAllImbuementsOnEtcher(lua_State* L);

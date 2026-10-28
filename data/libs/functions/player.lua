@@ -995,3 +995,18 @@ function Player.saveLoginLog(self)
 	logger.info("Player {} logged in (IP: {} | Protocol: {} | Level: {} | Vocation: {})", playerName, ipAddress, protocolVersion, playerLevel, playerVocation)
 	return true
 end
+
+-- Vocation Adjustment: the Master-of-* stance whose element this cast takes, or STANCE_NONE.
+-- Casting a spell of the stance element arms the conversion; only the NEXT off-element spell is
+-- converted, so spell scripts with element variants must ask here once per cast (it consumes it).
+function Player:getStanceConversion(nativeType)
+	local conversion = self:takeElementConversion(nativeType)
+	if conversion == COMBAT_FIREDAMAGE then
+		return STANCE_MASTER_OF_FLAMES
+	elseif conversion == COMBAT_ENERGYDAMAGE then
+		return STANCE_MASTER_OF_THUNDER
+	elseif conversion == COMBAT_DEATHDAMAGE then
+		return STANCE_MASTER_OF_DECAY
+	end
+	return STANCE_NONE
+end
